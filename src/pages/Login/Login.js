@@ -21,7 +21,8 @@ function Login() {
   useEffect(() => {
     if(localStorage.getItem('user')) {
       alert('Already logged in');
-      history.push('/auditions');
+      history.push('/');
+      localStorage.removeItem("user");
     }
   }, [])
 
@@ -29,8 +30,8 @@ function Login() {
     setLoginError(false);
     e.preventDefault();
     setIsLoading(true);
-    const auditionForm = e.currentTarget;
-    if (auditionForm.checkValidity() === false) {
+    const loginForm = e.currentTarget;
+    if (loginForm.checkValidity() === false) {
       e.preventDefault();
       e.stopPropagation();
       setValidated(true);
@@ -39,7 +40,12 @@ function Login() {
       const data = new FormData(form.current);
       if(!data.get('remember_me'))
         data.append('remember_me', false)
-      const response = await fetch(`${BASE_URL}${SESSION}`,
+
+      authActions.userDataStateChanged(data.get('email'));
+      history.push("/");
+      e.target.reset();
+
+      /*const response = await fetch(`${BASE_URL}${SESSION}`,
         {
           headers: {
             "authorization": ACCESS_TOKEN,
@@ -51,11 +57,11 @@ function Login() {
       setIsLoading(false);
       if(response.status === 200) {
         authActions.userDataStateChanged(resultSet["auth_token"]);
-        history.push("/auditions");
+        history.push("/");
         e.target.reset();
       } else {
         setLoginError(true);
-      }
+      }*/
     }
   }
 
@@ -68,7 +74,7 @@ function Login() {
       <div className="login-logo">
         <img className="" src={Logo} alt="Workflow" onClick={() => {history.push("/")}} />
       </div>
-      <h2 className="">Sign in to your account</h2>
+      <h2 className="">Sign in to your artist account</h2>
       {loginError &&
       <p className="login-error">Invalid email/password, try again!</p>
       }
