@@ -28,11 +28,41 @@ function Sidebar() {
             Agreements
           </NavLink>
         </li>
-        <li><a>Partners</a></li>
-        <li><a>Music</a></li>
-        <li><a>Artist Portal</a></li>
-        <li><a>Getting Paid</a></li>
-        <li><a>FAQs</a></li>
+        <li>
+          <NavLink
+            activeClassName={"selected"}
+            to={"/partners"}>
+            Partners
+          </NavLink>
+        </li>
+        <li>
+          <NavLink
+            activeClassName={"selected"}
+            to={"/music"}>
+            Music
+          </NavLink>
+        </li>
+        <li>
+          <NavLink
+            activeClassName={"selected"}
+            to={"/bank"}>
+            Bank Details
+          </NavLink>
+        </li>
+        <li>
+          <NavLink
+            activeClassName={"selected"}
+            to={"/tax"}>
+            Tax Details
+          </NavLink>
+        </li>
+        <li>
+          <NavLink
+            activeClassName={"selected"}
+            to={"/faq"}>
+            FAQs
+          </NavLink>
+        </li>
       </ul>
     </aside>
   );
