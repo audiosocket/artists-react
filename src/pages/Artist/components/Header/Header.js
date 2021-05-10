@@ -4,9 +4,12 @@ import logo from '../../../../images/header-logo.svg';
 import profile from '../../../../images/profile.jpg';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav'
+import {NavLink, useHistory} from "react-router-dom";
 
 
 function Header() {
+  const history = useHistory();
+
   return (
     <header>
       <Navbar collapseOnSelect expand="lg" variant="dark" className="custom-nav">
@@ -17,14 +20,23 @@ function Header() {
 
           </Nav>
           <Nav>
-            <Nav.Link href="#deets">Setting</Nav.Link>
-            <Nav.Link eventKey={2} href="#memes">
+            <Nav>
+              <NavLink
+                className={window.location.pathname.toLowerCase().indexOf('/settings') > -1 ? "nav-link active" : "nav-link"}
+                to={"/settings"}>
+                Settings
+              </NavLink>
+            </Nav>
+            <Nav.Link eventKey={2} href="mailto:info@audiosocket.com">
               Help
             </Nav.Link>
-            <Nav.Link eventKey={2} href="#memes">
+            <Nav.Link eventKey={3} onClick={() => {
+                localStorage.removeItem("user");
+                history.push("/login");
+              }}>
               Sign out
             </Nav.Link>
-            <Nav.Link eventKey={2} href="#memes" className="profile-pic">
+            <Nav.Link eventKey={4} className="profile-pic">
               <img src={profile} alt="Profile Picture"  className="" />
             </Nav.Link>
           </Nav>

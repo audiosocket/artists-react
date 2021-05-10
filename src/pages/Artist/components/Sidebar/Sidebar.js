@@ -1,17 +1,38 @@
 import React from "react";
 import './Sidebar.scss';
+import {NavLink} from "react-router-dom";
 
 function Sidebar() {
   return (
     <aside>
       <ul>
-        <li><a href="" className="selected">Welcome</a></li>
-        <li><a href="">Agreement</a></li>
-        <li><a href="">Partners</a></li>
-        <li><a href="">Music</a></li>
-        <li><a href="">Artist Portal</a></li>
-        <li><a href="">Getting Paid</a></li>
-        <li><a href="">FAQs</a></li>
+        <li>
+          <NavLink
+            activeClassName={"selected"}
+            exact={true}
+            to={"/"}>
+            Welcome
+          </NavLink>
+        </li>
+        <li>
+          <NavLink
+            activeClassName={"selected"}
+            to={"/profile"}>
+            Artist
+          </NavLink>
+        </li>
+        <li>
+          <NavLink
+            activeClassName={"selected"}
+            to={"/agreements"}>
+            Agreements
+          </NavLink>
+        </li>
+        <li><a>Partners</a></li>
+        <li><a>Music</a></li>
+        <li><a>Artist Portal</a></li>
+        <li><a>Getting Paid</a></li>
+        <li><a>FAQs</a></li>
       </ul>
     </aside>
   );
