@@ -3,6 +3,7 @@ import {BrowserRouter as Router, Redirect, Route, Switch} from "react-router-dom
 import {AuthProvider} from "./Store/authContext";
 import Artist from "./pages/Artist/Artist";
 import Login from "./pages/Login/Login";
+import Signup from "./pages/Signup/Signup";
 
 function App() {
   return (
@@ -12,9 +13,13 @@ function App() {
           <Route path="/login">
             <Login/>
           </Route>
-          <Route path="/">
+          <Route
+            path="/accept-invitation/:userHash?"
+            render={(props) => <Signup userHash={props.match.params.userHash} /> }
+          />
+          <PrivateRoute path="/">
             <Artist/>
-          </Route>
+          </PrivateRoute>
         </Switch>
       </AuthProvider>
     </Router>
