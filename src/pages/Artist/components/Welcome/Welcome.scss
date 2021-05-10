@@ -1,0 +1,52 @@
+.welcome-content {
+  font-size: 16px;
+  section {
+    margin-bottom: 40px;
+  }
+  h3 {
+    margin-bottom: 15px;
+  }
+  h4,h5 {
+    margin-bottom: 10px;
+  }
+  p {
+    margin-bottom: 7px;
+    line-height: normal;
+  }
+  a {
+    color: #007bff;
+    font-weight: 600;
+    transition: all 0.3s ease-in-out;
+    &:hover {
+      color: #0056b3
+    }
+  }
+
+  .bg-content {
+    padding: 30px 20px 20px;
+    border-radius: 7px;
+    margin: 15px 0;
+    &.yellow {
+      background-color: #fdf5db;
+    }
+  }
+
+  .sub-section {
+    margin-bottom: 20px;
+  }
+
+  ul {
+    list-style-position: outside;
+    padding-left: 25px;
+    li {
+      
+    }
+  }
+
+  .our-address {
+    p {
+      margin-bottom: 4px;
+      line-height: 1;
+    }
+  }
+}

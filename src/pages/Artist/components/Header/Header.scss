@@ -27,6 +27,13 @@ header {
           }
         }
       }
+      .artist-dropdown {
+        margin-left: 40px;
+        a {
+          display: flex;
+          align-items: center;
+        }
+      }
     }
   }
 }

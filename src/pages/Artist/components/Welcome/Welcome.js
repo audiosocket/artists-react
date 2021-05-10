@@ -4,7 +4,49 @@ import "./Welcome.scss";
 function Welcome() {
 
   return (
-    <h2>What happens now?</h2>
+    <div class="welcome-content">
+      <section>
+        <h3><strong>What happens now?</strong></h3>
+        <h5><strong>Good question! Try these on for size:</strong></h5>
+        <ul>
+          <li>Read the Getting paid section below and send us your info via mail or scan.</li>
+          <li>Tell us more about you. We need your phone number and address so we can keep in touch! Click Artist to the left</li>
+          <li>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source</li>
+          <li>It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h3><strong>Question?</strong></h3>
+        <h5><strong>If you have any questions or suggestions, please send us an email at <a href="">artistinsockol.com</a></strong></h5>
+        <div className="bg-content yellow">
+          <div className='sub-section'>
+            <h4><strong>Getting Paid</strong></h4>
+            <p>Wo love giving artists money, but there are some important documonts we need before we can make that happen. </p>
+            <p>First, make sure that you have completely and correctly filled in your payeo information.</p>
+          </div>
+
+          <div className='sub-section'>
+            <h4><strong>US citizens</strong></h4>
+            <p>We need one W-9 form on file per artist. If you are an existing artist and have already sent us one, you do not need to send another.</p>
+            <p>Please <a href="">download from the IRS</a>, fill it out and sign it. You can either mail the completed form to us at the address below, or <a href="mailto:accounting@audiosocket.com">accounting@audiosocket.com</a>. Please include your artist namel</p>
+            <p>If you don't send one we must withhold 28% of all future payments for tax purposes, so it's very important.</p>
+          </div>
+
+          <div className='sub-section'>
+            <h4><strong>International artists</strong></h4>
+            <p>Taxos are a little more complicated for you, so we've <a href="">written a document</a> to help you through the process. It may soom like a hassle, but once it's done you'll thank us for not retaining 28% of your sync revenue!</p>
+          </div>
+
+          <div className='sub-section our-address'>
+            <h4><strong>Our address</strong></h4>
+            <p><small>audiosocket</small></p>
+            <p><small>3518 Fremont Ave N #400</small></p>
+            <p><small>Seattle, WA 98103</small></p>
+          </div>
+        </div>
+      </section>
+    </div>
   )
 }
 
