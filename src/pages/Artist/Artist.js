@@ -6,11 +6,12 @@ import Footer from "./components/Footer/Footer";
 
 function Artist() {
   return (
-    <div className="contain">
+    <div className="welcome-page">
       <Header/>
-      <Sidebar />
-      <div className="body-container">Body</div>
-      <Footer />
+      <div className="content-wrapper">
+        <Sidebar />
+        <div className="right-content">Body</div>
+      </div>
     </div>
   );
 }

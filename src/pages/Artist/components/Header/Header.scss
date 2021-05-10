@@ -1,3 +1,32 @@
 header {
   background: #1a1a1a;
+  .custom-nav {
+    max-width: 1640px;
+    width: 100%;
+    margin: 0 auto;
+    padding-top: 24px;
+    padding-bottom: 24px;
+    .navbar-nav {
+      align-items: center;
+      .nav-link {
+        font-size: 16px;
+        color: #fff;
+        font-weight: 600;
+        margin-left: 60px;
+        &:first-child {
+          margin-left: 0;
+        }
+        &.profile-pic {
+          max-width: 64px;
+          max-height: 64px;
+          padding: 0;
+          overflow: hidden;
+          img {
+            width: 100%;
+            border-radius: 100px;
+          }
+        }
+      }
+    }
+  }
 }

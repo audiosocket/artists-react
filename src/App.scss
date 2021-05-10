@@ -1,56 +1,5 @@
-@font-face {
-	font-family: 'Poppins';
-	src: url('./fonts/Poppins-Light.woff2') format('woff2'),
-		url('./fonts/Poppins-Light.woff') format('woff');
-	font-weight: 300;
-	font-style: normal;
-	font-display: swap;
-}
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700&display=swap');
 
-@font-face {
-	font-family: 'Poppins';
-	src: url('./fonts/Poppins-Regular.woff2') format('woff2'),
-		url('./fonts/Poppins-Regular.woff') format('woff');
-	font-weight: normal;
-	font-style: normal;
-	font-display: swap;
-}
-
-@font-face {
-	font-family: 'Poppins';
-	src: url('./fonts/Poppins-Medium.woff2') format('woff2'),
-		url('./fonts/Poppins-Medium.woff') format('woff');
-	font-weight: 500;
-	font-style: normal;
-	font-display: swap;
-}
-
-@font-face {
-	font-family: 'Poppins';
-	src: url('./fonts/Poppins-SemiBold.woff2') format('woff2'),
-		url('./fonts/Poppins-SemiBold.woff') format('woff');
-	font-weight: 600;
-	font-style: normal;
-	font-display: swap;
-}
-
-@font-face {
-	font-family: 'Poppins';
-	src: url('./fonts/Poppins-Bold.woff2') format('woff2'),
-		url('./fonts/Poppins-Bold.woff') format('woff');
-	font-weight: bold;
-	font-style: normal;
-	font-display: swap;
-}
-
-@font-face {
-	font-family: 'Poppins';
-	src: url('./fonts/Poppins-ExtraBold.woff2') format('woff2'),
-		url('./fonts/Poppins-ExtraBold.woff') format('woff');
-	font-weight: 800;
-	font-style: normal;
-	font-display: swap;
-}
 
 /*=====  Variables  ======*/
 
@@ -62,7 +11,7 @@ $clr-white: hsl(0deg, 0%, 100%);
 $clr-grey: hsl(0deg, 0%, 54%);
 $clr-grey-border: hsl(0deg, 0%, 74%);
 $clr-grey-light: #eee;
-$body-font-family: 'Poppins', sans-serif;
+$body-font-family: 'Raleway', sans-serif;
 $clr-red: #dc3545;
 $clr-blue: #0056b3;
 $clr-blue-light: #007bff;
@@ -178,66 +127,6 @@ h1 {
 	padding-bottom: 4rem;
 }
 
-/*=====  Header  ======*/
-
-header {
-	background: $clr-black;
-	.navbar {
-		max-width: calc(100vw - 6vw);
-		margin: auto;
-		.navbar-nav {
-			.nav-link {
-				padding-left: 1rem;
-				padding-right: 1rem;
-				font-weight: 500;
-				&:hover {
-					color: $clr-white;
-				}
-			}
-		}
-		.login {
-			width: 100%;
-			margin: 1.2rem  auto;
-		}
-		.navbar-toggler {
-			border: 0;
-		}
-		.navbar-brand {
-			.header-logo {
-				&:hover {
-					cursor: pointer;
-				}
-			}
-		}
-	}
-}
-
-.dropdown {
-	.dropdown-menu {
-		box-shadow: 0 1px 3px 1px $clr-grey-border;
-		border: 0;
-		.dropdown-item {
-			&:hover {
-				background-color: $clr-green;
-			}
-		}
-	}
-}
-
-.medium-text {
-	font-weight: 500;
-}
-
-.bold-text {
-	font-weight: 600;
-}
-
-.hover-text {
-	&:hover {
-		color: $clr-green;
-		cursor: pointer;
-	}
-}
 
 /*=====  checkbox  ======*/
 .checkbox {
@@ -341,4 +230,51 @@ select:-webkit-autofill:focus {
 		background-color: #f0cf61;
 		box-shadow: 0px 0px 4px 2px #f6edd1;
 	}
+}
+
+.welcome-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  .content-wrapper {
+    flex: 1;
+    display: flex;
+    aside {
+      background-color: #F6F6F6;
+      max-width: 324px;
+      width: 100%;
+      height: calc(100vh - 112px);
+      padding: 40px 25px; 
+      overflow: auto;
+      ul {
+        list-style: none;
+        max-width: 145px;
+        min-width: 135px;
+        margin: 0 auto;
+        li {
+          margin-top: 40px;
+          a {
+            color: #212121;
+            font-size: 21px;
+            text-transform: capitalize;
+            text-align: left;
+            line-height: 25px;
+            transition: all 0.3s ease-in-out;
+            &:hover {
+              font-weight: 600;
+              color:#212121;
+            }
+            &.selected {
+              font-weight: 600;
+              color:#212121;
+            }
+          }
+        }
+      }
+    }
+    .right-content {
+      flex: 1;
+      padding: 30px 50px;
+    }
+  }
 }
