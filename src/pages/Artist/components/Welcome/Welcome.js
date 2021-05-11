@@ -10,15 +10,15 @@ function Welcome() {
         <h5><strong>Good question! Try these on for size:</strong></h5>
         <ul>
           <li>Read the Getting paid section below and send us your info via mail or scan.</li>
-          <li>Tell us more about you. We need your phone number and address so we can keep in touch! Click Artist to the left</li>
-          <li>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source</li>
-          <li>It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages.</li>
+          <li>Tell us more about you. We need your phone number and address so we can keep in touch! Click <a href="">Artist</a> to the left.</li>
+          <li>Add collaborators for this artist. Collaborators are your writer, record label reps, managers and publishers. You have to invite all the writers and they must accept contract terms before we can accept your music in our catalogue. To do so, click on <a href="">Partners</a> to the left.</li>
+          <li>Upload some music! Our crack team of musicologists will carefully evaluate it as soon as they can. Click <a href="">Music</a> to the left.</li>
         </ul>
       </section>
 
       <section>
         <h3><strong>Question?</strong></h3>
-        <h5><strong>If you have any questions or suggestions, please send us an email at <a href="">artistinsockol.com</a></strong></h5>
+        <h5><strong>If you have any questions or suggestions, please send us an email at <a href="">artistinsockol.com</a>.</strong></h5>
         <div className="bg-content yellow">
           <div className='sub-section'>
             <h4><strong>Getting Paid</strong></h4>
