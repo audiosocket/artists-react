@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import './Header.scss';
 import logo from '../../../../images/header-logo.svg';
 import profile from '../../../../images/profile.jpg';
@@ -6,24 +6,33 @@ import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav'
 import NavDropdown from 'react-bootstrap/NavDropdown'
 import {NavLink, useHistory} from "react-router-dom";
-
+import {ArtistContext} from "../../../../Store/artistContext";
 
 function Header() {
   const history = useHistory();
+  const {artistState, artistActions} = React.useContext(ArtistContext);
+  const [selectedArtist, setSelectedArtist] = useState(null);
 
+  const initializeArtist = () => {
+
+  }
+
+  const handleSelectedArtist = (e) => {
+    artistActions.selectedArtistStateChanged(e.target.dataset.value);
+    setSelectedArtist(e.target.dataset.value);
+  }
   return (
     <header>
       <Navbar collapseOnSelect expand="lg" variant="dark" className="custom-nav">
         <Navbar.Brand href="#home"><img src={logo} alt="COMPANY LOGO"  className="" /></Navbar.Brand>
+        <Navbar.Text>{selectedArtist && selectedArtist+"'s Portal"}</Navbar.Text>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="mr-auto">
-            <NavDropdown title="Choose artist" id="collasible-nav-dropdown" className="artist-dropdown">
-              <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
+            <NavDropdown title={"Choose artist"} id="collasible-nav-dropdown" className="artist-dropdown">
+              <NavDropdown.Item onClick={handleSelectedArtist} className={selectedArtist === 'Amanda' && "active"} data-value="Amanda">Amanda</NavDropdown.Item>
+              <NavDropdown.Item onClick={handleSelectedArtist} className={selectedArtist === 'Jenn' && "active"} data-value="Jenn">Jenn</NavDropdown.Item>
+              <NavDropdown.Item onClick={handleSelectedArtist} className={selectedArtist === 'Kevin' && "active"} data-value="Kevin">Kevin</NavDropdown.Item>
             </NavDropdown>
           </Nav>
           <Nav>
