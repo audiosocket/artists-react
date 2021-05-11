@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import './Header.scss';
-import logo from '../../../../images/header-logo.svg';
+import logo from '../../../../images/header-logo-white.svg';
 import profile from '../../../../images/profile.jpg';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav'
