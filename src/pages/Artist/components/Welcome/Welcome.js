@@ -18,7 +18,7 @@ function Welcome() {
 
       <section>
         <h3><strong>Question?</strong></h3>
-        <h5><strong>If you have any questions or suggestions, please send us an email at <a href="">artistinsockol.com</a>.</strong></h5>
+        <h5><strong>If you have any questions or suggestions, please send us an email at <a href="">artist@audiosocket.com</a>.</strong></h5>
         <div className="bg-content yellow">
           <div className='sub-section'>
             <h4><strong>Getting Paid</strong></h4>
