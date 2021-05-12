@@ -24,7 +24,7 @@ function Header() {
   return (
     <header>
       <Navbar collapseOnSelect expand="lg" variant="dark" className="custom-nav">
-        <Navbar.Brand href="#home"><img src={logo} alt="COMPANY LOGO"  className="" /></Navbar.Brand>
+        <NavLink to={"/"}><Navbar.Brand><img src={logo} alt="COMPANY LOGO"  className="" /></Navbar.Brand></NavLink>
         <Navbar.Text>{selectedArtist && selectedArtist+"'s Portal"}</Navbar.Text>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">

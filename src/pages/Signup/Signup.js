@@ -60,7 +60,7 @@ function Signup({userHash = ''}) {
     return true;
   }
 
-  const handleSubmit = async (e) => { debugger
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     const auditionForm = e.currentTarget;
