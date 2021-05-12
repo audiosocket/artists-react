@@ -41,11 +41,7 @@ function Login() {
       if(!data.get('remember_me'))
         data.append('remember_me', false)
 
-      authActions.userDataStateChanged(data.get('email'));
-      history.push("/");
-      e.target.reset();
-
-      /*const response = await fetch(`${BASE_URL}${SESSION}`,
+      const response = await fetch(`${BASE_URL}${SESSION}`,
         {
           headers: {
             "authorization": ACCESS_TOKEN,
@@ -61,7 +57,7 @@ function Login() {
         e.target.reset();
       } else {
         setLoginError(true);
-      }*/
+      }
     }
   }
 

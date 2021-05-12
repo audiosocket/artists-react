@@ -7,7 +7,7 @@ import Loader from "../../images/loader.svg";
 import ArrowRight from "../../images/right-arrow.svg";
 import {AuthContext} from "../../Store/authContext";
 import {useHistory} from "react-router-dom";
-import {ACCESS_TOKEN, BASE_URL, SESSION} from "../../common/api";
+import {ACCEPT_INVITATION, ACCESS_TOKEN, AUTHENTICATE_TOKEN, BASE_URL, SESSION} from "../../common/api";
 import {Col, Row} from "react-bootstrap";
 import Download from "../../images/file.svg";
 import Check from "../../images/check.svg";
@@ -19,20 +19,48 @@ function Signup({userHash = ''}) {
   const form = useRef(null);
   const [validated, setValidated] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [activationError, setActivationError] = useState(false);
   const [isConfirmError, setIsConfirmError] = useState(false);
+  const [isPasswordUpdated, setIsPasswordUpdated] = useState(false);
   const [isAgreementStep, setIsAgreementStep] = useState(false);
 
   useEffect(() => {
-
+    verifyHash();
   }, [])
 
-  const verifyHash = () => {
+  const verifyHash = async () => {
+    setIsLoading(true);
+    let is_valid = true;
+    if(!userHash)
+      is_valid = false;
 
+    if(is_valid) {
+      const response = await fetch(`${BASE_URL}${AUTHENTICATE_TOKEN}?token=${userHash}`,
+        {
+          headers: {
+            "authorization": ACCESS_TOKEN,
+          }
+        });
+      if(response.status !== 200)
+        is_valid = false;
+
+      if (is_valid) {
+        const res = await response.json();
+        setIsPasswordUpdated(res.password);
+        if(res.password) {
+          setIsAgreementStep(res.agreements);
+        }
+      }
+    }
+    if(!is_valid) {
+      setIsLoading(false);
+      alert("Invitation link is broken or not valid");
+      //history.push('/login');
+    }
+    setIsLoading(false);
+    return true;
   }
 
-  const handleSubmit = async (e) => {
-    setActivationError(false);
+  const handleSubmit = async (e) => { debugger
     e.preventDefault();
     setIsLoading(true);
     const auditionForm = e.currentTarget;
@@ -43,43 +71,44 @@ function Signup({userHash = ''}) {
       setIsLoading(false);
     } else {
       const data = new FormData(form.current);
-      if(data.get('password') !== data.get('confirm_password')) {
+      if(data.get('password') !== data.get('password_confirmation')) {
         setIsConfirmError(true);
         setIsLoading(false);
         return;
       }
-      alert('password updated')
-      setIsAgreementStep(true);
-      setIsLoading(false);
-      /*const response = await fetch(`${BASE_URL}${SESSION}`,
+      data.append('token', userHash);
+      const response = await fetch(`${BASE_URL}${ACCEPT_INVITATION}`,
         {
           headers: {
             "authorization": ACCESS_TOKEN,
           },
-          method: 'POST',
+          method: 'PATCH',
           body: data
         });
       const resultSet = await response.json();
       setIsLoading(false);
       if(response.status === 200) {
-        authActions.userDataStateChanged(resultSet["auth_token"]);
-        history.push("/");
+        alert('password updated')
+        setIsAgreementStep(true);
+        setIsPasswordUpdated(true);
+        //authActions.userDataStateChanged(resultSet["auth_token"]);
         e.target.reset();
       } else {
-        setLoginError(true);
-      }*/
+        alert("Something went wrong, try later!");
+      }
+      setIsLoading(false);
     }
   }
 
   const handleConfirmPassword = () => {
     const data = new FormData(form.current);
-    if(data.get('password') !== data.get('confirm_password'))
+    if(data.get('password') !== data.get('password_confirmation'))
       setIsConfirmError(true);
     else
       setIsConfirmError(false);
   }
 
-  const handleReviewAgreement = (e) => {
+  const handleSubmitReviewAgreement = (e) => {
     e.preventDefault();
     if(e.target.dataset.action === "true") {
       alert("Invitation sign up completed")
@@ -97,10 +126,7 @@ function Signup({userHash = ''}) {
         <img className="" src={Logo} alt="Workflow" onClick={() => {history.push("/")}} />
       </div>
       <h2 className="">{!isAgreementStep ? "Create a password to proceed" : "Review Agreement"}</h2>
-      {activationError &&
-      <p className="login-error">Invalid user, try again!</p>
-      }
-      {!isAgreementStep
+      {!isPasswordUpdated && !isAgreementStep
         ?
           <Form className="form" noValidate validated={validated} ref={form} onSubmit={handleSubmit}>
             <Form.Group controlId="formBasicPassword">
@@ -112,7 +138,7 @@ function Signup({userHash = ''}) {
             </Form.Group>
             <Form.Group className={isConfirmError && 'invalid'} controlId="formBasicPasswordConfirm">
               <Form.Label>Confirm Password</Form.Label>
-              <Form.Control onChange={handleConfirmPassword} required type="password" name="confirm_password"
+              <Form.Control onChange={handleConfirmPassword} required type="password" name="password_confirmation"
                             placeholder="Confirm Password"/>
               {!isConfirmError &&
               <Form.Control.Feedback type="invalid">
@@ -125,7 +151,7 @@ function Signup({userHash = ''}) {
               </small>
               }
             </Form.Group>
-            <Button variant="btn primary-btn btn-full-width" type="submit">
+            <Button disabled={isLoading} variant="btn primary-btn btn-full-width" type="submit">
               Proceed
               <img className="" src={isLoading ? Loader : ArrowRight} alt="proceed-icon"/>
             </Button>
@@ -156,13 +182,13 @@ function Signup({userHash = ''}) {
             </Form.Group>
             <Row>
               <Col xs={6}>
-                <Button onClick={handleReviewAgreement} data-action={false} variant="btn primary-btn reject btn-full-width">
+                <Button onClick={handleSubmitReviewAgreement} data-action={false} variant="btn primary-btn reject btn-full-width">
                   <img className="" src={Cancel} alt="download-btn"/>
                   Reject
                 </Button>
               </Col>
               <Col xs={6}>
-                <Button onClick={handleReviewAgreement} data-action={true} variant="btn primary-btn accept btn-full-width">
+                <Button onClick={handleSubmitReviewAgreement} data-action={true} variant="btn primary-btn accept btn-full-width">
                   <img className="" src={Check} alt="download-btn"/>
                   Accept
                 </Button>

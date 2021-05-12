@@ -1,5 +1,6 @@
 import React from "react";
 import "./Welcome.scss";
+import {Link} from "react-router-dom";
 
 function Welcome() {
 
@@ -10,15 +11,15 @@ function Welcome() {
         <h5><strong>Good question! Try these on for size:</strong></h5>
         <ul>
           <li>Read the Getting paid section below and send us your info via mail or scan.</li>
-          <li>Tell us more about you. We need your phone number and address so we can keep in touch! Click <a href="">Artist</a> to the left.</li>
-          <li>Add collaborators for this artist. Collaborators are your writer, record label reps, managers and publishers. You have to invite all the writers and they must accept contract terms before we can accept your music in our catalogue. To do so, click on <a href="">Partners</a> to the left.</li>
-          <li>Upload some music! Our crack team of musicologists will carefully evaluate it as soon as they can. Click <a href="">Music</a> to the left.</li>
+          <li>Tell us more about you. We need your phone number and address so we can keep in touch! Click <Link to="/profile">Artist</Link> to the left.</li>
+          <li>Add collaborators for this artist. Collaborators are your writer, record label reps, managers and publishers. You have to invite all the writers and they must accept contract terms before we can accept your music in our catalogue. To do so, click on <Link to="/partners">Partners</Link> to the left.</li>
+          <li>Upload some music! Our crack team of musicologists will carefully evaluate it as soon as they can. Click <Link to="/music">Music</Link> to the left.</li>
         </ul>
       </section>
 
       <section>
         <h3><strong>Question?</strong></h3>
-        <h5><strong>If you have any questions or suggestions, please send us an email at <a href="">artist@audiosocket.com</a>.</strong></h5>
+        <h5><strong>If you have any questions or suggestions, please send us an email at <a href="mailto:artist@audiosocket.com">artist@audiosocket.com</a>.</strong></h5>
         <div className="bg-content yellow">
           <div className='sub-section'>
             <h4><strong>Getting Paid</strong></h4>
