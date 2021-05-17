@@ -1,0 +1,79 @@
+@import '../../../../App.scss';
+
+section {
+  margin-bottom: 50px;
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.artist-section-control {
+  a:not(.btn) {
+    color: #007bff;
+    font-weight: 600;
+    transition: all 0.3s ease-in-out;
+    &:hover {
+      color: #0056b3
+    }
+  }
+  .section-content {
+    .section-body {
+      .parallel-info {
+        @include flexbox;
+        @include justify-content(flex-start);
+        margin-bottom: 25px;
+        line-height: normal;
+        label {
+          min-width: 85px;
+          max-width: 85px;
+          font-weight: 700;
+          color: #212121;
+          font-size: 16px;
+          text-transform: capitalize;
+          text-align: right;
+          margin-right: 25px;
+        }
+        .info-ans {
+          text-transform: capitalize;
+          color: #212121;
+          font-size: 16px;
+          line-height: 1.3;
+          img {
+            width: 230px;
+          }
+          .bg-content {
+            text-transform: none;
+            a {
+              font-weight: 600;
+            }
+            .artist-name {
+              text-transform: capitalize;
+            }
+          }
+        }
+        &.social {
+          .info-ans {
+            p {
+              margin-bottom: 5px;
+              text-transform: none;
+              font-weight: 600;
+            }
+          }
+           
+        }
+      }
+    }
+  }
+  .bg-content {
+    padding: 20px 20px;
+    margin: 0;
+  }
+}
+
+.contact {
+  .section-body {
+    span {
+      display: block;
+    }
+  }
+}

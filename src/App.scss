@@ -1,5 +1,46 @@
 @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700&display=swap');
 
+/*=====  Mixin  ======*/
+
+@mixin flexbox() {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+}
+
+@mixin justify-content($justify) {
+  -webkit-justify-content: $justify;
+     -moz-justify-content: $justify;
+      -ms-justify-content: $justify;
+          justify-content: $justify;
+            -ms-flex-pack: $justify;
+}
+
+
+@mixin align-items($align) {
+  -webkit-align-items: $align;
+     -moz-align-items: $align;
+      -ms-align-items: $align;
+       -ms-flex-align: $align;
+          align-items: $align;
+}
+
+@mixin flex-direction($direction) {
+  -webkit-flex-direction: $direction;
+     -moz-flex-direction: $direction;
+      -ms-flex-direction: $direction;
+          flex-direction: $direction;
+}
+
+@mixin flex($values) {
+  -webkit-box-flex: $values;
+     -moz-box-flex: $values;
+      -webkit-flex: $values;
+          -ms-flex: $values;
+              flex: $values;
+}
 
 /*=====  Variables  ======*/
 
@@ -280,5 +321,46 @@ select:-webkit-autofill:focus {
       max-height: calc(100vh - 112px);
       overflow: auto;
     }
+  }
+}
+
+.section-head {
+  @include flexbox();
+  @include justify-content(space-between);
+  @include align-items(center);
+  border-bottom: 1px solid #dee2e6;
+  padding: 10px 0;
+  margin-bottom: 40px;
+  h2 {
+    margin: 0;
+  }
+}
+
+.w-40-percent {
+  max-width: 40%;
+  width: 100%;
+}
+
+.w-50-percent {
+  max-width: 50%;
+  width: 100%;
+}
+
+.w-60-percent {
+  max-width: 60%;
+  width: 100%;
+}
+
+.w-75-percent {
+  max-width: 75%;
+  width: 100%;
+}
+
+.bg-content {
+  padding: 30px 20px 20px;
+  border-radius: 7px;
+  margin: 15px 0;
+  &.yellow {
+    background-color: #fdf5db;
   }
 }
