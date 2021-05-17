@@ -14,7 +14,7 @@ function Profile() {
             <a href="" className="btn primary-btn">Edit</a>
           </div>
           <div className="section-body">
-            <div className="w-40-percent">
+            <div className="w-custom-percent">
               <div className="parallel-info">
                 <label>name</label>
                 <div className="info-ans">jetty rae</div>
