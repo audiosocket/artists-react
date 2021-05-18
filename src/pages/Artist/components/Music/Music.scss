@@ -1,0 +1,46 @@
+@import '../../../../App.scss';
+.musicWrapper {
+  section {
+    margin: 15px 0;
+  }
+  .section-head {
+    margin-bottom: 20px;
+  }
+  .music-playlist {
+    .music-row {
+      list-style: none;
+      @include flexbox;
+      @include align-items(center);
+      flex-wrap: wrap;
+      li  {
+        padding: 10px 0;
+        font-weight: 500;
+        @include flexbox;
+        @include justify-content(space-between);
+        @include align-items(center);
+        line-height: normal;
+        width: calc(50% - 10px);
+        &:after {
+          content: '';
+          background: url(../../../../images/pencil.svg) no-repeat;
+          background-size: 15px;
+          width: 20px;
+          height: 20px;
+          display: inline-block;
+          cursor: pointer;
+          margin-left: 10px;
+        }
+        &:nth-child(odd) {
+          margin-right: 20px;
+        }
+        a {
+          width: 100%;
+          &:hover {
+            color: #212121;
+            font-weight: 600;
+          }
+        }
+      }
+    }
+  }
+}
