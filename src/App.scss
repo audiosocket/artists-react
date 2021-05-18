@@ -363,4 +363,8 @@ select:-webkit-autofill:focus {
   &.yellow {
     background-color: #fdf5db;
   }
+  &.bgSecondVersion {
+    padding: 20px 20px;
+    margin: 0;
+  }
 }

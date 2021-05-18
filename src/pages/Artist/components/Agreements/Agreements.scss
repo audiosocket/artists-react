@@ -1,0 +1,37 @@
+@import '../../../../App.scss';
+.agreementWrapper {
+  section {
+    margin: 15px 0;
+  }
+  .agreementBody {
+    max-width: 930px;
+    width: 100%;
+    p {
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+  a:not(.btn) {
+    color: #007bff;
+    font-weight: 600;
+    transition: all 0.3s ease-in-out;
+    &:hover {
+      color: #0056b3
+    }
+  }
+
+  .agreementContent {
+    border: 1px solid #dee2e6;
+    border-radius: 7px;
+    padding: 20px;
+    max-height: 200px;
+    overflow-y: auto;
+  }
+  .agreementContentController {
+    @include flexbox;
+    @include justify-content(space-between);
+    @include align-items(center);
+    padding: 12px 0;
+  }
+}
