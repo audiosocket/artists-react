@@ -4,3 +4,5 @@ export const SESSION = "api/v1/session";
 export const AUTHENTICATE_TOKEN = "api/v1/users/authenticate_token";
 export const ACCEPT_INVITATION = "api/v1/users/accept_invitation";
 export const AGREEMENTS = "api/v1/users_agreements";
+export const ARTIST_PROFILE_SHOW = "api/v1/artist_profiles/show_profile";
+export const ARTIST_PROFILE_UPDATE = "api/v1/artist_profiles/update_profile";

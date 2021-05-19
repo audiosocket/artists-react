@@ -14,13 +14,13 @@ const ArtistContext = React.createContext();
 const ArtistProvider = (props) => {
   const [artistState, dispatch] = useReducer(reducer, initialState);
   const actions = {
-    userRoleStateStateStateChanged: (userRole) => {
+    userRoleStateChanged: (userRole) => {
       dispatch({ type: USER_ROLE_STATE_CHANGED, payload: userRole });
     },
-    artistStateStateStateChanged: (artist) => {
+    artistStateChanged: (artist) => {
       dispatch({ type: ARTIST_STATE_CHANGED, payload: artist });
     },
-    artistsListStateStateChanged: (artistsList) => {
+    artistsListStateChanged: (artistsList) => {
       dispatch({ type: ARTISTS_LIST_STATE_CHANGED, payload: artistsList });
     },
     selectedArtistStateChanged: (selectedArtist) => {

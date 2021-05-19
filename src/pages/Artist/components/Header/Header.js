@@ -8,6 +8,7 @@ import NavDropdown from 'react-bootstrap/NavDropdown'
 import {NavLink, useHistory} from "react-router-dom";
 import {ArtistContext} from "../../../../Store/artistContext";
 import fetchAgreements from "../../../../common/utlis/fetchAgreements";
+import fetchArtist from "../../../../common/utlis/fetchArtist";
 
 function Header() {
   const history = useHistory();
@@ -17,10 +18,14 @@ function Header() {
 
   useEffect(() => {
     initializeAgreements();
+    initializeArtist();
   }, [])
 
-  const initializeArtist = () => {
-
+  const initializeArtist = async () => {
+    setIsLoading(true);
+    const artist = await fetchArtist();
+    artistActions.artistStateChanged(artist);
+    setIsLoading(false);
   }
 
   const initializeAgreements = async () => {

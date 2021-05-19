@@ -6,7 +6,6 @@ section {
     margin-bottom: 0;
   }
 }
-
 .artist-section-control {
   a:not(.btn) {
     color: #007bff;
@@ -17,6 +16,9 @@ section {
     }
   }
   .section-content {
+    .loading {
+      width: 50px;
+    }
     .section-body {
       .parallel-info {
         @include flexbox;
