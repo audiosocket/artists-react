@@ -3,12 +3,14 @@ export const initialState = {
   artist: null,
   artistsList: null,
   selectedArtist: null,
+  agreements: null
 };
 
 export const USER_ROLE_STATE_CHANGED = "USER_ROLE_STATE_CHANGED";
 export const ARTIST_STATE_CHANGED = "ARTIST_STATE_CHANGED";
 export const ARTISTS_LIST_STATE_CHANGED = "ARTISTS_LIST_STATE_CHANGED";
 export const SELECTED_ARTIST_STATE_CHANGED = "SELECTED_ARTIST_STATE_CHANGED";
+export const AGREEMENTS_STATE_CHANGED = "AGREEMENTS_STATE_CHANGED";
 
 export const reducer = (state, action) => {
   switch (action.type) {
@@ -31,6 +33,11 @@ export const reducer = (state, action) => {
       return {
         ...state,
         selectedArtist: action.payload,
+      };
+    case AGREEMENTS_STATE_CHANGED:
+      return {
+        ...state,
+        agreements: action.payload,
       };
   }
   return state;

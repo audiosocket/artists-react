@@ -11,6 +11,23 @@
         margin-bottom: 0;
       }
     }
+    .loading {
+      width: 50px;
+    }
+    .primary-btn {
+      text-transform: none;
+      &.reject {
+        background-color: $clr-red-light;
+        border-color: $clr-red-light;
+        &:hover, &:active {
+          background-color: $clr-red-light-extra !important;
+          border-color: $clr-red-light-extra !important;
+        }
+      }
+    }
+    .agreementType {
+      text-transform: capitalize;
+    }
   }
   a:not(.btn) {
     color: #007bff;
