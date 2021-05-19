@@ -7,6 +7,14 @@ section {
   }
 }
 .artist-section-control {
+  .btn {
+    text-transform: inherit;
+    &.submit {
+      img {
+        width: 20px;
+      }
+    }
+  }
   a:not(.btn) {
     color: #007bff;
     font-weight: 600;
@@ -70,6 +78,34 @@ section {
   .bg-content {
     padding: 20px 20px;
     margin: 0;
+  }
+  form {
+    .row {
+      margin-bottom: 15px;
+      .form-label {
+        font-weight: 600;
+      }
+      .custom-invalid-feedback {
+        width: 100%;
+        margin-top: .25rem;
+        font-size: 80%;
+        color: #dc3545;
+      }
+    }
+    .form-control {
+      &.invalid {
+        border-color: $clr-red;
+        &:hover,
+        &:focus {
+          box-shadow: none;
+          border: 1px solid $clr-red;
+          background-color: transparent;
+        }
+        &:valid {
+          background-image: none;
+        }
+      }
+    }
   }
 }
 

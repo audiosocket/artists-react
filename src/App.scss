@@ -98,6 +98,10 @@ a, .btn {
 	transition: all .3s ease;
 	color: $clr-black;
 	font-family: $body-font-family;
+	&.btn-outline-light {
+		border-color: $clr-grey-light;
+		background-color: transparent;
+	}
 }
 
 #root {

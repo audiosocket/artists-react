@@ -12,7 +12,7 @@ function Welcome() {
         <ul>
           <li>Read the Getting paid section below and send us your info via mail or scan.</li>
           <li>Tell us more about you. We need your phone number and address so we can keep in touch! Click <Link to="/profile">Artist</Link> to the left.</li>
-          <li>Add collaborators for this artist. Collaborators are your writer, record label reps, managers and publishers. You have to invite all the writers and they must accept contract terms before we can accept your music in our catalogue. To do so, click on <Link to="/partners">Partners</Link> to the left.</li>
+          <li>Add collaborators for this artist. Collaborators are your writers, record label reps, managers and publishers. You have to invite all the writers and they must accept contract terms before we can accept your music in our catalogue. To do so, click on <Link to="/partners">Partners</Link> to the left.</li>
           <li>Upload some music! Our crack team of musicologists will carefully evaluate it as soon as they can. Click <Link to="/music">Music</Link> to the left.</li>
         </ul>
       </section>
@@ -23,14 +23,14 @@ function Welcome() {
         <div className="bg-content yellow">
           <div className='sub-section'>
             <h4><strong>Getting Paid</strong></h4>
-            <p>Wo love giving artists money, but there are some important documonts we need before we can make that happen. </p>
-            <p>First, make sure that you have completely and correctly filled in your payeo information.</p>
+            <p>We love giving artists money, but there are some important documonts we need before we can make that happen. </p>
+            <p>First, make sure that you have completely and correctly filled in your payment information.</p>
           </div>
 
           <div className='sub-section'>
             <h4><strong>US citizens</strong></h4>
             <p>We need one W-9 form on file per artist. If you are an existing artist and have already sent us one, you do not need to send another.</p>
-            <p>Please <a href="">download from the IRS</a>, fill it out and sign it. You can either mail the completed form to us at the address below, or <a href="mailto:accounting@audiosocket.com">accounting@audiosocket.com</a>. Please include your artist namel</p>
+            <p>Please <a href="">download from the IRS</a>, fill it out and sign it. You can either mail the completed form to us at the address below, or scan it and email to <a href="mailto:accounting@audiosocket.com">accounting@audiosocket.com</a>. Please include your artist namel</p>
             <p>If you don't send one we must withhold 28% of all future payments for tax purposes, so it's very important.</p>
           </div>
 
