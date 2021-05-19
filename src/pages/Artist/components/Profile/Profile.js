@@ -69,9 +69,9 @@ function Profile() {
               <div className="parallel-info social">
                 <label>Social</label>
                 <div className="info-ans">
-                  <p><a href="">www.twitter.com/jettyrae</a></p>
-                  <p><a href="">www.facebook.com/jettyrae</a></p>
-                  <p><a href="">www.instagram.com/jettyrae</a></p>
+                  <p>www.twitter.com<a href="www.twitter.com" target="_blank">/jettyrae</a></p>
+                  <p>www.facebook.com<a href="www.facebook.com" target="_blank">/jettyrae</a></p>
+                  <p>www.instagram.com<a href="www.instagram.com" target="_blank">/jettyrae</a></p>
                 </div>
               </div>
             </div>

@@ -5,7 +5,8 @@ import {
   USER_ROLE_STATE_CHANGED,
   ARTIST_STATE_CHANGED,
   ARTISTS_LIST_STATE_CHANGED,
-  SELECTED_ARTIST_STATE_CHANGED
+  SELECTED_ARTIST_STATE_CHANGED,
+  AGREEMENTS_STATE_CHANGED
 } from "./artistReducer";
 
 const ArtistContext = React.createContext();
@@ -24,6 +25,9 @@ const ArtistProvider = (props) => {
     },
     selectedArtistStateChanged: (selectedArtist) => {
       dispatch({ type: SELECTED_ARTIST_STATE_CHANGED, payload: selectedArtist });
+    },
+    agreementsStateChanged: (agreements) => {
+      dispatch({ type: AGREEMENTS_STATE_CHANGED, payload: agreements });
     },
   };
 

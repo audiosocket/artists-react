@@ -5,7 +5,7 @@ import {Link} from "react-router-dom";
 function Welcome() {
 
   return (
-    <div class="welcome-content">
+    <div className="welcome-content">
       <section>
         <h3><strong>What happens now?</strong></h3>
         <h5><strong>Good question! Try these on for size:</strong></h5>
@@ -19,7 +19,7 @@ function Welcome() {
 
       <section>
         <h3><strong>Question?</strong></h3>
-        <h5><strong>If you have any questions or suggestions, please send us an email at <a href="mailto:artist@audiosocket.com">artist@audiosocket.com</a>.</strong></h5>
+        <h5><strong>If you have any questions or suggestions, please send us an email at <a href="mailto:artists@audiosocket.com">artists@audiosocket.com</a>.</strong></h5>
         <div className="bg-content yellow">
           <div className='sub-section'>
             <h4><strong>Getting Paid</strong></h4>

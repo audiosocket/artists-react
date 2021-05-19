@@ -8,6 +8,7 @@ import Button from 'react-bootstrap/Button';
 import { AuthContext } from "../../Store/authContext";
 import {ACCESS_TOKEN, BASE_URL, SESSION} from "../../common/api";
 import Loader from "./../../images/loader.svg"
+import fetchAgreements from "../../common/utlis/fetchAgreements";
 
 function Login() {
   const { authActions } = React.useContext(AuthContext);
@@ -22,22 +23,21 @@ function Login() {
     if(localStorage.getItem('user')) {
       alert('Already logged in');
       history.push('/');
-      localStorage.removeItem("user");
     }
   }, [])
 
   const handleSubmit = async (e) => {
     setLoginError(false);
     e.preventDefault();
-    setIsLoading(true);
     const loginForm = e.currentTarget;
     if (loginForm.checkValidity() === false) {
       e.preventDefault();
       e.stopPropagation();
       setValidated(true);
-      setIsLoading(false);
     } else {
+      setIsLoading(true);
       const data = new FormData(form.current);
+      data.append('role', 'artist');
       if(!data.get('remember_me'))
         data.append('remember_me', false)
 
@@ -50,14 +50,19 @@ function Login() {
           body: data
         });
       const resultSet = await response.json();
-      setIsLoading(false);
-      if(response.status === 200) {
+      if(response.ok) {
         authActions.userDataStateChanged(resultSet["auth_token"]);
-        history.push("/");
+        const agreements = await fetchAgreements();
+        const pending = agreements.filter(agreement => agreement.status === "pending").length
+        if(pending)
+          history.push("/accept-invitation");
+        else
+          history.push("/");
         e.target.reset();
       } else {
         setLoginError(true);
       }
+      setIsLoading(false);
     }
   }
 
@@ -101,7 +106,7 @@ function Login() {
           </div>
         </div>
 
-        <Button variant="btn primary-btn btn-full-width" type="submit"><img className="" src={isLoading ? Loader : Lock} alt="Workflow"/>
+        <Button disabled={isLoading} variant="btn primary-btn btn-full-width" type="submit"><img className="" src={isLoading ? Loader : Lock} alt="Workflow"/>
           Sign in
         </Button>
       </Form>

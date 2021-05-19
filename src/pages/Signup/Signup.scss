@@ -30,6 +30,15 @@
       }
     }
     &.agreement {
+      .agreement-form-container {
+        padding: 2rem 0;
+        &:not(:last-of-type) {
+          border-bottom: 1px solid $clr-grey;
+        }
+        .agreement-type {
+          text-transform: capitalize;
+        }
+      }
       .agreement-container {
         border: 1px dashed $clr-grey;
         padding: 1rem;
@@ -39,6 +48,7 @@
       button {
         &.reject {
           background-color: $clr-red-light !important;
+          border-color: $clr-red-light !important;
           &:hover, &:focus {
             background-color: $clr-red-light-extra !important;
             border-color: $clr-red-light-extra !important;
