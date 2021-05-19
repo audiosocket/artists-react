@@ -111,6 +111,7 @@ function Signup({userHash = ''}) {
         return;
       }
       data.append('token', userHash);
+      data.append('role', 'artist');
       const response = await fetch(`${BASE_URL}${ACCEPT_INVITATION}`,
         {
           headers: {
