@@ -4,7 +4,63 @@ import "./Partners.scss";
 function Partners() {
 
   return (
-    <h2>Partners</h2>
+    <div className="partnerWrapper">
+      <h2>Partners</h2>
+      <div className="partnerBody">
+        <section>
+          <div className="bg-content yellow bgSecondVersion mt-4">
+            <h4 className="mb-3"><strong>Partners in crime</strong></h4>
+            <p>Who's a collaborator? Anyone who's associated with this artist. Your fellow band members, a record label rep, or even your manager Collaborators with an IP number and PRO can be attached to track uploads as writers.</p>
+            <p> All of your co-writers must be invited under the Collaborators section and they must accept the agreement before your music becomes ve to our
+classification team.</p>
+            <p>We've added a section for Publishers. If you have a Publishing entity you must list it here to receive publishing royales</p>
+            <p>Please note that you will not be able to edit a track's writers and publishers after submitting that track for classification. If needed, shoot us an email <a href="mailto:artist@audiosocket.com">artists@audiosocket.com</a> and we'll unlock it.</p>
+
+          </div>
+        </section>
+        <section className="pt-4">
+          <div className="section-head">
+            <h2>Collaborators</h2>
+            <a href="" className="btn primary-btn">Add a collaborator</a>
+          </div>
+          <div className="partner-list">
+            <ul className="partner-row">
+              <li><a href="">Brittni Stewart <small>ade7322063, 0: SEGAC</small></a></li>
+              <li><a href="">Brittni Stewart <small>ade7322063, 0: SEGAC</small></a></li>
+              <li><a href="">Brittni Stewart <small>ade7322063, 0: SEGAC</small></a></li>
+              <li><a href="">Brittni Stewart <small>ade7322063, 0: SEGAC</small></a></li>
+              <li><a href="">Brittni Stewart <small>ade7322063, 0: SEGAC</small></a></li>
+              <li><a href="">Brittni Stewart <small>ade7322063, 0: SEGAC</small></a></li>
+              <li><a href="">Brittni Stewart <small>ade7322063, 0: SEGAC</small></a></li>
+              <li><a href="">Brittni Stewart <small>ade7322063, 0: SEGAC</small></a></li>
+              <li><a href="">Brittni Stewart <small>ade7322063, 0: SEGAC</small></a></li>
+            </ul>
+          </div>
+        </section>
+        <section className="pt-4">
+          <div className="section-head">
+            <h2>Publishers</h2>
+            <a href="" className="btn primary-btn">Add a publisher</a>
+          </div>
+          <div className="partner-list">
+            <ul className="partner-row">
+              <li><a href="">Jetty Rae LLC  <small>MOSEEG 677853753</small></a></li>
+              <li><a href="">Jetty Rae LLC  <small>MOSEEG 677853753</small></a></li>
+              <li><a href="">Jetty Rae LLC  <small>MOSEEG 677853753</small></a></li>
+              <li><a href="">Jetty Rae LLC  <small>MOSEEG 677853753</small></a></li>
+              <li><a href="">Jetty Rae LLC  <small>MOSEEG 677853753</small></a></li>
+              <li><a href="">Jetty Rae LLC  <small>MOSEEG 677853753</small></a></li>
+              <li><a href="">Jetty Rae LLC  <small>MOSEEG 677853753</small></a></li>
+              <li><a href="">Jetty Rae LLC  <small>MOSEEG 677853753</small></a></li>
+              <li><a href="">Jetty Rae LLC  <small>MOSEEG 677853753</small></a></li>
+              <li><a href="">Jetty Rae LLC  <small>MOSEEG 677853753</small></a></li>
+              <li><a href="">Jetty Rae LLC  <small>MOSEEG 677853753</small></a></li>
+              <li><a href="">Jetty Rae LLC  <small>MOSEEG 677853753</small></a></li>
+            </ul>
+          </div>
+        </section>
+    </div>
+  </div>
   )
 }
 

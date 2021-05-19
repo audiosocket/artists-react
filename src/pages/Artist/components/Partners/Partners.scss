@@ -1,0 +1,64 @@
+@import '../../../../App.scss';
+.partnerWrapper {
+  a:not(.btn) {
+    color: #007bff;
+    font-weight: 600;
+    transition: all 0.3s ease-in-out;
+    &:hover {
+      color: #0056b3
+    }
+  }
+  .btn {
+    text-transform: none;
+  }
+  section {
+    margin: 15px 0;
+  }
+  .section-head {
+    margin-bottom: 20px;
+  }
+  .partner-list {
+    .partner-row {
+      list-style: none;
+      @include flexbox;
+      @include align-items(center);
+      flex-wrap: wrap;
+      li  {
+        padding: 10px 7px 10px 10px;
+        font-weight: 500;
+        @include flexbox;
+        @include justify-content(space-between);
+        @include align-items(center);
+        line-height: normal;
+        width: calc(50% - 10px);
+        border-radius: 5px;
+        transition: all 0.3s ease-in-out;
+        &:after {
+          content: '';
+          background: url(../../../../images/pencil.svg) no-repeat;
+          background-size: 15px;
+          width: 20px;
+          height: 15px;
+          display: inline-block;
+          cursor: pointer;
+          margin-left: 10px;
+        }
+        &:nth-child(odd) {
+          margin-right: 20px;
+        }
+        a {
+          color: #212121;
+          font-weight: 500;
+          width: 100%;
+          &:hover {
+            color: #212121;
+            font-weight: 600;
+          }
+        }
+        &:hover {
+          background-color: #F6F6F6;
+        }
+      }
+    }
+  }
+}
