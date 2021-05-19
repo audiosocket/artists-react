@@ -195,6 +195,34 @@ function ProfileEdit() {
                   />
                 </Col>
               </Row>
+              <Row>
+                <Col xl={2} md={6}>
+                  <Form.Label>Social Links</Form.Label>
+                </Col>
+                <Col xl={4} md={6}>
+                  <Form.Control
+                    name="social[]"
+                    defaultValue={artist.social[0] ?? ""}
+                    type="text"
+                    placeholder="Social link 1"
+                    className="mb-1"
+                  />
+                  <Form.Control
+                    name="social[]"
+                    defaultValue={artist.social[1] ?? ""}
+                    type="text"
+                    placeholder="Social link 2"
+                    className="mb-1"
+                  />
+                  <Form.Control
+                    name="social[]"
+                    defaultValue={artist.social[2] ?? ""}
+                    type="text"
+                    placeholder="Social link 3"
+                    className="mb-1"
+                  />
+                </Col>
+              </Row>
               <h2 className="mt-5">Contact</h2>
               <hr/>
               <Row>

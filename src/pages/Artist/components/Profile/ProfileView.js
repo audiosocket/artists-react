@@ -113,15 +113,17 @@ function Profile() {
               </div>
 
               <div className="parallel-info social">
-                <label>Social</label>
+                <label>Social Links</label>
                 <div className="info-ans">
                   {!artist.social.length && '-'}
                   {artist.social.map((link, key) => {
                     return (
-                      <p key={key}><a href={link} target="_blank">{link}</a></p>
+                      link
+                        ?
+                        <p key={key}>{link.replace("https://","").split('/')[0].replace("https://","")+"/"}<a href={link.includes("https://") ? link : "https://"+link} target="_blank">{link.split("/")[link.split("/").length-1]}</a></p>
+                        : ''
                     )
-                  })
-                  }
+                  })}
                 </div>
               </div>
             </div>

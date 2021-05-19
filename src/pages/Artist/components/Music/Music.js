@@ -19,7 +19,7 @@ function Music() {
         <section className="pt-4">
           <div className="section-head">
             <h2>Albums</h2>
-            <a href="" className="btn primary-btn">Create an Album</a>
+            <a href="" className="btn primary-btn">Create an album</a>
           </div>
           <div className="music-playlist">
             <ul className="music-row">
