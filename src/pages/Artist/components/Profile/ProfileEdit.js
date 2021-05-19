@@ -54,7 +54,7 @@ function ProfileEdit() {
       const response = await fetch(`${BASE_URL}${ARTIST_PROFILE_UPDATE}`,
         {
           headers: {
-            "ACCESS-TOKEN": ACCESS_TOKEN,
+            "authorization": ACCESS_TOKEN,
             "auth-token": userAuthToken
           },
           method: 'PATCH',
@@ -91,7 +91,7 @@ function ProfileEdit() {
           <div className="section-head">
             <h2>Profile edit</h2>
           </div>
-          {isLoading && <h5>Loading profile... <img className="loading" src={Loader} alt="loading-icon"/></h5>}
+          {Object.keys(artist).length === 0 && isLoading && <h5>Loading profile... <img className="loading" src={Loader} alt="loading-icon"/></h5>}
           {Object.keys(artist).length !== 0 &&
             <Form noValidate validated={validated} ref={form} onSubmit={handleSubmit}>
               <Row>
