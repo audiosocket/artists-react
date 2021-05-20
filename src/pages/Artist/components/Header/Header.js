@@ -64,16 +64,16 @@ function Header() {
               to={"/settings"}>
               Settings
             </NavLink>
-            <Nav.Link eventKey={2} href="mailto:info@audiosocket.com">
+            <Nav.Link href="mailto:info@audiosocket.com">
               Help
             </Nav.Link>
-            <Nav.Link eventKey={3} onClick={() => {
+            <Nav.Link onClick={() => {
                 localStorage.removeItem("user");
                 history.push("/login");
               }}>
               Sign out
             </Nav.Link>
-            <NavLink to={"/profile"} eventKey={4} className="nav-link profile-pic">
+            <NavLink to={"/profile"} className="nav-link profile-pic">
               <img src={artistState.artist ? artistState.artist.cover_image ? artistState.artist.cover_image : user : user} alt="Profile Picture"  className="" />
             </NavLink>
           </Nav>

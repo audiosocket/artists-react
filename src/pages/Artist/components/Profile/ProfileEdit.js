@@ -8,6 +8,7 @@ import Form from "react-bootstrap/Form";
 import {Col, Row} from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import {ACCESS_TOKEN, ARTIST_PROFILE_UPDATE, BASE_URL} from "../../../../common/api";
+import DropzoneComponent from "../../../../common/DropzoneComponent";
 
 function ProfileEdit() {
   const {artistState, artistActions} = React.useContext(ArtistContext);
@@ -19,7 +20,7 @@ function ProfileEdit() {
   const [bioLimitFlag, setBioLimitFlag] = useState(false);
   const [coverImage, setCoverImage] = useState(null);
   const [bannerImage, setBannerImage] = useState(null);
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState([]);
 
   useEffect(() => {
     if(!artistState.artist)
@@ -50,8 +51,11 @@ function ProfileEdit() {
         data.delete('cover_image')
       if(!bannerImage)
         data.delete('banner_image')
-      if(!image)
-        data.delete('additional_images[]')
+      if(image.length) {
+        for(let i = 0; i < image.length; i++)
+          data.append('additional_images[]', image[i]);
+      }
+
       const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
       const response = await fetch(`${BASE_URL}${ARTIST_PROFILE_UPDATE}`,
         {
@@ -82,8 +86,8 @@ function ProfileEdit() {
     }
   }
 
-  const handleFileChange = (e) => {
-    setImage(e.target.files[0]);
+  const handleUploadImages = (images) => {
+    setImage(images);
   }
 
   return (
@@ -122,6 +126,7 @@ function ProfileEdit() {
                     lang="en"
                     custom
                   />
+                  <img className="preview" src={coverImage ? URL.createObjectURL(coverImage) : artist.cover_image}></img>
                 </Col>
               </Row>
               <Row>
@@ -137,6 +142,7 @@ function ProfileEdit() {
                     lang="en"
                     custom
                   />
+                  <img className="preview" src={bannerImage ? URL.createObjectURL(bannerImage) : artist.banner_image}></img>
                 </Col>
               </Row>
               <Row>
@@ -144,14 +150,15 @@ function ProfileEdit() {
                   <Form.Label>Additional Images</Form.Label>
                 </Col>
                 <Col xl={4} md={6}>
-                  <Form.File
+                  <DropzoneComponent onUploadImages={handleUploadImages} />
+                  {/*<Form.File
                     accept=".png, .jpg, .svg"
-                    onChange={(e) => {setImage(e.target.files[0])}}
+                    onChange={(e) => { setImage(e.target.files[0])}}
                     name="additional_images[]"
                     label={image ? image.name : ""}
                     lang="en"
                     custom
-                  />
+                  />*/}
                 </Col>
               </Row>
               <Row>

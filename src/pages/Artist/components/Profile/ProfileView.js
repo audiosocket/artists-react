@@ -71,7 +71,7 @@ function Profile() {
                   :
                   artist.additional_images.map((image, key) => {
                       return (
-                        <div className="info-ans mr-3">
+                        <div key={key} className="info-ans mr-3">
                           <img src={image} alt="Cover Image" className=""/>
                         </div>
                       )

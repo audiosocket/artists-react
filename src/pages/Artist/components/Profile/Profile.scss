@@ -90,6 +90,11 @@ section {
         font-size: 80%;
         color: #dc3545;
       }
+      .preview {
+        width: 180px;
+        border-radius: 7px;
+        margin-top: 10px;
+      }
     }
     .form-control {
       &.invalid {
