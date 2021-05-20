@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import './Header.scss';
 import logo from '../../../../images/header-logo-white.svg';
-import profile from '../../../../images/profile.jpg';
+import user from '../../../../images/user.svg';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav'
 import NavDropdown from 'react-bootstrap/NavDropdown'
@@ -73,9 +73,9 @@ function Header() {
               }}>
               Sign out
             </Nav.Link>
-            <Nav.Link eventKey={4} className="profile-pic">
-              <img src={profile} alt="Profile Picture"  className="" />
-            </Nav.Link>
+            <NavLink to={"/profile"} eventKey={4} className="nav-link profile-pic">
+              <img src={artistState.artist ? artistState.artist.cover_image ? artistState.artist.cover_image : user : user} alt="Profile Picture"  className="" />
+            </NavLink>
           </Nav>
         </Navbar.Collapse>
       </Navbar>
