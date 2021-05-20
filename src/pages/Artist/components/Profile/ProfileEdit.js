@@ -17,6 +17,8 @@ function ProfileEdit() {
   const form = useRef(null);
   const [validated, setValidated] = useState(false);
   const [bioLimitFlag, setBioLimitFlag] = useState(false);
+  const [coverImage, setCoverImage] = useState(null);
+  const [bannerImage, setBannerImage] = useState(null);
   const [image, setImage] = useState(null);
 
   useEffect(() => {
@@ -44,12 +46,12 @@ function ProfileEdit() {
     } else {
       setIsLoading(true);
       const data = new FormData(form.current);
-      data.delete('cover_image');
-      data.delete('banner_image');
-      data.delete('additional_images');
-      if(image) {
-        // append images
-      }
+      if(!coverImage)
+        data.delete('cover_image')
+      if(!bannerImage)
+        data.delete('banner_image')
+      if(!image)
+        data.delete('additional_images[]')
       const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
       const response = await fetch(`${BASE_URL}${ARTIST_PROFILE_UPDATE}`,
         {
@@ -114,9 +116,9 @@ function ProfileEdit() {
                 <Col xl={4} md={6}>
                   <Form.File
                     accept=".png, .jpg, .svg"
-                    onChange={handleFileChange}
+                    onChange={(e) => {setCoverImage(e.target.files[0])}}
                     name="cover_image"
-                    label={image ? image.name : ''}
+                    label={coverImage ? coverImage.name : artist.cover_image ? artist.cover_image.split('/')[artist.cover_image.split("/").length-1] : ""}
                     lang="en"
                     custom
                   />
@@ -129,9 +131,9 @@ function ProfileEdit() {
                 <Col xl={4} md={6}>
                   <Form.File
                     accept=".png, .jpg, .svg"
-                    onChange={handleFileChange}
+                    onChange={(e) => {setBannerImage(e.target.files[0])}}
                     name="banner_image"
-                    label={image ? image.name : ''}
+                    label={bannerImage ? bannerImage.name : artist.banner_image ? artist.banner_image.split('/')[artist.banner_image.split("/").length-1] : ""}
                     lang="en"
                     custom
                   />
@@ -144,9 +146,9 @@ function ProfileEdit() {
                 <Col xl={4} md={6}>
                   <Form.File
                     accept=".png, .jpg, .svg"
-                    onChange={handleFileChange}
-                    name="additional_images"
-                    label={image ? image.name : ''}
+                    onChange={(e) => {setImage(e.target.files[0])}}
+                    name="additional_images[]"
+                    label={image ? image.name : ""}
                     lang="en"
                     custom
                   />
