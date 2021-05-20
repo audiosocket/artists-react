@@ -10,11 +10,10 @@ function Partners() {
         <section>
           <div className="bg-content yellow bgSecondVersion mt-4">
             <h4 className="mb-3"><strong>Partners in crime</strong></h4>
-            <p>Who's a collaborator? Anyone who's associated with this artist. Your fellow band members, a record label rep, or even your manager Collaborators with an IP number and PRO can be attached to track uploads as writers.</p>
-            <p> All of your co-writers must be invited under the Collaborators section and they must accept the agreement before your music becomes ve to our
-classification team.</p>
-            <p>We've added a section for Publishers. If you have a Publishing entity you must list it here to receive publishing royales</p>
-            <p>Please note that you will not be able to edit a track's writers and publishers after submitting that track for classification. If needed, shoot us an email <a href="mailto:artist@audiosocket.com">artists@audiosocket.com</a> and we'll unlock it.</p>
+            <p>Who's a collaborator? Anyone who's associated with this artist. Your fellow band members, a record label rep, or even your manager Collaborators with an IPI number and PRO can be attached to track uploads as writers.</p>
+            <p> All of your co-writers must be invited under the Collaborators section and they must accept the agreement before your music becomes live to our classification team.</p>
+            <p>We've added a section for Publishers. If you have a Publishing entity you must list it here to receive publishing royalties.</p>
+            <p>Please note that you will not be able to edit a track's writers and publishers after submitting that track for classification. If needed, shoot us an email at <a href="mailto:artist@audiosocket.com">artists@audiosocket.com</a> and we'll unlock it.</p>
 
           </div>
         </section>

@@ -12,8 +12,8 @@ function Music() {
           <div className="bg-content yellow bgSecondVersion mt-4">
             <h4 className="mb-3"><strong>Uploading Music</strong></h4>
             <p>We can't be a music company without music! You can create new albums and upload tracks to your portal.</p>
-            <p>Please choose your album titles wisely, as they will now appear in our partner Storefronts for licensing Please do not include cates or other extensions in album titles. Ex: <i><strong>"My Amazing Tracks for Audiosocket 2012"</strong></i></p>
-            <p>When uploading tracks, pleasureview your track names. Tracks should be edited to include what you would like them displayed as Ex: Track Name master <i> WAV </i> should be edited to <i><strong>Track Name</strong></i>. </p>
+            <p>Please choose your album titles wisely, as they will now appear in our partner Storefronts for licensing. Please do not include dates or other extensions in album titles. Ex: <i><strong>"My Amazing Tracks for Audiosocket 2012"</strong></i></p>
+            <p>When uploading tracks, please view your track names. Tracks should be edited to include what you would like them displayed as Ex: <i><strong>"Track Name master  WAV"</strong></i> should be edited to <i><strong>"Track Name"</strong></i>.</p>
           </div>
         </section>
         <section className="pt-4">
