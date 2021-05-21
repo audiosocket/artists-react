@@ -46,15 +46,13 @@
         }
         &:hover {
           background-color: #F6F6F6;
-          a {
-            color: $clr-green;
-          }
         }
       }
     }
   }
 }
 
+/***************** POPUP styling *********************/
 .customArtistModal  {
   z-index: 1041;
   .modal-dialog {
@@ -105,24 +103,12 @@
         border: 0;
         height: inherit;
         margin: 0;
+        &.btn-outline-light {
+          &:hover {
+            background-color: #F6F6F6;
+          }
+        }
       }
-    }
-  }
-}
-
-
-
-
-
-
-.modal-dialog {
-  .modal-content {
-    .modal-header {
-      .modal-title {
-        font-weight: 600;
-      }
-    }
-    .modal-footer {
       .submit {
         img {
           width: 20px;

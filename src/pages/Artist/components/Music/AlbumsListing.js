@@ -166,7 +166,7 @@ function AlbumsListing() {
             </div>
           </Modal.Body>
           <Modal.Footer>
-            <Button className="btn primary-btn btn-outline-light" onClick={handleClose}>Cancel</Button>
+            <Button className="btn btn-outline-light" onClick={handleClose}>Cancel</Button>
             <Button type="submit" className="btn primary-btn submit">{isLoading ? <>Creating...<img src={Loader} alt="icon"/></>: "Create Album"}</Button>
           </Modal.Footer>
         </Form>
