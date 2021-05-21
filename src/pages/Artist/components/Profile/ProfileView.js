@@ -60,23 +60,22 @@ function Profile() {
 
               <div className="parallel-info">
                 <label>additional images</label>
-                {!artist.additional_images.length
-                  ?
-                  <div className="info-ans">
-                    <div className="bg-content yellow">
+                <div className="info-ans additional-elements">
+                  {!artist.additional_images.length
+                    ?
+
+                    <div className="bg-content yellow w-custom-bg-content">
                       Have additional images for us? <NavLink to="/profile/edit">Upload them here</NavLink> for <span
                       classname="artist-name">Jetty Rae</span>
                     </div>
-                  </div>
-                  :
-                  artist.additional_images.map((image, key) => {
+                    :
+                    artist.additional_images.map((image, key) => {
                       return (
-                        <div key={key} className="info-ans mr-3">
-                          <img src={image} alt="Cover Image" className=""/>
-                        </div>
+                          <img src={image} key={key} alt="Cover Image" className=""/>
                       )
                     })
-                }
+                  }
+                </div>
               </div>
 
               <div className="parallel-info">
@@ -105,7 +104,7 @@ function Profile() {
                   {artist.key_facts
                     ? <div>{artist.keyfacts}</div>
                     :
-                    <div className="bg-content yellow">
+                    <div className="bg-content yellow w-custom-bg-content">
                       It looks like there are no a key facts for <span
                       className="artist-name">Jetty Rae</span> yet. <NavLink
                       to="/profile/edit">Tell us a bit</NavLink>, we'd love to know more!

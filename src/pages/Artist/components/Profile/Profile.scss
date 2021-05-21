@@ -60,6 +60,16 @@ section {
               text-transform: capitalize;
             }
           }
+          &.additional-elements {
+            @include flexbox;
+            flex-wrap: wrap;
+            img {
+              margin: 0 15px 15px 0;
+              &:last-child {
+                margin-right: 0;
+              }
+            }
+          }
         }
         &.social {
           .info-ans {
@@ -119,4 +129,9 @@ section {
       display: block;
     }
   }
+}
+
+.w-custom-bg-content {
+  max-width: 475px;
+  width: 100%;
 }
