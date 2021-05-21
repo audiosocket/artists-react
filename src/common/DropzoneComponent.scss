@@ -29,6 +29,11 @@
   /*width: 800px;*/
   padding: 10px;
   border: 4px dashed hsl(68deg, 68%, 51%);
+  transition: all 0.1s ease-in-out;
+  &:hover {
+    cursor: pointer;
+    background-color: #F6F6F6;
+  }
 }
 
 .upload-icon {

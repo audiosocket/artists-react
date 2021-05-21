@@ -1,5 +1,8 @@
 @import '../../../../App.scss';
 .musicWrapper {
+  .loading {
+    width: 50px;
+  }
   section {
     margin: 15px 0;
   }
@@ -39,15 +42,36 @@
           width: 100%;
           &:hover {
             color: #212121;
-            font-weight: 600;
           }
         }
         &:hover {
           background-color: #F6F6F6;
           a {
-            font-weight: 600;
             color: $clr-green;
           }
+        }
+      }
+    }
+  }
+}
+.modal-dialog {
+  .modal-content {
+    .modal-header {
+      .modal-title {
+        font-weight: 600;
+      }
+    }
+    .modal-body {
+      .container {
+        &.create-album-modal-container {
+          padding: 1rem 6rem;
+        }
+      }
+    }
+    .modal-footer {
+      .submit {
+        img {
+          width: 20px;
         }
       }
     }

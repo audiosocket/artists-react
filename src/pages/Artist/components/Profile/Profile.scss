@@ -73,6 +73,11 @@ section {
         }
       }
     }
+    .custom-file-input {
+      &:hover {
+        cursor: pointer;
+      }
+    }
   }
   .bg-content {
     padding: 20px 20px;

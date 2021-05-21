@@ -9,6 +9,7 @@ import {NavLink, useHistory} from "react-router-dom";
 import {ArtistContext} from "../../../../Store/artistContext";
 import fetchAgreements from "../../../../common/utlis/fetchAgreements";
 import fetchArtist from "../../../../common/utlis/fetchArtist";
+import fetchAlbums from "../../../../common/utlis/fetchAlbums";
 
 function Header() {
   const history = useHistory();
@@ -19,14 +20,8 @@ function Header() {
   useEffect(() => {
     initializeAgreements();
     initializeArtist();
+    initializeAlbums();
   }, [])
-
-  const initializeArtist = async () => {
-    setIsLoading(true);
-    const artist = await fetchArtist();
-    artistActions.artistStateChanged(artist);
-    setIsLoading(false);
-  }
 
   const initializeAgreements = async () => {
     setIsLoading(true);
@@ -35,6 +30,20 @@ function Header() {
     if(agreements.filter(agreement => agreement.status === "pending").length) {
       history.push("/accept-invitation");
     }
+    setIsLoading(false);
+  }
+
+  const initializeArtist = async () => {
+    setIsLoading(true);
+    const artist = await fetchArtist();
+    artistActions.artistStateChanged(artist);
+    setIsLoading(false);
+  }
+
+  const initializeAlbums = async () => {
+    setIsLoading(true);
+    const albums = await fetchAlbums();
+    artistActions.albumsStateChanged(albums);
     setIsLoading(false);
   }
 

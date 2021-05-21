@@ -19,9 +19,11 @@
       &.reject {
         background-color: $clr-red-light;
         border-color: $clr-red-light;
+        color: white;
         &:hover, &:active {
           background-color: $clr-red-light-extra !important;
           border-color: $clr-red-light-extra !important;
+          color: white !important;
         }
       }
     }
