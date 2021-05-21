@@ -54,18 +54,72 @@
     }
   }
 }
+
+.customArtistModal  {
+  z-index: 1041;
+  .modal-dialog {
+    max-width: 600px;
+    width: 100%;
+    .modal-content {
+      border-radius: 15px;
+      overflow: hidden;
+    }
+    .modal-header {
+      padding: 1.5rem 1rem;
+      .modal-title {
+        margin: 0 auto;
+        font-weight: 600;
+        font-size: 28px;
+      }
+      .close {
+        display: none;
+      }
+    }
+    .modal-body {
+      padding: 40px 0 25px;
+      border-bottom: 1px solid #dee2e6;
+      .create-album-modal-container {
+        max-width: 400px;
+        width: 100%;
+        margin: 0 auto;
+        .form-control {
+          height: 48px;
+          border-radius: 8px;
+          &:focus {
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0 0 5px #c0d72d;
+          }
+        }
+      }
+    }
+    .modal-footer {
+      border: 0;
+      padding: 0;
+      height: 70px;
+      button {
+        font-size: 18px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        @include flex(1);
+        border-radius: 0;
+        border: 0;
+        height: inherit;
+        margin: 0;
+      }
+    }
+  }
+}
+
+
+
+
+
+
 .modal-dialog {
   .modal-content {
     .modal-header {
       .modal-title {
         font-weight: 600;
-      }
-    }
-    .modal-body {
-      .container {
-        &.create-album-modal-container {
-          padding: 1rem 6rem;
-        }
       }
     }
     .modal-footer {
@@ -77,3 +131,4 @@
     }
   }
 }
+

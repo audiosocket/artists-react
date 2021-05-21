@@ -124,6 +124,7 @@ function AlbumsListing() {
         size="lg"
         aria-labelledby="contained-modal-title-vcenter"
         centered
+        className="customArtistModal"
       >
         <Form noValidate validated={validated} ref={form} onSubmit={handleCreateAlbum}>
           <Modal.Header closeButton>
@@ -132,41 +133,37 @@ function AlbumsListing() {
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Container className="create-album-modal-container">
+            <div className="create-album-modal-container">
               <div className="section">
                   <Row>
-                    <Col xs={12} md={4} className="medium-text">Album name</Col>
-                    <Col xs={12} md={8}>
-                      <Form.Control
-                        required
-                        name="name"
-                        type="text"
-                        placeholder="Album name"
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        Album name is required!
-                      </Form.Control.Feedback>
-                    </Col>
-                  </Row>
-                  <Row className="mt-3 mb-3">
-                    <Col xs={12} md={4}></Col>
-                    <Col xs={12} md={8}>
-                      <h4>Extras</h4>
+                    <Col xs={12}>
+                      <div className="form-group">
+                        <Form.Control
+                          required
+                          name="name"
+                          type="text"
+                          placeholder="Album Name*"
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          Album name is required!
+                        </Form.Control.Feedback>
+                      </div>
                     </Col>
                   </Row>
                   <Row>
-                    <Col xs={12} md={4} className="medium-text">Release date</Col>
-                    <Col xs={12} md={8}>
-                      <Form.Control
-                        name="release_date"
-                        type="date"
-                        placeholder="Release date"
-                      />
-                      <small className="text-muted">This field is optional</small>
+                    <Col xs={12}>
+                      <div className="form-group">
+                        <Form.Control
+                          name="release_date"
+                          type="date"
+                          placeholder="Release Date"
+                        />
+                        <small className="text-muted">This field is optional</small>
+                      </div>
                     </Col>
                   </Row>
               </div>
-            </Container>
+            </div>
           </Modal.Body>
           <Modal.Footer>
             <Button className="btn primary-btn btn-outline-light" onClick={handleClose}>Cancel</Button>
