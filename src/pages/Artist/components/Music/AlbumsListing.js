@@ -8,6 +8,7 @@ import Col from "react-bootstrap/Col";
 import {ArtistContext} from "../../../../Store/artistContext";
 import fetchAlbums from "../../../../common/utlis/fetchAlbums";
 import Loader from "../../../../images/loader.svg";
+import Edit from "../../../../images/pencil.svg";
 import {ACCESS_TOKEN, ALBUMS, BASE_URL} from "../../../../common/api";
 import Form from "react-bootstrap/Form";
 import {NavLink} from "react-router-dom";
@@ -106,8 +107,9 @@ function AlbumsListing() {
                   return (
                     <li key={key}>
                       <NavLink
-                        to={`/music/album/${album.id}`}>{album.name} {album.release_date ? "(Release date: " + album.release_date + ")" : ""}
+                        to={`/music/album/${album.id}`}>{album.name} {album.release_date ? "(Release date: " + album.release_date.split(" ")[0] + ")" : ""}
                       </NavLink>
+                      <img src={Edit} alt="edit-icon"/>
                     </li>
                   )
                 })
