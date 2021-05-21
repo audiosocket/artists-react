@@ -95,7 +95,7 @@ function ProfileEdit() {
       <section className="artist-section-control">
         <div className="section-content">
           <div className="section-head">
-            <h2>Profile edit</h2>
+            <h2>Eidt Profile</h2>
           </div>
           {Object.keys(artist).length === 0 && isLoading && <h5>Loading profile... <img className="loading" src={Loader} alt="loading-icon"/></h5>}
           {Object.keys(artist).length !== 0 &&
@@ -151,14 +151,6 @@ function ProfileEdit() {
                 </Col>
                 <Col xl={4} md={6}>
                   <DropzoneComponent onUploadImages={handleUploadImages} />
-                  {/*<Form.File
-                    accept=".png, .jpg, .svg"
-                    onChange={(e) => { setImage(e.target.files[0])}}
-                    name="additional_images[]"
-                    label={image ? image.name : ""}
-                    lang="en"
-                    custom
-                  />*/}
                 </Col>
               </Row>
               <Row>

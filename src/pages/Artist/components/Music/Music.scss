@@ -25,15 +25,10 @@
         width: calc(50% - 10px);
         border-radius: 5px;
         transition: all 0.1s ease-in-out;
-        &:after {
-          content: '';
-          background: url(../../../../images/pencil.svg) no-repeat;
-          background-size: 15px;
-          width: 20px;
-          height: 15px;
-          display: inline-block;
+        img {
+          width: 15px;
           cursor: pointer;
-          margin-left: 10px;
+          opacity: 0.7;
         }
         &:nth-child(odd) {
           margin-right: 20px;
@@ -46,6 +41,11 @@
         }
         &:hover {
           background-color: #F6F6F6;
+          img {
+            &:hover {
+              opacity: 1;
+            }
+          }
         }
       }
     }

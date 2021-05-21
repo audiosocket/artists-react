@@ -64,10 +64,12 @@ section {
             @include flexbox;
             flex-wrap: wrap;
             img {
-              margin: 0 15px 15px 0;
               &:last-child {
                 margin-right: 0;
               }
+            }
+            .additional-image-link {
+              margin: 0 15px 15px 0;
             }
           }
         }

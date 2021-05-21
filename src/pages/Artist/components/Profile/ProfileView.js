@@ -47,23 +47,24 @@ function Profile() {
               <div className="parallel-info">
                 <label>cover image</label>
                 <div className="info-ans">
-                  <img src={artist.cover_image ? artist.cover_image : cover} alt="Cover Image" className=""/>
+                  <a target="_blank" href={artist.cover_image ? artist.cover_image : cover}>
+                    <img className="preview" src={artist.cover_image ? artist.cover_image : cover} alt="Cover Image" />
+                  </a>
                 </div>
               </div>
-
               <div className="parallel-info">
                 <label>banner image</label>
                 <div className="info-ans">
-                  <img src={artist.banner_image ? artist.banner_image :banner} alt="Banner Image" className=""/>
+                  <a target="_blank" href={artist.banner_image ? artist.banner_image : banner}>
+                    <img src={artist.banner_image ? artist.banner_image : banner} alt="Banner Image" />
+                  </a>
                 </div>
               </div>
-
               <div className="parallel-info">
                 <label>additional images</label>
                 <div className="info-ans additional-elements">
                   {!artist.additional_images.length
                     ?
-
                     <div className="bg-content yellow w-custom-bg-content">
                       Have additional images for us? <NavLink to="/profile/edit">Upload them here</NavLink> for <span
                       classname="artist-name">Jetty Rae</span>
@@ -71,13 +72,14 @@ function Profile() {
                     :
                     artist.additional_images.map((image, key) => {
                       return (
-                          <img src={image} key={key} alt="Cover Image" className=""/>
+                        <a key={key} className="additional-image-link" target="_blank" href={image}>
+                          <img src={image} alt="Image" />
+                        </a>
                       )
                     })
                   }
                 </div>
               </div>
-
               <div className="parallel-info">
                 <label>sounds like</label>
                 <div className="info-ans">
@@ -87,7 +89,6 @@ function Profile() {
                   }
                 </div>
               </div>
-
               <div className="parallel-info">
                 <label>bio</label>
                 <div className="info-ans">
@@ -97,7 +98,6 @@ function Profile() {
                   }
                 </div>
               </div>
-
               <div className="parallel-info">
                 <label>key facts</label>
                 <div className="info-ans">
@@ -112,7 +112,6 @@ function Profile() {
                   }
                 </div>
               </div>
-
               <div className="parallel-info social">
                 <label>Social Links</label>
                 <div className="info-ans">
@@ -132,7 +131,6 @@ function Profile() {
           }
         </div>
       </section>
-
       <section className="artist-section-control contact">
         <div className="section-content">
           <div className="section-head">
