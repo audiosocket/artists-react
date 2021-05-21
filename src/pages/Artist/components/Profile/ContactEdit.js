@@ -10,17 +10,13 @@ import Button from "react-bootstrap/Button";
 import {ACCESS_TOKEN, ARTIST_PROFILE_UPDATE, BASE_URL} from "../../../../common/api";
 import DropzoneComponent from "../../../../common/Dropzone/DropzoneComponent";
 
-function ProfileEdit() {
+function ContactEdit() {
   const {artistState, artistActions} = React.useContext(ArtistContext);
   const [isLoading, setIsLoading] = useState(false);
   const [artist, setArtist] = useState({});
   const history = useHistory();
   const form = useRef(null);
   const [validated, setValidated] = useState(false);
-  const [bioLimitFlag, setBioLimitFlag] = useState(false);
-  const [coverImage, setCoverImage] = useState(null);
-  const [bannerImage, setBannerImage] = useState(null);
-  const [image, setImage] = useState([]);
 
   useEffect(() => {
     if(!artistState.artist)
@@ -47,15 +43,6 @@ function ProfileEdit() {
     } else {
       setIsLoading(true);
       const data = new FormData(form.current);
-      if(!coverImage)
-        data.delete('cover_image')
-      if(!bannerImage)
-        data.delete('banner_image')
-      if(image.length) {
-        for(let i = 0; i < image.length; i++)
-          data.append('additional_images[]', image[i]);
-      }
-
       const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
       const response = await fetch(`${BASE_URL}${ARTIST_PROFILE_UPDATE}`,
         {
@@ -78,150 +65,116 @@ function ProfileEdit() {
     }
   }
 
-  const handleBioCharacterChange = (value) => {
-    setBioLimitFlag(false);
-    if(value.length > 400) {
-      setBioLimitFlag(true);
-      return false;
-    }
-  }
-
-  const handleUploadImages = (images) => {
-    setImage(images);
-  }
-
   return (
     <div className="artist-wrapper">
       <section className="artist-section-control">
         <div className="section-content">
           <div className="section-head">
-            <h2>Edit Profile</h2>
+            <h2>Edit Contact</h2>
           </div>
           {Object.keys(artist).length === 0 && isLoading && <h5>Loading profile... <img className="loading" src={Loader} alt="loading-icon"/></h5>}
           {Object.keys(artist).length !== 0 &&
             <Form noValidate validated={validated} ref={form} onSubmit={handleSubmit}>
               <Row>
                 <Col xl={2} md={6}>
-                  <Form.Label>Artist Name</Form.Label>
+                  <Form.Label>Name</Form.Label>
                 </Col>
                 <Col xl={4} md={6}>
                   <Form.Control
-                    readOnly={true}
-                    name="name"
-                    defaultValue={artist.name}
+                    required
+                    name="contact_information[name]"
                     type="text"
+                    defaultValue={artist.contact_information ? artist.contact_information.name : ""}
+                    placeholder="Name"
                   />
+                  <Form.Control.Feedback type="invalid">
+                    Name is required!
+                  </Form.Control.Feedback>
                 </Col>
               </Row>
               <Row>
                 <Col xl={2} md={6}>
-                  <Form.Label>Cover Image</Form.Label>
-                </Col>
-                <Col xl={4} md={6}>
-                  <Form.File
-                    accept=".png, .jpg, .svg"
-                    onChange={(e) => {setCoverImage(e.target.files[0])}}
-                    name="cover_image"
-                    label={coverImage ? coverImage.name : artist.cover_image ? artist.cover_image.split('/')[artist.cover_image.split("/").length-1] : ""}
-                    lang="en"
-                    custom
-                  />
-                  <img className="preview" src={coverImage ? URL.createObjectURL(coverImage) : artist.cover_image}></img>
-                </Col>
-              </Row>
-              <Row>
-                <Col xl={2} md={6}>
-                  <Form.Label>Banner Image</Form.Label>
-                </Col>
-                <Col xl={4} md={6}>
-                  <Form.File
-                    accept=".png, .jpg, .svg"
-                    onChange={(e) => {setBannerImage(e.target.files[0])}}
-                    name="banner_image"
-                    label={bannerImage ? bannerImage.name : artist.banner_image ? artist.banner_image.split('/')[artist.banner_image.split("/").length-1] : ""}
-                    lang="en"
-                    custom
-                  />
-                  <img className="preview" src={bannerImage ? URL.createObjectURL(bannerImage) : artist.banner_image}></img>
-                </Col>
-              </Row>
-              <Row>
-                <Col xl={2} md={6}>
-                  <Form.Label>Additional Images</Form.Label>
-                </Col>
-                <Col xl={4} md={6}>
-                  <DropzoneComponent onUploadImages={handleUploadImages} />
-                </Col>
-              </Row>
-              <Row>
-                <Col xl={2} md={6}>
-                  <Form.Label>Sounds Like</Form.Label>
+                  <Form.Label>Street</Form.Label>
                 </Col>
                 <Col xl={4} md={6}>
                   <Form.Control
-                    name="sounds_like"
-                    defaultValue={artist.sounds_like}
+                    required
+                    name="contact_information[street]"
                     type="text"
-                    placeholder="Fats Domino, Trombone Shorty, Irina thomas"
+                    defaultValue={artist.contact_information ? artist.contact_information.street : ""}
+                    placeholder="Street"
                   />
+                  <Form.Control.Feedback type="invalid">
+                    Street is required!
+                  </Form.Control.Feedback>
                 </Col>
               </Row>
               <Row>
                 <Col xl={2} md={6}>
-                  <Form.Label>Bio</Form.Label>
+                  <Form.Label>Postal Code</Form.Label>
                 </Col>
                 <Col xl={4} md={6}>
                   <Form.Control
-                    name="bio"
-                    defaultValue={artist.bio}
-                    placeholder="Write bio here"
-                    as="textarea"
-                    rows={4}
-                    onChange={(e) => handleBioCharacterChange(e.target.value)}
-                    className={bioLimitFlag ? 'invalid' : ''}
+                    required
+                    name="contact_information[postal_code]"
+                    type="text"
+                    defaultValue={artist.contact_information ? artist.contact_information.postal_code : ""}
+                    placeholder="Postal Code"
                   />
-                  {bioLimitFlag && <div className="custom-invalid-feedback">Max of 400 characters allowed!</div> }
+                  <Form.Control.Feedback type="invalid">
+                    Postal code is required!
+                  </Form.Control.Feedback>
                 </Col>
               </Row>
               <Row>
                 <Col xl={2} md={6}>
-                  <Form.Label>Key Facts</Form.Label>
+                  <Form.Label>City</Form.Label>
                 </Col>
                 <Col xl={4} md={6}>
                   <Form.Control
-                    name="key_facts"
-                    defaultValue={artist.key_facts}
+                    required
+                    name="contact_information[city]"
                     type="text"
-                    placeholder="Key Facts"
+                    defaultValue={artist.contact_information ? artist.contact_information.city : ""}
+                    placeholder="City"
                   />
+                  <Form.Control.Feedback type="invalid">
+                    City is required!
+                  </Form.Control.Feedback>
                 </Col>
               </Row>
               <Row>
                 <Col xl={2} md={6}>
-                  <Form.Label>Social Links</Form.Label>
+                  <Form.Label>State</Form.Label>
                 </Col>
                 <Col xl={4} md={6}>
                   <Form.Control
-                    name="social[]"
-                    defaultValue={artist.social[0] ?? ""}
+                    required
+                    name="contact_information[state]"
                     type="text"
-                    placeholder="Social link 1"
-                    className="mb-1"
+                    defaultValue={artist.contact_information ? artist.contact_information.state : ""}
+                    placeholder="State"
                   />
+                  <Form.Control.Feedback type="invalid">
+                    State is required!
+                  </Form.Control.Feedback>
+                </Col>
+              </Row>
+              <Row>
+                <Col xl={2} md={6}>
+                  <Form.Label>Country</Form.Label>
+                </Col>
+                <Col xl={4} md={6}>
                   <Form.Control
-                    name="social[]"
-                    defaultValue={artist.social[1] ?? ""}
+                    required
+                    name="contact_information[country]"
                     type="text"
-                    placeholder="Social link 2"
-                    className="mb-1"
+                    defaultValue={artist.contact_information ? artist.contact_information.country : ""}
+                    placeholder="Country"
                   />
-                  <Form.Control
-                    name="social[]"
-                    defaultValue={artist.social[2] ?? ""}
-                    type="text"
-                    placeholder="Social link 3"
-                    className="mb-1"
-                  />
+                  <Form.Control.Feedback type="invalid">
+                    Country is required!
+                  </Form.Control.Feedback>
                 </Col>
               </Row>
               <Row>
@@ -239,4 +192,4 @@ function ProfileEdit() {
   )
 }
 
-export default ProfileEdit;
+export default ContactEdit;

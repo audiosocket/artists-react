@@ -135,15 +135,15 @@ function Profile() {
         <div className="section-content">
           <div className="section-head">
             <h2>Contact</h2>
-            <NavLink to="/profile/edit" className="btn primary-btn">Edit</NavLink>
+            <NavLink to="/profile/contact/edit" className="btn primary-btn">Edit</NavLink>
           </div>
           <div className="section-body">
             <div className="parallel-info">
               <label>address</label>
               <div className="info-ans">
-                {artist.contact
+                {artist.contact_information
                   ?
-                  <span>{artist.contact}</span>
+                  <span>{artist.contact_information.name}</span>
                   : '-'
                 }
               </div>
