@@ -36,7 +36,7 @@ function Welcome() {
 
           <div className='sub-section'>
             <h4><strong>International artists</strong></h4>
-            <p>Taxos are a little more complicated for you, so we've <a href="">written a document</a> to help you through the process. It may soom like a hassle, but once it's done you'll thank us for not retaining 28% of your sync revenue!</p>
+            <p>Taxes are a little more complicated for you, so we've <a href="">written a document</a> to help you through the process. It may soom like a hassle, but once it's done you'll thank us for not retaining 28% of your sync revenue!</p>
           </div>
 
           <div className='sub-section our-address'>

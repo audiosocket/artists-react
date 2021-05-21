@@ -10,6 +10,7 @@ import {ArtistContext} from "../../../../Store/artistContext";
 import fetchAgreements from "../../../../common/utlis/fetchAgreements";
 import fetchArtist from "../../../../common/utlis/fetchArtist";
 import fetchAlbums from "../../../../common/utlis/fetchAlbums";
+import {ACCESS_TOKEN, AGREEMENTS, BASE_URL} from "../../../../common/api";
 
 function Header() {
   const history = useHistory();
@@ -26,6 +27,25 @@ function Header() {
   const initializeAgreements = async () => {
     setIsLoading(true);
     const agreements = await fetchAgreements();
+    if(!agreements.length) { // check if signature has expired
+      const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
+      const response = await fetch(`${BASE_URL}${AGREEMENTS}`,
+        {
+          headers: {
+            "authorization": ACCESS_TOKEN,
+            "auth-token": userAuthToken
+          }
+        });
+      if(!response.ok) {
+        const resultSet = await response.json();
+        if (resultSet.message.toLowerCase() === 'signature has expired') {
+          alert('Session expired, login again to access!');
+          localStorage.removeItem("user");
+          history.push('/login');
+          return
+        }
+      }
+    }
     artistActions.agreementsStateChanged(agreements);
     if(agreements.filter(agreement => agreement.status === "pending").length) {
       history.push("/accept-invitation");

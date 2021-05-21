@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import './DropzoneComponent.scss';
+import close from "../../images/close-circle-2.svg";
 
 const DropzoneComponent = ({onUploadImages = null}) => {
   const fileInputRef = useRef();
@@ -162,7 +163,7 @@ const DropzoneComponent = ({onUploadImages = null}) => {
                   <span className={`file-name ${data.invalid ? 'file-error' : ''}`}>{data.name}</span>
                   <span className="file-size">({fileSize(data.size)})</span> {data.invalid && <span className='file-error-message'>({errorMessage})</span>}
                 </div>
-                <div className="file-remove" onClick={() => removeFile(data.name)}>X</div>
+                <div className="file-remove" onClick={() => removeFile(data.name)}><img className="close-icon" src={close} /></div>
               </div>
             )
           }
@@ -170,7 +171,7 @@ const DropzoneComponent = ({onUploadImages = null}) => {
       </div>
       <div className="modal" ref={modalRef}>
         <div className="overlay"></div>
-        <span className="close" onClick={(() => closeModal())}>x</span>
+        <span className="close" onClick={(() => closeModal())}><img className="close-icon" src={close} /></span>
         <div className="modal-image" ref={modalImageRef}></div>
       </div>
 

@@ -8,7 +8,7 @@ import Form from "react-bootstrap/Form";
 import {Col, Row} from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import {ACCESS_TOKEN, ARTIST_PROFILE_UPDATE, BASE_URL} from "../../../../common/api";
-import DropzoneComponent from "../../../../common/DropzoneComponent";
+import DropzoneComponent from "../../../../common/Dropzone/DropzoneComponent";
 
 function ProfileEdit() {
   const {artistState, artistActions} = React.useContext(ArtistContext);
