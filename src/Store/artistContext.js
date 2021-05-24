@@ -7,7 +7,8 @@ import {
   ARTISTS_LIST_STATE_CHANGED,
   SELECTED_ARTIST_STATE_CHANGED,
   AGREEMENTS_STATE_CHANGED,
-  ALBUMS_STATE_CHANGED
+  ALBUMS_STATE_CHANGED,
+  COUNTRIES_STATE_CHANGED
 } from "./artistReducer";
 
 const ArtistContext = React.createContext();
@@ -32,6 +33,9 @@ const ArtistProvider = (props) => {
     },
     albumsStateChanged: (albums) => {
       dispatch({ type: ALBUMS_STATE_CHANGED, payload: albums });
+    },
+    countriesStateChanged: (countries) => {
+      dispatch({ type: COUNTRIES_STATE_CHANGED, payload: countries });
     },
   };
 

@@ -143,7 +143,12 @@ function Profile() {
               <div className="info-ans">
                 {artist.contact_information
                   ?
-                  <span>{artist.contact_information.name}</span>
+                  <>
+                    <span>{artist.contact_information.name}</span>
+                    <span>{artist.contact_information.postal_code}, {artist.contact_information.street}</span>
+                    <span>{artist.contact_information.city}, {artist.contact_information.state}</span>
+                    <span>{artist.contact_information.country}</span>
+                  </>
                   : '-'
                 }
               </div>
