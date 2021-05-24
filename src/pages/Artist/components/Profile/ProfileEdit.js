@@ -45,8 +45,12 @@ function ProfileEdit() {
       e.stopPropagation();
       setValidated(true);
     } else {
-      setIsLoading(true);
       const data = new FormData(form.current);
+
+      if(!handleBioCharacterChange(data.get('bio')))
+        return false;
+
+      setIsLoading(true);
       if(!coverImage)
         data.delete('cover_image')
       if(!bannerImage)
