@@ -10,6 +10,7 @@ import Button from "react-bootstrap/Button";
 import {ACCESS_TOKEN, ARTIST_PROFILE_UPDATE, BASE_URL} from "../../../../common/api";
 import csc from 'country-state-city'
 import Select from 'react-select'
+import Breadcrumb from "react-bootstrap/Breadcrumb";
 
 function ContactEdit() {
   const {artistState, artistActions} = React.useContext(ArtistContext);
@@ -218,6 +219,19 @@ function ContactEdit() {
 
   return (
     <div className="artist-wrapper">
+      <div className="asBreadcrumbs">
+        <Breadcrumb>
+          <Breadcrumb.Item>
+            <NavLink to="/">Home</NavLink>
+          </Breadcrumb.Item>
+          <Breadcrumb.Item>
+            <NavLink to="/profile">Profile</NavLink>
+          </Breadcrumb.Item>
+          <Breadcrumb.Item active>
+            Edit Contact
+          </Breadcrumb.Item>
+        </Breadcrumb>
+      </div>
       <section className="artist-section-control">
         <div className="section-content">
           <div className="section-head">

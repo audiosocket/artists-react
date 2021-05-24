@@ -1,11 +1,22 @@
 import React from "react";
 import "./Partners.scss";
+import Breadcrumb from "react-bootstrap/Breadcrumb";
+import {NavLink} from "react-router-dom";
 
 function Partners() {
 
   return (
     <div className="partnerWrapper">
-      <h2>Partners</h2>
+      <div className="asBreadcrumbs">
+        <Breadcrumb>
+          <Breadcrumb.Item>
+            <NavLink to="/">Home</NavLink>
+          </Breadcrumb.Item>
+          <Breadcrumb.Item active>
+            Partners
+          </Breadcrumb.Item>
+        </Breadcrumb>
+      </div>
       <div className="partnerBody">
         <section>
           <div className="bg-content yellow bgSecondVersion mt-4">

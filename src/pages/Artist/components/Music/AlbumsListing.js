@@ -108,7 +108,6 @@ function AlbumsListing() {
           </Breadcrumb.Item>
         </Breadcrumb>
       </div>
-      <h2>Music</h2>
       <div className="agreementBody">
         <section>
           <div className="bg-content yellow bgSecondVersion mt-4">
