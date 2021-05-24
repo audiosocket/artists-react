@@ -104,6 +104,10 @@ a, .btn {
 	}
 }
 
+.close-btn {
+	box-shadow: rgba(130, 138, 145, 0.5) 0px 0px 0px 1px;
+}
+
 #root {
   display: flex;
   flex-direction: column;
@@ -333,11 +337,17 @@ select:-webkit-autofill:focus {
   @include flexbox();
   @include justify-content(space-between);
   @include align-items(center);
+  flex-wrap: wrap;
   border-bottom: 1px solid #dee2e6;
   padding: 10px 0;
   margin-bottom: 40px;
   h2 {
     margin: 0;
+  }
+  .sec-head-para {
+    @include flex(1 1 100%);
+    margin-top: 10px;
+    line-height: normal;
   }
 }
 

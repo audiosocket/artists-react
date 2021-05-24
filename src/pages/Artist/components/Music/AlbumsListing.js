@@ -82,11 +82,11 @@ function AlbumsListing() {
     <div className="musicWrapper">
       <div className="asBreadcrumbs">
         <Breadcrumb>
-          <Breadcrumb.Item href="#">Home</Breadcrumb.Item>
-          <Breadcrumb.Item active href="https://getbootstrap.com/docs/4.0/components/breadcrumb/">
-            Library
+          <Breadcrumb.Item active href="#">Albums Listing</Breadcrumb.Item>
+          <Breadcrumb.Item href="https://getbootstrap.com/docs/4.0/components/breadcrumb/">
+            Albums
           </Breadcrumb.Item>
-          <Breadcrumb.Item>Data</Breadcrumb.Item>
+          <Breadcrumb.Item>Track</Breadcrumb.Item>
         </Breadcrumb>
         </div>
       
@@ -100,7 +100,7 @@ function AlbumsListing() {
             <p>Please choose your album titles wisely, as they will now appear in our partner Storefronts for licensing.
               Please do not include dates or other extensions in album titles. Ex: <i><strong>"My Amazing Tracks for
                 Audiosocket 2012"</strong></i></p>
-            <p>When uploading tracks, please view your track names. Tracks should be edited to include what you would
+            <p className="mb-0">When uploading tracks, please view your track names. Tracks should be edited to include what you would
               like them displayed as Ex: <i><strong>"Track Name master WAV"</strong></i> should be edited to <i><strong>"Track
                 Name"</strong></i>.</p>
           </div>

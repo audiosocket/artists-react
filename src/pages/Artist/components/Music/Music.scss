@@ -118,3 +118,32 @@
   }
 }
 
+/**************** Album styling *****************/
+.albumsWrapper {
+  section {
+    margin: 15px 0;
+  }
+  .section-content {
+    .section-head {
+      margin-bottom: 25px;
+    }
+  }
+  .artwork-images-sec {
+    @include flexbox;
+    flex-wrap: wrap;
+    .artwork-image {
+      flex: 0.1 1 250px;
+      height: auto;
+      border-radius: 7px;
+      margin: 0 15px 15px 0;
+      overflow: hidden;
+      img {
+        width: 100%;
+      }
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+}
+
