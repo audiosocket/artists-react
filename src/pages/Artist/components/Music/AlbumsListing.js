@@ -166,12 +166,13 @@ function AlbumsListing() {
                   <Row>
                     <Col xs={12}>
                       <div className="form-group">
-                        <Form.Control
-                          name="release_date"
-                          type="date"
+                        <Form.Control                          
+                          type="text"
+                          onFocus={(e) => (e.currentTarget.type = "date")}
+                          onBlur={(e) => (e.currentTarget.type = "text")}
                           placeholder="Release Date"
                         />
-                        <small className="text-muted">This field is optional</small>
+                        <small className="text-muted">Release date is optional</small>
                       </div>
                     </Col>
                   </Row>
