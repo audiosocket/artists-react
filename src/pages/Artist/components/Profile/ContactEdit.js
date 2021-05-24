@@ -271,7 +271,7 @@ function ContactEdit() {
                     className="country-select-container-header"
                     classNamePrefix={!countryError ? "country-select-header" : "country-select-header invalid"}
                     options={countriesList}
-                    value={artist.contact_information && countriesList.filter(option => option.value === artist.contact_information.country)}
+                    defaultValue={artist.contact_information && countriesList.filter(option => option.value === artist.contact_information.country)}
                     onChange={handleCountrySelection}
                     noOptionsMessage={() => {return "No country found"}}
                     theme={theme => ({
@@ -300,7 +300,7 @@ function ContactEdit() {
                     className="state-select-container-header"
                     classNamePrefix={!stateError ? "state-select-header" : "state-select-header invalid"}
                     options={statesList}
-                    value={artist.contact_information && statesList.filter(option => option.value === artist.contact_information.state)}
+                    defaultValue={artist.contact_information && statesList.filter(option => option.value === artist.contact_information.state)}
                     onChange={handelStateSelection}
                     noOptionsMessage={() => {return "No state found"}}
                     theme={theme => ({
@@ -329,7 +329,7 @@ function ContactEdit() {
                     className="city-select-container-header"
                     classNamePrefix={!cityError ? "city-select-header" : "city-select-header invalid"}
                     options={citiesList}
-                    value={artist.contact_information && citiesList.filter(option => option.value === artist.contact_information.city)}
+                    defaultValue={artist.contact_information && citiesList.filter(option => option.value === artist.contact_information.city)}
                     onChange={handleCitySelection}
                     noOptionsMessage={() => {return "No city found"}}
                     theme={theme => ({
