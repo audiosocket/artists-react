@@ -90,6 +90,14 @@ section {
         cursor: pointer;
       }
     }
+    .invalid__control {
+      border-color: $clr-red;
+    }
+    small {
+      &.error {
+        color: $clr-red;
+      }
+    }
   }
   .bg-content {
     padding: 20px 20px;

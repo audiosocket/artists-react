@@ -3,6 +3,7 @@ import "./Profile.scss";
 import {Route, Switch} from "react-router-dom";
 import ProfileEdit from "./ProfileEdit";
 import ProfileView from "./ProfileView";
+import ContactEdit from "./ContactEdit";
 
 function Profile() {
 
@@ -13,6 +14,9 @@ function Profile() {
       </Route>
       <Route exact={true} path="/profile/edit">
         <ProfileEdit />
+      </Route>
+      <Route exact={true} path="/profile/contact/edit">
+        <ContactEdit />
       </Route>
     </Switch>
   )

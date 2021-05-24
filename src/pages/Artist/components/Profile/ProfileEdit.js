@@ -45,8 +45,12 @@ function ProfileEdit() {
       e.stopPropagation();
       setValidated(true);
     } else {
-      setIsLoading(true);
       const data = new FormData(form.current);
+
+      if(!handleBioCharacterChange(data.get('bio')))
+        return false;
+
+      setIsLoading(true);
       if(!coverImage)
         data.delete('cover_image')
       if(!bannerImage)
@@ -95,7 +99,7 @@ function ProfileEdit() {
       <section className="artist-section-control">
         <div className="section-content">
           <div className="section-head">
-            <h2>Eidt Profile</h2>
+            <h2>Edit Profile</h2>
           </div>
           {Object.keys(artist).length === 0 && isLoading && <h5>Loading profile... <img className="loading" src={Loader} alt="loading-icon"/></h5>}
           {Object.keys(artist).length !== 0 &&
@@ -224,27 +228,11 @@ function ProfileEdit() {
                   />
                 </Col>
               </Row>
-              <h2 className="mt-5">Contact</h2>
-              <hr/>
-              <Row>
-                <Col xl={2} md={6}>
-                  <Form.Label>Address</Form.Label>
-                </Col>
-                <Col xl={4} md={6}>
-                  <Form.Control
-                    name="contact"
-                    defaultValue={artist.contact}
-                    placeholder="Enter contact info here"
-                    as="textarea"
-                    rows={4}
-                  />
-                </Col>
-              </Row>
               <Row>
                 <Col xl={2} md={6}></Col>
                 <Col xl={4} md={6} className="text-center">
                   <NavLink to="/profile" className="btn primary-btn btn-outline-light mr-5 cancel">Cancel</NavLink>
-                  <Button type="submit" className="btn primary-btn submit">{isLoading ? <>Saving...<img className="" src={Loader} alt="icon"/></> : "Save profile" }</Button>
+                  <Button type="submit" className="btn primary-btn submit">{isLoading ? <>Saving...<img className="" src={Loader} alt="icon"/></> : "Save" }</Button>
                 </Col>
               </Row>
             </Form>
