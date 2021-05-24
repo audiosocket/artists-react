@@ -16,11 +16,13 @@ import Breadcrumb from 'react-bootstrap/Breadcrumb';
 
 function AlbumsListing() {
   const {artistState, artistActions} = React.useContext(ArtistContext);
-  const [isLoading, setIsLoading] = useState(false);
-  const [albums, setAlbums] = useState([]);
-  const [showCreateAlbumModal, setShowCreateAlbumModal] = useState(false);
   const form = useRef(null);
   const [validated, setValidated] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [albums, setAlbums] = useState([]);
+  const [showAlbumModal, setShowAlbumModal] = useState(false);
+  const [selectedAlbum, setSelectedAlbum] = useState(null);
+  const [selectedAlbumDate, setSelectedAlbumDate] = useState('');
 
   useEffect(() => {
     if (!artistState.albums)
@@ -48,13 +50,14 @@ function AlbumsListing() {
       setIsLoading(true);
       const data = new FormData(form.current);
       const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
-      const response = await fetch(`${BASE_URL}${ALBUMS}`,
+      const URL = selectedAlbum ? `${BASE_URL}${ALBUMS}/${selectedAlbum.id}` : `${BASE_URL}${ALBUMS}`;
+      const response = await fetch(`${URL}`,
         {
           headers: {
             "authorization": ACCESS_TOKEN,
             "auth-token": userAuthToken
           },
-          method: 'POST',
+          method: selectedAlbum ? "PATCH" : "POST",
           body: data
         });
       if (!response.ok) {
@@ -71,25 +74,40 @@ function AlbumsListing() {
   }
 
   const handleClose = () => {
-    setShowCreateAlbumModal(false);
+    setShowAlbumModal(false);
     setValidated(false);
+    setSelectedAlbum(null);
+    setSelectedAlbumDate('');
     if(form.current) {
       form.current.reset()
     }
   }
 
+  const handleAlbumEditModal = (album) => {
+    setSelectedAlbum(album);
+    setShowAlbumModal(true);
+    if(album.release_date) {
+      const day = album.release_date.substr(0,2);
+      const month = album.release_date.substr(3,2);
+      const year = album.release_date.substr(6,4);
+      setSelectedAlbumDate(`${year}-${month}-${day}`);
+    }
+  }
   return (
     <div className="musicWrapper">
       <div className="asBreadcrumbs">
         <Breadcrumb>
-          <Breadcrumb.Item href="#">Home</Breadcrumb.Item>
-          <Breadcrumb.Item active href="https://getbootstrap.com/docs/4.0/components/breadcrumb/">
-            Library
+          <Breadcrumb.Item>
+            <NavLink to="/">Home</NavLink>
           </Breadcrumb.Item>
-          <Breadcrumb.Item>Data</Breadcrumb.Item>
+          <Breadcrumb.Item>
+            Music
+          </Breadcrumb.Item>
+          <Breadcrumb.Item active>
+            Albums
+          </Breadcrumb.Item>
         </Breadcrumb>
-        </div>
-      
+      </div>
       <h2>Music</h2>
       <div className="agreementBody">
         <section>
@@ -108,7 +126,7 @@ function AlbumsListing() {
         <section className="pt-4">
           <div className="section-head">
             <h2>Albums</h2>
-            <a onClick={() => setShowCreateAlbumModal(true)} className="btn primary-btn">Create an album</a>
+            <a onClick={() => setShowAlbumModal(true)} className="btn primary-btn">Create an album</a>
           </div>
           {isLoading && <h5>Loading albums... <img className="loading" src={Loader} alt="loading-icon"/></h5>}
           <div className="music-playlist">
@@ -120,7 +138,7 @@ function AlbumsListing() {
                       <NavLink
                         to={`/music/album/${album.id}`}>{album.name} {album.release_date ? "(Release date: " + album.release_date.split(" ")[0] + ")" : ""}
                       </NavLink>
-                      <img src={Edit} alt="edit-icon"/>
+                      <img onClick={(e) => handleAlbumEditModal(album)} src={Edit} alt="edit-icon"/>
                     </li>
                   )
                 })
@@ -130,9 +148,9 @@ function AlbumsListing() {
           </div>
         </section>
       </div>
-      {showCreateAlbumModal &&
+      {showAlbumModal &&
       <Modal
-        show={showCreateAlbumModal}
+        show={showAlbumModal}
         onHide={handleClose}
         size="lg"
         aria-labelledby="contained-modal-title-vcenter"
@@ -142,7 +160,10 @@ function AlbumsListing() {
         <Form noValidate validated={validated} ref={form} onSubmit={handleCreateAlbum}>
           <Modal.Header closeButton>
             <Modal.Title id="contained-modal-title-vcenter">
-              New album {artistState.artist ? "for " + artistState.artist.name : ""}
+              {selectedAlbum
+                ? `Edit album ${artistState.artist ? "for " + artistState.artist.name : ""}`
+                : `New album ${artistState.artist ? "for " + artistState.artist.name : ""}`
+              }
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
@@ -155,6 +176,7 @@ function AlbumsListing() {
                           required
                           name="name"
                           type="text"
+                          defaultValue={selectedAlbum ? selectedAlbum.name : ''}
                           placeholder="Album Name*"
                         />
                         <Form.Control.Feedback type="invalid">
@@ -169,6 +191,7 @@ function AlbumsListing() {
                         <Form.Control
                           name="release_date"
                           type="date"
+                          defaultValue={selectedAlbumDate ? selectedAlbumDate : ''}
                           placeholder="Release Date"
                         />
                         <small className="text-muted">This field is optional</small>
@@ -180,7 +203,10 @@ function AlbumsListing() {
           </Modal.Body>
           <Modal.Footer>
             <Button className="btn btn-outline-light" onClick={handleClose}>Cancel</Button>
-            <Button type="submit" className="btn primary-btn submit">{isLoading ? <>Creating...<img src={Loader} alt="icon"/></>: "Create Album"}</Button>
+            {!selectedAlbum
+              ? <Button type="submit" className="btn primary-btn submit">{isLoading ? <>Creating...<img src={Loader} alt="icon"/></> : "Create Album"}</Button>
+              : <Button type="submit" className="btn primary-btn submit">{isLoading ? <>Saving...<img src={Loader} alt="icon"/></> : "Save Album"}</Button>
+            }
           </Modal.Footer>
         </Form>
       </Modal>
