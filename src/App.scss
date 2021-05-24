@@ -373,3 +373,22 @@ select:-webkit-autofill:focus {
     margin: 0;
   }
 }
+
+/********** Breadcrumbs ************/
+.asBreadcrumbs {
+  .breadcrumb {
+    background-color: #f6f6f6;
+    .breadcrumb-item {
+      color: #212121;
+      a {
+        &:hover {
+          color: #212121;
+          font-weight: 600;
+        }
+      }
+      &.active {
+        font-weight: 600;
+      }
+    }
+  }
+}
