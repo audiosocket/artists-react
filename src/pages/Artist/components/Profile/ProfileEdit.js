@@ -88,7 +88,8 @@ function ProfileEdit() {
     if(value.length > 400) {
       setBioLimitFlag(true);
       return false;
-    }
+    } else
+      return true
   }
 
   const handleUploadImages = (images) => {

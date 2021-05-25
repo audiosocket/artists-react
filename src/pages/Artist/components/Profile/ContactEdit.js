@@ -53,6 +53,9 @@ function ContactEdit() {
     if(artistState.countries && artistState.artist.contact_information) {
       prepareStatesDropdown()
       prepareCitiesDropdown()
+      setSelectedCountry(artistState.artist.contact_information.country)
+      setSelectedState(artistState.artist.contact_information.state)
+      setSelectedCity(artistState.artist.contact_information.city)
     }
   }, [artistState.artist])
 
@@ -78,7 +81,7 @@ function ContactEdit() {
       e.stopPropagation();
       setValidated(true);
     } else {
-      if(countryError || stateError || cityError)
+      if(!selectedCountry || !selectedState || !selectedCity)
         return false;
       setIsLoading(true);
       const data = new FormData(form.current);
@@ -206,6 +209,7 @@ function ContactEdit() {
       setCitiesList(list);
     } else {
       setCitiesList([]);
+      setSelectedState(null);
     }
   }
 
@@ -215,6 +219,8 @@ function ContactEdit() {
       if(target.value)
         setCityError(false);
     }
+    else
+      setSelectedCity(null);
   }
 
   return (
