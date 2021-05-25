@@ -117,7 +117,7 @@ function AlbumsListing() {
             <p>Please choose your album titles wisely, as they will now appear in our partner Storefronts for licensing.
               Please do not include dates or other extensions in album titles. Ex: <i><strong>"My Amazing Tracks for
                 Audiosocket 2012"</strong></i></p>
-            <p>When uploading tracks, please view your track names. Tracks should be edited to include what you would
+            <p className="mb-0">When uploading tracks, please view your track names. Tracks should be edited to include what you would
               like them displayed as Ex: <i><strong>"Track Name master WAV"</strong></i> should be edited to <i><strong>"Track
                 Name"</strong></i>.</p>
           </div>
@@ -189,11 +189,13 @@ function AlbumsListing() {
                       <div className="form-group">
                         <Form.Control
                           name="release_date"
-                          type="date"
                           defaultValue={selectedAlbumDate ? selectedAlbumDate : ''}
+                          type="text"
+                          onFocus={(e) => (e.currentTarget.type = "date")}
+                          onBlur={(e) => (e.currentTarget.type = "text")}
                           placeholder="Release Date"
                         />
-                        <small className="text-muted">This field is optional</small>
+                        <small className="text-muted">Release date is optional</small>
                       </div>
                     </Col>
                   </Row>
