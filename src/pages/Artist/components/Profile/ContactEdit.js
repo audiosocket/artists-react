@@ -10,6 +10,7 @@ import Button from "react-bootstrap/Button";
 import {ACCESS_TOKEN, ARTIST_PROFILE_UPDATE, BASE_URL} from "../../../../common/api";
 import csc from 'country-state-city'
 import Select from 'react-select'
+import Breadcrumb from "react-bootstrap/Breadcrumb";
 
 function ContactEdit() {
   const {artistState, artistActions} = React.useContext(ArtistContext);
@@ -52,6 +53,9 @@ function ContactEdit() {
     if(artistState.countries && artistState.artist.contact_information) {
       prepareStatesDropdown()
       prepareCitiesDropdown()
+      setSelectedCountry(artistState.artist.contact_information.country)
+      setSelectedState(artistState.artist.contact_information.state)
+      setSelectedCity(artistState.artist.contact_information.city)
     }
   }, [artistState.artist])
 
@@ -77,7 +81,7 @@ function ContactEdit() {
       e.stopPropagation();
       setValidated(true);
     } else {
-      if(countryError || stateError || cityError)
+      if(!selectedCountry || !selectedState || !selectedCity)
         return false;
       setIsLoading(true);
       const data = new FormData(form.current);
@@ -205,6 +209,7 @@ function ContactEdit() {
       setCitiesList(list);
     } else {
       setCitiesList([]);
+      setSelectedState(null);
     }
   }
 
@@ -214,10 +219,25 @@ function ContactEdit() {
       if(target.value)
         setCityError(false);
     }
+    else
+      setSelectedCity(null);
   }
 
   return (
     <div className="artist-wrapper">
+      <div className="asBreadcrumbs">
+        <Breadcrumb>
+          <li className="breadcrumb-item">
+            <NavLink to="/">Home</NavLink>
+          </li>
+          <li className="breadcrumb-item">
+            <NavLink to="/profile">Profile</NavLink>
+          </li>
+          <li className="breadcrumb-item active">
+            Edit Contact
+          </li>
+        </Breadcrumb>
+      </div>
       <section className="artist-section-control">
         <div className="section-content">
           <div className="section-head">

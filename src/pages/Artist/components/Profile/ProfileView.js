@@ -6,6 +6,7 @@ import {ArtistContext} from "../../../../Store/artistContext";
 import fetchArtist from "../../../../common/utlis/fetchArtist";
 import Loader from "../../../../images/loader.svg";
 import {NavLink} from "react-router-dom";
+import Breadcrumb from "react-bootstrap/Breadcrumb";
 
 function Profile() {
   const {artistState, artistActions} = React.useContext(ArtistContext);
@@ -29,6 +30,16 @@ function Profile() {
 
   return (
     <div className="artist-wrapper">
+      <div className="asBreadcrumbs">
+        <Breadcrumb>
+          <li className="breadcrumb-item">
+            <NavLink to="/">Home</NavLink>
+          </li>
+          <li className="breadcrumb-item active">
+            Profile
+          </li>
+        </Breadcrumb>
+      </div>
       <section className="artist-section-control">
         <div className="section-content">
           <div className="section-head">

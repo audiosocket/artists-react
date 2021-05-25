@@ -3,6 +3,8 @@ import "./Agreements.scss";
 import {ArtistContext} from "../../../../Store/artistContext";
 import {ACCESS_TOKEN, AGREEMENTS, BASE_URL} from "../../../../common/api";
 import Loader from "./../../../../images/loader.svg"
+import Breadcrumb from "react-bootstrap/Breadcrumb";
+import {NavLink} from "react-router-dom";
 
 function Agreements() {
   const {artistState, artistActions} = React.useContext(ArtistContext);
@@ -35,7 +37,16 @@ function Agreements() {
 
   return (
     <div className="agreementWrapper">
-      <h2>Agreements</h2>
+      <div className="asBreadcrumbs">
+        <Breadcrumb>
+          <li className="breadcrumb-item">
+            <NavLink to="/">Home</NavLink>
+          </li>
+          <li className="breadcrumb-item active">
+            Agreements
+          </li>
+        </Breadcrumb>
+      </div>
       <div className="agreementBody">
         <section>
           <div className="bg-content yellow bgSecondVersion mt-4">

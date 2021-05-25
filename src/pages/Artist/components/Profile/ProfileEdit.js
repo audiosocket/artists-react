@@ -9,6 +9,7 @@ import {Col, Row} from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import {ACCESS_TOKEN, ARTIST_PROFILE_UPDATE, BASE_URL} from "../../../../common/api";
 import DropzoneComponent from "../../../../common/Dropzone/DropzoneComponent";
+import Breadcrumb from "react-bootstrap/Breadcrumb";
 
 function ProfileEdit() {
   const {artistState, artistActions} = React.useContext(ArtistContext);
@@ -87,7 +88,8 @@ function ProfileEdit() {
     if(value.length > 400) {
       setBioLimitFlag(true);
       return false;
-    }
+    } else
+      return true
   }
 
   const handleUploadImages = (images) => {
@@ -96,6 +98,19 @@ function ProfileEdit() {
 
   return (
     <div className="artist-wrapper">
+      <div className="asBreadcrumbs">
+        <Breadcrumb>
+          <li className="breadcrumb-item">
+            <NavLink to="/">Home</NavLink>
+          </li>
+          <li className="breadcrumb-item">
+            <NavLink to="/profile">Profile</NavLink>
+          </li>
+          <li className="breadcrumb-item active">
+            Edit Profile
+          </li>
+        </Breadcrumb>
+      </div>
       <section className="artist-section-control">
         <div className="section-content">
           <div className="section-head">
