@@ -152,3 +152,69 @@
   }
 }
 
+.track-wrapper {
+  @include flexbox;
+  @include flex-direction(column);
+  .trackrow {
+    @include flex(1 1 100%);
+    @include flexbox;
+    @include justify-content(space-between);
+    @include align-items(center);
+    background-color: #f6f6f6;
+    padding: 10px 10px;
+    border-radius: 7px;
+    margin-bottom: 10px;
+    .playicon {
+      @include flex(1 1 10%);
+      text-align: center;
+      a {
+        width: 16px;
+        display: inline-block;
+        vertical-align: middle;
+        img {
+          width: 100%;
+        }
+      }
+    }
+    .track-title{
+      @include flex(1 1 35%);
+      line-height: normal;
+      p {
+        margin: 0;
+      }
+      em {
+        font-size: 11px;
+      }
+    }
+    .track-writter{
+      @include flex(1 1 22.5%);
+    }
+    .track-publisher{
+      @include flex(1 1 22.5%);
+    }
+    .track-edit{
+      @include flex(1 1 10%);
+      a {
+        width: 16px;
+        display: inline-block;
+        vertical-align: middle;
+        img {
+          width: 100%;
+        }
+      }
+    }
+    &:last-child {
+      margin-bottom: 0;
+    }
+    &.head-row {
+      background: none;
+      font-weight: 700;
+      text-transform: capitalize;
+      margin-bottom: 0;
+    }
+    & > div {
+      padding: 0 10px 0;
+    }
+  }
+}
+

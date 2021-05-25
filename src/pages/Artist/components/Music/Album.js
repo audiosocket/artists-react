@@ -3,9 +3,12 @@ import React, {useEffect, useState} from "react";
 import {Accordion, Card, Breadcrumb} from 'react-bootstrap';
 import {NavLink} from "react-router-dom";
 import artwork from "../../../../images/artwork.jpg";
+import Edit from "../../../../images/pencil.svg";
 import {ArtistContext} from "../../../../Store/artistContext";
 import fetchAlbums from "../../../../common/utlis/fetchAlbums";
 import Loader from "../../../../images/loader.svg";
+import play from "../../../../images/play.svg";
+
 
 function Album({id = null}) {
   const {artistState, artistActions} = React.useContext(ArtistContext);
@@ -86,24 +89,67 @@ function Album({id = null}) {
               <NavLink to="/profile/edit" className="btn primary-btn mr-2">Add music</NavLink>
             </div>
             <div className="section-body">
-              <Accordion defaultActiveKey="0">
-                <Card>
-                  <Accordion.Toggle as={Card.Header} eventKey="0">
-                    Click me!
-                  </Accordion.Toggle>
-                  <Accordion.Collapse eventKey="0">
-                    <Card.Body>Hello! I'm the body</Card.Body>
-                  </Accordion.Collapse>
-                </Card>
-                <Card>
-                  <Accordion.Toggle as={Card.Header} eventKey="1">
-                    Click me!
-                  </Accordion.Toggle>
-                  <Accordion.Collapse eventKey="1">
-                    <Card.Body>Hello! I'm another body</Card.Body>
-                  </Accordion.Collapse>
-                </Card>
-              </Accordion>
+              <div className="track-wrapper">
+                <div className="trackrow head-row">
+                  <div className="playicon"></div>
+                  <div className="track-title">Title</div>
+                  <div className="track-writter">Writers</div>
+                  <div className="track-publisher">Publisher</div>
+                  <div className="track-edit"></div>
+                </div>
+
+                <div className="trackrow">
+                  <div className="playicon">
+                    <a href=""><img src={play} alt="Play Song"/></a>
+                  </div>
+                  <div className="track-title">
+                    <p>Pudding</p>
+                    <em>Uploaded May 3, 2021</em>
+                  </div>
+                  <div className="track-writter">
+                    brittni stewart
+                  </div>
+                  <div className="track-publisher">Jetty Rae LLC</div>
+                  <div className="track-edit">
+                    <a href=""><img src={Edit} alt="Edit"/></a>
+                  </div>
+                </div>
+
+                <div className="trackrow">
+                  <div className="playicon">
+                    <a href=""><img src={play} alt="Play Song"/></a>
+                  </div>
+                  <div className="track-title">
+                    <p>Pudding</p>
+                    <em>Uploaded May 3, 2021</em>
+                  </div>
+                  <div className="track-writter">
+                    brittni stewart
+                  </div>
+                  <div className="track-publisher">Jetty Rae LLC</div>
+                  <div className="track-edit">
+                    <a href=""><img src={Edit} alt="Edit"/></a>
+                  </div>
+                </div>
+
+                <div className="trackrow">
+                  <div className="playicon">
+                    <a href=""><img src={play} alt="Play Song"/></a>
+                  </div>
+                  <div className="track-title">
+                    <p>Pudding</p>
+                    <em>Uploaded May 3, 2021</em>
+                  </div>
+                  <div className="track-writter">
+                    brittni stewart
+                  </div>
+                  <div className="track-publisher">Jetty Rae LLC</div>
+                  <div className="track-edit">
+                    <a href=""><img src={Edit} alt="Edit"/></a>
+                  </div>
+                </div>
+                
+              </div>
             </div>
           </section>
         </div>
