@@ -83,6 +83,7 @@ function Album({id = null}) {
           <section className="pt-4">
             <div className="section-head">
               <h2>Tracks</h2>
+              <NavLink to="/profile/edit" className="btn primary-btn mr-2">Add music</NavLink>
             </div>
             <div className="section-body">
               <Accordion defaultActiveKey="0">
