@@ -76,7 +76,7 @@
     .modal-body {
       padding: 40px 0 25px;
       border-bottom: 1px solid #dee2e6;
-      .create-album-modal-container {
+      .music-modal-container {
         max-width: 400px;
         width: 100%;
         margin: 0 auto;
@@ -88,6 +88,10 @@
             box-shadow: 0 0 5px #c0d72d;
           }
         }
+      }
+      .custom-control-input {
+        z-index: 1;
+        opacity: 1;
       }
     }
     .modal-footer {
@@ -120,6 +124,9 @@
 
 /**************** Album styling *****************/
 .albumsWrapper {
+  .loading {
+    width: 50px;
+  }
   section {
     margin: 15px 0;
   }
@@ -214,6 +221,15 @@
     }
     & > div {
       padding: 0 10px 0;
+    }
+    &.body-row {
+      .track-edit {
+        opacity: 0.5;
+        &:hover {
+          opacity: 1;
+          cursor: pointer;
+        }
+      }
     }
   }
 }

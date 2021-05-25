@@ -141,7 +141,7 @@ function AlbumsListing() {
                     </li>
                   )
                 })
-                : <h5><i>No album created yet!</i></h5>
+                : <p>No album created yet! Click <i className="medium-text">Create an album</i> button above to get started.</p>
               }
             </ul>
           </div>

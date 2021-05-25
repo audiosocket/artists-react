@@ -1,6 +1,6 @@
 import "./Music.scss";
-import React, {useEffect, useState} from "react";
-import {Accordion, Card, Breadcrumb} from 'react-bootstrap';
+import React, {useEffect, useRef, useState} from "react";
+import {Breadcrumb} from 'react-bootstrap';
 import {NavLink} from "react-router-dom";
 import artwork from "../../../../images/artwork.jpg";
 import Edit from "../../../../images/pencil.svg";
@@ -8,12 +8,23 @@ import {ArtistContext} from "../../../../Store/artistContext";
 import fetchAlbums from "../../../../common/utlis/fetchAlbums";
 import Loader from "../../../../images/loader.svg";
 import play from "../../../../images/play.svg";
+import Modal from "react-bootstrap/Modal";
+import Form from "react-bootstrap/Form";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import Button from "react-bootstrap/Button";
+import {ACCESS_TOKEN, ALBUMS, BASE_URL} from "../../../../common/api";
 
 
 function Album({id = null}) {
   const {artistState, artistActions} = React.useContext(ArtistContext);
   const [isLoading, setIsLoading] = useState(false);
+  const form = useRef(false);
+  const [validated, setValidated] = useState(false);
   const [album, setAlbum] = useState(null);
+  const [selectedTrack, setSelectedTrack] = useState(null);
+  const [showAddMusicModal, setShowAddMusicModal] = useState(false);
+  const [isPublicDomain, setIsPublicDomain] = useState(false);
 
   useEffect(() => {
     if(artistState.albums) {
@@ -31,6 +42,61 @@ function Album({id = null}) {
     const filteredAlbum = albums.filter(album => parseInt(album.id) === parseInt(id));
     setAlbum(filteredAlbum[0] ?? null)
     setIsLoading(false);
+  }
+
+  const handleSubmitAddMusic = async (e) => {
+    e.preventDefault();
+    const musicForm = e.currentTarget;
+    if (musicForm.checkValidity() === false) {
+      e.preventDefault();
+      e.stopPropagation();
+      setValidated(true);
+    } else {
+      setIsLoading(true);
+      const data = new FormData(form.current);
+      if(data.get("public_domain"))
+        data.append("public_domain", true);
+      else
+        data.append("public_domain", false);
+      const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
+      const URL = selectedTrack ? `${BASE_URL}${ALBUMS}/${id}/tracks/${selectedTrack.id}` : `${BASE_URL}${ALBUMS}/${id}/tracks`;
+      const response = await fetch(`${URL}`,
+        {
+          headers: {
+            "authorization": ACCESS_TOKEN,
+            "auth-token": userAuthToken
+          },
+          method: selectedTrack ? "PATCH" : "POST",
+          body: data
+        });
+      if (!response.ok) {
+        alert('Something went wrong, try later!');
+      } else {
+        const albums = await fetchAlbums();
+        artistActions.albumsStateChanged(albums);
+        const filteredAlbum = albums.filter(album => parseInt(album.id) === parseInt(id));
+        setAlbum(filteredAlbum[0] ?? null)
+        handleClose();
+        e.target.reset();
+      }
+      setIsLoading(false);
+    }
+  }
+
+  const handleAddMusicModal = () => {
+    setShowAddMusicModal(true);
+  }
+
+  const handleEditMusicModal = (track) => {
+    setSelectedTrack(track);
+    setShowAddMusicModal(true);
+  }
+
+  const handleClose = () => {
+    setShowAddMusicModal(false);
+    setSelectedTrack(null);
+    setIsPublicDomain(false);
+    setValidated(false);
   }
 
   return (
@@ -72,7 +138,7 @@ function Album({id = null}) {
             <div className="section-head">
               <h2>Artwork</h2>
               <NavLink to="/profile/edit" className="btn primary-btn">Edit</NavLink>
-              <p className="sec-head-para mb-0">Time to add some artwork to this album! Click the Edit button above to get started.</p>
+              <p className="sec-head-para mb-0">Time to add some artwork to this album! Click the <i className="medium-text">Edit</i> button above to get started.</p>
             </div>
             <div className="section-body">
               <div className="artwork-images-sec">
@@ -86,75 +152,120 @@ function Album({id = null}) {
           <section className="pt-4">
             <div className="section-head">
               <h2>Tracks</h2>
-              <NavLink to="/profile/edit" className="btn primary-btn mr-2">Add music</NavLink>
+              <a onClick={handleAddMusicModal} className="btn primary-btn mr-2">Add music</a>
             </div>
             <div className="section-body">
               <div className="track-wrapper">
-                <div className="trackrow head-row">
-                  <div className="playicon"></div>
-                  <div className="track-title">Title</div>
-                  <div className="track-writter">Writers</div>
-                  <div className="track-publisher">Publisher</div>
-                  <div className="track-edit"></div>
-                </div>
-
-                <div className="trackrow">
-                  <div className="playicon">
-                    <a href=""><img src={play} alt="Play Song"/></a>
+                {album && album.tracks.length !== 0 &&
+                  <div className="trackrow head-row">
+                    <div className="playicon"></div>
+                    <div className="track-title">Title</div>
+                    <div className="track-writter">Writers</div>
+                    <div className="track-publisher">Publisher</div>
+                    <div className="track-edit">Action</div>
                   </div>
-                  <div className="track-title">
-                    <p>Pudding</p>
-                    <em>Uploaded May 3, 2021</em>
-                  </div>
-                  <div className="track-writter">
-                    brittni stewart
-                  </div>
-                  <div className="track-publisher">Jetty Rae LLC</div>
-                  <div className="track-edit">
-                    <a href=""><img src={Edit} alt="Edit"/></a>
-                  </div>
-                </div>
-
-                <div className="trackrow">
-                  <div className="playicon">
-                    <a href=""><img src={play} alt="Play Song"/></a>
-                  </div>
-                  <div className="track-title">
-                    <p>Pudding</p>
-                    <em>Uploaded May 3, 2021</em>
-                  </div>
-                  <div className="track-writter">
-                    brittni stewart
-                  </div>
-                  <div className="track-publisher">Jetty Rae LLC</div>
-                  <div className="track-edit">
-                    <a href=""><img src={Edit} alt="Edit"/></a>
-                  </div>
-                </div>
-
-                <div className="trackrow">
-                  <div className="playicon">
-                    <a href=""><img src={play} alt="Play Song"/></a>
-                  </div>
-                  <div className="track-title">
-                    <p>Pudding</p>
-                    <em>Uploaded May 3, 2021</em>
-                  </div>
-                  <div className="track-writter">
-                    brittni stewart
-                  </div>
-                  <div className="track-publisher">Jetty Rae LLC</div>
-                  <div className="track-edit">
-                    <a href=""><img src={Edit} alt="Edit"/></a>
-                  </div>
-                </div>
-                
+                }
+                {album && album.tracks.length
+                  ?
+                  album.tracks.map((track, key) => {
+                    return (
+                      <div key={key} className="trackrow body-row">
+                        <div className="playicon">
+                          <a href=""><img src={play} alt="Play Song"/></a>
+                        </div>
+                        <div className="track-title">
+                          <p>{track.title}</p>
+                          <em>Uploaded May 3, 2021</em>
+                        </div>
+                        <div className="track-writter">
+                          Brittni stewart
+                        </div>
+                        <div className="track-publisher">Jetty Rae LLC</div>
+                        <div className="track-edit">
+                          <a onClick={(e) => handleEditMusicModal(track)}><img src={Edit} alt="Edit"/></a>
+                        </div>
+                      </div>
+                    )
+                  })
+                  : <p>No music created yet! Click <i className="medium-text">Add Music</i> button above to get started.</p>
+                }
               </div>
             </div>
           </section>
         </div>
       </div>
-
+      {showAddMusicModal &&
+      <Modal
+        show={showAddMusicModal}
+        onHide={handleClose}
+        size="lg"
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+        className="customArtistModal"
+      >
+        <Form noValidate validated={validated} ref={form} onSubmit={handleSubmitAddMusic}>
+          <Modal.Header closeButton>
+            <Modal.Title id="contained-modal-title-vcenter">
+              {selectedTrack
+                ? `Edit music ${artistState.artist ? "to " + album.namee : ""}`
+                : `Add music ${artistState.artist ? "to " + album.name : ""}`
+              }
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <div className="modal-container music-modal-container">
+              <div className="section">
+                <Row>
+                  <Col xs={12}>
+                    <div className="form-group">
+                      <Form.File
+                        required
+                        name="file"
+                        type="file"
+                        label="Select file (WAV or AIFF)"
+                        custom
+                      />
+                    </div>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col xs={12}>
+                    <div className="form-group">
+                      <Form.Control
+                        required
+                        name="title"
+                        type="text"
+                        defaultValue={selectedTrack ? selectedTrack.title : ''}
+                        placeholder="Title*"
+                      />
+                    </div>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col xs={12}>
+                    <div className="form-group">
+                      <Form.Check
+                        name="public_domain"
+                        className="custom-control-input"
+                        label="Public domain"
+                      />
+                      <label className="checkmark" onClick={() => {}} />
+                    </div>
+                  </Col>
+                </Row>
+              </div>
+            </div>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button className="btn btn-outline-light" onClick={handleClose}>Cancel</Button>
+            {!selectedTrack
+              ? <Button type="submit" className="btn primary-btn submit">{isLoading ? <>Adding...<img src={Loader} alt="icon"/></> : "Add Music"}</Button>
+              : <Button type="submit" className="btn primary-btn submit">{isLoading ? <>Saving...<img src={Loader} alt="icon"/></> : "Save"}</Button>
+            }
+          </Modal.Footer>
+        </Form>
+      </Modal>
+      }
     </div>
   )
 }
