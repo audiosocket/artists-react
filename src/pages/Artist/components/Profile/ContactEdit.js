@@ -227,15 +227,15 @@ function ContactEdit() {
     <div className="artist-wrapper">
       <div className="asBreadcrumbs">
         <Breadcrumb>
-          <Breadcrumb.Item>
+          <li className="breadcrumb-item">
             <NavLink to="/">Home</NavLink>
-          </Breadcrumb.Item>
-          <Breadcrumb.Item>
+          </li>
+          <li className="breadcrumb-item">
             <NavLink to="/profile">Profile</NavLink>
-          </Breadcrumb.Item>
-          <Breadcrumb.Item active>
+          </li>
+          <li className="breadcrumb-item active">
             Edit Contact
-          </Breadcrumb.Item>
+          </li>
         </Breadcrumb>
       </div>
       <section className="artist-section-control">

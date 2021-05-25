@@ -97,15 +97,15 @@ function AlbumsListing() {
     <div className="musicWrapper">
       <div className="asBreadcrumbs">
         <Breadcrumb>
-          <Breadcrumb.Item>
+          <li className="breadcrumb-item">
             <NavLink to="/">Home</NavLink>
-          </Breadcrumb.Item>
-          <Breadcrumb.Item>
+          </li>
+          <li className="breadcrumb-item">
             Music
-          </Breadcrumb.Item>
-          <Breadcrumb.Item active>
-            Albums
-          </Breadcrumb.Item>
+          </li>
+          <li className="breadcrumb-item active">
+            Albms
+          </li>
         </Breadcrumb>
       </div>
       <div className="agreementBody">

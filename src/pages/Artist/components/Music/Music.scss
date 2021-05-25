@@ -126,6 +126,11 @@
   .section-content {
     .section-head {
       margin-bottom: 25px;
+      .sec-controls {
+        .btn.btn-outline-danger {
+          border: 1px solid $clr-red;
+        }
+      }
     }
   }
   .artwork-images-sec {

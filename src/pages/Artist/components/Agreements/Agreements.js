@@ -39,12 +39,12 @@ function Agreements() {
     <div className="agreementWrapper">
       <div className="asBreadcrumbs">
         <Breadcrumb>
-          <Breadcrumb.Item>
+          <li className="breadcrumb-item">
             <NavLink to="/">Home</NavLink>
-          </Breadcrumb.Item>
-          <Breadcrumb.Item active>
+          </li>
+          <li className="breadcrumb-item active">
             Agreements
-          </Breadcrumb.Item>
+          </li>
         </Breadcrumb>
       </div>
       <div className="agreementBody">

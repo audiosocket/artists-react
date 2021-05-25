@@ -9,12 +9,12 @@ function Partners() {
     <div className="partnerWrapper">
       <div className="asBreadcrumbs">
         <Breadcrumb>
-          <Breadcrumb.Item>
+          <li className="breadcrumb-item">
             <NavLink to="/">Home</NavLink>
-          </Breadcrumb.Item>
-          <Breadcrumb.Item active>
+          </li>
+          <li className="breadcrumb-item active">
             Partners
-          </Breadcrumb.Item>
+          </li>
         </Breadcrumb>
       </div>
       <div className="partnerBody">
