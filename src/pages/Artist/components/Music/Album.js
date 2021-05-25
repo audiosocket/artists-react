@@ -2,6 +2,7 @@ import React from "react";
 import {Accordion, Card, Button, Breadcrumb} from 'react-bootstrap';
 import {Route, Switch, NavLink} from "react-router-dom";
 import artwork from "../../../../images/artwork.jpg";
+import Edit from "../../../../images/pencil.svg";
 
 function Album({id = null}) {
   return (
@@ -52,24 +53,61 @@ function Album({id = null}) {
               <h2>Tracks</h2>
             </div>
             <div className="section-body">
-              <Accordion defaultActiveKey="0">
-                <Card>
-                  <Accordion.Toggle as={Card.Header} eventKey="0">
-                    Click me!
-                  </Accordion.Toggle>
-                  <Accordion.Collapse eventKey="0">
-                    <Card.Body>Hello! I'm the body</Card.Body>
-                  </Accordion.Collapse>
-                </Card>
-                <Card>
-                  <Accordion.Toggle as={Card.Header} eventKey="1">
-                    Click me!
-                  </Accordion.Toggle>
-                  <Accordion.Collapse eventKey="1">
-                    <Card.Body>Hello! I'm another body</Card.Body>
-                  </Accordion.Collapse>
-                </Card>
-              </Accordion>
+              <div className="track-wrapper">
+                <div className="trackrow head-row">
+                  <div className="playicon"></div>
+                  <div className="track-title">Title</div>
+                  <div className="track-writter">Writers</div>
+                  <div className="track-publisher">Publisher</div>
+                  <div className="track-edit"></div>
+                </div>
+
+                <div className="trackrow">
+                  <div className="playicon"></div>
+                  <div className="track-title">
+                    <p>Pudding</p>
+                    <em>Uploaded May 3, 2021</em>
+                  </div>
+                  <div className="track-writter">
+                    brittni stewart
+                  </div>
+                  <div className="track-publisher">Jetty Rae LLC</div>
+                  <div className="track-edit">
+                    <a href=""><img src={Edit} alt="Artwork"/></a>
+                  </div>
+                </div>
+
+                <div className="trackrow">
+                  <div className="playicon"></div>
+                  <div className="track-title">
+                    <p>Pudding</p>
+                    <em>Uploaded May 3, 2021</em>
+                  </div>
+                  <div className="track-writter">
+                    brittni stewart
+                  </div>
+                  <div className="track-publisher">Jetty Rae LLC</div>
+                  <div className="track-edit">
+                    <a href=""><img src={Edit} alt="Artwork"/></a>
+                  </div>
+                </div>
+
+                <div className="trackrow">
+                  <div className="playicon"></div>
+                  <div className="track-title">
+                    <p>Pudding</p>
+                    <em>Uploaded May 3, 2021</em>
+                  </div>
+                  <div className="track-writter">
+                    brittni stewart
+                  </div>
+                  <div className="track-publisher">Jetty Rae LLC</div>
+                  <div className="track-edit">
+                    <a href=""><img src={Edit} alt="Artwork"/></a>
+                  </div>
+                </div>
+                
+              </div>
             </div>
           </section>
         </div>
