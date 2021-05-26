@@ -27,6 +27,7 @@ function Album({id = null}) {
   const [isPublicDomain, setIsPublicDomain] = useState(false);
   const [file, setFile] = useState(null);
   const [inValidFile, setInvalidFile] = useState(false);
+  const [publicDomain, setPublicDomain] = useState(false);
 
   useEffect(() => {
     if(artistState.albums) {
@@ -64,9 +65,9 @@ function Album({id = null}) {
       }
       setIsLoading(true);
       if(data.get("public_domain"))
-        data.append("public_domain", true);
+        data.set("public_domain", true);
       else
-        data.append("public_domain", false);
+        data.set("public_domain", false);
       const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
       const URL = selectedTrack ? `${BASE_URL}${ALBUMS}/${id}/tracks/${selectedTrack.id}` : `${BASE_URL}${ALBUMS}/${id}/tracks`;
       const response = await fetch(`${URL}`,
@@ -119,6 +120,10 @@ function Album({id = null}) {
       setInvalidFile(false);
       return true;
     }
+  }
+
+  const handleChangePublicDomain = (e) => {
+    setPublicDomain(!publicDomain)
   }
 
   return (
@@ -266,10 +271,16 @@ function Album({id = null}) {
                 </Row>
                 <Row>
                   <Col xs={12}>
-                  <label htmlFor="remember_me" className="checkbox">
-                    <input name="remember_me" type="checkbox" />
+                  <label htmlFor="public_domain" className="checkbox">
+                    <input
+                      name="public_domain"
+                      id="public_domain"
+                      type="checkbox"
+                      onClick={handleChangePublicDomain}
+                      value={publicDomain}
+                    />
                       Public Domain
-                      <span className={"checkmark checked"}></span>
+                      <span className={publicDomain ? "checkmark checked" : "checkmark"}></span>
                   </label>
                   </Col>
                 </Row>
