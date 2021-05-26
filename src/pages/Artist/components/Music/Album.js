@@ -7,7 +7,7 @@ import Edit from "../../../../images/pencil.svg";
 import {ArtistContext} from "../../../../Store/artistContext";
 import fetchAlbums from "../../../../common/utlis/fetchAlbums";
 import Loader from "../../../../images/loader.svg";
-import play from "../../../../images/play.svg";
+import music from "../../../../images/music.svg";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
@@ -145,7 +145,7 @@ function Album({id = null}) {
               <h2>{album ? album.name : ''}</h2>
               <div className="sec-controls">
                 <NavLink to="/profile/edit" className="btn primary-btn mr-2">Edit</NavLink>
-                <NavLink to="/profile/edit" className="close-btn btn btn-outline-danger delete">Delete</NavLink>
+                <NavLink to="/profile/edit" className="close-btn btn delete">Delete</NavLink>
               </div>
             </div>
             <div className="section-body">
@@ -180,7 +180,6 @@ function Album({id = null}) {
               <div className="track-wrapper">
                 {album && album.tracks.length !== 0 &&
                   <div className="trackrow head-row">
-                    <div className="playicon"></div>
                     <div className="track-title">Title</div>
                     <div className="track-writter">Writers</div>
                     <div className="track-publisher">Publisher</div>
@@ -192,12 +191,11 @@ function Album({id = null}) {
                   album.tracks.map((track, key) => {
                     return (
                       <div key={key} className="trackrow body-row">
-                        <div className="playicon">
-                          <a href=""><img src={play} alt="Play Song"/></a>
-                        </div>
                         <div className="track-title">
-                          <p>{track.title}</p>
-                          <em>Uploaded May 3, 2021</em>
+                          <div className="titleName">
+                            <p>{track.title}</p>
+                            <em>Uploaded May 3, 2021</em>
+                          </div>
                         </div>
                         <div className="track-writter">
                           Brittni stewart
@@ -268,14 +266,11 @@ function Album({id = null}) {
                 </Row>
                 <Row>
                   <Col xs={12}>
-                    <div className="form-group">
-                      <Form.Check
-                        name="public_domain"
-                        className="custom-control-input"
-                        label="Public domain"
-                      />
-                      <label className="checkmark" onClick={() => {}} />
-                    </div>
+                  <label htmlFor="remember_me" className="checkbox">
+                    <input name="remember_me" type="checkbox" />
+                      Public Domain
+                      <span className={"checkmark checked"}></span>
+                  </label>
                   </Col>
                 </Row>
               </div>

@@ -104,6 +104,53 @@ a, .btn {
 	}
 }
 
+/*=====  checkbox  ======*/
+.checkbox {
+	position: relative;
+	padding-left: 2rem;
+	input {
+		position: absolute;
+		opacity: 0;
+		height: 0;
+		width: 0;
+		&:checked~.checkmark {
+			background: $clr-green;
+			&:after {
+				display: block;
+			}
+		}
+	}
+	.checkmark {
+		cursor: pointer;
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: 21px;
+		width: 22px;
+		border: 3px solid $clr-green;
+		&:after {
+			content: "";
+			position: absolute;
+			display: none;
+			left: 6px;
+			top: 2px;
+			width: 6px;
+			height: 11px;
+			border: solid #ffffff;
+			border-width: 0 2px 2px 0;
+			-webkit-transform: rotate(45deg);
+			-ms-transform: rotate(45deg);
+			transform: rotate(45deg);
+		}
+		&:hover {
+			background: $clr-green;
+		}
+	}
+	input~.checkmark {
+		border: 2px solid $clr-green;
+	}
+}
+
 .close-btn {
 	box-shadow: rgba(130, 138, 145, 0.5) 0px 0px 0px 1px;
 }

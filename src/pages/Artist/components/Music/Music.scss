@@ -95,13 +95,38 @@
         opacity: 1;
       }
       .custom-file {
+        height: 48px;
+        input[type="file"] {
+          height: inherit;
+        }
+        .custom-file-label {
+          height: inherit;
+          line-height: normal;
+          @include flexbox;
+          @include justify-content(space-between);
+          @include align-items(center);
+          border-radius: 8px;
+          &:after {
+            content: attr(data-browse);
+            height: inherit;
+            line-height: calc(48px - 12px);
+          }
+        }
+        .custom-file-input {
+          &:focus {
+            & ~ .custom-file-label {
+              transition: all 0.3s ease-in-out;
+              box-shadow: 0 0 5px #c0d72d;
+              border: 1px solid #c0d72d;
+            }
+          }
+        }
         &.invalid {
           .custom-file-label {
             border: 1px solid $clr-red;
           }
         }
       }
-
     }
     .modal-footer {
       border: 0;
@@ -143,8 +168,13 @@
     .section-head {
       margin-bottom: 25px;
       .sec-controls {
-        .btn.btn-outline-danger {
-          border: 1px solid $clr-red;
+        .delete {
+          &:hover {
+            color: #fff;
+            border-color: $clr-red;
+            background-color: $clr-red;
+            box-shadow: none;
+          }
         }
       }
     }
@@ -180,20 +210,11 @@
     padding: 10px 10px;
     border-radius: 7px;
     margin-bottom: 10px;
-    .playicon {
-      @include flex(1 1 10%);
-      text-align: center;
-      a {
-        width: 16px;
-        display: inline-block;
-        vertical-align: middle;
-        img {
-          width: 100%;
-        }
-      }
-    }
-    .track-title{
-      @include flex(1 1 35%);
+    .track-title {
+      @include flex(1 1 40%);
+      @include flexbox;
+      @include justify-content(flex-start);
+      @include align-items(center);
       line-height: normal;
       p {
         margin: 0;
@@ -201,12 +222,22 @@
       em {
         font-size: 11px;
       }
+      &:before {
+        content: '';
+        background: url(../../../../images/music.svg) no-repeat;
+        display: inline-block;
+        vertical-align: middle;
+        background-size: 17px;
+        width: 17px;
+        height: 20px;
+        margin-right: 20px;
+      }
     }
     .track-writter{
-      @include flex(1 1 22.5%);
+      @include flex(1 1 25%);
     }
     .track-publisher{
-      @include flex(1 1 22.5%);
+      @include flex(1 1 25%);
     }
     .track-edit{
       @include flex(1 1 10%);
@@ -214,6 +245,7 @@
         width: 16px;
         display: inline-block;
         vertical-align: middle;
+        margin-left: 15%;
         img {
           width: 100%;
         }
@@ -227,6 +259,11 @@
       font-weight: 700;
       text-transform: capitalize;
       margin-bottom: 0;
+      .track-title {
+        &:before {
+          background: none;
+        }
+      }
     }
     & > div {
       padding: 0 10px 0;
@@ -234,6 +271,7 @@
     &.body-row {
       .track-edit {
         opacity: 0.5;
+        transition: all 0.3s ease-in-out;
         &:hover {
           opacity: 1;
           cursor: pointer;
