@@ -198,7 +198,7 @@ function Album({id = null}) {
                         <div className="track-title">
                           <div className="titleName">
                             <p>{track.title}</p>
-                            <em>Uploaded May 3, 2021</em>
+                            <em>Uploaded {track.created_at.split(' ')[0]}</em>
                           </div>
                         </div>
                         <div className="track-writter">

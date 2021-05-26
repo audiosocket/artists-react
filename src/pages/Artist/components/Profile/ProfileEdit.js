@@ -169,7 +169,7 @@ function ProfileEdit() {
                   <Form.Label>Additional Images</Form.Label>
                 </Col>
                 <Col xl={4} md={6}>
-                  <DropzoneComponent onUploadImages={handleUploadImages} />
+                  <DropzoneComponent uploadedFiles={artist.additional_images ?? []} onUploadImages={handleUploadImages} />
                 </Col>
               </Row>
               <Row>
