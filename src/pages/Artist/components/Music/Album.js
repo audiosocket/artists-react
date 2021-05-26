@@ -25,6 +25,8 @@ function Album({id = null}) {
   const [selectedTrack, setSelectedTrack] = useState(null);
   const [showAddMusicModal, setShowAddMusicModal] = useState(false);
   const [isPublicDomain, setIsPublicDomain] = useState(false);
+  const [file, setFile] = useState(null);
+  const [inValidFile, setInvalidFile] = useState(false);
 
   useEffect(() => {
     if(artistState.albums) {
@@ -52,8 +54,15 @@ function Album({id = null}) {
       e.stopPropagation();
       setValidated(true);
     } else {
-      setIsLoading(true);
       const data = new FormData(form.current);
+      if(file) {
+        if(!handleChangeMusicUpload(data.get("file").name)) {
+          return;
+        }
+      } else {
+        data.set("file", selectedTrack.file);
+      }
+      setIsLoading(true);
       if(data.get("public_domain"))
         data.append("public_domain", true);
       else
@@ -97,6 +106,19 @@ function Album({id = null}) {
     setSelectedTrack(null);
     setIsPublicDomain(false);
     setValidated(false);
+    setFile(null);
+    setInvalidFile(false);
+  }
+
+  const handleChangeMusicUpload = (file) => {
+    var reg = /(.*?)\.(wav|aiff|aif)$/;
+    if(!file.toLowerCase().match(reg)) {
+      setInvalidFile(true)
+      return false;
+    } else {
+      setInvalidFile(false);
+      return true;
+    }
   }
 
   return (
@@ -219,12 +241,15 @@ function Album({id = null}) {
                   <Col xs={12}>
                     <div className="form-group">
                       <Form.File
-                        required
                         name="file"
                         type="file"
-                        label="Select file (WAV or AIFF)"
+                        className={inValidFile && "invalid"}
+                        label={file ? file.name : selectedTrack ? selectedTrack.file.split("/")[selectedTrack.file.split("/").length-1] : "Select file (WAV or AIFF)*"}
+                        data-browse="Select music"
+                        onChange={(e) => { if(e.target.files[0]) {setFile(e.target.files[0]); handleChangeMusicUpload(e.target.value)}}}
                         custom
                       />
+                      {inValidFile && <small className="error">Valid WAV or AIFF file is required!</small> }
                     </div>
                   </Col>
                 </Row>

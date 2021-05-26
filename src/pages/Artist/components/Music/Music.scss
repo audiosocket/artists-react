@@ -76,6 +76,7 @@
     .modal-body {
       padding: 40px 0 25px;
       border-bottom: 1px solid #dee2e6;
+      .create-album-modal-container,
       .music-modal-container {
         max-width: 400px;
         width: 100%;
@@ -93,6 +94,14 @@
         z-index: 1;
         opacity: 1;
       }
+      .custom-file {
+        &.invalid {
+          .custom-file-label {
+            border: 1px solid $clr-red;
+          }
+        }
+      }
+
     }
     .modal-footer {
       border: 0;
