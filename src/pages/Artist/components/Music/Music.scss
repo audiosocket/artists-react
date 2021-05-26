@@ -161,6 +161,11 @@
   .loading {
     width: 50px;
   }
+  img {
+    &.loading {
+      width: 20px;
+    }
+  }
   section {
     margin: 15px 0;
   }
@@ -194,6 +199,14 @@
       &:last-child {
         margin-right: 0;
       }
+    }
+  }
+  &.edit {
+    .section-head {
+      margin-bottom: 40px;
+    }
+    .row {
+      margin-bottom: 15px;
     }
   }
 }

@@ -142,81 +142,81 @@ function Album({id = null}) {
             {album ? album.name : ''}
           </li>
         </Breadcrumb>
-        {isLoading && !album && <h5>Loading album... <img className="loading" src={Loader} alt="loading-icon"/></h5>}
-        <div className="section-content">
-          <section >
-            <div className="section-head">
-              <h2>{album ? album.name : ''}</h2>
-              <div className="sec-controls">
-                <NavLink to="/profile/edit" className="btn primary-btn mr-2">Edit</NavLink>
-                <NavLink to="/profile/edit" className="close-btn btn delete">Delete</NavLink>
-              </div>
+      </div>
+      {isLoading && !album && <h5>Loading album... <img className="loading" src={Loader} alt="loading-icon"/></h5>}
+      <div className="section-content">
+        <section >
+          <div className="section-head">
+            <h2>{album ? album.name : ''}</h2>
+            <div className="sec-controls">
+              <NavLink to={"/music/album/"+id+"/edit"} className="btn primary-btn mr-2">Edit</NavLink>
+              <NavLink to="/profile/edit" className="close-btn btn delete">Delete</NavLink>
             </div>
-            <div className="section-body">
-              <div className="bg-content yellow bgSecondVersion">
-                <p>Please make sure you edit your track metadata carefully, make sure it looks the way you'd like it to be seen in the player. Once you upload music and assign writers to the tracks, please remember to check the blue <strong>"Submit To Classification"</strong> button on each track and the music will become available to our team for review. If you forget this part, your music will not be available to us.</p>
-                <p className="mb-0">Original material only please! We do not accept cover songs or songs containing samples. Unless it's public domain, you and your collaborators must own all the copyrights to the music you're submitting.</p>
-              </div>
+          </div>
+          <div className="section-body">
+            <div className="bg-content yellow bgSecondVersion">
+              <p>Please make sure you edit your track metadata carefully, make sure it looks the way you'd like it to be seen in the player. Once you upload music and assign writers to the tracks, please remember to check the blue <strong>"Submit To Classification"</strong> button on each track and the music will become available to our team for review. If you forget this part, your music will not be available to us.</p>
+              <p className="mb-0">Original material only please! We do not accept cover songs or songs containing samples. Unless it's public domain, you and your collaborators must own all the copyrights to the music you're submitting.</p>
             </div>
-          </section>
+          </div>
+        </section>
 
-          <section className="pt-4">
-            <div className="section-head">
-              <h2>Artwork</h2>
-              <NavLink to="/profile/edit" className="btn primary-btn">Edit</NavLink>
-              <p className="sec-head-para mb-0">Time to add some artwork to this album! Click the <i className="medium-text">Edit</i> button above to get started.</p>
+        <section className="pt-4">
+          <div className="section-head">
+            <h2>Artwork</h2>
+            <NavLink to="/profile/edit" className="btn primary-btn">Edit</NavLink>
+            <p className="sec-head-para mb-0">Time to add some artwork to this album! Click the <i className="medium-text">Edit</i> button above to get started.</p>
+          </div>
+          <div className="section-body">
+            <div className="artwork-images-sec">
+              <div className="artwork-image">
+                <img src={artwork} alt="Artwork"/>
+              </div>
             </div>
-            <div className="section-body">
-              <div className="artwork-images-sec">
-                <div className="artwork-image">
-                  <img src={artwork} alt="Artwork"/>
+          </div>
+        </section>
+
+        <section className="pt-4">
+          <div className="section-head">
+            <h2>Tracks</h2>
+            <a onClick={handleAddMusicModal} className="btn primary-btn mr-2">Add music</a>
+          </div>
+          <div className="section-body">
+            <div className="track-wrapper">
+              {album && album.tracks.length !== 0 &&
+                <div className="trackrow head-row">
+                  <div className="track-title">Title</div>
+                  <div className="track-writter">Writers</div>
+                  <div className="track-publisher">Publisher</div>
+                  <div className="track-edit">Action</div>
                 </div>
-              </div>
-            </div>
-          </section>
-
-          <section className="pt-4">
-            <div className="section-head">
-              <h2>Tracks</h2>
-              <a onClick={handleAddMusicModal} className="btn primary-btn mr-2">Add music</a>
-            </div>
-            <div className="section-body">
-              <div className="track-wrapper">
-                {album && album.tracks.length !== 0 &&
-                  <div className="trackrow head-row">
-                    <div className="track-title">Title</div>
-                    <div className="track-writter">Writers</div>
-                    <div className="track-publisher">Publisher</div>
-                    <div className="track-edit">Action</div>
-                  </div>
-                }
-                {album && album.tracks.length
-                  ?
-                  album.tracks.map((track, key) => {
-                    return (
-                      <div key={key} className="trackrow body-row">
-                        <div className="track-title">
-                          <div className="titleName">
-                            <p>{track.title}</p>
-                            <em>Uploaded {track.created_at.split(' ')[0]}</em>
-                          </div>
-                        </div>
-                        <div className="track-writter">
-                          Brittni stewart
-                        </div>
-                        <div className="track-publisher">Jetty Rae LLC</div>
-                        <div className="track-edit">
-                          <a onClick={(e) => handleEditMusicModal(track)}><img src={Edit} alt="Edit"/></a>
+              }
+              {album && album.tracks.length
+                ?
+                album.tracks.map((track, key) => {
+                  return (
+                    <div key={key} className="trackrow body-row">
+                      <div className="track-title">
+                        <div className="titleName">
+                          <p>{track.title}</p>
+                          <em>Uploaded {track.created_at.split(' ')[0]}</em>
                         </div>
                       </div>
-                    )
-                  })
-                  : <p>No music created yet! Click <i className="medium-text">Add Music</i> button above to get started.</p>
-                }
-              </div>
+                      <div className="track-writter">
+                        Brittni stewart
+                      </div>
+                      <div className="track-publisher">Jetty Rae LLC</div>
+                      <div className="track-edit">
+                        <a onClick={(e) => handleEditMusicModal(track)}><img src={Edit} alt="Edit"/></a>
+                      </div>
+                    </div>
+                  )
+                })
+                : <p>No music created yet! Click <i className="medium-text">Add Music</i> button above to get started.</p>
+              }
             </div>
-          </section>
-        </div>
+          </div>
+        </section>
       </div>
       {showAddMusicModal &&
       <Modal
