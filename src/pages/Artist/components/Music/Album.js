@@ -7,7 +7,6 @@ import Edit from "../../../../images/pencil.svg";
 import {ArtistContext} from "../../../../Store/artistContext";
 import fetchAlbums from "../../../../common/utlis/fetchAlbums";
 import Loader from "../../../../images/loader.svg";
-import music from "../../../../images/music.svg";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
@@ -27,7 +26,6 @@ function Album({id = null}) {
   const [isPublicDomain, setIsPublicDomain] = useState(false);
   const [file, setFile] = useState(null);
   const [inValidFile, setInvalidFile] = useState(false);
-  const [publicDomain, setPublicDomain] = useState(false);
 
   useEffect(() => {
     if(artistState.albums) {
@@ -100,6 +98,7 @@ function Album({id = null}) {
   const handleEditMusicModal = (track) => {
     setSelectedTrack(track);
     setShowAddMusicModal(true);
+    setIsPublicDomain(track.public_domain === true || track.public_domain === "true" ? true : false);
   }
 
   const handleClose = () => {
@@ -123,7 +122,7 @@ function Album({id = null}) {
   }
 
   const handleChangePublicDomain = (e) => {
-    setPublicDomain(!publicDomain)
+    setIsPublicDomain(!isPublicDomain)
   }
 
   return (
@@ -277,10 +276,11 @@ function Album({id = null}) {
                       id="public_domain"
                       type="checkbox"
                       onClick={handleChangePublicDomain}
-                      value={publicDomain}
+                      value={isPublicDomain}
+                      checked={isPublicDomain}
                     />
                       Public Domain
-                      <span className={publicDomain ? "checkmark checked" : "checkmark"}></span>
+                      <span className={isPublicDomain ? "checkmark checked" : "checkmark"}></span>
                   </label>
                   </Col>
                 </Row>
