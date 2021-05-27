@@ -45,20 +45,6 @@ function Sidebar() {
         <li>
           <NavLink
             activeClassName={"selected"}
-            to={"/bank"}>
-            Bank Details
-          </NavLink>
-        </li>
-        <li>
-          <NavLink
-            activeClassName={"selected"}
-            to={"/tax"}>
-            Tax Details
-          </NavLink>
-        </li>
-        <li>
-          <NavLink
-            activeClassName={"selected"}
             to={"/faq"}>
             FAQs
           </NavLink>
