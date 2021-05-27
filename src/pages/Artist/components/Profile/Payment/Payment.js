@@ -71,7 +71,7 @@ function Payment() {
     let object = {};
     data.forEach((value, key) => object[key] = value);
     object = {
-      payment: object
+      payment_information: object
     }
     let json = JSON.stringify(object);
     return json;
