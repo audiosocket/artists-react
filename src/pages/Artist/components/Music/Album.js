@@ -251,10 +251,9 @@ function Album({id = null}) {
       <Modal
         show={showAddMusicModal}
         onHide={handleClose}
-        size="lg"
         aria-labelledby="contained-modal-title-vcenter"
         centered
-        className="customArtistModal"
+        className="customArtistModal closeOn"
       >
         <Form noValidate validated={validated} ref={form} onSubmit={handleSubmitAddMusic}>
           <Modal.Header closeButton>
@@ -317,11 +316,11 @@ function Album({id = null}) {
             </div>
           </Modal.Body>
           <Modal.Footer>
-            <Button className="btn btn-outline-light" onClick={handleClose}>Cancel</Button>
             {!selectedTrack
               ? <Button type="submit" className="btn primary-btn submit">{isLoading ? <>Adding...<img src={Loader} alt="icon"/></> : "Add Music"}</Button>
               : <Button type="submit" className="btn primary-btn submit">{isLoading ? <>Saving...<img src={Loader} alt="icon"/></> : "Save"}</Button>
             }
+            <Button className="as-tertiary-modal-btn" onClick={handleClose}>Submit for Classification</Button>
           </Modal.Footer>
         </Form>
       </Modal>

@@ -56,7 +56,7 @@
 .customArtistModal  {
   z-index: 1041;
   .modal-dialog {
-    max-width: 600px;
+    max-width: 700px;
     width: 100%;
     .modal-content {
       border-radius: 15px;
@@ -78,7 +78,7 @@
       border-bottom: 1px solid #dee2e6;
       .create-album-modal-container,
       .music-modal-container {
-        max-width: 400px;
+        max-width: 500px;
         width: 100%;
         margin: 0 auto;
         .form-control {
@@ -141,15 +141,43 @@
         border: 0;
         height: inherit;
         margin: 0;
+        transition: all 0.3s ease-in-out;
         &.btn-outline-light {
           &:hover {
             background-color: #F6F6F6;
+          }
+        }
+        &.as-tertiary-modal-btn {
+          background-color: $clr-blue-light;
+          color: #fff;
+          &:hover {
+            opacity: 0.85;
           }
         }
       }
       .submit {
         img {
           width: 20px;
+        }
+      }
+    }
+  }
+  &.closeOn {
+    .modal-header {
+      .close {
+        display: inline-block;
+        background: url(../../../../images/close-modal.svg) no-repeat;
+        vertical-align: middle;
+        background-size: 30px;
+        width: 30px;
+        height: 30px;
+        margin: 0;
+        padding: 0;
+        top: 15px;
+        right: 15px;
+        opacity: 0.8;
+          span[aria-hidden="true"] {
+          display: none;
         }
       }
     }
