@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import './DropzoneComponent.scss';
 import close from "../../images/close-circle-2.svg";
 
-const DropzoneComponent = ({uploadedFiles = [], onUploadImages = null}) => {
+const DropzoneComponent = ({onUploadImages = null}) => {
   const fileInputRef = useRef();
   const modalImageRef = useRef();
   const modalRef = useRef();
@@ -23,9 +23,6 @@ const DropzoneComponent = ({uploadedFiles = [], onUploadImages = null}) => {
         return acc;
       }
     }, []);
-    uploadedFiles.forEach((file) => {
-      filteredArr.push(file);
-    });
     setValidFiles([...filteredArr]);
     onUploadImages(filteredArr);
   }, [selectedFiles]);
@@ -104,12 +101,10 @@ const DropzoneComponent = ({uploadedFiles = [], onUploadImages = null}) => {
     const index = validFiles.findIndex(e => e.name === name);
     const index2 = selectedFiles.findIndex(e => e.name === name);
     const index3 = unsupportedFiles.findIndex(e => e.name === name);
-    const indexUploaded = uploadedFiles.findIndex(e => e === name);
     validFiles.splice(index, 1);
     selectedFiles.splice(index2, 1);
     setValidFiles([...validFiles]);
     setSelectedFiles([...selectedFiles]);
-    uploadedFiles.splice(uploadedFiles, 1);
     if (index3 !== -1) {
       unsupportedFiles.splice(index3, 1);
       setUnsupportedFiles([...unsupportedFiles]);
@@ -119,15 +114,10 @@ const DropzoneComponent = ({uploadedFiles = [], onUploadImages = null}) => {
   const openImageModal = (file) => {
     const reader = new FileReader();
     modalRef.current.style.display = "block";
-    try {
-      reader.readAsDataURL(file);
-      reader.onload = function(e) {
-        modalImageRef.current.style.backgroundImage = `url(${e.target.result})`;
-      }
-    } catch (e) {
-      modalImageRef.current.style.backgroundImage = `url(${file})`;
+    reader.readAsDataURL(file);
+    reader.onload = function(e) {
+      modalImageRef.current.style.backgroundImage = `url(${e.target.result})`;
     }
-
   }
 
   const closeModal = () => {
@@ -169,15 +159,11 @@ const DropzoneComponent = ({uploadedFiles = [], onUploadImages = null}) => {
               <div className="file-status-bar" key={i}>
                 <div onClick={!data.invalid ? () => openImageModal(data) : () => removeFile(data.name)}>
                   <div className="file-type-logo"></div>
-                  <div className="file-type">{data.name ? fileType(data.name) : data.split('.')[data.split('.').length - 1]}</div>
-                  <span className={`file-name`}>{data.name ? fileType(data.name) : data.split('/')[data.split('/').length - 1]}</span>
-                  {data.name &&
-                    <>
-                    <span className="file-size">({fileSize(data.size)})</span> {data.invalid && <span className='file-error-message'>({errorMessage})</span>}
-                    </>
-                  }
+                  <div className="file-type">{fileType(data.name)}</div>
+                  <span className={`file-name ${data.invalid ? 'file-error' : ''}`}>{data.name}</span>
+                  <span className="file-size">({fileSize(data.size)})</span> {data.invalid && <span className='file-error-message'>({errorMessage})</span>}
                 </div>
-                <div className="file-remove" onClick={() => removeFile(data.name ? data.name : data)}><img className="close-icon" src={close} /></div>
+                <div className="file-remove" onClick={() => removeFile(data.name)}><img className="close-icon" src={close} /></div>
               </div>
             )
           }
