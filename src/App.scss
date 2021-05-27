@@ -42,6 +42,15 @@
               flex: $values;
 }
 
+@mixin transition($args...) {
+  -webkit-transition: $args;
+  -moz-transition: $args;
+  -ms-transition: $args;
+  -o-transition: $args;
+  transition: $args;
+}
+
+
 /*=====  Variables  ======*/
 
 $clr-green: hsl(68deg, 68%, 51%);
