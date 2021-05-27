@@ -77,7 +77,8 @@
       padding: 40px 0 25px;
       border-bottom: 1px solid #dee2e6;
       .create-album-modal-container,
-      .music-modal-container {
+      .music-modal-container,
+      .publisher-modal-container {
         max-width: 500px;
         width: 100%;
         margin: 0 auto;
@@ -164,6 +165,9 @@
   }
   &.closeOn {
     .modal-header {
+      .modal-title {
+        padding: 0px 40px;
+      }
       .close {
         display: inline-block;
         background: url(../../../../images/close-modal.svg) no-repeat;

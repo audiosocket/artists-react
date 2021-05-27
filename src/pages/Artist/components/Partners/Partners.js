@@ -181,6 +181,25 @@ function Partners() {
                       </Form.Control.Feedback>
                     </div>
                   </Col>
+                  <Col xs={12}>
+                    <div className="form-group">
+                      <Form.Control as="select">
+                        <option>Select PRO</option>
+                      </Form.Control>
+                    </div>
+                  </Col>
+                  <Col xs={12}>
+                    <div className="form-group">
+                      <Form.Control
+                        required
+                        name="name"
+                        type="text"
+                        defaultValue={''}
+                        placeholder="CAE/IPI #"
+                      />
+                      <small className="text-muted">This field is optional</small>
+                    </div>
+                  </Col>
                 </Row>
               </div>
             </div>
