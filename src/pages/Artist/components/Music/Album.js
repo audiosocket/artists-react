@@ -59,7 +59,7 @@ function Album({id = null}) {
           return;
         }
       } else {
-        data.set("file", selectedTrack.file);
+        data.delete('file');
       }
       setIsLoading(true);
       if(data.get("public_domain"))
