@@ -8,6 +8,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import Loader from "../../../../images/loader.svg";
+import Select from "react-select";
 
 function Partners() {
   const [isLoading, SetIsLoading] = useState(false);
@@ -15,6 +16,8 @@ function Partners() {
   const form = useRef(false);
   const [showCollaboratorModal, setShowCollaboratorModal] = useState(false);
   const [showPublisherModal, setShowPublisherModal] = useState(false);
+  const [pro, setPro] = useState(null);
+  const proRef = useRef(null);
 
   const handleCreateCollaborator = async (e) => {
 
@@ -55,10 +58,10 @@ function Partners() {
         <section>
           <div className="bg-content yellow bgSecondVersion mt-4">
             <h4 className="mb-3"><strong>Partners in crime</strong></h4>
-            <p>Who's a collaborator? Anyone who's associated with this artist. Your fellow band members, a record label rep, or even your manager Collaborators with an IPI number and PRO can be attached to track uploads as writers.</p>
+            <p>Who's a collaborator? Anyone who's associated with this artist. Your fellow band members, a record label rep, or even your manager. Collaborators with an IPI number and PRO can be attached to track uploads as writers.</p>
             <p> All of your co-writers must be invited under the Collaborators section and they must accept the agreement before your music becomes live to our classification team.</p>
-            <p>We've added a section for Publishers. If you have a Publishing entity you must list it here to receive publishing royalties.</p>
-            <p>Please note that you will not be able to edit a track's writers and publishers after submitting that track for classification. If needed, shoot us an email at <a href="mailto:artist@audiosocket.com">artists@audiosocket.com</a> and we'll unlock it.</p>
+            <p>We've added a section for Publishers. If you have a Publishing entity, you must list it here to receive publishing royalties.</p>
+            <p>Please note that you will not be able to edit a track's writers and publishers after submitting that track for classification. If needed, shoot us an email at <a href="mailto:artists@audiosocket.com">artists@audiosocket.com</a> and we'll unlock it.</p>
 
           </div>
         </section>
@@ -72,12 +75,6 @@ function Partners() {
               <li><a href="">Brittni Stewart <small>ade7322063, 0: SEGAC</small></a></li>
               <li><a href="">Brittni Stewart <small>ade7322063, 0: SEGAC</small></a></li>
               <li><a href="">Brittni Stewart <small>ade7322063, 0: SEGAC</small></a></li>
-              <li><a href="">Brittni Stewart <small>ade7322063, 0: SEGAC</small></a></li>
-              <li><a href="">Brittni Stewart <small>ade7322063, 0: SEGAC</small></a></li>
-              <li><a href="">Brittni Stewart <small>ade7322063, 0: SEGAC</small></a></li>
-              <li><a href="">Brittni Stewart <small>ade7322063, 0: SEGAC</small></a></li>
-              <li><a href="">Brittni Stewart <small>ade7322063, 0: SEGAC</small></a></li>
-              <li><a href="">Brittni Stewart <small>ade7322063, 0: SEGAC</small></a></li>
             </ul>
           </div>
         </section>
@@ -88,14 +85,6 @@ function Partners() {
           </div>
           <div className="partner-list">
             <ul className="partner-row">
-              <li><a href="">Jetty Rae LLC  <small>MOSEEG 677853753</small></a></li>
-              <li><a href="">Jetty Rae LLC  <small>MOSEEG 677853753</small></a></li>
-              <li><a href="">Jetty Rae LLC  <small>MOSEEG 677853753</small></a></li>
-              <li><a href="">Jetty Rae LLC  <small>MOSEEG 677853753</small></a></li>
-              <li><a href="">Jetty Rae LLC  <small>MOSEEG 677853753</small></a></li>
-              <li><a href="">Jetty Rae LLC  <small>MOSEEG 677853753</small></a></li>
-              <li><a href="">Jetty Rae LLC  <small>MOSEEG 677853753</small></a></li>
-              <li><a href="">Jetty Rae LLC  <small>MOSEEG 677853753</small></a></li>
               <li><a href="">Jetty Rae LLC  <small>MOSEEG 677853753</small></a></li>
               <li><a href="">Jetty Rae LLC  <small>MOSEEG 677853753</small></a></li>
               <li><a href="">Jetty Rae LLC  <small>MOSEEG 677853753</small></a></li>
@@ -183,9 +172,24 @@ function Partners() {
                   </Col>
                   <Col xs={12}>
                     <div className="form-group">
-                      <Form.Control as="select">
-                        <option>Select PRO</option>
-                      </Form.Control>
+                      <Select
+                        required
+                        ref={proRef}
+                        isSearchable={false}
+                        placeholder="Select PRO"
+                        className="pro-select-container-header"
+                        classNamePrefix="pro-select-header react-select-popup"
+                        options={[{label: "Select PRO", value: null},{label: "No", value: false}, {label: "Yes", value: true}]}
+                        defaultValue={{label: "Select PRO", value: null}}
+                        onChange={(target) => setPro(target.value)}
+                        theme={theme => ({
+                          ...theme,
+                          colors: {
+                            ...theme.colors,
+                            primary: '#c0d72d',
+                          },
+                        })}
+                      />
                     </div>
                   </Col>
                   <Col xs={12}>

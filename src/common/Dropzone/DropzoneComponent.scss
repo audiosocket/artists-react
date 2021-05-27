@@ -104,7 +104,7 @@
   border-radius: 2px;
   box-shadow: 1px 1px 2px #abc;
   color: #fff;
-  background: #0080c8;
+  background: #007bff;
   text-transform: uppercase;
   width: 34px;
   overflow: hidden;
@@ -115,7 +115,11 @@
   display: inline-block;
   vertical-align:top;
   margin-left: 50px;
-  color: #4aa1f3;
+  color: #007bff;
+  &:hover {
+    cursor: pointer;
+    color: #0056b3;
+  }
 }
 
 .file-error {
@@ -270,7 +274,7 @@
 
 .progress-bar {
   position: absolute;
-  background-color: #4aa1f3;
+  background-color: #007bff;
   height: 20px;
   border-radius: 5px;
   text-align: center;
