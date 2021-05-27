@@ -1,4 +1,4 @@
-import React, {useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import "./Partners.scss";
 import Breadcrumb from "react-bootstrap/Breadcrumb";
 import {NavLink} from "react-router-dom";
@@ -8,20 +8,79 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import Loader from "../../../../images/loader.svg";
+import Select from "react-select";
+import {ACCESS_TOKEN, BASE_URL, PUBLISHERS} from "../../../../common/api";
+import {ArtistContext} from "../../../../Store/artistContext";
 
 function Partners() {
-  const [isLoading, SetIsLoading] = useState(false);
+  const {artistState, artistActions} = React.useContext(ArtistContext);
+  const [collaborators, setCollaborators] = useState(null);
+  const [publishers, setPublishers] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const [validated, setValidated] = useState(false);
   const form = useRef(false);
   const [showCollaboratorModal, setShowCollaboratorModal] = useState(false);
   const [showPublisherModal, setShowPublisherModal] = useState(false);
+  const [pro, setPro] = useState(null);
+  const proRef = useRef(null);
+
+  useEffect(() => {
+    getPublishers();
+  }, [])
+
+  const getPublishers = async () => {
+    setIsLoading(true);
+    const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
+    const response = await fetch(`${BASE_URL}${PUBLISHERS}`,
+      {
+        headers: {
+          "authorization": ACCESS_TOKEN,
+          "auth-token": userAuthToken
+        }
+      });
+    const resultSet = await response.json();
+    if (!response.ok) {
+      setPublishers(null);
+    } else {
+      setPublishers(resultSet.length ? resultSet : null);
+    }
+    setIsLoading(false);
+  }
 
   const handleCreateCollaborator = async (e) => {
 
   }
 
-  const handleCreatePublisher = async (e) => {
-
+  const handleSubmitPublisher = async (e) => {
+    e.preventDefault();
+    const artistForm = e.currentTarget;
+    if (artistForm.checkValidity() === false) {
+      e.preventDefault();
+      e.stopPropagation();
+      setValidated(true);
+    } else {
+      setIsLoading(true);
+      const data = new FormData(form.current);
+      const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
+      const response = await fetch(`${BASE_URL}${PUBLISHERS}`,
+        {
+          headers: {
+            "authorization": ACCESS_TOKEN,
+            "auth-token": userAuthToken,
+          },
+          method: 'POST',
+          body: data
+        });
+      const publishers = await response.json();
+      if(!response.ok) {
+        alert('Something went wrong, try later!');
+      } else {
+        const getPub = await getPublishers();
+        //artistActions.publishersStateChanged(publishers);
+        handleClose();
+      }
+      setIsLoading(false);
+    }
   }
 
   const handleShowCollaboratorModal = () => {
@@ -55,10 +114,10 @@ function Partners() {
         <section>
           <div className="bg-content yellow bgSecondVersion mt-4">
             <h4 className="mb-3"><strong>Partners in crime</strong></h4>
-            <p>Who's a collaborator? Anyone who's associated with this artist. Your fellow band members, a record label rep, or even your manager Collaborators with an IPI number and PRO can be attached to track uploads as writers.</p>
+            <p>Who's a collaborator? Anyone who's associated with this artist. Your fellow band members, a record label rep, or even your manager. Collaborators with an IPI number and PRO can be attached to track uploads as writers.</p>
             <p> All of your co-writers must be invited under the Collaborators section and they must accept the agreement before your music becomes live to our classification team.</p>
-            <p>We've added a section for Publishers. If you have a Publishing entity you must list it here to receive publishing royalties.</p>
-            <p>Please note that you will not be able to edit a track's writers and publishers after submitting that track for classification. If needed, shoot us an email at <a href="mailto:artist@audiosocket.com">artists@audiosocket.com</a> and we'll unlock it.</p>
+            <p>We've added a section for Publishers. If you have a Publishing entity, you must list it here to receive publishing royalties.</p>
+            <p>Please note that you will not be able to edit a track's writers and publishers after submitting that track for classification. If needed, shoot us an email at <a href="mailto:artists@audiosocket.com">artists@audiosocket.com</a> and we'll unlock it.</p>
 
           </div>
         </section>
@@ -69,15 +128,7 @@ function Partners() {
           </div>
           <div className="partner-list">
             <ul className="partner-row">
-              <li><a href="">Brittni Stewart <small>ade7322063, 0: SEGAC</small></a></li>
-              <li><a href="">Brittni Stewart <small>ade7322063, 0: SEGAC</small></a></li>
-              <li><a href="">Brittni Stewart <small>ade7322063, 0: SEGAC</small></a></li>
-              <li><a href="">Brittni Stewart <small>ade7322063, 0: SEGAC</small></a></li>
-              <li><a href="">Brittni Stewart <small>ade7322063, 0: SEGAC</small></a></li>
-              <li><a href="">Brittni Stewart <small>ade7322063, 0: SEGAC</small></a></li>
-              <li><a href="">Brittni Stewart <small>ade7322063, 0: SEGAC</small></a></li>
-              <li><a href="">Brittni Stewart <small>ade7322063, 0: SEGAC</small></a></li>
-              <li><a href="">Brittni Stewart <small>ade7322063, 0: SEGAC</small></a></li>
+              {!collaborators && <p>No collaborators created yet! Click <i className="medium-text">Add a collaborators</i> button to get started.</p>}
             </ul>
           </div>
         </section>
@@ -88,19 +139,15 @@ function Partners() {
           </div>
           <div className="partner-list">
             <ul className="partner-row">
-              <li><a href="">Jetty Rae LLC  <small>MOSEEG 677853753</small></a></li>
-              <li><a href="">Jetty Rae LLC  <small>MOSEEG 677853753</small></a></li>
-              <li><a href="">Jetty Rae LLC  <small>MOSEEG 677853753</small></a></li>
-              <li><a href="">Jetty Rae LLC  <small>MOSEEG 677853753</small></a></li>
-              <li><a href="">Jetty Rae LLC  <small>MOSEEG 677853753</small></a></li>
-              <li><a href="">Jetty Rae LLC  <small>MOSEEG 677853753</small></a></li>
-              <li><a href="">Jetty Rae LLC  <small>MOSEEG 677853753</small></a></li>
-              <li><a href="">Jetty Rae LLC  <small>MOSEEG 677853753</small></a></li>
-              <li><a href="">Jetty Rae LLC  <small>MOSEEG 677853753</small></a></li>
-              <li><a href="">Jetty Rae LLC  <small>MOSEEG 677853753</small></a></li>
-              <li><a href="">Jetty Rae LLC  <small>MOSEEG 677853753</small></a></li>
-              <li><a href="">Jetty Rae LLC  <small>MOSEEG 677853753</small></a></li>
+              {publishers &&
+                publishers.map((publisher, key) => {
+                  return (
+                    publisher.name && <li key={key}><a>{publisher.name} <small>MOSEEG 677853753</small></a></li>
+                  )
+                })
+              }
             </ul>
+            {!publishers && <p>No publishers created yet! Click <i className="medium-text">Add a publisher</i> button to get started.</p>}
           </div>
         </section>
     </div>
@@ -232,7 +279,7 @@ function Partners() {
         centered
         className="customArtistModal publisher-modal"
       >
-        <Form noValidate validated={validated} ref={form} onSubmit={handleCreatePublisher}>
+        <Form noValidate validated={validated} ref={form} onSubmit={handleSubmitPublisher}>
           <Modal.Header closeButton>
             <Modal.Title id="contained-modal-title-vcenter">
               New Publisher
@@ -258,16 +305,29 @@ function Partners() {
                   </Col>
                   <Col xs={12}>
                     <div className="form-group">
-                      <Form.Control as="select">
-                        <option>Select PRO</option>
-                      </Form.Control>
+                      <Select
+                        ref={proRef}
+                        isSearchable={false}
+                        placeholder="Select PRO"
+                        className="pro-select-container-header"
+                        classNamePrefix="pro-select-header react-select-popup"
+                        options={[{label: "Select PRO", value: null},{label: "No", value: false}, {label: "Yes", value: true}]}
+                        defaultValue={{label: "Select PRO", value: null}}
+                        onChange={(target) => setPro(target.value)}
+                        theme={theme => ({
+                          ...theme,
+                          colors: {
+                            ...theme.colors,
+                            primary: '#c0d72d',
+                          },
+                        })}
+                      />
                     </div>
                   </Col>
                   <Col xs={12}>
                     <div className="form-group">
                       <Form.Control
-                        required
-                        name="name"
+                        name="cae_ipi"
                         type="text"
                         defaultValue={''}
                         placeholder="CAE/IPI #"
@@ -281,7 +341,7 @@ function Partners() {
           </Modal.Body>
           <Modal.Footer>
             <Button className="btn btn-outline-light" onClick={handleClose}>Cancel</Button>
-            <Button type="submit" className="btn primary-btn submit">{isLoading ? <>Saving...<img src={Loader} alt="icon"/></> : "Save"}</Button>
+            <Button type="submit" className="btn primary-btn submit">{isLoading ? <>Creating...<img src={Loader} alt="icon"/></> : "Create"}</Button>
           </Modal.Footer>
         </Form>
       </Modal>
