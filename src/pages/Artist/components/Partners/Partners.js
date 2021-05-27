@@ -111,8 +111,7 @@ function Partners() {
         size="lg"
         aria-labelledby="contained-modal-title-vcenter"
         centered
-        className="customArtistModal collabortor-modal"
-      >
+        className="customArtistModal-lg collabortor-modal">
         <Form noValidate validated={validated} ref={form} onSubmit={handleCreateCollaborator}>
           <Modal.Header closeButton>
             <Modal.Title id="contained-modal-title-vcenter">
@@ -120,7 +119,7 @@ function Partners() {
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <div className="collabortor-modal-container">
+            <div className="modalBodyInner collabortor-modal-container">
               <div className="section">
                 <Row>
                   <Col xs={12}>
@@ -137,6 +136,82 @@ function Partners() {
                       </Form.Control.Feedback>
                     </div>
                   </Col>
+                  <Col xs={12}>
+                    <div className="form-group">
+                      <label htmlFor="accept_agreement" className="checkbox my-3">
+                        <input
+                          name="accept_agreement"
+                          id="accept_agreement"
+                          type="checkbox"
+                        />
+                          This person will be logging into this artist portal and/or they need to accept the Audicsocket license agreement
+                          <span className={"checkmark"}></span>
+                    </label>
+                    </div>
+                  </Col>
+                  <Col xs={12}>
+                    <div className="form-group">
+                      <Form.Control
+                        required
+                        name="name"
+                        type="text"
+                        defaultValue={''}
+                        placeholder="Email*"
+                      />
+                    </div>
+                  </Col>
+                  <Col xs={12}>
+                    <div className="form-group">
+                      <label htmlFor="CRUD-control" className="checkbox my-3">
+                        <input
+                          name="CRUD-control"
+                          id="CRUD-control"
+                          type="checkbox"
+                        />
+                          Allow this person to update artist information, edit/create tracks and add/remove collaborators.
+                          <span className={"checkmark"}></span>
+                    </label>
+                    </div>
+                  </Col>
+                  <Col xs={12}>
+                    <div className="form-group">
+                      <Form.Control
+                        required
+                        name="name"
+                        type="text"
+                        defaultValue={''}
+                        placeholder="CAE/IPI #"
+                      />
+                      <small className="text-muted">This field is optional</small>
+                      <div>
+                      <small className="text-muted"><strong>Note</strong>: An IPI # is not the same as a member number,
+                       its the  9 digit number that appears on the statements from your PRO</small>
+                      </div>
+                    </div>
+                  </Col>
+                  <Col xs={12}>
+                    <div className="form-group">
+                      <Form.Control as="select">
+                        <option>Select PRO</option>
+                      </Form.Control>
+                      <small className="text-muted">This field is optional</small>
+                    </div>
+                  </Col>
+
+                  <Col xs={12}>
+                    <div className="form-group">
+                      <label htmlFor="name_privacy" className="checkbox my-3">
+                        <input
+                          name="name_privacy"
+                          id="name_privacy"
+                          type="checkbox"
+                        />
+                          My PRO knows me by a different registratered name.
+                          <span className={"checkmark"}></span>
+                    </label>
+                    </div>
+                  </Col>
+                  
                 </Row>
               </div>
             </div>
