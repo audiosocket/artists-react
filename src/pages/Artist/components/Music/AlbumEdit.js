@@ -14,6 +14,7 @@ import Button from "react-bootstrap/Button";
 function AlbumEdit({id = null}) {
   const {artistState, artistActions} = React.useContext(ArtistContext);
   const [isLoading, setIsLoading] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const [validated, setValidated] = useState(false);
   const form = useRef(false);
   const [album, setAlbum] = useState(null);
@@ -81,6 +82,30 @@ function AlbumEdit({id = null}) {
     }
   }
 
+  const handleAlbumDelete = async (e) => {
+    e.preventDefault();
+    if(window.confirm(`Are you sure to delete "${album.name}"?`)) {
+      setIsDeleting(true);
+      const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
+      const response = await fetch(`${BASE_URL}${ALBUMS}/${id}`,
+        {
+          headers: {
+            "authorization": ACCESS_TOKEN,
+            "auth-token": userAuthToken
+          },
+          method: "DELETE"
+        });
+      if (!response.ok) {
+        alert('Something went wrong, try later!');
+        setIsDeleting(false);
+      } else {
+        const albums = await fetchAlbums();
+        artistActions.albumsStateChanged(albums);
+        setIsDeleting(false);
+        history.push(`/music`);
+      }
+    }
+  }
 
   return (
     <div className="albumsWrapper edit">
@@ -95,15 +120,21 @@ function AlbumEdit({id = null}) {
           <li className="breadcrumb-item">
             <NavLink to="/music">Albums</NavLink>
           </li>
+          <li className="breadcrumb-item">
+            <NavLink to={"/music/album/"+id}>{album ? album.name : ''}</NavLink>
+          </li>
           <li className="breadcrumb-item active">
-            {album ? album.name : ''}
+            Edit Album
           </li>
         </Breadcrumb>
       </div>
       <div className="section-content">
         <section >
           <div className="section-head">
-            <h2>{album ? album.name : ''}</h2>
+            <h2>Edit Album</h2>
+            <div className="sec-controls">
+              <a onClick={handleAlbumDelete} className="close-btn btn delete">{isDeleting ? <>Deleting...<img className="loading" src={Loader} alt="icon"/></> : "Delete" }</a>
+            </div>
           </div>
         </section>
         {isLoading && !album && <h5>Loading album... <img className="loading" src={Loader} alt="loading-icon"/></h5>}
@@ -128,7 +159,7 @@ function AlbumEdit({id = null}) {
             </Row>
             <Row>
               <Col xl={2} md={6}>
-                <Form.Label>Album Name*</Form.Label>
+                <Form.Label>Release Date</Form.Label>
               </Col>
               <Col xl={4} md={6}>
                 <Form.Control

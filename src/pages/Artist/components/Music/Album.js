@@ -1,7 +1,7 @@
 import "./Music.scss";
 import React, {useEffect, useRef, useState} from "react";
 import {Breadcrumb} from 'react-bootstrap';
-import {NavLink} from "react-router-dom";
+import {NavLink, useHistory} from "react-router-dom";
 import artwork from "../../../../images/artwork.jpg";
 import Edit from "../../../../images/pencil.svg";
 import {ArtistContext} from "../../../../Store/artistContext";
@@ -26,6 +26,7 @@ function Album({id = null}) {
   const [isPublicDomain, setIsPublicDomain] = useState(false);
   const [file, setFile] = useState(null);
   const [inValidFile, setInvalidFile] = useState(false);
+  const history = useHistory();
 
   useEffect(() => {
     if(artistState.albums) {
@@ -91,6 +92,31 @@ function Album({id = null}) {
     }
   }
 
+  const handleAlbumDelete = async (e) => {
+    e.preventDefault();
+    if(window.confirm(`Are you sure to delete "${album.name}"?`)) {
+      setIsLoading(true);
+      const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
+      const response = await fetch(`${BASE_URL}${ALBUMS}/${id}`,
+        {
+          headers: {
+            "authorization": ACCESS_TOKEN,
+            "auth-token": userAuthToken
+          },
+          method: "DELETE"
+        });
+      if (!response.ok) {
+        alert('Something went wrong, try later!');
+        setIsLoading(false);
+      } else {
+        const albums = await fetchAlbums();
+        artistActions.albumsStateChanged(albums);
+        setIsLoading(false);
+        history.push(`/music`);
+      }
+    }
+  }
+
   const handleAddMusicModal = () => {
     setShowAddMusicModal(true);
   }
@@ -150,7 +176,7 @@ function Album({id = null}) {
             <h2>{album ? album.name : ''}</h2>
             <div className="sec-controls">
               <NavLink to={"/music/album/"+id+"/edit"} className="btn primary-btn mr-2">Edit</NavLink>
-              <NavLink to="/profile/edit" className="close-btn btn delete">Delete</NavLink>
+              <a onClick={handleAlbumDelete} className="close-btn btn delete">{isLoading ? <>Deleting...<img className="loading" src={Loader} alt="icon"/></> : "Delete" }</a>
             </div>
           </div>
           <div className="section-body">
