@@ -7,3 +7,4 @@ export const AGREEMENTS = "api/v1/users_agreements";
 export const ARTIST_PROFILE_SHOW = "api/v1/artist_profiles/show_profile";
 export const ARTIST_PROFILE_UPDATE = "api/v1/artist_profiles/update_profile";
 export const ALBUMS = "api/v1/albums";
+export const PUBLISHERS = "api/v1/publishers";
