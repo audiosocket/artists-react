@@ -6,6 +6,7 @@ import Album from "./Album";
 import TracksListing from "./TracksListing";
 import Track from "./Track";
 import AlbumEdit from "./AlbumEdit";
+import AlbumArtwork from "./AlbumArtwork";
 
 
 function Music() {
@@ -20,6 +21,11 @@ function Music() {
         exact={true}
         path="/music/album/:id/edit"
         render={(props) => <AlbumEdit id={props.match.params.id} />}
+      />
+      <Route
+        exact={true}
+        path="/music/album/:id/artwork"
+        render={(props) => <AlbumArtwork id={props.match.params.id} />}
       />
       <Route
         exact={true}

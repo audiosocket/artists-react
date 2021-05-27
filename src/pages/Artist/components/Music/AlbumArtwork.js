@@ -11,26 +11,19 @@ import {Breadcrumb} from "react-bootstrap";
 import Loader from "../../../../images/loader.svg";
 import Button from "react-bootstrap/Button";
 
-function AlbumEdit({id = null}) {
+function AlbumArtwrok({id = null}) {
   const {artistState, artistActions} = React.useContext(ArtistContext);
   const [isLoading, setIsLoading] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
   const [validated, setValidated] = useState(false);
   const form = useRef(false);
   const [album, setAlbum] = useState(null);
-  const [selectedAlbumDate, setSelectedAlbumDate] = useState('');
+  const [artwork, setArtwork] = useState(null);
   const history = useHistory();
 
   useEffect(() => {
     if(artistState.albums) {
       const filteredAlbum = artistState.albums.filter(album => parseInt(album.id) === parseInt(id));
       setAlbum(filteredAlbum[0] ?? null)
-      if(filteredAlbum[0].release_date) {
-        const day = filteredAlbum[0].release_date.substr(0,2);
-        const month = filteredAlbum[0].release_date.substr(3,2);
-        const year = filteredAlbum[0].release_date.substr(6,4);
-        setSelectedAlbumDate(`${year}-${month}-${day}`);
-      }
     } else {
       getAlbum();
     }
@@ -42,16 +35,10 @@ function AlbumEdit({id = null}) {
     artistActions.albumsStateChanged(albums);
     const filteredAlbum = albums.filter(album => parseInt(album.id) === parseInt(id));
     setAlbum(filteredAlbum[0] ?? null)
-    if(filteredAlbum[0].release_date) {
-      const day = filteredAlbum[0].release_date.substr(0,2);
-      const month = filteredAlbum[0].release_date.substr(3,2);
-      const year = filteredAlbum[0].release_date.substr(6,4);
-      setSelectedAlbumDate(`${year}-${month}-${day}`);
-    }
     setIsLoading(false);
   }
 
-  const handleSubmitEditAlbum = async (e) => {
+  const handleSubmitEditArtwork = async (e) => {
     e.preventDefault();
     const albumForm = e.currentTarget;
     if (albumForm.checkValidity() === false) {
@@ -62,7 +49,7 @@ function AlbumEdit({id = null}) {
       setIsLoading(true);
       const data = new FormData(form.current);
       const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
-      const response = await fetch(`${BASE_URL}${ALBUMS}/${id}`,
+      const response = await fetch(`${BASE_URL}${ALBUMS}/${id}/update_artwork`,
         {
           headers: {
             "authorization": ACCESS_TOKEN,
@@ -79,31 +66,6 @@ function AlbumEdit({id = null}) {
         history.push(`/music/album/${id}`);
       }
       setIsLoading(false);
-    }
-  }
-
-  const handleAlbumDelete = async (e) => {
-    e.preventDefault();
-    if(window.confirm(`Are you sure to delete "${album.name}"?`)) {
-      setIsDeleting(true);
-      const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
-      const response = await fetch(`${BASE_URL}${ALBUMS}/${id}`,
-        {
-          headers: {
-            "authorization": ACCESS_TOKEN,
-            "auth-token": userAuthToken
-          },
-          method: "DELETE"
-        });
-      if (!response.ok) {
-        alert('Something went wrong, try later!');
-        setIsDeleting(false);
-      } else {
-        const albums = await fetchAlbums();
-        artistActions.albumsStateChanged(albums);
-        setIsDeleting(false);
-        history.push(`/music`);
-      }
     }
   }
 
@@ -124,51 +86,36 @@ function AlbumEdit({id = null}) {
             <NavLink to={"/music/album/"+id}>{album ? album.name : ''}</NavLink>
           </li>
           <li className="breadcrumb-item active">
-            Edit Album
+            Artwork
           </li>
         </Breadcrumb>
       </div>
       <div className="section-content">
         <section >
           <div className="section-head">
-            <h2>Edit Album</h2>
-            <div className="sec-controls">
-              <a onClick={handleAlbumDelete} className="close-btn btn delete">{isDeleting ? <>Deleting...<img className="loading" src={Loader} alt="icon"/></> : "Delete" }</a>
-            </div>
+            <h2>Artwork</h2>
           </div>
         </section>
         {isLoading && !album && <h5>Loading album... <img className="loading" src={Loader} alt="loading-icon"/></h5>}
-        <Form noValidate validated={validated} ref={form} onSubmit={handleSubmitEditAlbum}>
+        <Form noValidate validated={validated} ref={form} onSubmit={handleSubmitEditArtwork}>
           <div className="section">
             <Row>
               <Col xl={2} md={6}>
-                <Form.Label>Album Name*</Form.Label>
+                <Form.Label>Artwork</Form.Label>
               </Col>
               <Col xl={4} md={6}>
-                <Form.Control
-                  required
-                  name="name"
-                  type="text"
-                  defaultValue={album ? album.name : ''}
-                  placeholder="Album Name*"
+                <Form.File
+                  accept=".png, .jpg, .svg"
+                  onChange={(e) => {setArtwork(e.target.files[0])}}
+                  name="artwork"
+                  label={artwork ? artwork.name : album && album.artwork ? album.artwork.split('/')[album.artwork.split("/").length-1] : ""}
+                  lang="en"
+                  data-browse="Select artwork"
+                  custom
                 />
-                <Form.Control.Feedback type="invalid">
-                  Album name is required!
-                </Form.Control.Feedback>
-              </Col>
-            </Row>
-            <Row>
-              <Col xl={2} md={6}>
-                <Form.Label>Release Date</Form.Label>
-              </Col>
-              <Col xl={4} md={6}>
-                <Form.Control
-                  name="release_date"
-                  defaultValue={selectedAlbumDate ? selectedAlbumDate : ''}
-                  type="date"
-                  placeholder="Release Date"
-                />
-                <small className="text-muted">Release date is optional</small>
+                {album &&
+                  <img className="preview" src={artwork ? URL.createObjectURL(artwork) : album.artwork}></img>
+                }
               </Col>
             </Row>
           </div>
@@ -185,4 +132,4 @@ function AlbumEdit({id = null}) {
   )
 }
 
-export default AlbumEdit;
+export default AlbumArtwrok;

@@ -2,7 +2,6 @@ import "./Music.scss";
 import React, {useEffect, useRef, useState} from "react";
 import {Breadcrumb} from 'react-bootstrap';
 import {NavLink, useHistory} from "react-router-dom";
-import artwork from "../../../../images/artwork.jpg";
 import Edit from "../../../../images/pencil.svg";
 import {ArtistContext} from "../../../../Store/artistContext";
 import fetchAlbums from "../../../../common/utlis/fetchAlbums";
@@ -190,16 +189,20 @@ function Album({id = null}) {
         <section className="pt-4">
           <div className="section-head">
             <h2>Artwork</h2>
-            <NavLink to="/profile/edit" className="btn primary-btn">Edit</NavLink>
-            <p className="sec-head-para mb-0">Time to add some artwork to this album! Click the <i className="medium-text">Edit</i> button above to get started.</p>
+            <NavLink to={"/music/album/"+id+"/artwork"} className="btn primary-btn">Edit</NavLink>
+            {album && !album.artwork &&
+              <p className="sec-head-para mb-0">Time to add some artwork to this album! Click the <i className="medium-text">Edit</i> button above to get started.</p>
+            }
           </div>
-          <div className="section-body">
-            <div className="artwork-images-sec">
-              <div className="artwork-image">
-                <img src={artwork} alt="Artwork"/>
+          {album && album.artwork &&
+            <div className="section-body">
+              <div className="artwork-images-sec">
+                <div className="artwork-image">
+                  <img src={album.artwork} alt="Artwork"/>
+                </div>
               </div>
             </div>
-          </div>
+          }
         </section>
 
         <section className="pt-4">
