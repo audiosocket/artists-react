@@ -1,8 +1,8 @@
 @import "../../../../App.scss";
 
 .faq-block {
-	width: 95%;
-	margin: 1.2rem auto;
+	width: 100%;
+	margin: 0 auto;
 	.card {
 		background: $clr-white;
 		box-shadow: 0 0 5px 5px #f8f8f8;
@@ -80,8 +80,3 @@
 	}
 }
 
-@media(min-width: 1200px) {
-	.faq-block {
-		width: 80%;
-	}
-}
