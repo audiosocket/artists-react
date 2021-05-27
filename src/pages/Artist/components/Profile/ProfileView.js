@@ -167,6 +167,51 @@ function Profile() {
           </div>
         </div>
       </section>
+      <section className="artist-section-control contact">
+        <div className="section-content">
+          <div className="section-head">
+            <h2>Payment</h2>
+            <NavLink to="/profile/payment/edit" className="btn primary-btn">Edit</NavLink>
+          </div>
+          <div className="section-body">
+            <div className="parallel-info">
+              <label>Payment Details</label>
+              <div className="info-ans">
+                {artist.payment
+                  ?
+                  <>
+                    <span>{artist.payment.payee_name}</span>
+                    <span>{artist.payment.bank_name}</span>
+                    <span>{artist.payment.routing}</span>
+                    <span>{artist.payment.account_number}</span>
+                    <span>{artist.payment.paypal_email}</span>
+                  </>
+                  : '-'
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section className="artist-section-control contact">
+        <div className="section-content">
+          <div className="section-head">
+            <h2>Tax</h2>
+            <NavLink to="/profile/tax/edit" className="btn primary-btn">Edit</NavLink>
+          </div>
+          <div className="section-body">
+            <div className="parallel-info">
+              <label>ID/Social Security Number</label>
+              <div className="info-ans">
+                {artist.tax
+                  ? <span>{artist.tax.ssn}</span>
+                  : '-'
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   )
 }

@@ -4,6 +4,8 @@ import {Route, Switch} from "react-router-dom";
 import ProfileEdit from "./ProfileEdit";
 import ProfileView from "./ProfileView";
 import ContactEdit from "./ContactEdit";
+import Payment from "./Payment/Payment";
+import Tax from "./Tax/Tax";
 
 function Profile() {
 
@@ -17,6 +19,12 @@ function Profile() {
       </Route>
       <Route exact={true} path="/profile/contact/edit">
         <ContactEdit />
+      </Route>
+      <Route exact={true} path="/profile/payment/edit">
+        <Payment />
+      </Route>
+      <Route exact={true} path="/profile/tax/edit">
+        <Tax />
       </Route>
     </Switch>
   )

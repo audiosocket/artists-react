@@ -9,8 +9,6 @@ import Agreements from "./components/Agreements/Agreements";
 import Profile from "./components/Profile/Profile";
 import Partners from "./components/Partners/Partners";
 import Music from "./components/Music/Music";
-import Bank from "./components/Bank/Bank";
-import Tax from "./components/Tax/Tax";
 import Faq from "./components/Faq/Faq";
 
 function Artist() {
@@ -33,12 +31,6 @@ function Artist() {
               </Route>
               <Route path="/music">
                 <Music />
-              </Route>
-              <Route path="/bank">
-                <Bank />
-              </Route>
-              <Route path="/tax">
-                <Tax />
               </Route>
               <Route path="/faq">
                 <Faq />
