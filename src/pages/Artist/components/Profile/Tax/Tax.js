@@ -71,7 +71,7 @@ function Tax() {
     let object = {};
     data.forEach((value, key) => object[key] = value);
     object = {
-      tax: object
+      tax_information: object
     }
     let json = JSON.stringify(object);
     return json;

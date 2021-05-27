@@ -259,7 +259,7 @@ function Album({id = null}) {
           <Modal.Header closeButton>
             <Modal.Title id="contained-modal-title-vcenter">
               {selectedTrack
-                ? `Edit music ${artistState.artist ? "to " + album.namee : ""}`
+                ? `Edit music ${artistState.artist ? "to " + album.name : ""}`
                 : `Add music ${artistState.artist ? "to " + album.name : ""}`
               }
             </Modal.Title>
