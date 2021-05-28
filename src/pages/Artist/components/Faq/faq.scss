@@ -19,6 +19,7 @@
 				color: $clr-black;
 				text-transform: none;
 				font-size: clamp(1rem, 2.5vw, 1.3rem);
+				font-weight: normal;
 				background: transparent;
 				border: 0;
 				padding: 0;
@@ -26,7 +27,7 @@
 				width: 100%;
 				padding-right: 1.3rem;
 				text-align: left;
-        @include transition(all 0.2s ease-in-out);
+				@include transition(all 0.2s ease-in-out);
 				&.active, &:hover {
 					color: $clr-green;
 				}
@@ -54,14 +55,14 @@
 		}
 		.card-body {
 			padding: 1.5rem 1.5rem;
-			background-color: $clr-grey-light;
+			background-color: #F6F6F6;
 			line-height: 2rem;
 			font-size: clamp(0.8rem, 2.2vw, 1.1rem);
 			a {
 				font-weight: 600;
-				color: $clr-green;
+				color: $clr-blue-light;
 				&:hover {
-					text-decoration: underline !important;
+					color: $clr-blue-medium;
 				}
 			}
 		}
@@ -72,9 +73,9 @@
 		font-size: 1.1rem;
 		a {
 			font-weight: 600;
-			color: $clr-green;
+			color: $clr-blue-light;
 			&:hover {
-				text-decoration: underline !important;
+				color: $clr-blue-medium;
 			}
 		}
 	}
