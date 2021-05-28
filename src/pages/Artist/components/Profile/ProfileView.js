@@ -57,7 +57,7 @@ function Profile() {
 
               <div className="parallel-info">
                 <label>cover image</label>
-                <div className="info-ans">
+                <div className="info-ans image">
                   <a target="_blank" href={artist.cover_image ? artist.cover_image : cover}>
                     <img className="preview" src={artist.cover_image ? artist.cover_image : cover} alt="Cover Image" />
                   </a>
@@ -65,7 +65,7 @@ function Profile() {
               </div>
               <div className="parallel-info">
                 <label>banner image</label>
-                <div className="info-ans">
+                <div className="info-ans image">
                   <a target="_blank" href={artist.banner_image ? artist.banner_image : banner}>
                     <img src={artist.banner_image ? artist.banner_image : banner} alt="Banner Image" />
                   </a>
@@ -73,7 +73,7 @@ function Profile() {
               </div>
               <div className="parallel-info">
                 <label>additional images</label>
-                <div className="info-ans additional-elements">
+                <div className="info-ans additional-elements image">
                   {!artist.additional_images.length
                     ?
                     <div className="bg-content yellow w-custom-bg-content">
@@ -177,14 +177,14 @@ function Profile() {
             <div className="parallel-info">
               <label>Payment Details</label>
               <div className="info-ans">
-                {artist.payment
+                {artist.payment_information
                   ?
                   <>
-                    <span>{artist.payment.payee_name}</span>
-                    <span>{artist.payment.bank_name}</span>
-                    <span>{artist.payment.routing}</span>
-                    <span>{artist.payment.account_number}</span>
-                    <span>{artist.payment.paypal_email}</span>
+                    <span><smal className="medium-text">Payee: </smal>{artist.payment_information.payee_name}</span>
+                    <span><smal className="medium-text">Bank: </smal>{artist.payment_information.bank_name}</span>
+                    <span><smal className="medium-text">Routing: </smal>{artist.payment_information.routing}</span>
+                    <span><smal className="medium-text">Account#: </smal>{artist.payment_information.account_number}</span>
+                    <span><smal className="medium-text">Paypal Email: </smal>{artist.payment_information.paypal_email}</span>
                   </>
                   : '-'
                 }
@@ -203,8 +203,8 @@ function Profile() {
             <div className="parallel-info">
               <label>ID/Social Security Number</label>
               <div className="info-ans">
-                {artist.tax
-                  ? <span>{artist.tax.ssn}</span>
+                {artist.tax_information
+                  ? <span>{artist.tax_information.ssn}</span>
                   : '-'
                 }
               </div>

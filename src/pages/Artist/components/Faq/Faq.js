@@ -6,6 +6,8 @@ import Accordion from 'react-bootstrap/Accordion'
 import Card from 'react-bootstrap/Card'
 import AccordionContext from 'react-bootstrap/AccordionContext'
 import { useAccordionToggle } from 'react-bootstrap/AccordionToggle';
+import Breadcrumb from "react-bootstrap/Breadcrumb";
+import {NavLink} from "react-router-dom";
 
 function ContextAwareToggle({ children, eventKey, callback }) {
 	const currentEventKey = useContext(AccordionContext);
@@ -36,7 +38,19 @@ function ContextAwareToggle({ children, eventKey, callback }) {
 function Faq () {
 	return(
 		<div className="faq-block">
-			<h1 className="pt-0">Frequently Asked Questions</h1>
+			<div className="asBreadcrumbs">
+				<Breadcrumb>
+					<li className="breadcrumb-item">
+						<NavLink to="/">Home</NavLink>
+					</li>
+					<li className="breadcrumb-item active">
+						FAQs
+					</li>
+				</Breadcrumb>
+			</div>
+			<div className="section-head">
+				<h2 className="pt-0">Frequently Asked Questions</h2>
+			</div>
 			<Accordion defaultActiveKey="0">
 				<Card>
 					<ContextAwareToggle eventKey="1">

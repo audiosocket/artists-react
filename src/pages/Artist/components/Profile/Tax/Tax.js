@@ -109,7 +109,7 @@ function Tax() {
                   required
                   name="ssn"
                   type="text"
-                  defaultValue={artist.tax ? artist.tax.ssn : ""}
+                  defaultValue={artist.tax_information ? artist.tax_information.ssn : ""}
                   placeholder="ID/Social Security Number"
                 />
                 <Form.Control.Feedback type="invalid">

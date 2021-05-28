@@ -12,11 +12,16 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import {ACCESS_TOKEN, ALBUMS, BASE_URL} from "../../../../common/api";
+import Select from "react-select";
+import cover from "../../../../images/artist-cover.jpg";
+import fetchCollaborators from "../../../../common/utlis/fetchCollaborators";
+import fetchPublishers from "../../../../common/utlis/fetchPublishers";
 
 
 function Album({id = null}) {
   const {artistState, artistActions} = React.useContext(ArtistContext);
   const [isLoading, setIsLoading] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const form = useRef(false);
   const [validated, setValidated] = useState(false);
   const [album, setAlbum] = useState(null);
@@ -26,6 +31,12 @@ function Album({id = null}) {
   const [file, setFile] = useState(null);
   const [inValidFile, setInvalidFile] = useState(false);
   const history = useHistory();
+  const collaboratorRef = useRef(false);
+  const publisherRef = useRef(false);
+  const [collaboratorsDropdown, setCollaboratorsDropdown] = useState([]);
+  const [publishersDropdown, setPublishersDropdown] = useState([]);
+  const [collaborator, setCollaborator] = useState(null);
+  const [publisher, setPublisher] = useState(null);
 
   useEffect(() => {
     if(artistState.albums) {
@@ -34,6 +45,7 @@ function Album({id = null}) {
     } else {
       getAlbum();
     }
+    preparePartnersDropdown()
   }, [])
 
   const getAlbum = async () => {
@@ -43,6 +55,35 @@ function Album({id = null}) {
     const filteredAlbum = albums.filter(album => parseInt(album.id) === parseInt(id));
     setAlbum(filteredAlbum[0] ?? null)
     setIsLoading(false);
+  }
+
+  const preparePartnersDropdown = async () => {
+    const collaborators = artistState.collaborators ?? await fetchCollaborators();
+    if(!artistState.collaborators)
+      artistActions.collaboratorsStateChanged(collaborators ?? null);
+
+    const publishers = artistState.publishers ?? await fetchPublishers();
+    if(!artistState.publishers)
+      artistActions.publishersStateChanged(publishers ?? null);
+
+    if(collaborators) {
+      let tmp = [];
+      tmp.push({label: "Select collaborator", value: null})
+      for (let i = 0; i < collaborators.length; i++) {
+        if(collaborators[i].name)
+          tmp.push({label: collaborators[i].name, value: collaborators[i].id});
+      }
+      setCollaboratorsDropdown(tmp);
+    }
+    if(publishers) {
+      let tmp = [];
+      tmp.push({label: "Select publisher", value: null})
+      for (let i = 0; i < publishers.length; i++) {
+        if(publishers[i].name)
+          tmp.push({label: publishers[i].name, value: publishers[i].id});
+      }
+      setPublishersDropdown(tmp);
+    }
   }
 
   const handleSubmitAddMusic = async (e) => {
@@ -94,7 +135,7 @@ function Album({id = null}) {
   const handleAlbumDelete = async (e) => {
     e.preventDefault();
     if(window.confirm(`Are you sure to delete "${album.name}"?`)) {
-      setIsLoading(true);
+      setIsDeleting(true);
       const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
       const response = await fetch(`${BASE_URL}${ALBUMS}/${id}`,
         {
@@ -106,11 +147,11 @@ function Album({id = null}) {
         });
       if (!response.ok) {
         alert('Something went wrong, try later!');
-        setIsLoading(false);
+        setIsDeleting(false);
       } else {
         const albums = await fetchAlbums();
         artistActions.albumsStateChanged(albums);
-        setIsLoading(false);
+        setIsDeleting(false);
         history.push(`/music`);
       }
     }
@@ -175,7 +216,7 @@ function Album({id = null}) {
             <h2>{album ? album.name : ''}</h2>
             <div className="sec-controls">
               <NavLink to={"/music/album/"+id+"/edit"} className="btn primary-btn mr-2">Edit</NavLink>
-              <a onClick={handleAlbumDelete} className="close-btn btn delete">{isLoading ? <>Deleting...<img className="loading" src={Loader} alt="icon"/></> : "Delete" }</a>
+              <a onClick={handleAlbumDelete} className="close-btn btn delete">{isDeleting ? <>Deleting...<img className="loading" src={Loader} alt="icon"/></> : "Delete" }</a>
             </div>
           </div>
           <div className="section-body">
@@ -198,7 +239,9 @@ function Album({id = null}) {
             <div className="section-body">
               <div className="artwork-images-sec">
                 <div className="artwork-image">
-                  <img src={album.artwork} alt="Artwork"/>
+                  <a target="_blank" href={album.artwork}>
+                    <img src={album.artwork} alt="Artwork"/>
+                  </a>
                 </div>
               </div>
             </div>
@@ -273,6 +316,7 @@ function Album({id = null}) {
                       <Form.File
                         name="file"
                         type="file"
+                        required={!selectedTrack}
                         className={inValidFile && "invalid"}
                         label={file ? file.name : selectedTrack ? selectedTrack.file.split("/")[selectedTrack.file.split("/").length-1] : "Select file (WAV or AIFF)*"}
                         data-browse="Select music"
@@ -292,6 +336,50 @@ function Album({id = null}) {
                         type="text"
                         defaultValue={selectedTrack ? selectedTrack.title : ''}
                         placeholder="Title*"
+                      />
+                    </div>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col xs={12}>
+                    <div className="form-group">
+                      <Select
+                        ref={collaboratorRef}
+                        placeholder="Select collaborator"
+                        className="collaborator-select-container-header"
+                        classNamePrefix="collaborator-select-header react-select-popup"
+                        options={collaboratorsDropdown}
+                        defaultValue={{label: "Select collaborator", value: null}}
+                        onChange={(target) => setCollaborator(target.value)}
+                        theme={theme => ({
+                          ...theme,
+                          colors: {
+                            ...theme.colors,
+                            primary: '#c0d72d',
+                          },
+                        })}
+                      />
+                    </div>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col xs={12}>
+                    <div className="form-group">
+                      <Select
+                        ref={publisherRef}
+                        placeholder="Select publisher"
+                        className="publisher-select-container-header"
+                        classNamePrefix="publisher-select-header react-select-popup"
+                        options={publishersDropdown}
+                        defaultValue={{label: "Select publisher", value: null}}
+                        onChange={(target) => setPublisher(target.value)}
+                        theme={theme => ({
+                          ...theme,
+                          colors: {
+                            ...theme.colors,
+                            primary: '#c0d72d',
+                          },
+                        })}
                       />
                     </div>
                   </Col>

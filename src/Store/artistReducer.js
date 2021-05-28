@@ -5,7 +5,9 @@ export const initialState = {
   selectedArtist: null,
   agreements: null,
   albums: null,
-  countries: null
+  countries: null,
+  collaborators: null,
+  publishers: null
 };
 
 export const USER_ROLE_STATE_CHANGED = "USER_ROLE_STATE_CHANGED";
@@ -15,6 +17,8 @@ export const SELECTED_ARTIST_STATE_CHANGED = "SELECTED_ARTIST_STATE_CHANGED";
 export const AGREEMENTS_STATE_CHANGED = "AGREEMENTS_STATE_CHANGED";
 export const ALBUMS_STATE_CHANGED = "ALBUMS_STATE_CHANGED";
 export const COUNTRIES_STATE_CHANGED = "COUNTRIES_STATE_CHANGED";
+export const COLLABORATORS_STATE_CHANGED = "COLLABORATORS_STATE_CHANGED";
+export const PUBLISHERS_STATE_CHANGED = "PUBLISHERS_STATE_CHANGED";
 
 export const reducer = (state, action) => {
   switch (action.type) {
@@ -52,6 +56,16 @@ export const reducer = (state, action) => {
       return {
         ...state,
         countries: action.payload,
+      };
+    case COLLABORATORS_STATE_CHANGED:
+      return {
+        ...state,
+        collaborators: action.payload,
+      };
+    case PUBLISHERS_STATE_CHANGED:
+      return {
+        ...state,
+        publishers: action.payload,
       };
   }
   return state;

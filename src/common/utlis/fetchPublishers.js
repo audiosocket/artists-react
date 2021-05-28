@@ -1,9 +1,9 @@
 import React from "react";
-import {ACCESS_TOKEN, BASE_URL, ALBUMS} from "../api";
+import {ACCESS_TOKEN, BASE_URL, PUBLISHERS} from "../api";
 
-async function fetchAlbums() {
+async function fetchPublishers() {
   const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
-  const response = await fetch(`${BASE_URL}${ALBUMS}`,
+  const response = await fetch(`${BASE_URL}${PUBLISHERS}`,
     {
       headers: {
         "authorization": ACCESS_TOKEN,
@@ -12,9 +12,9 @@ async function fetchAlbums() {
     });
   const resultSet = await response.json();
   if (!response.ok) {
-    return [];
+    return null;
   } else {
     return resultSet;
   }
 }
-export default fetchAlbums;
+export default fetchPublishers;
