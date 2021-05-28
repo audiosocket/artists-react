@@ -14,11 +14,14 @@ import Button from "react-bootstrap/Button";
 import {ACCESS_TOKEN, ALBUMS, BASE_URL} from "../../../../common/api";
 import Select from "react-select";
 import cover from "../../../../images/artist-cover.jpg";
+import fetchCollaborators from "../../../../common/utlis/fetchCollaborators";
+import fetchPublishers from "../../../../common/utlis/fetchPublishers";
 
 
 function Album({id = null}) {
   const {artistState, artistActions} = React.useContext(ArtistContext);
   const [isLoading, setIsLoading] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const form = useRef(false);
   const [validated, setValidated] = useState(false);
   const [album, setAlbum] = useState(null);
@@ -39,10 +42,10 @@ function Album({id = null}) {
     if(artistState.albums) {
       const filteredAlbum = artistState.albums.filter(album => parseInt(album.id) === parseInt(id));
       setAlbum(filteredAlbum[0] ?? null)
-      preparePartnersDropdown()
     } else {
       getAlbum();
     }
+    preparePartnersDropdown()
   }, [])
 
   const getAlbum = async () => {
@@ -54,19 +57,30 @@ function Album({id = null}) {
     setIsLoading(false);
   }
 
-  const preparePartnersDropdown = () => {
-    const tmp = [];
-    if(artistState.collaborators) {
+  const preparePartnersDropdown = async () => {
+    const collaborators = artistState.collaborators ?? await fetchCollaborators();
+    if(!artistState.collaborators)
+      artistActions.collaboratorsStateChanged(collaborators ?? null);
+
+    const publishers = artistState.publishers ?? await fetchPublishers();
+    if(!artistState.publishers)
+      artistActions.publishersStateChanged(publishers ?? null);
+
+    if(collaborators) {
+      let tmp = [];
       tmp.push({label: "Select collaborator", value: null})
-      for (let i = 0; i < artistState.collaborators.length; i++) {
-        tmp.push({label: artistState.collaborators[i].name, value: artistState.collaborators[i].id});
+      for (let i = 0; i < collaborators.length; i++) {
+        if(collaborators[i].name)
+          tmp.push({label: collaborators[i].name, value: collaborators[i].id});
       }
       setCollaboratorsDropdown(tmp);
     }
-    if(artistState.publishers) {
+    if(publishers) {
+      let tmp = [];
       tmp.push({label: "Select publisher", value: null})
-      for (let i = 0; i < artistState.publishers.length; i++) {
-        tmp.push({label: artistState.publishers[i].name, value: artistState.publishers[i].id});
+      for (let i = 0; i < publishers.length; i++) {
+        if(publishers[i].name)
+          tmp.push({label: publishers[i].name, value: publishers[i].id});
       }
       setPublishersDropdown(tmp);
     }
@@ -121,7 +135,7 @@ function Album({id = null}) {
   const handleAlbumDelete = async (e) => {
     e.preventDefault();
     if(window.confirm(`Are you sure to delete "${album.name}"?`)) {
-      setIsLoading(true);
+      setIsDeleting(true);
       const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
       const response = await fetch(`${BASE_URL}${ALBUMS}/${id}`,
         {
@@ -133,11 +147,11 @@ function Album({id = null}) {
         });
       if (!response.ok) {
         alert('Something went wrong, try later!');
-        setIsLoading(false);
+        setIsDeleting(false);
       } else {
         const albums = await fetchAlbums();
         artistActions.albumsStateChanged(albums);
-        setIsLoading(false);
+        setIsDeleting(false);
         history.push(`/music`);
       }
     }
@@ -202,7 +216,7 @@ function Album({id = null}) {
             <h2>{album ? album.name : ''}</h2>
             <div className="sec-controls">
               <NavLink to={"/music/album/"+id+"/edit"} className="btn primary-btn mr-2">Edit</NavLink>
-              <a onClick={handleAlbumDelete} className="close-btn btn delete">{isLoading ? <>Deleting...<img className="loading" src={Loader} alt="icon"/></> : "Delete" }</a>
+              <a onClick={handleAlbumDelete} className="close-btn btn delete">{isDeleting ? <>Deleting...<img className="loading" src={Loader} alt="icon"/></> : "Delete" }</a>
             </div>
           </div>
           <div className="section-body">
@@ -302,6 +316,7 @@ function Album({id = null}) {
                       <Form.File
                         name="file"
                         type="file"
+                        required={!selectedTrack}
                         className={inValidFile && "invalid"}
                         label={file ? file.name : selectedTrack ? selectedTrack.file.split("/")[selectedTrack.file.split("/").length-1] : "Select file (WAV or AIFF)*"}
                         data-browse="Select music"
@@ -330,7 +345,6 @@ function Album({id = null}) {
                     <div className="form-group">
                       <Select
                         ref={collaboratorRef}
-                        isSearchable={false}
                         placeholder="Select collaborator"
                         className="collaborator-select-container-header"
                         classNamePrefix="collaborator-select-header react-select-popup"
@@ -353,7 +367,6 @@ function Album({id = null}) {
                     <div className="form-group">
                       <Select
                         ref={publisherRef}
-                        isSearchable={false}
                         placeholder="Select publisher"
                         className="publisher-select-container-header"
                         classNamePrefix="publisher-select-header react-select-popup"
