@@ -158,7 +158,7 @@ function Payment() {
               <Col xl={4} md={6}>
                 <Form.Control
                   required
-                  name="account_name"
+                  name="account_number"
                   type="text"
                   defaultValue={artist.payment ? artist.payment.account_number : ""}
                   placeholder="Account number"

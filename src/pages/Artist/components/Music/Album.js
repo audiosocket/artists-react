@@ -12,6 +12,8 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import {ACCESS_TOKEN, ALBUMS, BASE_URL} from "../../../../common/api";
+import Select from "react-select";
+import cover from "../../../../images/artist-cover.jpg";
 
 
 function Album({id = null}) {
@@ -26,11 +28,18 @@ function Album({id = null}) {
   const [file, setFile] = useState(null);
   const [inValidFile, setInvalidFile] = useState(false);
   const history = useHistory();
+  const collaboratorRef = useRef(false);
+  const publisherRef = useRef(false);
+  const [collaboratorsDropdown, setCollaboratorsDropdown] = useState([]);
+  const [publishersDropdown, setPublishersDropdown] = useState([]);
+  const [collaborator, setCollaborator] = useState(null);
+  const [publisher, setPublisher] = useState(null);
 
   useEffect(() => {
     if(artistState.albums) {
       const filteredAlbum = artistState.albums.filter(album => parseInt(album.id) === parseInt(id));
       setAlbum(filteredAlbum[0] ?? null)
+      preparePartnersDropdown()
     } else {
       getAlbum();
     }
@@ -43,6 +52,24 @@ function Album({id = null}) {
     const filteredAlbum = albums.filter(album => parseInt(album.id) === parseInt(id));
     setAlbum(filteredAlbum[0] ?? null)
     setIsLoading(false);
+  }
+
+  const preparePartnersDropdown = () => {
+    const tmp = [];
+    if(artistState.collaborators) {
+      tmp.push({label: "Select collaborator", value: null})
+      for (let i = 0; i < artistState.collaborators.length; i++) {
+        tmp.push({label: artistState.collaborators[i].name, value: artistState.collaborators[i].id});
+      }
+      setCollaboratorsDropdown(tmp);
+    }
+    if(artistState.publishers) {
+      tmp.push({label: "Select publisher", value: null})
+      for (let i = 0; i < artistState.publishers.length; i++) {
+        tmp.push({label: artistState.publishers[i].name, value: artistState.publishers[i].id});
+      }
+      setPublishersDropdown(tmp);
+    }
   }
 
   const handleSubmitAddMusic = async (e) => {
@@ -198,7 +225,9 @@ function Album({id = null}) {
             <div className="section-body">
               <div className="artwork-images-sec">
                 <div className="artwork-image">
-                  <img src={album.artwork} alt="Artwork"/>
+                  <a target="_blank" href={album.artwork}>
+                    <img src={album.artwork} alt="Artwork"/>
+                  </a>
                 </div>
               </div>
             </div>
@@ -292,6 +321,52 @@ function Album({id = null}) {
                         type="text"
                         defaultValue={selectedTrack ? selectedTrack.title : ''}
                         placeholder="Title*"
+                      />
+                    </div>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col xs={12}>
+                    <div className="form-group">
+                      <Select
+                        ref={collaboratorRef}
+                        isSearchable={false}
+                        placeholder="Select collaborator"
+                        className="collaborator-select-container-header"
+                        classNamePrefix="collaborator-select-header react-select-popup"
+                        options={collaboratorsDropdown}
+                        defaultValue={{label: "Select collaborator", value: null}}
+                        onChange={(target) => setCollaborator(target.value)}
+                        theme={theme => ({
+                          ...theme,
+                          colors: {
+                            ...theme.colors,
+                            primary: '#c0d72d',
+                          },
+                        })}
+                      />
+                    </div>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col xs={12}>
+                    <div className="form-group">
+                      <Select
+                        ref={publisherRef}
+                        isSearchable={false}
+                        placeholder="Select publisher"
+                        className="publisher-select-container-header"
+                        classNamePrefix="publisher-select-header react-select-popup"
+                        options={publishersDropdown}
+                        defaultValue={{label: "Select publisher", value: null}}
+                        onChange={(target) => setPublisher(target.value)}
+                        theme={theme => ({
+                          ...theme,
+                          colors: {
+                            ...theme.colors,
+                            primary: '#c0d72d',
+                          },
+                        })}
                       />
                     </div>
                   </Col>

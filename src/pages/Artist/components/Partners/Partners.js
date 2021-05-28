@@ -11,6 +11,8 @@ import Loader from "../../../../images/loader.svg";
 import Select from "react-select";
 import {ACCESS_TOKEN, BASE_URL, PUBLISHERS} from "../../../../common/api";
 import {ArtistContext} from "../../../../Store/artistContext";
+import fetchCollaborators from "../../../../common/utlis/fetchCollaborators";
+import fetchPublishers from "../../../../common/utlis/fetchPublishers";
 
 function Partners() {
   const {artistState, artistActions} = React.useContext(ArtistContext);
@@ -25,29 +27,34 @@ function Partners() {
   const proRef = useRef(null);
 
   useEffect(() => {
-    getPublishers();
+    if (!artistState.collaborators)
+      getCollaborators()
+    else
+      setCollaborators(artistState.collaborators)
+
+    if (!artistState.publishers)
+      getPublishers()
+    else
+      setPublishers(artistState.publishers)
   }, [])
 
-  const getPublishers = async () => {
+  const getCollaborators = async () => {
     setIsLoading(true);
-    const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
-    const response = await fetch(`${BASE_URL}${PUBLISHERS}`,
-      {
-        headers: {
-          "authorization": ACCESS_TOKEN,
-          "auth-token": userAuthToken
-        }
-      });
-    const resultSet = await response.json();
-    if (!response.ok) {
-      setPublishers(null);
-    } else {
-      setPublishers(resultSet.length ? resultSet : null);
-    }
+    const collaborators = await fetchCollaborators();
+    setCollaborators(collaborators ?? null);
+    artistActions.collaboratorsStateChanged(collaborators ?? null);
     setIsLoading(false);
   }
 
-  const handleCreateCollaborator = async (e) => {
+  const getPublishers = async () => {
+    setIsLoading(true);
+    const publishers = await fetchPublishers();
+    setPublishers(publishers ?? null);
+    artistActions.publishersStateChanged(publishers ?? null);
+    setIsLoading(false);
+  }
+
+  const handleSubmitCollaborator = async (e) => {
 
   }
 
@@ -96,6 +103,7 @@ function Partners() {
   const handleClose = () => {
     setShowCollaboratorModal(false);
     setShowPublisherModal(false);
+    setValidated(false);
   }
 
   return (
@@ -129,6 +137,13 @@ function Partners() {
           <div className="partner-list">
             <ul className="partner-row">
               {!collaborators && <p>No collaborators created yet! Click <i className="medium-text">Add a collaborators</i> button to get started.</p>}
+              {collaborators &&
+              collaborators.map((collaborator, key) => {
+                return (
+                  collaborator.name && <li key={key}><a>{collaborator.name} <small>MOSEEG 3753</small></a></li>
+                )
+              })
+              }
             </ul>
           </div>
         </section>
@@ -142,7 +157,7 @@ function Partners() {
               {publishers &&
                 publishers.map((publisher, key) => {
                   return (
-                    publisher.name && <li key={key}><a>{publisher.name} <small>MOSEEG 677853753</small></a></li>
+                    publisher.name && <li key={key}><a>{publisher.name} <small>MOSEEG 3753</small></a></li>
                   )
                 })
               }
@@ -159,7 +174,7 @@ function Partners() {
         aria-labelledby="contained-modal-title-vcenter"
         centered
         className="customArtistModal-lg collabortor-modal">
-        <Form noValidate validated={validated} ref={form} onSubmit={handleCreateCollaborator}>
+        <Form noValidate validated={validated} ref={form} onSubmit={handleSubmitCollaborator}>
           <Modal.Header closeButton>
             <Modal.Title id="contained-modal-title-vcenter">
               Invite Collaborator
@@ -176,19 +191,19 @@ function Partners() {
                         name="name"
                         type="text"
                         defaultValue={''}
-                        placeholder="Album Name*"
+                        placeholder="Collaborator Name*"
                       />
                       <Form.Control.Feedback type="invalid">
-                        Album name is required!
+                        Collaborator Name is required!
                       </Form.Control.Feedback>
                     </div>
                   </Col>
                   <Col xs={12}>
                     <div className="form-group">
-                      <label htmlFor="accept_agreement" className="checkbox my-3">
+                      <label htmlFor="can_login" className="checkbox my-3">
                         <input
-                          name="accept_agreement"
-                          id="accept_agreement"
+                          name="can_login"
+                          id="can_login"
                           type="checkbox"
                         />
                           This person will be logging into this artist portal and/or they need to accept the Audicsocket license agreement
@@ -200,19 +215,22 @@ function Partners() {
                     <div className="form-group">
                       <Form.Control
                         required
-                        name="name"
-                        type="text"
+                        name="email"
+                        type="email"
                         defaultValue={''}
                         placeholder="Email*"
                       />
                     </div>
+                    <Form.Control.Feedback type="invalid">
+                      Email is required!
+                    </Form.Control.Feedback>
                   </Col>
                   <Col xs={12}>
                     <div className="form-group">
-                      <label htmlFor="CRUD-control" className="checkbox my-3">
+                      <label htmlFor="can_update_artist" className="checkbox my-3">
                         <input
-                          name="CRUD-control"
-                          id="CRUD-control"
+                          name="can_update_artist"
+                          id="can_update_artist"
                           type="checkbox"
                         />
                           Allow this person to update artist information, edit/create tracks and add/remove collaborators.
@@ -224,33 +242,47 @@ function Partners() {
                     <div className="form-group">
                       <Form.Control
                         required
-                        name="name"
+                        name="cae_ipi"
                         type="text"
                         defaultValue={''}
-                        placeholder="CAE/IPI #"
+                        placeholder="CAE/IPI # (optional)"
                       />
-                      <small className="text-muted">This field is optional</small>
                       <div>
-                      <small className="text-muted"><strong>Note</strong>: An IPI # is not the same as a member number,
-                       its the  9 digit number that appears on the statements from your PRO</small>
+                        <small className="text-muted">
+                          <strong>Note</strong>: An IPI # is not the same as a member number, its the  9 digit number that appears on the statements from your PRO
+                        </small>
                       </div>
                     </div>
                   </Col>
                   <Col xs={12}>
                     <div className="form-group">
-                      <Form.Control as="select">
-                        <option>Select PRO</option>
-                      </Form.Control>
+                      <Select
+                        ref={proRef}
+                        isSearchable={false}
+                        placeholder="Select PRO"
+                        className="pro-select-container-header"
+                        classNamePrefix="pro-select-header react-select-popup"
+                        options={[{label: "Select PRO", value: null},{label: "No", value: false}, {label: "Yes", value: true}]}
+                        defaultValue={{label: "Select PRO", value: null}}
+                        onChange={(target) => setPro(target.value)}
+                        theme={theme => ({
+                          ...theme,
+                          colors: {
+                            ...theme.colors,
+                            primary: '#c0d72d',
+                          },
+                        })}
+                      />
                       <small className="text-muted">This field is optional</small>
                     </div>
                   </Col>
 
                   <Col xs={12}>
                     <div className="form-group">
-                      <label htmlFor="name_privacy" className="checkbox my-3">
+                      <label htmlFor="is_pro_knows" className="checkbox my-3">
                         <input
-                          name="name_privacy"
-                          id="name_privacy"
+                          name="is_pro_knows"
+                          id="is_pro_knows"
                           type="checkbox"
                         />
                           My PRO knows me by a different registratered name.
@@ -258,7 +290,7 @@ function Partners() {
                     </label>
                     </div>
                   </Col>
-                  
+
                 </Row>
               </div>
             </div>

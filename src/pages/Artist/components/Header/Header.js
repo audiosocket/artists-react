@@ -12,6 +12,8 @@ import fetchArtist from "../../../../common/utlis/fetchArtist";
 import fetchAlbums from "../../../../common/utlis/fetchAlbums";
 import {ACCESS_TOKEN, AGREEMENTS, BASE_URL} from "../../../../common/api";
 import csc from "country-state-city";
+import fetchCollaborators from "../../../../common/utlis/fetchCollaborators";
+import fetchPublishers from "../../../../common/utlis/fetchPublishers";
 
 function Header() {
   const history = useHistory();
@@ -24,6 +26,7 @@ function Header() {
     initializeArtist();
     initializeAlbums();
     initializeCountriesList();
+    initializePartners();
   }, [])
 
   const initializeAgreements = async () => {
@@ -78,6 +81,16 @@ function Header() {
     });
     artistActions.countriesStateChanged(list);
   }
+
+  const initializePartners = async () => {
+    setIsLoading(true);
+    const collaborators = await fetchCollaborators();
+    artistActions.collaboratorsStateChanged(collaborators);
+    const publishers = await fetchPublishers();
+    artistActions.publishersStateChanged(publishers);
+    setIsLoading(false);
+  }
+
   const handleSelectedArtist = (e) => {
     artistActions.selectedArtistStateChanged(e.target.dataset.value);
     setSelectedArtist(e.target.dataset.value);
