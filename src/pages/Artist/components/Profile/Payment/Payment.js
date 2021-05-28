@@ -109,7 +109,7 @@ function Payment() {
                   required
                   name="payee_name"
                   type="text"
-                  defaultValue={artist.payment ? artist.payment.payee_name : ""}
+                  defaultValue={artist.payment_information ? artist.payment_information.payee_name : ""}
                   placeholder="Payee name"
                 />
                 <Form.Control.Feedback type="invalid">
@@ -126,7 +126,7 @@ function Payment() {
                   required
                   name="bank_name"
                   type="text"
-                  defaultValue={artist.payment ? artist.payment.bank_name : ""}
+                  defaultValue={artist.payment_information ? artist.payment_information.bank_name : ""}
                   placeholder="Bank name"
                 />
                 <Form.Control.Feedback type="invalid">
@@ -143,7 +143,7 @@ function Payment() {
                   required
                   name="routing"
                   type="text"
-                  defaultValue={artist.payment ? artist.payment.routing : ""}
+                  defaultValue={artist.payment_information ? artist.payment_information.routing : ""}
                   placeholder="Routing"
                 />
                 <Form.Control.Feedback type="invalid">
@@ -160,7 +160,7 @@ function Payment() {
                   required
                   name="account_number"
                   type="text"
-                  defaultValue={artist.payment ? artist.payment.account_number : ""}
+                  defaultValue={artist.payment_information ? artist.payment_information.account_number : ""}
                   placeholder="Account number"
                 />
                 <Form.Control.Feedback type="invalid">
@@ -178,7 +178,7 @@ function Payment() {
                     required
                     name="paypal_email"
                     type="email"
-                    defaultValue={artist.payment ? artist.payment.paypal_email : ""}
+                    defaultValue={artist.payment_information ? artist.payment_information.paypal_email : ""}
                     placeholder="Paypam email"
                   />
                   <Form.Control.Feedback type="invalid">
