@@ -70,8 +70,8 @@ function Album({id = null}) {
       let tmp = [];
       tmp.push({label: "Select collaborator", value: null})
       for (let i = 0; i < collaborators.length; i++) {
-        if(collaborators[i].name)
-          tmp.push({label: collaborators[i].name, value: collaborators[i].id});
+        if(collaborators[i].first_name)
+          tmp.push({label: collaborators[i].first_name +' '+ collaborators[i].last_name ?? '', value: collaborators[i].id});
       }
       setCollaboratorsDropdown(tmp);
     }
@@ -351,6 +351,7 @@ function Album({id = null}) {
                         options={collaboratorsDropdown}
                         defaultValue={{label: "Select collaborator", value: null}}
                         onChange={(target) => setCollaborator(target.value)}
+                        maxMenuHeight={140}
                         theme={theme => ({
                           ...theme,
                           colors: {
@@ -373,6 +374,7 @@ function Album({id = null}) {
                         options={publishersDropdown}
                         defaultValue={{label: "Select publisher", value: null}}
                         onChange={(target) => setPublisher(target.value)}
+                        maxMenuHeight={140}
                         theme={theme => ({
                           ...theme,
                           colors: {

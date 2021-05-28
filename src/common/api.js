@@ -8,3 +8,5 @@ export const ARTIST_PROFILE_SHOW = "api/v1/artists/show_profile";
 export const ARTIST_PROFILE_UPDATE = "api/v1/artists/update_profile";
 export const ALBUMS = "api/v1/albums";
 export const PUBLISHERS = "api/v1/publishers";
+export const INVITE_COLLABORATORS = "api/v1/artists/invite_collaborator";
+export const LIST_COLLABORATORS = "api/v1/artists/collaborators";

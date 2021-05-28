@@ -9,7 +9,7 @@ import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import Loader from "../../../../images/loader.svg";
 import Select from "react-select";
-import {ACCESS_TOKEN, BASE_URL, PUBLISHERS} from "../../../../common/api";
+import {ACCESS_TOKEN, BASE_URL, INVITE_COLLABORATORS, PUBLISHERS} from "../../../../common/api";
 import {ArtistContext} from "../../../../Store/artistContext";
 import fetchCollaborators from "../../../../common/utlis/fetchCollaborators";
 import fetchPublishers from "../../../../common/utlis/fetchPublishers";
@@ -25,6 +25,8 @@ function Partners() {
   const [showPublisherModal, setShowPublisherModal] = useState(false);
   const [pro, setPro] = useState(null);
   const proRef = useRef(null);
+  const [agreements, setAgreements] = useState(false);
+  const [access, setAccess] = useState(false);
 
   useEffect(() => {
     if (!artistState.collaborators)
@@ -55,7 +57,43 @@ function Partners() {
   }
 
   const handleSubmitCollaborator = async (e) => {
-
+    e.preventDefault();
+    const artistForm = e.currentTarget;
+    if (artistForm.checkValidity() === false) {
+      e.preventDefault();
+      e.stopPropagation();
+      setValidated(true);
+    } else {
+      setIsLoading(true);
+      const data = new FormData(form.current);
+      if(data.get("agreements") && data.get("agreements") === "true")
+        data.set("agreements", true);
+      else
+        data.set("agreements", false);
+      if(data.get("access") && data.get("access") === "true")
+        data.set("access", "write");
+      else
+        data.set("access", "read");
+      const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
+      const response = await fetch(`${BASE_URL}${INVITE_COLLABORATORS}`,
+        {
+          headers: {
+            "authorization": ACCESS_TOKEN,
+            "auth-token": userAuthToken,
+          },
+          method: 'PATCH',
+          body: data
+        });
+      const collaborators = await response.json();
+      if(!response.ok) {
+        alert('Something went wrong, try later!');
+      } else {
+        //const collaborators = await fetchCollaborators();
+        artistActions.collaboratorsStateChanged(collaborators.length ? collaborators : null);
+        handleClose();
+      }
+      setIsLoading(false);
+    }
   }
 
   const handleSubmitPublisher = async (e) => {
@@ -82,8 +120,8 @@ function Partners() {
       if(!response.ok) {
         alert('Something went wrong, try later!');
       } else {
-        const getPub = await getPublishers();
-        //artistActions.publishersStateChanged(publishers);
+        //const publishers = await fetchPublishers();
+        artistActions.publishersStateChanged(publishers.length ? publishers : null);
         handleClose();
       }
       setIsLoading(false);
@@ -104,6 +142,16 @@ function Partners() {
     setShowCollaboratorModal(false);
     setShowPublisherModal(false);
     setValidated(false);
+    setAgreements(false);
+    setAccess(false);
+  }
+
+  const handleChangeAgreements = (e) => {
+    setAgreements(!agreements);
+  }
+
+  const handleChangeAccess = (e) => {
+    setAccess(!access);
   }
 
   return (
@@ -138,11 +186,11 @@ function Partners() {
             <ul className="partner-row">
               {!collaborators && <p>No collaborators created yet! Click <i className="medium-text">Add a collaborators</i> button to get started.</p>}
               {collaborators &&
-              collaborators.map((collaborator, key) => {
-                return (
-                  collaborator.name && <li key={key}><a>{collaborator.name} <small>MOSEEG 3753</small></a></li>
-                )
-              })
+                collaborators.map((collaborator, key) => {
+                  return (
+                    collaborator.first_name && <li key={key}><a>{collaborator.first_name} {collaborator.last_name ?? ''} <small>MOSEEG 3753</small></a></li>
+                  )
+                })
               }
             </ul>
           </div>
@@ -200,14 +248,17 @@ function Partners() {
                   </Col>
                   <Col xs={12}>
                     <div className="form-group">
-                      <label htmlFor="can_login" className="checkbox my-3">
+                      <label htmlFor="agreements" className="checkbox my-3">
                         <input
-                          name="can_login"
-                          id="can_login"
+                          name="agreements"
+                          id="agreements"
                           type="checkbox"
+                          value={agreements}
+                          checked={agreements}
+                          onChange={handleChangeAgreements}
                         />
                           This person will be logging into this artist portal and/or they need to accept the Audicsocket license agreement
-                          <span className={"checkmark"}></span>
+                          <span className={agreements ? "checkmark checked" : "checkmark"}></span>
                     </label>
                     </div>
                   </Col>
@@ -227,21 +278,23 @@ function Partners() {
                   </Col>
                   <Col xs={12}>
                     <div className="form-group">
-                      <label htmlFor="can_update_artist" className="checkbox my-3">
+                      <label htmlFor="access" className="checkbox my-3">
                         <input
-                          name="can_update_artist"
-                          id="can_update_artist"
+                          name="access"
+                          id="access"
                           type="checkbox"
+                          value={access}
+                          checked={access}
+                          onChange={handleChangeAccess}
                         />
                           Allow this person to update artist information, edit/create tracks and add/remove collaborators.
-                          <span className={"checkmark"}></span>
+                          <span className={access ? "checkmark checked" : "checkmark"}></span>
                     </label>
                     </div>
                   </Col>
                   <Col xs={12}>
                     <div className="form-group">
                       <Form.Control
-                        required
                         name="cae_ipi"
                         type="text"
                         defaultValue={''}
