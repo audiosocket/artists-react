@@ -46,7 +46,7 @@ function Profile() {
             <h2>Profile</h2>
             <NavLink to="/profile/edit" className="btn primary-btn">Edit</NavLink>
           </div>
-          {isLoading && <h5>Loading profile... <img className="loading" src={Loader} alt="loading-icon"/></h5>}
+          {Object.keys(artist).length === 0 && isLoading && <h5>Loading profile... <img className="loading" src={Loader} alt="loading-icon"/></h5>}
           {Object.keys(artist).length !== 0 &&
           <div className="section-body">
             <div className="w-custom-percent">
@@ -148,6 +148,7 @@ function Profile() {
             <h2>Contact</h2>
             <NavLink to="/profile/contact/edit" className="btn primary-btn">Edit</NavLink>
           </div>
+          {Object.keys(artist).length === 0 && isLoading && <h5>Loading contact... <img className="loading" src={Loader} alt="loading-icon"/></h5>}
           <div className="section-body">
             <div className="parallel-info">
               <label>address</label>
@@ -173,6 +174,7 @@ function Profile() {
             <h2>Payment</h2>
             <NavLink to="/profile/payment/edit" className="btn primary-btn">Edit</NavLink>
           </div>
+          {Object.keys(artist).length === 0 && isLoading && <h5>Loading payment... <img className="loading" src={Loader} alt="loading-icon"/></h5>}
           <div className="section-body">
             <div className="parallel-info">
               <label>Payment Details</label>
@@ -199,6 +201,7 @@ function Profile() {
             <h2>Tax</h2>
             <NavLink to="/profile/tax/edit" className="btn primary-btn">Edit</NavLink>
           </div>
+          {Object.keys(artist).length === 0 && isLoading && <h5>Loading tax... <img className="loading" src={Loader} alt="loading-icon"/></h5>}
           <div className="section-body">
             <div className="parallel-info">
               <label>ID/Social Security Number</label>

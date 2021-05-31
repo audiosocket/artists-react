@@ -279,6 +279,7 @@ function Album({id = null}) {
               <p className="sec-head-para mb-0">Time to add some artwork to this album! Click the <i className="medium-text">Edit</i> button above to get started.</p>
             }
           </div>
+          {!album && isLoading && <h5>Loading artwork... <img className="loading" src={Loader} alt="loading-icon"/></h5>}
           {album && album.artwork &&
             <div className="section-body">
               <div className="artwork-images-sec">
@@ -331,15 +332,15 @@ function Album({id = null}) {
                           </>
                           :
                           <>
-                            <a title="Can't edit track"><img src={Edit} alt="Edit"/></a>
-                            <a title="Can't delete track"><img src={Delete} alt="Delete"/></a>
+                            <a title="Track is under review, can't edit."><img src={Edit} alt="Edit"/></a>
+                            <a title="Track is under review, can't delete."><img src={Delete} alt="Delete"/></a>
                           </>
                           }
                       </div>
                     </div>
                   )
                 })
-                : <p>No music created yet! Click <i className="medium-text">Add Music</i> button above to get started.</p>
+                : !album && isLoading ? <h5>Loading tracks... <img className="loading" src={Loader} alt="loading-icon"/></h5> : <p>No music created yet! Click <i className="medium-text">Add Music</i> button above to get started.</p>
               }
             </div>
           </div>
@@ -406,7 +407,7 @@ function Album({id = null}) {
                         options={collaboratorsDropdown}
                         defaultValue={selectedTrack ? selectedTrack.collaborator ? collaboratorsDropdown.filter(item => parseInt(item.value) === parseInt(selectedTrack.collaborator.id)) : {label: "Select collaborator", value: null} : {label: "Select collaborator", value: null}}
                         onChange={(target) => setCollaborator(target.value)}
-                        maxMenuHeight={140}
+                        maxMenuHeight={120}
                         theme={theme => ({
                           ...theme,
                           colors: {
@@ -429,7 +430,7 @@ function Album({id = null}) {
                         options={publishersDropdown}
                         defaultValue={selectedTrack ? selectedTrack.publisher ? publishersDropdown.filter(item => parseInt(item.value) === parseInt(selectedTrack.publisher.id)) : {label: "Select publisher", value: null} : {label: "Select publisher", value: null}}
                         onChange={(target) => setPublisher(target.value)}
-                        maxMenuHeight={140}
+                        maxMenuHeight={120}
                         theme={theme => ({
                           ...theme,
                           colors: {

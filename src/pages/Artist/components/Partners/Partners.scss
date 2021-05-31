@@ -11,6 +11,11 @@
   .btn {
     text-transform: none;
   }
+  img {
+    &.loading {
+      width: 50px;
+    }
+  }
   section {
     margin: 15px 0;
   }

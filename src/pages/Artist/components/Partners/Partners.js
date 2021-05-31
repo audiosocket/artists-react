@@ -16,8 +16,8 @@ import fetchPublishers from "../../../../common/utlis/fetchPublishers";
 
 function Partners() {
   const {artistState, artistActions} = React.useContext(ArtistContext);
-  const [collaborators, setCollaborators] = useState(null);
-  const [publishers, setPublishers] = useState(null);
+  const [collaborators, setCollaborators] = useState([]);
+  const [publishers, setPublishers] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [validated, setValidated] = useState(false);
   const form = useRef(false);
@@ -43,7 +43,7 @@ function Partners() {
   const getCollaborators = async () => {
     setIsLoading(true);
     const collaborators = await fetchCollaborators();
-    setCollaborators(collaborators ?? null);
+    setCollaborators(collaborators ?? []);
     artistActions.collaboratorsStateChanged(collaborators ?? null);
     setIsLoading(false);
   }
@@ -51,7 +51,7 @@ function Partners() {
   const getPublishers = async () => {
     setIsLoading(true);
     const publishers = await fetchPublishers();
-    setPublishers(publishers ?? null);
+    setPublishers(publishers ?? []);
     artistActions.publishersStateChanged(publishers ?? null);
     setIsLoading(false);
   }
@@ -184,13 +184,14 @@ function Partners() {
           </div>
           <div className="partner-list">
             <ul className="partner-row">
-              {!collaborators && <p>No collaborators created yet! Click <i className="medium-text">Add a collaborators</i> button to get started.</p>}
-              {collaborators &&
-                collaborators.map((collaborator, key) => {
-                  return (
-                    collaborator.first_name && <li key={key}><a>{collaborator.first_name} {collaborator.last_name ?? ''} <small>MOSEEG 3753</small></a></li>
-                  )
-                })
+              {!collaborators.length && isLoading && <h5>Loading collaborators... <img className="loading" src={Loader} alt="loading-icon"/></h5>}
+              {collaborators.length !== 0
+                ? collaborators.map((collaborator, key) => {
+                    return (
+                      collaborator.first_name && <li key={key}><a>{collaborator.first_name} {collaborator.last_name ?? ''} <small>MOSEEG 3753</small></a></li>
+                    )
+                  })
+                : !isLoading && <p>No collaborators created yet! Click <i className="medium-text">Add a collaborator</i> button to get started.</p>
               }
             </ul>
           </div>
@@ -202,15 +203,16 @@ function Partners() {
           </div>
           <div className="partner-list">
             <ul className="partner-row">
-              {publishers &&
-                publishers.map((publisher, key) => {
-                  return (
-                    publisher.name && <li key={key}><a>{publisher.name} <small>MOSEEG 3753</small></a></li>
-                  )
-                })
+              {!publishers.length && isLoading && <h5>Loading collaborators... <img className="loading" src={Loader} alt="loading-icon"/></h5>}
+              {publishers.length !== 0
+                ? publishers.map((publisher, key) => {
+                    return (
+                      publisher.name && <li key={key}><a>{publisher.name} <small>MOSEEG 3753</small></a></li>
+                    )
+                  })
+                : !isLoading && <p>No publishers created yet! Click <i className="medium-text">Add a publisher</i> button to get started.</p>
               }
             </ul>
-            {!publishers && <p>No publishers created yet! Click <i className="medium-text">Add a publisher</i> button to get started.</p>}
           </div>
         </section>
     </div>

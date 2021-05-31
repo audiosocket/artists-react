@@ -141,7 +141,7 @@ function AlbumsListing() {
                     </li>
                   )
                 })
-                : <p>No album created yet! Click <i className="medium-text">Create an album</i> button above to get started.</p>
+                : !isLoading && <p>No album created yet! Click <i className="medium-text">Create an album</i> button above to get started.</p>
               }
             </ul>
           </div>
@@ -206,7 +206,7 @@ function AlbumsListing() {
             <Button className="btn btn-outline-light" onClick={handleClose}>Cancel</Button>
             {!selectedAlbum
               ? <Button type="submit" className="btn primary-btn submit">{isLoading ? <>Creating...<img src={Loader} alt="icon"/></> : "Create Album"}</Button>
-              : <Button type="submit" className="btn primary-btn submit">{isLoading ? <>Saving...<img src={Loader} alt="icon"/></> : "Save Album"}</Button>
+              : <Button type="submit" className="btn primary-btn submit">{isLoading ? <>Saving...<img src={Loader} alt="icon"/></> : "Save"}</Button>
             }
           </Modal.Footer>
         </Form>

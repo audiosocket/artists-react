@@ -12,7 +12,7 @@ async function fetchPublishers() {
     });
   const resultSet = await response.json();
   if (!response.ok) {
-    return null;
+    return [];
   } else {
     return resultSet;
   }

@@ -12,7 +12,7 @@ async function fetchCollaborators() {
     });
   const resultSet = await response.json();
   if (!response.ok) {
-    return null;
+    return [];
   } else {
     return resultSet;
   }
