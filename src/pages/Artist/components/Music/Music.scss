@@ -306,20 +306,31 @@
       }
     }
     .track-writter{
-      @include flex(1 1 25%);
+      @include flex(1 1 20%);
     }
     .track-publisher{
-      @include flex(1 1 25%);
+      @include flex(1 1 20%);
+    }
+    .track-status{
+      @include flex(1 1 10%);
+      text-transform: capitalize;
     }
     .track-edit{
       @include flex(1 1 10%);
       a {
-        width: 16px;
+        width: 18px;
         display: inline-block;
         vertical-align: middle;
-        margin-left: 15%;
+        margin-left: 4%;
+        margin-right: 6%;
+        opacity: 0.5;
+        transition: all 0.3s ease-in-out;
         img {
           width: 100%;
+        }
+        &.track-action:hover {
+          opacity: 1;
+          cursor: pointer;
         }
       }
     }
@@ -339,16 +350,6 @@
     }
     & > div {
       padding: 0 10px 0;
-    }
-    &.body-row {
-      .track-edit {
-        opacity: 0.5;
-        transition: all 0.3s ease-in-out;
-        &:hover {
-          opacity: 1;
-          cursor: pointer;
-        }
-      }
     }
   }
 }

@@ -3,6 +3,7 @@ import React, {useEffect, useRef, useState} from "react";
 import {Breadcrumb} from 'react-bootstrap';
 import {NavLink, useHistory} from "react-router-dom";
 import Edit from "../../../../images/pencil.svg";
+import Delete from "../../../../images/delete.svg";
 import {ArtistContext} from "../../../../Store/artistContext";
 import fetchAlbums from "../../../../common/utlis/fetchAlbums";
 import Loader from "../../../../images/loader.svg";
@@ -13,7 +14,6 @@ import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import {ACCESS_TOKEN, ALBUMS, BASE_URL} from "../../../../common/api";
 import Select from "react-select";
-import cover from "../../../../images/artist-cover.jpg";
 import fetchCollaborators from "../../../../common/utlis/fetchCollaborators";
 import fetchPublishers from "../../../../common/utlis/fetchPublishers";
 
@@ -22,6 +22,7 @@ function Album({id = null}) {
   const {artistState, artistActions} = React.useContext(ArtistContext);
   const [isLoading, setIsLoading] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const form = useRef(false);
   const [validated, setValidated] = useState(false);
   const [album, setAlbum] = useState(null);
@@ -86,7 +87,7 @@ function Album({id = null}) {
     }
   }
 
-  const handleSubmitAddMusic = async (e) => {
+  const handleSubmitMusic = async (e) => {
     e.preventDefault();
     const musicForm = e.currentTarget;
     if (musicForm.checkValidity() === false) {
@@ -102,11 +103,27 @@ function Album({id = null}) {
       } else {
         data.delete('file');
       }
-      setIsLoading(true);
+      if(collaborator)
+        data.append('collaborator_id', collaborator)
+      if(publisher)
+        data.append('publisher_id', publisher)
+
       if(data.get("public_domain"))
         data.set("public_domain", true);
       else
         data.set("public_domain", false);
+
+      if(isSubmitting) {
+        if(window.confirm(`Are you sure to submit "${selectedTrack.title}" for classification?`)) {
+          data.append('status', 'unclassified');
+        } else {
+          setIsSubmitting(false);
+          return false;
+        }
+      } else {
+        setIsLoading(true);
+      }
+
       const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
       const URL = selectedTrack ? `${BASE_URL}${ALBUMS}/${id}/tracks/${selectedTrack.id}` : `${BASE_URL}${ALBUMS}/${id}/tracks`;
       const response = await fetch(`${URL}`,
@@ -128,6 +145,7 @@ function Album({id = null}) {
         handleClose();
         e.target.reset();
       }
+      setIsSubmitting(false);
       setIsLoading(false);
     }
   }
@@ -157,6 +175,26 @@ function Album({id = null}) {
     }
   }
 
+  const handleDeleteMusic = async (track) => {
+    if(window.confirm(`Are you sure to delete "${track.title}"?`)) {
+      const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
+      const response = await fetch(`${BASE_URL}${ALBUMS}/${id}/tracks/${track.id}`,
+        {
+          headers: {
+            "authorization": ACCESS_TOKEN,
+            "auth-token": userAuthToken
+          },
+          method: "DELETE"
+        });
+      if (!response.ok) {
+        alert('Something went wrong, try later!');
+      } else {
+        const albums = await fetchAlbums();
+        artistActions.albumsStateChanged(albums);
+      }
+    }
+  }
+
   const handleAddMusicModal = () => {
     setShowAddMusicModal(true);
   }
@@ -174,6 +212,9 @@ function Album({id = null}) {
     setValidated(false);
     setFile(null);
     setInvalidFile(false);
+    setCollaborator(null);
+    setPublisher(null);
+    setIsSubmitting(false);
   }
 
   const handleChangeMusicUpload = (file) => {
@@ -191,6 +232,9 @@ function Album({id = null}) {
     setIsPublicDomain(!isPublicDomain)
   }
 
+  const handleClassification = () => {
+    setIsSubmitting(true);
+  }
   return (
     <div className="albumsWrapper">
       <div className="asBreadcrumbs">
@@ -260,7 +304,8 @@ function Album({id = null}) {
                   <div className="track-title">Title</div>
                   <div className="track-writter">Writers</div>
                   <div className="track-publisher">Publisher</div>
-                  <div className="track-edit">Action</div>
+                  <div className="track-status">Status</div>
+                  <div className="track-edit">Actions</div>
                 </div>
               }
               {album && album.tracks.length
@@ -274,12 +319,22 @@ function Album({id = null}) {
                           <em>Uploaded {track.created_at.split(' ')[0]}</em>
                         </div>
                       </div>
-                      <div className="track-writter">
-                        Brittni stewart
-                      </div>
-                      <div className="track-publisher">Jetty Rae LLC</div>
+                      <div className="track-writter">{track.collaborator ? track.collaborator.first_name + ' '+ track.collaborator.last_name : "-"}</div>
+                      <div className="track-publisher">{track.publisher ? track.publisher.name : "-"}</div>
+                      <div className="track-status">{track.status}</div>
                       <div className="track-edit">
-                        <a onClick={(e) => handleEditMusicModal(track)}><img src={Edit} alt="Edit"/></a>
+                        {track.status === "pending"
+                          ?
+                          <>
+                            <a className="track-action" title="Edit track" onClick={(e) => handleEditMusicModal(track)}><img src={Edit} alt="Edit"/></a>
+                            <a className="track-action" title="Delete track" onClick={(e) => handleDeleteMusic(track)}><img src={Delete} alt="Delete"/></a>
+                          </>
+                          :
+                          <>
+                            <a title="Can't edit track"><img src={Edit} alt="Edit"/></a>
+                            <a title="Can't delete track"><img src={Delete} alt="Delete"/></a>
+                          </>
+                          }
                       </div>
                     </div>
                   )
@@ -298,7 +353,7 @@ function Album({id = null}) {
         centered
         className="customArtistModal closeOn"
       >
-        <Form noValidate validated={validated} ref={form} onSubmit={handleSubmitAddMusic}>
+        <Form noValidate validated={validated} ref={form} onSubmit={handleSubmitMusic}>
           <Modal.Header closeButton>
             <Modal.Title id="contained-modal-title-vcenter">
               {selectedTrack
@@ -349,7 +404,7 @@ function Album({id = null}) {
                         className="collaborator-select-container-header"
                         classNamePrefix="collaborator-select-header react-select-popup"
                         options={collaboratorsDropdown}
-                        defaultValue={{label: "Select collaborator", value: null}}
+                        defaultValue={selectedTrack ? selectedTrack.collaborator ? collaboratorsDropdown.filter(item => parseInt(item.value) === parseInt(selectedTrack.collaborator.id)) : {label: "Select collaborator", value: null} : {label: "Select collaborator", value: null}}
                         onChange={(target) => setCollaborator(target.value)}
                         maxMenuHeight={140}
                         theme={theme => ({
@@ -372,7 +427,7 @@ function Album({id = null}) {
                         className="publisher-select-container-header"
                         classNamePrefix="publisher-select-header react-select-popup"
                         options={publishersDropdown}
-                        defaultValue={{label: "Select publisher", value: null}}
+                        defaultValue={selectedTrack ? selectedTrack.publisher ? publishersDropdown.filter(item => parseInt(item.value) === parseInt(selectedTrack.publisher.id)) : {label: "Select publisher", value: null} : {label: "Select publisher", value: null}}
                         onChange={(target) => setPublisher(target.value)}
                         maxMenuHeight={140}
                         theme={theme => ({
@@ -393,7 +448,7 @@ function Album({id = null}) {
                       name="public_domain"
                       id="public_domain"
                       type="checkbox"
-                      onClick={handleChangePublicDomain}
+                      onChange={handleChangePublicDomain}
                       value={isPublicDomain}
                       checked={isPublicDomain}
                     />
@@ -410,7 +465,7 @@ function Album({id = null}) {
               ? <Button type="submit" className="btn primary-btn submit">{isLoading ? <>Adding...<img src={Loader} alt="icon"/></> : "Add Music"}</Button>
               : <Button type="submit" className="btn primary-btn submit">{isLoading ? <>Saving...<img src={Loader} alt="icon"/></> : "Save"}</Button>
             }
-            <Button className="as-tertiary-modal-btn" onClick={handleClose}>Submit for Classification</Button>
+            <Button type="submit" onClick={handleClassification} className="as-tertiary-modal-btn submit">{isSubmitting ? <>Submitting...<img src={Loader} alt="icon"/></> : "Submit for Classification"}</Button>
           </Modal.Footer>
         </Form>
       </Modal>
