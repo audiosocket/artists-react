@@ -13,6 +13,7 @@ import {ACCESS_TOKEN, BASE_URL, INVITE_COLLABORATORS, PUBLISHERS} from "../../..
 import {ArtistContext} from "../../../../Store/artistContext";
 import fetchCollaborators from "../../../../common/utlis/fetchCollaborators";
 import fetchPublishers from "../../../../common/utlis/fetchPublishers";
+import Edit from "../../../../images/pencil.svg";
 
 function Partners() {
   const {artistState, artistActions} = React.useContext(ArtistContext);
@@ -27,6 +28,7 @@ function Partners() {
   const proRef = useRef(null);
   const [agreements, setAgreements] = useState(false);
   const [access, setAccess] = useState(false);
+  const [selectedPartner, setSelectedPartner] = useState(null);
 
   useEffect(() => {
     if (!artistState.collaborators)
@@ -74,14 +76,15 @@ function Partners() {
         data.set("access", "write");
       else
         data.set("access", "read");
+      const url = selectedPartner ? `${BASE_URL}${INVITE_COLLABORATORS}/${selectedPartner.id}` : `${BASE_URL}${INVITE_COLLABORATORS}`;
       const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
-      const response = await fetch(`${BASE_URL}${INVITE_COLLABORATORS}`,
+      const response = await fetch(url,
         {
           headers: {
             "authorization": ACCESS_TOKEN,
             "auth-token": userAuthToken,
           },
-          method: 'PATCH',
+          method: selectedPartner ? 'PATCH' : 'POST',
           body: data
         });
       const collaborators = await response.json();
@@ -89,6 +92,7 @@ function Partners() {
         alert('Something went wrong, try later!');
       } else {
         //const collaborators = await fetchCollaborators();
+        setCollaborators(collaborators.length ? collaborators : []);
         artistActions.collaboratorsStateChanged(collaborators.length ? collaborators : null);
         handleClose();
       }
@@ -106,14 +110,15 @@ function Partners() {
     } else {
       setIsLoading(true);
       const data = new FormData(form.current);
+      const url = selectedPartner ? `${BASE_URL}${PUBLISHERS}/${selectedPartner.id}` : `${BASE_URL}${PUBLISHERS}`;
       const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
-      const response = await fetch(`${BASE_URL}${PUBLISHERS}`,
+      const response = await fetch(url,
         {
           headers: {
             "authorization": ACCESS_TOKEN,
             "auth-token": userAuthToken,
           },
-          method: 'POST',
+          method: selectedPartner ? 'PATCH' : 'POST',
           body: data
         });
       const publishers = await response.json();
@@ -121,6 +126,7 @@ function Partners() {
         alert('Something went wrong, try later!');
       } else {
         //const publishers = await fetchPublishers();
+        setPublishers(publishers.length ? publishers : []);
         artistActions.publishersStateChanged(publishers.length ? publishers : null);
         handleClose();
       }
@@ -128,12 +134,16 @@ function Partners() {
     }
   }
 
-  const handleShowCollaboratorModal = () => {
+  const handleShowCollaboratorModal = (collaborator = null) => {
+    if(collaborator)
+      setSelectedPartner(collaborator);
     setShowPublisherModal(false);
     setShowCollaboratorModal(true);
   }
 
-  const handelShowPublisherModal = () => {
+  const handelShowPublisherModal = (publisher = null) => {
+    if(publisher)
+      setSelectedPartner(publisher);
     setShowCollaboratorModal(false);
     setShowPublisherModal(true);
   }
@@ -144,6 +154,7 @@ function Partners() {
     setValidated(false);
     setAgreements(false);
     setAccess(false);
+    setSelectedPartner(null);
   }
 
   const handleChangeAgreements = (e) => {
@@ -188,7 +199,11 @@ function Partners() {
               {collaborators.length !== 0
                 ? collaborators.map((collaborator, key) => {
                     return (
-                      collaborator.first_name && <li key={key}><a>{collaborator.first_name} {collaborator.last_name ?? ''} <small>MOSEEG 3753</small></a></li>
+                      collaborator.first_name &&
+                        <li key={key}>
+                          <a>{collaborator.first_name} {collaborator.last_name ?? ''} <small>MOSEEG 3753</small></a>
+                          <img onClick={(e) => handleShowCollaboratorModal(collaborator)} src={Edit} alt="edit-icon"/>
+                        </li>
                     )
                   })
                 : !isLoading && <p>No collaborators created yet! Click <i className="medium-text">Add a collaborator</i> button to get started.</p>
@@ -207,7 +222,11 @@ function Partners() {
               {publishers.length !== 0
                 ? publishers.map((publisher, key) => {
                     return (
-                      publisher.name && <li key={key}><a>{publisher.name} <small>MOSEEG 3753</small></a></li>
+                      publisher.name &&
+                        <li key={key}>
+                          <a>{publisher.name} <small>MOSEEG 3753</small></a>
+                          <img onClick={(e) => handelShowPublisherModal(publisher)} src={Edit} alt="edit-icon"/>
+                        </li>
                     )
                   })
                 : !isLoading && <p>No publishers created yet! Click <i className="medium-text">Add a publisher</i> button to get started.</p>
@@ -352,7 +371,10 @@ function Partners() {
           </Modal.Body>
           <Modal.Footer>
             <Button className="btn btn-outline-light" onClick={handleClose}>Cancel</Button>
-            <Button type="submit" className="btn primary-btn submit">{isLoading ? <>Saving...<img src={Loader} alt="icon"/></> : "Send Invitation"}</Button>
+            {selectedPartner && selectedPartner.first_name
+              ? <Button type="submit" className="btn primary-btn submit">{isLoading ? <>Saving...<img src={Loader} alt="icon"/></> : "Save"}</Button>
+              : <Button type="submit" className="btn primary-btn submit">{isLoading ? <>Sending...<img src={Loader} alt="icon"/></> : "Send Invitation"}</Button>
+            }
           </Modal.Footer>
         </Form>
       </Modal>
@@ -382,7 +404,7 @@ function Partners() {
                         required
                         name="name"
                         type="text"
-                        defaultValue={''}
+                        defaultValue={selectedPartner ? selectedPartner.name : ''}
                         placeholder="Publisher Name*"
                       />
                       <Form.Control.Feedback type="invalid">
@@ -428,7 +450,10 @@ function Partners() {
           </Modal.Body>
           <Modal.Footer>
             <Button className="btn btn-outline-light" onClick={handleClose}>Cancel</Button>
-            <Button type="submit" className="btn primary-btn submit">{isLoading ? <>Creating...<img src={Loader} alt="icon"/></> : "Create"}</Button>
+            {selectedPartner && selectedPartner.name
+              ? <Button type="submit" className="btn primary-btn submit">{isLoading ? <>Saving...<img src={Loader} alt="icon"/></> : "Save"}</Button>
+              : <Button type="submit" className="btn primary-btn submit">{isLoading ? <>Creating...<img src={Loader} alt="icon"/></> : "Create"}</Button>
+            }
           </Modal.Footer>
         </Form>
       </Modal>
