@@ -114,7 +114,7 @@ function Album({id = null}) {
         data.set("public_domain", false);
 
       if(isSubmitting) {
-        if(window.confirm(`Are you sure to submit "${selectedTrack.title}" for classification?`)) {
+        if(window.confirm(`Are you sure to submit "${data.get('title')}" for classification?`)) {
           data.append('status', 'unclassified');
         } else {
           setIsSubmitting(false);
