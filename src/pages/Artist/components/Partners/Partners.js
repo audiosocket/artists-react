@@ -272,7 +272,7 @@ function Partners() {
                   </Col>
                   <Col xs={12}>
                     <div className="form-group">
-                      <label htmlFor="agreements" className="checkbox my-3">
+                      <label htmlFor="agreements" className="partners checkbox my-3">
                         <input
                           name="agreements"
                           id="agreements"
@@ -302,7 +302,7 @@ function Partners() {
                   </Col>
                   <Col xs={12}>
                     <div className="form-group">
-                      <label htmlFor="access" className="checkbox my-3">
+                      <label htmlFor="access" className="partners checkbox my-3">
                         <input
                           name="access"
                           id="access"

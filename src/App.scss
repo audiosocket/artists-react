@@ -118,6 +118,7 @@ a, .btn {
 .checkbox {
 	position: relative;
 	padding-left: 2rem;
+	cursor: pointer;
 	input {
 		position: absolute;
 		opacity: 0;
@@ -159,6 +160,11 @@ a, .btn {
 	input~.checkmark {
 		border: 2px solid $clr-green;
 	}
+}
+
+.dropdown-toggle::after {
+	margin-top: 3px;
+	margin-left: 5px;
 }
 
 .close-btn {
