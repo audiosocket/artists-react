@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import '../../App.scss';
 import {ArtistProvider} from "../../Store/artistContext";
 import { Switch, Route } from "react-router-dom";
@@ -12,11 +12,16 @@ import Music from "./components/Music/Music";
 import Faq from "./components/Faq/Faq";
 
 function Artist() {
+  const [toggleSidebar, setToggleSidebar] = useState(false);
+  const handleToggle = (toggleSidebar) => {
+    setToggleSidebar(!toggleSidebar);
+  }
+
   return (
     <ArtistProvider>
       <div className="welcome-page">
-        <Header/>
-        <div className="content-wrapper">
+        <Header onToggleSidebar={handleToggle} />
+        <div className={toggleSidebar ? "content-wrapper launch-sidebar" : "content-wrapper "}>
           <Sidebar />
           <div className="right-content">
             <Switch>

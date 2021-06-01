@@ -3,6 +3,7 @@ import './Header.scss';
 import logo from '../../../../images/header-logo-white.svg';
 import user from '../../../../images/user.svg';
 import hamburger from '../../../../images/hamburger.svg';
+import close from '../../../../images/close.svg';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav'
 import NavDropdown from 'react-bootstrap/NavDropdown'
@@ -16,11 +17,12 @@ import csc from "country-state-city";
 import fetchCollaborators from "../../../../common/utlis/fetchCollaborators";
 import fetchPublishers from "../../../../common/utlis/fetchPublishers";
 
-function Header() {
+function Header({onToggleSidebar}) {
   const history = useHistory();
   const [isLoading, setIsLoading] = useState(false);
   const {artistState, artistActions} = React.useContext(ArtistContext);
   const [selectedArtist, setSelectedArtist] = useState(null);
+  const [toggleSidebar, setToggleSidebar] = useState(true);
 
   useEffect(() => {
     initializeAgreements();
@@ -97,12 +99,17 @@ function Header() {
     setSelectedArtist(e.target.dataset.value);
   }
 
+  const handleToggle = () => {
+    setToggleSidebar(!toggleSidebar);
+    onToggleSidebar(!toggleSidebar);
+  }
+
   return (
     <>
     <header>
       <Navbar collapseOnSelect expand="lg" variant="dark" className="custom-nav">
         <div class="not-for-desktop">
-          <img src={hamburger} alt="Sidebar Launcher"  className="" />
+          <img onClick={handleToggle} src={toggleSidebar ? hamburger : close} alt="Sidebar Launcher"  className="" />
         </div>
         <NavLink className="logo-brand" to={"/"}><Navbar.Brand><img src={logo} alt="COMPANY LOGO"  className="" /></Navbar.Brand></NavLink>
         <Navbar.Text>{selectedArtist && selectedArtist+"'s Portal"}</Navbar.Text>
