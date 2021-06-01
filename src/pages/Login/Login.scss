@@ -56,6 +56,14 @@
 				background: $clr-green;
 			}
 		}
+		img {
+			&.back {
+				width: 12px;
+				vertical-align: top;
+				margin-top: 7px;
+				margin-right: 5px;
+			}
+		}
 	}
 	.login-error {
 		width: 100%;

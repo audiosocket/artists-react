@@ -1,8 +1,9 @@
 import React, {useEffect, useRef, useState} from "react";
-import {useHistory} from "react-router-dom";
+import {NavLink, useHistory} from "react-router-dom";
 import "./Login.scss";
 import Logo from '../../images/logo-black.svg';
 import ResetPassword from '../../images/reset-password.svg';
+import Back from '../../images/back.svg';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { AuthContext } from "../../Store/authContext";
@@ -58,9 +59,9 @@ function ForgotPassword() {
       <div className="login-logo">
         <img className="" src={Logo} alt="Workflow" onClick={() => {history.push("/")}} />
       </div>
-      <h2 className="">Reset your password</h2>
+      <h2 className="">Get a link to reset your password on your email</h2>
       {loginError &&
-      <p className="login-error">Invalid email/password, try again!</p>
+      <p className="login-error">Invalid email, try again!</p>
       }
       <Form className="form" noValidate validated={validated} ref={form} onSubmit={handleSubmit}>
         <Form.Group controlId="formBasicEmail">
@@ -70,9 +71,15 @@ function ForgotPassword() {
             A valid email address is required!
           </Form.Control.Feedback>
         </Form.Group>
-
-        <Button disabled={isLoading} variant="btn primary-btn btn-full-width" className="mt-4" type="submit"><img className="" src={isLoading ? Loader : ResetPassword} alt="Workflow"/>
-          Reset
+        <div className="block-inline remember-text">
+          <div className="text-sm">
+            <NavLink to={"/login"}>
+              <img className="back" src={Back} alt="Workflow"/>Back to login
+            </NavLink>
+          </div>
+        </div>
+        <Button disabled={isLoading} variant="btn primary-btn btn-full-width" type="submit"><img className="" src={isLoading ? Loader : ResetPassword} alt="Workflow"/>
+          Submit
         </Button>
       </Form>
     </div>
