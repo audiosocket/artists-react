@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import './Header.scss';
 import logo from '../../../../images/header-logo-white.svg';
 import user from '../../../../images/user.svg';
+import hamburger from '../../../../images/hamburger.svg';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav'
 import NavDropdown from 'react-bootstrap/NavDropdown'
@@ -100,7 +101,10 @@ function Header() {
     <>
     <header>
       <Navbar collapseOnSelect expand="lg" variant="dark" className="custom-nav">
-        <NavLink to={"/"}><Navbar.Brand><img src={logo} alt="COMPANY LOGO"  className="" /></Navbar.Brand></NavLink>
+        <div class="not-for-desktop">
+          <img src={hamburger} alt="Sidebar Launcher"  className="" />
+        </div>
+        <NavLink className="logo-brand" to={"/"}><Navbar.Brand><img src={logo} alt="COMPANY LOGO"  className="" /></Navbar.Brand></NavLink>
         <Navbar.Text>{selectedArtist && selectedArtist+"'s Portal"}</Navbar.Text>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">

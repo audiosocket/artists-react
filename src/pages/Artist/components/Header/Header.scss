@@ -8,6 +8,17 @@ header {
     margin: 0 auto;
     padding-top: 24px;
     padding-bottom: 24px;
+    .navbar-toggler {
+      border: 0;
+      padding: 0;
+      &:focus {
+        outline: none;
+      }
+      .navbar-toggler-icon {
+        background: url(../../../../images/menu-dots.svg) no-repeat;
+        width: 7px;
+      }
+    }
     .navbar-nav {
       align-items: center;
       .nav-link {
@@ -44,6 +55,27 @@ header {
     }
     .navbar-text {
       color: #ffffff;
+    }
+  }
+}
+.not-for-desktop {
+  display: none;
+}
+
+@media #{$mid-point-tablet} {
+	header {
+    .custom-nav {
+      .logo-brand {
+        @include flex(1);
+        text-align: center;
+      }
+      .not-for-desktop {
+        display: block;
+        width: 25px;
+        img {
+          width: 100%;
+        }
+      }
     }
   }
 }
