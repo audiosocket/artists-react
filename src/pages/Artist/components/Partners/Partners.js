@@ -135,8 +135,11 @@ function Partners() {
   }
 
   const handleShowCollaboratorModal = (collaborator = null) => {
-    if(collaborator)
+    if(collaborator) {
       setSelectedPartner(collaborator);
+      setAgreements(collaborator.agreements ?? false)
+      setAccess(collaborator.access === "write" ? true : false)
+    }
     setShowPublisherModal(false);
     setShowCollaboratorModal(true);
   }
@@ -259,7 +262,7 @@ function Partners() {
                         required
                         name="name"
                         type="text"
-                        defaultValue={''}
+                        defaultValue={selectedPartner.first_name ? selectedPartner.first_name + ' '+ selectedPartner.last_name : ''}
                         placeholder="Collaborator Name*"
                       />
                       <Form.Control.Feedback type="invalid">
@@ -289,7 +292,7 @@ function Partners() {
                         required
                         name="email"
                         type="email"
-                        defaultValue={''}
+                        defaultValue={selectedPartner ? selectedPartner.email : ''}
                         placeholder="Email*"
                       />
                     </div>

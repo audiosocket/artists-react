@@ -59,11 +59,9 @@
           a {
             color: $clr-black;
           }
-        }
-        &:hover {
-          cursor: pointer;
           img {
             &:hover {
+              cursor: pointer;
               opacity: 1;
             }
           }
