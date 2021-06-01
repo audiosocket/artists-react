@@ -41,10 +41,10 @@
 		}
 	}
 	a {
-		color: $clr-green;
-		font-weight: 500;
+		color: $clr-black;
+		font-weight: normal;
 		&:hover {
-			color: $clr-green-bright;
+			color: $clr-green;
 		}
 	}
 	.remember-text {

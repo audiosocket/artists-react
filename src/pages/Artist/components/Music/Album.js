@@ -324,7 +324,7 @@ function Album({id = null}) {
                       </div>
                       <div className="track-writter">{track.collaborator ? track.collaborator.first_name + ' '+ track.collaborator.last_name : "-"}</div>
                       <div className="track-publisher">{track.publisher ? track.publisher.name : "-"}</div>
-                      <div className="track-status">{track.status}</div>
+                      <div className="track-status">{track.status.toLowerCase() === "unclassified" ? "Submitted for classification" : track.status}</div>
                       <div className="track-edit">
                         {track.status === "pending"
                           ?
