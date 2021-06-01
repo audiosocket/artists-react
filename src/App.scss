@@ -50,6 +50,18 @@
   transition: $args;
 }
 
+$phone-potrait-old: "only screen and (max-width : 360px)";
+$phone-portrait: "only screen and (max-width : 576px)";
+$phone-landscape: "only screen and (max-width : 767px)";
+$iphonex-portrait: "only screen and (device-width : 375px) and (device-height : 812px) and (-webkit-device-pixel-ratio : 3) and (orientation : portrait)";
+$iphonex-landscape: "only screen and (device-width : 375px) and (device-height : 812px) and (-webkit-device-pixel-ratio : 3) and (orientation : landscape)";
+$iphonexMax-portrait: "only screen and (device-width : 414px) and (device-height : 896px) and (-webkit-device-pixel-ratio : 3) and (orientation : portrait)";
+$iphonexMax-landscape: "only screen and (device-width : 414px) and (device-height : 896px) and (-webkit-device-pixel-ratio : 3) and (orientation : landscape)";
+$tab-portrait: "only screen and (max-width : 768px)";
+$mid-point-tablet: "only screen and (max-width : 992px)";
+$tab-landscape: "only screen and (max-width : 1024px)";
+$desktop-start: "only screen and (max-width : 1200px)";
+
 
 /*=====  Variables  ======*/
 
@@ -467,5 +479,72 @@ select:-webkit-autofill:focus {
         font-weight: 600;
       }
     }
+  }
+}
+
+/**************** Responsiveness ***************/
+@media #{$tab-landscape} {
+	.welcome-page {
+    .content-wrapper {
+      aside {
+        max-width: 250px;
+        ul {
+          max-width: 100%;
+        }
+      }
+    }
+  }
+}
+
+@media #{$mid-point-tablet} {
+	.welcome-page {
+    .content-wrapper {
+      aside {
+        height: inherit;
+        transform: translateX(-100%);
+        display: none;
+        @include transition(all 0.3s cubic-bezier(0.250, 0.460, 0.450, 0.940));
+        ul {
+          max-width: 100%;
+        }
+      }
+      .right-content {
+        max-height: inherit;
+        padding: 50px 15px;
+      }
+      &.launch-sidebar {
+        aside {
+          display: block;
+          -webkit-animation: slide-in-left 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+	        animation: slide-in-left 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+        }
+      }
+    }
+  }
+}
+
+/**************** Keyframes ********************/
+@-webkit-keyframes slide-in-left {
+  0% {
+    -webkit-transform: translateX(-1000px);
+            transform: translateX(-1000px);
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: translateX(0);
+            transform: translateX(0);
+    opacity: 1;
+  }
+}
+@keyframes slide-in-left {
+  0% {
+    -webkit-transform: translateX(-1000px);
+            transform: translateX(-1000px);
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: translateX(0);
+            transform: translateX(0);
+    opacity: 1;
   }
 }
