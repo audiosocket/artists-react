@@ -84,7 +84,7 @@ function Partners() {
             "authorization": ACCESS_TOKEN,
             "auth-token": userAuthToken,
           },
-          method: selectedPartner ? 'PATCH' : 'POST',
+          method: 'PATCH',
           body: data
         });
       const collaborators = await response.json();
@@ -134,7 +134,7 @@ function Partners() {
     }
   }
 
-  const handleShowCollaboratorModal = (collaborator = null) => {
+  const handleShowCollaboratorModal = (e, collaborator = null) => {
     if(collaborator) {
       setSelectedPartner(collaborator);
       setAgreements(collaborator.agreements ?? false)
@@ -144,7 +144,7 @@ function Partners() {
     setShowCollaboratorModal(true);
   }
 
-  const handelShowPublisherModal = (publisher = null) => {
+  const handelShowPublisherModal = (e, publisher = null) => {
     if(publisher)
       setSelectedPartner(publisher);
     setShowCollaboratorModal(false);
@@ -202,10 +202,10 @@ function Partners() {
               {collaborators.length !== 0
                 ? collaborators.map((collaborator, key) => {
                     return (
-                      collaborator.first_name &&
+                      collaborator &&
                         <li key={key}>
                           <a>{collaborator.first_name} {collaborator.last_name ?? ''} <small>MOSEEG 3753</small></a>
-                          <img onClick={(e) => handleShowCollaboratorModal(collaborator)} src={Edit} alt="edit-icon"/>
+                          <img onClick={(e) => handleShowCollaboratorModal(e, collaborator)} src={Edit} alt="edit-icon"/>
                         </li>
                     )
                   })
@@ -228,7 +228,7 @@ function Partners() {
                       publisher.name &&
                         <li key={key}>
                           <a>{publisher.name} <small>MOSEEG 3753</small></a>
-                          <img onClick={(e) => handelShowPublisherModal(publisher)} src={Edit} alt="edit-icon"/>
+                          <img onClick={(e) => handelShowPublisherModal(e, publisher)} src={Edit} alt="edit-icon"/>
                         </li>
                     )
                   })
@@ -262,7 +262,7 @@ function Partners() {
                         required
                         name="name"
                         type="text"
-                        defaultValue={selectedPartner.first_name ? selectedPartner.first_name + ' '+ selectedPartner.last_name : ''}
+                        defaultValue={selectedPartner ? selectedPartner.first_name + ' '+ selectedPartner.last_name : ''}
                         placeholder="Collaborator Name*"
                       />
                       <Form.Control.Feedback type="invalid">
@@ -374,7 +374,7 @@ function Partners() {
           </Modal.Body>
           <Modal.Footer>
             <Button className="btn btn-outline-light" onClick={handleClose}>Cancel</Button>
-            {selectedPartner && selectedPartner.first_name
+            {selectedPartner
               ? <Button type="submit" className="btn primary-btn submit">{isLoading ? <>Saving...<img src={Loader} alt="icon"/></> : "Save"}</Button>
               : <Button type="submit" className="btn primary-btn submit">{isLoading ? <>Sending...<img src={Loader} alt="icon"/></> : "Send Invitation"}</Button>
             }
@@ -453,7 +453,7 @@ function Partners() {
           </Modal.Body>
           <Modal.Footer>
             <Button className="btn btn-outline-light" onClick={handleClose}>Cancel</Button>
-            {selectedPartner && selectedPartner.name
+            {selectedPartner
               ? <Button type="submit" className="btn primary-btn submit">{isLoading ? <>Saving...<img src={Loader} alt="icon"/></> : "Save"}</Button>
               : <Button type="submit" className="btn primary-btn submit">{isLoading ? <>Creating...<img src={Loader} alt="icon"/></> : "Create"}</Button>
             }
