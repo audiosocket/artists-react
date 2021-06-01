@@ -4,6 +4,7 @@ import {AuthProvider} from "./Store/authContext";
 import Artist from "./pages/Artist/Artist";
 import Login from "./pages/Login/Login";
 import Signup from "./pages/Signup/Signup";
+import ForgotPassword from "./pages/Login/ForgotPassword";
 
 function App() {
   return (
@@ -12,6 +13,9 @@ function App() {
         <Switch>
           <Route path="/login">
             <Login/>
+          </Route>
+          <Route path="/forgot-password">
+            <ForgotPassword/>
           </Route>
           <Route
             path="/accept-invitation/:userHash?"

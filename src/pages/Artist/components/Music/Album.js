@@ -114,7 +114,7 @@ function Album({id = null}) {
         data.set("public_domain", false);
 
       if(isSubmitting) {
-        if(window.confirm(`Are you sure to submit "${selectedTrack.title}" for classification?`)) {
+        if(window.confirm(`Are you sure to submit "${data.get('title')}" for classification?`)) {
           data.append('status', 'unclassified');
         } else {
           setIsSubmitting(false);
@@ -191,6 +191,8 @@ function Album({id = null}) {
       } else {
         const albums = await fetchAlbums();
         artistActions.albumsStateChanged(albums);
+        const filteredAlbum = albums.filter(album => parseInt(album.id) === parseInt(id));
+        setAlbum(filteredAlbum[0] ?? null)
       }
     }
   }
@@ -322,7 +324,7 @@ function Album({id = null}) {
                       </div>
                       <div className="track-writter">{track.collaborator ? track.collaborator.first_name + ' '+ track.collaborator.last_name : "-"}</div>
                       <div className="track-publisher">{track.publisher ? track.publisher.name : "-"}</div>
-                      <div className="track-status">{track.status}</div>
+                      <div className="track-status">{track.status.toLowerCase() === "unclassified" ? "Submitted for classification" : track.status}</div>
                       <div className="track-edit">
                         {track.status === "pending"
                           ?
