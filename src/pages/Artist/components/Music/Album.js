@@ -191,6 +191,8 @@ function Album({id = null}) {
       } else {
         const albums = await fetchAlbums();
         artistActions.albumsStateChanged(albums);
+        const filteredAlbum = albums.filter(album => parseInt(album.id) === parseInt(id));
+        setAlbum(filteredAlbum[0] ?? null)
       }
     }
   }
