@@ -16,6 +16,11 @@ import {ACCESS_TOKEN, AGREEMENTS, BASE_URL} from "../../../../common/api";
 import csc from "country-state-city";
 import fetchCollaborators from "../../../../common/utlis/fetchCollaborators";
 import fetchPublishers from "../../../../common/utlis/fetchPublishers";
+import profile from '../../../../images/as-profile.svg';
+import setting from '../../../../images/as-setting.svg';
+import help from '../../../../images/as-help.svg';
+import signout from '../../../../images/as-signout.svg';
+import artist from '../../../../images/as-artist.svg';
 
 function Header({onToggleSidebar}) {
   const history = useHistory();
@@ -120,7 +125,7 @@ function Header({onToggleSidebar}) {
         <Navbar.Text>{selectedArtist && selectedArtist+"'s Portal"}</Navbar.Text>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
-          <Nav className="mr-auto">
+          <Nav className="mr-auto desktop-view">
             <NavDropdown title={"Choose artist"} id="collasible-nav-dropdown" className="artist-dropdown">
               <NavDropdown.Item onClick={handleSelectedArtist} className={selectedArtist === 'Amanda' && "active"} data-value="Amanda">Amanda</NavDropdown.Item>
               <NavDropdown.Item onClick={handleSelectedArtist} className={selectedArtist === 'Jenn' && "active"} data-value="Jenn">Jenn</NavDropdown.Item>
@@ -128,22 +133,31 @@ function Header({onToggleSidebar}) {
             </NavDropdown>
           </Nav>
           <Nav>
+          <NavDropdown className="mobile-view" title={<img src={artist} alt="Help"/>} id="collasible-nav-dropdown" className="mobile-view choose-artist-mobile">
+            <NavDropdown.Item onClick={handleSelectedArtist} className={selectedArtist === 'Amanda' && "active"} data-value="Amanda">Amanda</NavDropdown.Item>
+            <NavDropdown.Item onClick={handleSelectedArtist} className={selectedArtist === 'Jenn' && "active"} data-value="Jenn">Jenn</NavDropdown.Item>
+            <NavDropdown.Item onClick={handleSelectedArtist} className={selectedArtist === 'Kevin' && "active"} data-value="Kevin">Kevin</NavDropdown.Item>
+          </NavDropdown>
             <NavLink
               className={window.location.pathname.toLowerCase().indexOf('/settings') > -1 ? "nav-link active" : "nav-link"}
               to={"/settings"}>
-              Settings
+              <span className="desktop-view">Settings</span>
+              <img src={setting} alt="Setting"  className="mobile-view" />
             </NavLink>
             <Nav.Link href="mailto:info@audiosocket.com">
-              Help
+              <span className="desktop-view">Help</span>
+              <img src={help} alt="Help"  className="mobile-view" />
             </Nav.Link>
             <Nav.Link onClick={() => {
                 localStorage.removeItem("user");
                 history.push("/login");
               }}>
-              Sign out
+              <span className="desktop-view">Sign out</span>
+              <img src={signout} alt="Signout"  className="mobile-view" />
             </Nav.Link>
             <NavLink to={"/profile"} className="nav-link profile-pic">
-              <img src={artistState.artist ? artistState.artist.cover_image ? artistState.artist.cover_image : user : user} alt="Profile Picture"  className="" />
+              <img src={artistState.artist ? artistState.artist.cover_image ? artistState.artist.cover_image : user : user} alt="Profile Picture"  className="desktop-view" />
+              <img src={profile} alt="Profile"  className="mobile-view profile-img" />
             </NavLink>
           </Nav>
         </Navbar.Collapse>
