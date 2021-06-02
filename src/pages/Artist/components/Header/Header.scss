@@ -120,6 +120,16 @@ header {
           }
         }
       }
+      .navbar-text {
+        padding: 0;
+        line-height: 1;
+        display: block;
+        position: absolute;
+        font-size: 13px;
+        transform: translateX(-50%);
+        left: 50%;
+        top: 53px;
+      }
     }
   }
 }
@@ -132,9 +142,12 @@ header {
       }
       .navbar-brand {
         img {
-          width: 185px;
+          width: 180px;
         }
       }
+    }
+    .navbar-text {
+      top: 51px;
     }
   }
 }
