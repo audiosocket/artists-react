@@ -166,9 +166,15 @@ function Signup({userHash = ''}) {
     } else {
       const resultSet = await response.json();
       const pending = resultSet.filter(agreement => agreement.status === "pending");
+      const rejected = resultSet.filter(agreement => agreement.status === "rejected");
+      if(rejected.length === resultSet.length) {
+        localStorage.removeItem("user");
+        alert("Sorry, you can't proceed without accepting agreements.\nContact at artists@audiosocket.com for more details.")
+        history.push("/login");
+      }
       setAgreements(pending);
       if(!pending.length) {
-        alert("Invitation process complete")
+        alert("Invitation process completed!")
         history.push("/");
       }
     }
@@ -215,6 +221,7 @@ function Signup({userHash = ''}) {
           </Form>
         :
           <div className="form agreement">
+            <h5 className="text-center">You must accept agreement(s) to proceed to your profile!</h5>
             {agreements.length &&
               agreements.map((agreement, key) => {
                 return (

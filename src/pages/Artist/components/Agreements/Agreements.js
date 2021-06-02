@@ -1,17 +1,14 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 import "./Agreements.scss";
 import {ArtistContext} from "../../../../Store/artistContext";
 import {ACCESS_TOKEN, AGREEMENTS, BASE_URL} from "../../../../common/api";
 import Loader from "./../../../../images/loader.svg"
 import Breadcrumb from "react-bootstrap/Breadcrumb";
-import {NavLink} from "react-router-dom";
+import {NavLink, useHistory} from "react-router-dom";
 
 function Agreements() {
   const {artistState, artistActions} = React.useContext(ArtistContext);
-
-  useEffect(() => {
-
-  }, [])
+  const history = useHistory();
 
   const handleSubmitReviewAgreement = async (e) => {
     e.preventDefault();
@@ -30,8 +27,15 @@ function Agreements() {
       alert("Something went wrong, try later!");
     } else {
       const resultSet = await response.json();
-      alert("agreement updated");
-      artistActions.agreementsStateChanged(resultSet);
+      const rejected = resultSet.filter(agreement => agreement.status === "rejected");
+      if(rejected.length === resultSet.length) {
+        localStorage.removeItem("user");
+        alert("Sorry, you can't proceed without accepting agreements.\nContact at artists@audiosocket.com for more details.")
+        history.push("/login");
+      } else {
+        alert("agreement updated");
+        artistActions.agreementsStateChanged(resultSet);
+      }
     }
   }
 
