@@ -65,6 +65,7 @@ header {
 @media #{$mid-point-tablet} {
 	header {
     .custom-nav {
+      padding: 15px 1rem;
       .logo-brand {
         @include flex(1);
         text-align: center;
@@ -74,6 +75,64 @@ header {
         width: 25px;
         img {
           width: 100%;
+        }
+      }
+      .navbar-nav {
+        @include flex-direction(row);
+        .nav-link {
+          @include flex(1);
+          margin: 0;
+          img {
+            width: 20px;
+            margin: 0 auto;
+            &.profile-img {
+              width: 20px;
+            }
+          }
+        }
+      }
+      .navbar-collapse {
+        margin: 0 -15px;
+        position: relative;
+        bottom: -15px;
+        & > .navbar-nav {
+          border-top: 1px solid #fff;
+          & > * {
+            flex: 1;
+            border-right: 1px solid #fff;
+            padding: 15px;
+            min-width: 20%;
+            height: 60px;
+            @include flexbox;
+            @include justify-content(center);
+            @include align-items(center);
+            &:last-child {
+              border: 0;
+            }
+          }
+          .choose-artist-mobile {
+            padding: 0;
+            text-align: center;
+            a {
+              height: inherit;
+              line-height: 42px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media #{$phone-portrait} {
+  header {
+    .custom-nav {
+      .not-for-desktop {
+        width: 20px;
+      }
+      .navbar-brand {
+        img {
+          width: 185px;
         }
       }
     }

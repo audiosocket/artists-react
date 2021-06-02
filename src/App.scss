@@ -99,6 +99,8 @@ body {
 	padding: 0;
 	color: $clr-black;
 	font-family: $body-font-family;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 button,
@@ -130,7 +132,6 @@ a, .btn {
 .checkbox {
 	position: relative;
 	padding-left: 2rem;
-	cursor: pointer;
 	input {
 		position: absolute;
 		opacity: 0;
@@ -172,11 +173,6 @@ a, .btn {
 	input~.checkmark {
 		border: 2px solid $clr-green;
 	}
-}
-
-.dropdown-toggle::after {
-	margin-top: 3px;
-	margin-left: 5px;
 }
 
 .close-btn {
@@ -466,6 +462,12 @@ select:-webkit-autofill:focus {
   }
 }
 
+.mobile-view {
+  display: none !important;
+}
+.desktop-view {
+  display: block !important;
+}
 /********** Breadcrumbs ************/
 .asBreadcrumbs {
   .breadcrumb {
@@ -488,7 +490,7 @@ select:-webkit-autofill:focus {
 }
 
 /**************** Responsiveness ***************/
-@media #{$tab-landscape} {
+@media #{$desktop-start} {
 	.welcome-page {
     .content-wrapper {
       aside {
@@ -502,27 +504,62 @@ select:-webkit-autofill:focus {
 }
 
 @media #{$mid-point-tablet} {
+  .mobile-view {
+    display: block !important;
+  }
+  .desktop-view {
+    display: none !important;
+  }
 	.welcome-page {
+    overflow-x: hidden;
+    overflow-y: auto;
     .content-wrapper {
       aside {
+        flex: none;
         height: inherit;
         transform: translateX(-100%);
         display: none;
-        @include transition(all 0.3s cubic-bezier(0.250, 0.460, 0.450, 0.940));
+        position: absolute;
+        top: 76px;
+        width: 250px;
+        height: calc(100vh - 76px);
+        overflow-y: auto;
         ul {
           max-width: 100%;
         }
       }
       .right-content {
+        flex: none;
         max-height: inherit;
         padding: 50px 15px;
+        width: 100%;
+        height: calc(100vh - 76px);
+        overflow-y: auto;
+        @include transition(all 0.3s cubic-bezier(0.250, 0.460, 0.450, 0.940));
       }
       &.launch-sidebar {
         aside {
           display: block;
-          -webkit-animation: slide-in-left 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
-	        animation: slide-in-left 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+          -webkit-animation: slide-in-left 0.3s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+	        animation: slide-in-left 0.3s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
         }
+        .right-content {
+          margin-left: 250px;
+        }
+      }
+    }
+  }
+}
+
+@media #{$phone-portrait} {
+  .welcome-page {
+    .content-wrapper {
+      aside {
+        top: 73px;
+        height: calc(100vh - 73px);
+      }
+      .right-content {
+        height: calc(100vh - 73px);
       }
     }
   }
