@@ -182,11 +182,11 @@ function Profile() {
                 {artist.payment_information
                   ?
                   <>
-                    <span><smal className="medium-text">Payee: </smal>{artist.payment_information.payee_name}</span>
-                    <span><smal className="medium-text">Bank: </smal>{artist.payment_information.bank_name}</span>
-                    <span><smal className="medium-text">Routing: </smal>{artist.payment_information.routing}</span>
-                    <span><smal className="medium-text">Account#: </smal>{artist.payment_information.account_number}</span>
-                    <span><smal className="medium-text">Paypal Email: </smal>{artist.payment_information.paypal_email}</span>
+                    <span><smal is="x3d" className="medium-text">Payee: </smal>{artist.payment_information.payee_name}</span>
+                    <span><smal is="x3d" className="medium-text">Bank: </smal>{artist.payment_information.bank_name}</span>
+                    <span><smal is="x3d" className="medium-text">Routing: </smal>{artist.payment_information.routing}</span>
+                    <span><smal is="x3d" className="medium-text">Account#: </smal>{artist.payment_information.account_number}</span>
+                    <span><smal is="x3d" className="medium-text">Paypal Email: </smal>{artist.payment_information.paypal_email}</span>
                   </>
                   : '-'
                 }

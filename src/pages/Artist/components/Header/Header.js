@@ -113,7 +113,7 @@ function Header({onToggleSidebar}) {
     <>
     <header>
       <Navbar collapseOnSelect expand="lg" variant="dark" className="custom-nav">
-        <div class="not-for-desktop">
+        <div className="not-for-desktop">
           <img onClick={handleToggle} src={toggleSidebar ? hamburger : close} alt="Sidebar Launcher"  className="" />
         </div>
         <NavLink className="logo-brand" to={"/"}><Navbar.Brand><img src={logo} alt="COMPANY LOGO"  className="" /></Navbar.Brand></NavLink>

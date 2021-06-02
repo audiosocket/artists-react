@@ -2,12 +2,11 @@ import React, {useEffect, useRef, useState} from "react";
 import {NavLink, useHistory} from "react-router-dom";
 import "./Login.scss";
 import Logo from '../../images/logo-black.svg';
-import ResetPassword from '../../images/reset-password.svg';
+import ResetPasswordIcon from '../../images/reset-password.svg';
 import Back from '../../images/back.svg';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import { AuthContext } from "../../Store/authContext";
-import {ACCESS_TOKEN, BASE_URL, SESSION} from "../../common/api";
+import {ACCESS_TOKEN, BASE_URL, FORGOT_PASSWORD} from "../../common/api";
 import Loader from "./../../images/loader.svg"
 
 function ForgotPassword() {
@@ -15,7 +14,7 @@ function ForgotPassword() {
   const form = useRef(null);
   const [validated, setValidated] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [loginError, setLoginError] = useState(false);
+  const [responseMessage, setResponseMessage] = useState('');
 
   useEffect(() => {
     if(localStorage.getItem('user')) {
@@ -25,7 +24,7 @@ function ForgotPassword() {
   }, [])
 
   const handleSubmit = async (e) => {
-    setLoginError(false);
+    setResponseMessage('');
     e.preventDefault();
     const forgotPasswordForm = e.currentTarget;
     if (forgotPasswordForm.checkValidity() === false) {
@@ -36,19 +35,17 @@ function ForgotPassword() {
       setIsLoading(true);
       const data = new FormData(form.current);
       data.append('role', 'artist');
-      const response = await fetch(`${BASE_URL}${SESSION}`,
+      const response = await fetch(`${BASE_URL}${FORGOT_PASSWORD}?email=${data.get('email')}`,
         {
           headers: {
             "authorization": ACCESS_TOKEN,
           },
-          method: 'POST',
-          body: data
         });
       if(response.ok) {
-        history.push("/login");
+        setResponseMessage("success");
         e.target.reset();
       } else {
-        setLoginError(true);
+        setResponseMessage("error");
       }
       setIsLoading(false);
     }
@@ -60,13 +57,14 @@ function ForgotPassword() {
         <img className="" src={Logo} alt="Workflow" onClick={() => {history.push("/")}} />
       </div>
       <h2 className="">Get a link to reset your password on your email</h2>
-      {loginError &&
-      <p className="login-error">Invalid email, try again!</p>
+      {responseMessage === 'error'
+        ? <p className="login-error">User doesn't exist!</p>
+        : responseMessage === 'success' ? <h4>Password reset link sent to your email address!</h4> : ''
       }
       <Form className="form" noValidate validated={validated} ref={form} onSubmit={handleSubmit}>
         <Form.Group controlId="formBasicEmail">
           <Form.Label>Email address</Form.Label>
-          <Form.Control required type="email" name="email" placeholder="Enter address" className="form-control" />
+          <Form.Control required type="email" name="email" placeholder="Enter address" className="form-control"/>
           <Form.Control.Feedback type="invalid">
             A valid email address is required!
           </Form.Control.Feedback>
@@ -78,7 +76,7 @@ function ForgotPassword() {
             </NavLink>
           </div>
         </div>
-        <Button disabled={isLoading} variant="btn primary-btn btn-full-width" type="submit"><img className="" src={isLoading ? Loader : ResetPassword} alt="Workflow"/>
+        <Button disabled={isLoading} variant="btn primary-btn btn-full-width" type="submit"><img className="" src={isLoading ? Loader : ResetPasswordIcon} alt="Workflow"/>
           Submit
         </Button>
       </Form>

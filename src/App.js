@@ -5,6 +5,7 @@ import Artist from "./pages/Artist/Artist";
 import Login from "./pages/Login/Login";
 import Signup from "./pages/Signup/Signup";
 import ForgotPassword from "./pages/Login/ForgotPassword";
+import ResetPassword from "./pages/Login/ResetPassword";
 
 function App() {
   return (
@@ -14,12 +15,20 @@ function App() {
           <Route path="/login">
             <Login/>
           </Route>
+          <Route
+            path="/accept-invitation/:userHash?"
+            render={(props) => <Signup userHash={props.match.params.userHash} /> }
+          />
+          <Route
+            path="/accept-collaborator-invitation/:userHash?"
+            render={(props) => <Signup userHash={props.match.params.userHash} /> }
+          />
           <Route path="/forgot-password">
             <ForgotPassword/>
           </Route>
           <Route
-            path="/accept-invitation/:userHash?"
-            render={(props) => <Signup userHash={props.match.params.userHash} /> }
+            path="/reset-password/:userHash?"
+            render={(props) => <ResetPassword userHash={props.match.params.userHash} /> }
           />
           <PrivateRoute path="/">
             <Artist/>
