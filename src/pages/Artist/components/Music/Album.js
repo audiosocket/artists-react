@@ -94,11 +94,13 @@ function Album({id = null}) {
       e.preventDefault();
       e.stopPropagation();
       setValidated(true);
+      setIsSubmitting(false);
     } else {
       const data = new FormData(form.current);
       if(file) {
         if(!handleChangeMusicUpload(data.get("file").name)) {
-          return;
+          setIsSubmitting(false);
+          return false;
         }
       } else {
         data.delete('file');
@@ -286,9 +288,7 @@ function Album({id = null}) {
             <div className="section-body">
               <div className="artwork-images-sec">
                 <div className="artwork-image">
-                  <a target="_blank" href={album.artwork}>
-                    <img src={album.artwork} alt="Artwork"/>
-                  </a>
+                  <img src={album.artwork} alt="Artwork"/>
                 </div>
               </div>
             </div>
@@ -372,6 +372,7 @@ function Album({id = null}) {
                   <Col xs={12}>
                     <div className="form-group">
                       <Form.File
+                        accept=".wav, .aiff"
                         name="file"
                         type="file"
                         required={!selectedTrack}

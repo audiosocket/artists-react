@@ -17,15 +17,15 @@ function Sidebar() {
         <li>
           <NavLink
             activeClassName={"selected"}
-            to={"/profile"}>
-            Artist
+            to={"/agreements"}>
+            Agreements
           </NavLink>
         </li>
         <li>
           <NavLink
             activeClassName={"selected"}
-            to={"/agreements"}>
-            Agreements
+            to={"/profile"}>
+            Artist
           </NavLink>
         </li>
         <li>
