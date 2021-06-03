@@ -72,8 +72,8 @@ function Agreements() {
       <div className="agreementBody">
         <section>
           <div className="bg-content yellow bgSecondVersion mt-4">
-            <p>YouTube requires artists elect only one administrator when managing your recordings on their platform. To be made available for all Audiosockel opportunities, we need to be your administrator so our clients who are licensing your music are not being sent copyright Infringement claims from other companies.</p>
-            <p>If you already have an agent, you must opt out of our YouTube portion of the agreement. This will provent your music from being made available for digital and web media opportunities since wo are not able to contest claims that are made on the YouTube platform by other administrators. If
+            <p>YouTube requires artists elect only one administrator when managing your recordings on their platform. To be made available for all Audiosocket opportunities, we need to be your administrator so our clients who are licensing your music are not being sent copyright Infringement claims from other companies.</p>
+            <p>If you already have an agent, you must opt out of our YouTube portion of the agreement. This will prevent your music from being made available for digital and web media opportunities since we are not able to contest claims that are made on the YouTube platform by other administrators. If
             you are unsure, or would like more information, please email <a href="mailto:artists@audiosocket.com">artists@audiosocket.com</a>.</p>
           </div>
         </section>
