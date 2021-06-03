@@ -1,6 +1,7 @@
 import React from "react";
 import "./Welcome.scss";
-import {Link} from "react-router-dom";
+import {Link, NavLink} from "react-router-dom";
+import ArrowRight from "../../../../images/right-arrow.svg";
 
 function Welcome() {
 
@@ -47,6 +48,7 @@ function Welcome() {
           </div>
         </div>
       </section>
+      <NavLink to="/agreements" className="btn primary-btn next">Next <img className="" src={ArrowRight} alt="proceed-icon"/></NavLink>
     </div>
   )
 }

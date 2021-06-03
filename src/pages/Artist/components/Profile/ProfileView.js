@@ -58,13 +58,23 @@ function Profile() {
               <div className="parallel-info">
                 <label>cover image</label>
                 <div className="info-ans image">
-                  <img className="preview" src={artist.cover_image ? artist.cover_image : cover} alt="Cover Image" />
+                  {artist.cover_image
+                    ? <img className="preview" src={artist.cover_image} alt="Cover Image"/>
+                    : <div className="bg-content yellow w-custom-bg-content">
+                      Looks like no cover image? Click <i className="medium-text">Edit</i> button to get started.
+                    </div>
+                  }
                 </div>
               </div>
               <div className="parallel-info">
                 <label>banner image</label>
                 <div className="info-ans image">
-                  <img src={artist.banner_image ? artist.banner_image : banner} alt="Banner Image" />
+                  {artist.cover_image
+                    ? <img src={artist.banner_image} alt="Banner Image" />
+                    : <div className="bg-content yellow w-custom-bg-content">
+                      Wants to add a banner image? Click <i className="medium-text">Edit</i> button to get started.
+                    </div>
+                  }
                 </div>
               </div>
               <div className="parallel-info">
@@ -74,7 +84,7 @@ function Profile() {
                     ?
                     <div className="bg-content yellow w-custom-bg-content">
                       Have additional images for us? <NavLink to="/profile/edit">Upload them here</NavLink> for <span
-                      classname="artist-name">{artist.name}</span>
+                      classname="artist-name">{artist.name}</span>.
                     </div>
                     :
                     artist.additional_images.map((image, key) => {

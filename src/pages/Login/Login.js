@@ -55,11 +55,11 @@ function Login() {
         const agreements = await fetchAgreements();
         const pending = agreements.filter(agreement => agreement.status === "pending").length
         const rejected = agreements.filter(agreement => agreement.status === "rejected").length
-        if(rejected === agreements.length) {
+        /*if(rejected === agreements.length) {
           localStorage.removeItem("user");
           alert("Sorry, you can't proceed without accepting agreements.\nContact at artists@audiosocket.com for more details.");
           history.push("/login");
-        }
+        }*/
         if(pending)
           history.push("/accept-invitation");
         else

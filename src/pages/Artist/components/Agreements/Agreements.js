@@ -6,6 +6,7 @@ import Loader from "./../../../../images/loader.svg"
 import Breadcrumb from "react-bootstrap/Breadcrumb";
 import {NavLink, useHistory} from "react-router-dom";
 import fetchAgreements from "../../../../common/utlis/fetchAgreements";
+import ArrowRight from "../../../../images/right-arrow.svg";
 
 function Agreements() {
   const {artistState, artistActions} = React.useContext(ArtistContext);
@@ -95,6 +96,7 @@ function Agreements() {
           })
         }
       </div>
+      <NavLink to="/profile/edit" className="btn primary-btn next">Next <img className="" src={ArrowRight} alt="proceed-icon"/></NavLink>
     </div>
   )
 }

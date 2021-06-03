@@ -116,6 +116,14 @@ a {
 	&:hover {
 		text-decoration: none !important;
 	}
+	&.next {
+		color: $clr-black;
+		float: right;
+		img {
+			width: 20px;
+			margin-left: 20px;
+		}
+	}
 }
 
 a, .btn {

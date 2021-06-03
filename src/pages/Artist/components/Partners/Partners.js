@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from "react";
 import "./Partners.scss";
 import Breadcrumb from "react-bootstrap/Breadcrumb";
-import {NavLink} from "react-router-dom";
+import {NavLink, useHistory} from "react-router-dom";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
