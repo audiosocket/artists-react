@@ -184,7 +184,7 @@ function ProfileEdit() {
                   </div>
                   <Row>
                     <Col xl={2} md={6}></Col>
-                    <Col xl={6} md={6}>
+                    <Col xl={4} md={6}>
                       <DropzoneComponent uploadedFiles={artist.additional_images ?? []} onUploadImages={handleUploadImages} />
                     </Col>
                   </Row>

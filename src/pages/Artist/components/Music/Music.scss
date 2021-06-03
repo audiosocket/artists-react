@@ -333,6 +333,12 @@
           opacity: 1;
           cursor: pointer;
         }
+        &.disabled {
+          img {
+            width: 20px;
+            margin-left: -2px;
+          }
+        }
       }
     }
     &:last-child {

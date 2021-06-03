@@ -3,7 +3,9 @@ import React, {useEffect, useRef, useState} from "react";
 import {Breadcrumb} from 'react-bootstrap';
 import {NavLink, useHistory} from "react-router-dom";
 import Edit from "../../../../images/pencil.svg";
+import EditDisable from "../../../../images/pencil-slash.png";
 import Delete from "../../../../images/delete.svg";
+import DeleteDisable from "../../../../images/delete-slash.png";
 import {ArtistContext} from "../../../../Store/artistContext";
 import fetchAlbums from "../../../../common/utlis/fetchAlbums";
 import Loader from "../../../../images/loader.svg";
@@ -334,8 +336,8 @@ function Album({id = null}) {
                           </>
                           :
                           <>
-                            <a title="Track is under review, can't edit."><img src={Edit} alt="Edit"/></a>
-                            <a title="Track is under review, can't delete."><img src={Delete} alt="Delete"/></a>
+                            <a className="disabled" title="Track is under review, can't edit."><img src={EditDisable} alt="Edit"/></a>
+                            <a className="disabled" title="Track is under review, can't delete."><img src={DeleteDisable} alt="Delete"/></a>
                           </>
                           }
                       </div>
