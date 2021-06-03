@@ -35,11 +35,13 @@ function ForgotPassword() {
       setIsLoading(true);
       const data = new FormData(form.current);
       data.append('role', 'artist');
-      const response = await fetch(`${BASE_URL}${FORGOT_PASSWORD}?email=${data.get('email')}`,
+      const response = await fetch(`${BASE_URL}${FORGOT_PASSWORD}`,
         {
           headers: {
             "authorization": ACCESS_TOKEN,
           },
+          method: "POST",
+          body: data
         });
       if(response.ok) {
         setResponseMessage("success");
@@ -59,7 +61,7 @@ function ForgotPassword() {
       <h2 className="">Get a link to reset your password on your email</h2>
       {responseMessage === 'error'
         ? <p className="login-error">User doesn't exist!</p>
-        : responseMessage === 'success' ? <h4>Password reset link sent to your email address!</h4> : ''
+        : responseMessage === 'success' ? <h4 className="mb-4">Password reset link sent to your email address!</h4> : ''
       }
       <Form className="form" noValidate validated={validated} ref={form} onSubmit={handleSubmit}>
         <Form.Group controlId="formBasicEmail">

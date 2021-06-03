@@ -5,10 +5,12 @@ import Logo from '../../images/logo-black.svg';
 import ResetPasswordIcon from '../../images/reset-password.svg';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import {ACCESS_TOKEN, AUTHENTICATE_TOKEN, BASE_URL, RESET_PASSWORD} from "../../common/api";
+import {ACCESS_TOKEN, BASE_URL, RESET_PASSWORD} from "../../common/api";
 import Loader from "./../../images/loader.svg"
+import {AuthContext} from "../../Store/authContext";
 
 function ResetPassword({userHash = ''}) {
+  const { authActions } = React.useContext(AuthContext);
   const history = useHistory();
   const form = useRef(null);
   const [validated, setValidated] = useState(false);
@@ -50,8 +52,10 @@ function ResetPassword({userHash = ''}) {
         });
       if(response.ok) {
         e.target.reset();
+        const resultSet = await response.json();
+        authActions.userDataStateChanged(resultSet["auth_token"]);
         alert("password updated")
-        history.push("/login");
+        history.push("/");
       } else {
         setLoginError(true);
       }
