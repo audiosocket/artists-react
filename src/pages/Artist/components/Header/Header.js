@@ -138,12 +138,6 @@ function Header({onToggleSidebar}) {
             <NavDropdown.Item onClick={handleSelectedArtist} className={selectedArtist === 'Jenn' && "active"} data-value="Jenn">Jenn</NavDropdown.Item>
             <NavDropdown.Item onClick={handleSelectedArtist} className={selectedArtist === 'Kevin' && "active"} data-value="Kevin">Kevin</NavDropdown.Item>
           </NavDropdown>
-            <NavLink
-              className={window.location.pathname.toLowerCase().indexOf('/settings') > -1 ? "nav-link active" : "nav-link"}
-              to={"/settings"}>
-              <span className="desktop-view">Settings</span>
-              <img src={setting} alt="Setting"  className="mobile-view" />
-            </NavLink>
             <Nav.Link href="mailto:info@audiosocket.com">
               <span className="desktop-view">Help</span>
               <img src={help} alt="Help"  className="mobile-view" />

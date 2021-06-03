@@ -116,151 +116,160 @@ function ProfileEdit() {
           <div className="section-head">
             <h2>Edit Profile</h2>
           </div>
-          {Object.keys(artist).length === 0 && isLoading && <h5>Loading profile... <img className="loading" src={Loader} alt="loading-icon"/></h5>}
-          {Object.keys(artist).length !== 0 &&
-            <Form noValidate validated={validated} ref={form} onSubmit={handleSubmit}>
-              <Row>
-                <Col xl={2} md={6}>
-                  <Form.Label>Artist Name</Form.Label>
-                </Col>
-                <Col xl={4} md={6}>
-                  <Form.Control
-                    readOnly={true}
-                    name="name"
-                    defaultValue={artist.name}
-                    type="text"
-                  />
-                </Col>
-              </Row>
-              <Row>
-                <Col xl={2} md={6}>
-                  <Form.Label>Cover Image</Form.Label>
-                </Col>
-                <Col xl={4} md={6}>
-                  <Form.File
-                    accept=".png, .jpg, .svg"
-                    onChange={(e) => {setCoverImage(e.target.files[0])}}
-                    name="cover_image"
-                    label={coverImage ? coverImage.name : artist.cover_image ? artist.cover_image.split('/')[artist.cover_image.split("/").length-1] : ""}
-                    lang="en"
-                    custom
-                  />
-                  <img className="preview" src={coverImage ? URL.createObjectURL(coverImage) : artist.cover_image}></img>
-                </Col>
-              </Row>
-              <Row>
-                <Col xl={2} md={6}>
-                  <Form.Label>Banner Image</Form.Label>
-                </Col>
-                <Col xl={4} md={6}>
-                  <Form.File
-                    accept=".png, .jpg, .svg"
-                    onChange={(e) => {setBannerImage(e.target.files[0])}}
-                    name="banner_image"
-                    label={bannerImage ? bannerImage.name : artist.banner_image ? artist.banner_image.split('/')[artist.banner_image.split("/").length-1] : ""}
-                    lang="en"
-                    custom
-                  />
-                  <img className="preview" src={bannerImage ? URL.createObjectURL(bannerImage) : artist.banner_image}></img>
-                </Col>
-              </Row>
-              <Row>
-                <Col xl={2} md={6}>
-                  <Form.Label>Additional Images</Form.Label>
-                </Col>
-                <Col xl={4} md={6}>
-                  <div className="additional-elements">
-                    {artist.additional_images.length !== 0 &&
-                      artist.additional_images.map((image, key) => {
-                        return (
-                          <img className="additional-image" src={image} alt="Image" />
-                        )
-                      })
-                    }
+          <div className="section-body">
+            <div className="w-custom-percent">
+              {Object.keys(artist).length === 0 && isLoading && <h5>Loading profile... <img className="loading" src={Loader} alt="loading-icon"/></h5>}
+              {Object.keys(artist).length !== 0 &&
+                <Form noValidate validated={validated} ref={form} onSubmit={handleSubmit}>
+                  <Row>
+                    <Col xl={2} md={6}>
+                      <Form.Label>Artist Name</Form.Label>
+                    </Col>
+                    <Col xl={4} md={6}>
+                      <Form.Control
+                        readOnly={true}
+                        name="name"
+                        defaultValue={artist.name}
+                        type="text"
+                      />
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col xl={2} md={6}>
+                      <Form.Label>Cover Image</Form.Label>
+                    </Col>
+                    <Col xl={4} md={6}>
+                      <Form.File
+                        accept=".png, .jpg, .svg"
+                        onChange={(e) => {setCoverImage(e.target.files[0])}}
+                        name="cover_image"
+                        label={coverImage ? coverImage.name : artist.cover_image ? artist.cover_image.split('/')[artist.cover_image.split("/").length-1] : ""}
+                        lang="en"
+                        custom
+                      />
+                      <img className="preview" src={coverImage ? URL.createObjectURL(coverImage) : artist.cover_image}></img>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col xl={2} md={6}>
+                      <Form.Label>Banner Image</Form.Label>
+                    </Col>
+                    <Col xl={4} md={6}>
+                      <Form.File
+                        accept=".png, .jpg, .svg"
+                        onChange={(e) => {setBannerImage(e.target.files[0])}}
+                        name="banner_image"
+                        label={bannerImage ? bannerImage.name : artist.banner_image ? artist.banner_image.split('/')[artist.banner_image.split("/").length-1] : ""}
+                        lang="en"
+                        custom
+                      />
+                      <img className="preview" src={bannerImage ? URL.createObjectURL(bannerImage) : artist.banner_image}></img>
+                    </Col>
+                  </Row>
+                  <div className="parallel-info row">
+                    <Col xl={2} md={6}>
+                      <Form.Label>Additional Images</Form.Label>
+                    </Col>
+                    <Col xl={10} md={10}>
+                      <div className="info-ans additional-elements image">
+                        {artist.additional_images.length !== 0 &&
+                          artist.additional_images.map((image, key) => {
+                            return (
+                              <img className="additional-image" src={image} alt="Image" />
+                            )
+                          })
+                        }
+                      </div>
+                    </Col>
                   </div>
-                  <DropzoneComponent uploadedFiles={artist.additional_images ?? []} onUploadImages={handleUploadImages} />
-                </Col>
-              </Row>
-              <Row>
-                <Col xl={2} md={6}>
-                  <Form.Label>Sounds Like</Form.Label>
-                </Col>
-                <Col xl={4} md={6}>
-                  <Form.Control
-                    name="sounds_like"
-                    defaultValue={artist.sounds_like}
-                    type="text"
-                    placeholder="Fats Domino, Trombone Shorty, Irina thomas"
-                  />
-                </Col>
-              </Row>
-              <Row>
-                <Col xl={2} md={6}>
-                  <Form.Label>Bio</Form.Label>
-                </Col>
-                <Col xl={4} md={6}>
-                  <Form.Control
-                    name="bio"
-                    defaultValue={artist.bio}
-                    placeholder="Write bio here"
-                    as="textarea"
-                    rows={4}
-                    onChange={(e) => handleBioCharacterChange(e.target.value)}
-                    className={bioLimitFlag ? 'invalid' : ''}
-                  />
-                  {bioLimitFlag && <div className="custom-invalid-feedback">Max of 400 characters allowed!</div> }
-                </Col>
-              </Row>
-              <Row>
-                <Col xl={2} md={6}>
-                  <Form.Label>Key Facts</Form.Label>
-                </Col>
-                <Col xl={4} md={6}>
-                  <Form.Control
-                    name="key_facts"
-                    defaultValue={artist.key_facts}
-                    type="text"
-                    placeholder="Key Facts"
-                  />
-                </Col>
-              </Row>
-              <Row>
-                <Col xl={2} md={6}>
-                  <Form.Label>Social Links</Form.Label>
-                </Col>
-                <Col xl={4} md={6}>
-                  <Form.Control
-                    name="social[]"
-                    defaultValue={artist.social[0] ?? ""}
-                    type="text"
-                    placeholder="Social link 1"
-                    className="mb-1"
-                  />
-                  <Form.Control
-                    name="social[]"
-                    defaultValue={artist.social[1] ?? ""}
-                    type="text"
-                    placeholder="Social link 2"
-                    className="mb-1"
-                  />
-                  <Form.Control
-                    name="social[]"
-                    defaultValue={artist.social[2] ?? ""}
-                    type="text"
-                    placeholder="Social link 3"
-                    className="mb-1"
-                  />
-                </Col>
-              </Row>
-              <Row>
-                <Col xl={2} md={6}></Col>
-                <Col xl={4} md={6} className="text-center">
-                  <NavLink to="/profile" className="btn primary-btn btn-outline-light mr-5 cancel">Cancel</NavLink>
-                  <Button type="submit" className="btn primary-btn submit">{isLoading ? <>Saving...<img className="" src={Loader} alt="icon"/></> : "Save" }</Button>
-                </Col>
-              </Row>
-            </Form>
-          }
+                  <Row>
+                    <Col xl={2} md={6}></Col>
+                    <Col xl={6} md={6}>
+                      <DropzoneComponent uploadedFiles={artist.additional_images ?? []} onUploadImages={handleUploadImages} />
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col xl={2} md={6}>
+                      <Form.Label>Sounds Like</Form.Label>
+                    </Col>
+                    <Col xl={4} md={6}>
+                      <Form.Control
+                        name="sounds_like"
+                        defaultValue={artist.sounds_like}
+                        type="text"
+                        placeholder="Fats Domino, Trombone Shorty, Irina thomas"
+                      />
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col xl={2} md={6}>
+                      <Form.Label>Bio</Form.Label>
+                    </Col>
+                    <Col xl={4} md={6}>
+                      <Form.Control
+                        name="bio"
+                        defaultValue={artist.bio}
+                        placeholder="Write bio here"
+                        as="textarea"
+                        rows={4}
+                        onChange={(e) => handleBioCharacterChange(e.target.value)}
+                        className={bioLimitFlag ? 'invalid' : ''}
+                      />
+                      {bioLimitFlag && <div className="custom-invalid-feedback">Max of 400 characters allowed!</div> }
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col xl={2} md={6}>
+                      <Form.Label>Key Facts</Form.Label>
+                    </Col>
+                    <Col xl={4} md={6}>
+                      <Form.Control
+                        name="key_facts"
+                        defaultValue={artist.key_facts}
+                        type="text"
+                        placeholder="Key Facts"
+                      />
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col xl={2} md={6}>
+                      <Form.Label>Social Links</Form.Label>
+                    </Col>
+                    <Col xl={4} md={6}>
+                      <Form.Control
+                        name="social[]"
+                        defaultValue={artist.social[0] ?? ""}
+                        type="text"
+                        placeholder="Social link 1"
+                        className="mb-1"
+                      />
+                      <Form.Control
+                        name="social[]"
+                        defaultValue={artist.social[1] ?? ""}
+                        type="text"
+                        placeholder="Social link 2"
+                        className="mb-1"
+                      />
+                      <Form.Control
+                        name="social[]"
+                        defaultValue={artist.social[2] ?? ""}
+                        type="text"
+                        placeholder="Social link 3"
+                        className="mb-1"
+                      />
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col xl={2} md={6}></Col>
+                    <Col xl={4} md={6} className="text-center">
+                      <NavLink to="/profile" className="btn primary-btn btn-outline-light mr-5 cancel">Cancel</NavLink>
+                      <Button type="submit" className="btn primary-btn submit">{isLoading ? <>Saving...<img className="" src={Loader} alt="icon"/></> : "Save" }</Button>
+                    </Col>
+                  </Row>
+                </Form>
+              }
+            </div>
+          </div>
         </div>
       </section>
     </div>

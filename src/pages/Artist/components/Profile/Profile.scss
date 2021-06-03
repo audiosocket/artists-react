@@ -150,3 +150,16 @@ section {
   max-width: 475px;
   width: 100%;
 }
+
+.file-display-container {
+  .file-name {
+    text-overflow: ellipsis;
+    max-width: 260px;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+}
+
+.form-control {
+  color: #212121;
+}
