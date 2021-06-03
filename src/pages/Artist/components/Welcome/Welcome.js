@@ -41,9 +41,9 @@ function Welcome() {
 
           <div className='sub-section our-address'>
             <h4><strong>Our address</strong></h4>
-            <p><small>audiosocket</small></p>
-            <p><small>3518 Fremont Ave N #400</small></p>
-            <p><small>Seattle, WA 98103</small></p>
+            <p>audiosocket</p>
+            <p>3518 Fremont Ave N #400</p>
+            <p>Seattle, WA 98103</p>
           </div>
         </div>
       </section>
