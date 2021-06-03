@@ -54,175 +54,204 @@ function Faq () {
 			<Accordion defaultActiveKey="0">
 				<Card>
 					<ContextAwareToggle eventKey="1">
-						When will I know if you accept my audition or not?
+						Welcome! You’re officially in! Here’s some info on what’s next and what to expect.
 					</ContextAwareToggle>
 					<Accordion.Collapse eventKey="1">
 						<Card.Body>
-							We’ll get back to you within 90 days. We appreciate your patience: We want to give your music the good, hard listening it deserves.
+							Once your music is uploaded and approved, it’s tagged with over 200 unique attributes including genre, mood, instrumentation, themes, bpm, key, and more.
+							<br/>
+							<br/>
+							Our creative team listens to new music and adds to our Curated Playlist page. Your music becomes live in the player and is searchable by clients as well as our creative music supervisors and sales team.
+							<br/>
+							<br/>
+							We service briefs daily for all types of sync opportunities. Have an idea where you think your music is perfect for? Let us know! We’re all ears.
 						</Card.Body>
 					</Accordion.Collapse>
 				</Card>
 
 				<Card>
 					<ContextAwareToggle eventKey="1.1">
-						I’m an Audiosocket artist. Do I need to go through Auditions again?
+						What should I include on my Artist Info Page?
 					</ContextAwareToggle>
 					<Accordion.Collapse eventKey="1.1">
 						<Card.Body>
-							If you’re an Audiosocket artist, please send us a link to your music to <a href="mailto:artists@audiosocket.com">artists@audiosocket.com</a>. We've become more selective with what we take on, adding music in sounds our clients are asking for. You can check out some of our recent <a href="https://www.youtube.com/playlist?list=PL8474481F2967477D" target="_blank">work</a> if it's helpful to see the types of songs we're placing. We’ll let you know our decision as soon as possible.
+							Please include a cover photo and a banner image. Keep in mind with the banner there will be text overlaid so a textural or simple color background image is ideal. Image specs are x for cover photo, x for banner. These images will appear on the front end so choose wisely. Color images are best.
+							<br/>
+							<br/>
+							Please include a short bio (think elevator pitch!) Please include your social media handles. Keep us posted for any great artist bits we can use to promote you! Land a Spotify playlist add? Playing a really cool well known venue? Have a new music video? Let us know!
+							<br/>
+							<br/>
+							[Info needed on functionality]
 						</Card.Body>
 					</Accordion.Collapse>
 				</Card>
 
 				<Card>
 					<ContextAwareToggle eventKey="2">
-						I’d like to submit more music. Do I have to wait for your reply?
+						How do I unlock my Artist Info page?
 					</ContextAwareToggle>
 					<Accordion.Collapse eventKey="2">
 						<Card.Body>
-							We ask that you only submit your best 4 tracks. If you create music in other genres or under another artist name, you can make a new submission for that artist. Please allow up to 90 days from your submission to add new music or wait for our reply.
+							Artist pages are locked once info is submitted, our team will review photos and bios before approving. Need it unlocked? Hit us up.
 						</Card.Body>
 					</Accordion.Collapse>
 				</Card>
 
 				<Card>
 					<ContextAwareToggle eventKey="3">
-						I have submitted music but haven’t heard from you yet...
+						I have co-writers or rights-holders, how do I invite them?
 					</ContextAwareToggle>
 					<Accordion.Collapse eventKey="3">
 						<Card.Body>
-							We are working to review all auditions in a timely manner while we carefully review all music submitted to us. Note that some of our replies land on the spam folders.
+							Under the Collaborators section, please invite ALL rights-holders. Enter their name and email. It will invite them to your artist portal where they can review and accept the agreement. All parties must sign off before we can start working with your music. Please make sure they enter their Performing Rights information as they have it registered in ASCAP or BMI, etc.
 						</Card.Body>
 					</Accordion.Collapse>
 				</Card>
 
 				<Card>
 					<ContextAwareToggle eventKey="4">
-						I’ve submitted music twice and have been rejected, even though it meets your most recent work.
+						What’s a CAE/IPI and do I really need it?
 						<br/>
 						Will I be accepted?
 					</ContextAwareToggle>
 					<Accordion.Collapse eventKey="4">
 						<Card.Body>
-							We truly appreciate your interest in working with us! As we work with the best indie musicians in the industry, our acceptance rate is very low. We like to offer the best quality to our clients, hence we not only review based on our current needs but also composing and songwriting quality. We welcome you to submit your best new tracks again!
+							Yes! Think of it like your personal writer tracking number. It’s unique and will allow you to receive writer royalties should your music land something bearing royalties like a tv show! You can find it by logging into your PRO account, it’s 9 digits long (this is not your member ID number.)
 						</Card.Body>
 					</Accordion.Collapse>
 				</Card>
 
 				<Card>
 					<ContextAwareToggle eventKey="5">
-						What is Audiosocket known for?
+						Where do I list my publishing entity?
 					</ContextAwareToggle>
 					<Accordion.Collapse eventKey="5">
 						<Card.Body>
-							Audiosocket is an established and respected music licensing company known for offering one of the most diverse rosters, with over 80,000 songs from more than 2000 artists across 200 genres.
-							<br/><br/>
-							We are known for a high quality, curated pre-cleared roster and have earned a great reputation in the relationships with our artists.
+							Under the Collaborators section, please list your publishing entity name as registered with your PRO. Each co-writer should have a publishing entity.
 						</Card.Body>
 					</Accordion.Collapse>
 				</Card>
 
 				<Card>
 					<ContextAwareToggle eventKey="6">
-						What are Audiosocket’s typical sync placements?
+						How do I upload music?
 					</ContextAwareToggle>
 					<Accordion.Collapse eventKey="6">
 						<Card.Body>
-							We work with a large variety of clients. We offer licenses for that range from hobbyist home videos, social influencers, small businesses, indie films, up to TV advertisements, TV Series, Film trailers, games, brand partnerships and more. There are some big names within our client list, including HBO, Lionsgate, Hulu, Lexus, Amazon, Disney+ and Netflix; you can find our most recent placements <a href="https://www.youtube.com/user/audiosocket" target="_blank">here</a>.
+							On the Music tab, please create a new Album. Albums can be collections of tracks, a single track, EP or an actual album. Upload the tracks and assign your collaborators. Please note, all collaborators must sign off on the agreement before you can submit the tracks.
+							<br/>
+							<br/>
+							We invite you to also submit album artwork. If you don’t have album art, check out apps like Canva for easy drag and drop graphic design templates. Otherwise, color images work.
 						</Card.Body>
 					</Accordion.Collapse>
 				</Card>
 
 				<Card>
 					<ContextAwareToggle eventKey="7">
-						What’s the deal?
+						Do you take covers?
 					</ContextAwareToggle>
 					<Accordion.Collapse eventKey="7">
 						<Card.Body>
-							We offer a 65/35 deal. Audiosocket commissions 65% of the gross licensing fee and publishing royalties, but the composers keep 100% of the writer's share.
-							<br/>
-							If you’re selected to be part of our premium catalog, we’d offer an exclusive agreement with a 50/50 split. The exclusive agreement comes with additional benefits such as monthly payments, quarterly pitch updates and more.
+							We do not accept covers or music with samples. You must own/control 100% of your music.
 						</Card.Body>
 					</Accordion.Collapse>
 				</Card>
 
 				<Card>
 					<ContextAwareToggle eventKey="8">
-						Who retains the copyrights?
+						What type of files are you looking for?
 					</ContextAwareToggle>
 					<Accordion.Collapse eventKey="8">
 						<Card.Body>
-							Writers retain 100%.
+							44K WAV or AIFF are welcome.
 						</Card.Body>
 					</Accordion.Collapse>
 				</Card>
 
 				<Card>
 					<ContextAwareToggle eventKey="9">
-						My music has samples and I have signed licenses authorizing these.
-						<br/>
-						Can I submit these tracks to Audiosocket?
+						What type of music are you looking for?
 					</ContextAwareToggle>
 					<Accordion.Collapse eventKey="9">
 						<Card.Body>
-							Unfortunately we do not accept samples music or cover tracks.
+							We look for high quality, high production value, relevant sounds, universal lyrics and music written with sync in mind. Watch our newsletters for tips and tricks on how to increase your chances for sync! [If there’s a blog post on this topic we can link it here]
 						</Card.Body>
 					</Accordion.Collapse>
 				</Card>
 
 				<Card>
 					<ContextAwareToggle eventKey="10">
-						I’d like to be considered for Audiosocket’s exclusive catalog only.
-						<br/>
-						What’s the best way to tell you this?
+						Should I include lyrics?
 					</ContextAwareToggle>
 					<Accordion.Collapse eventKey="10">
 						<Card.Body>
-							Thank you for your interest in being part of ASX, our exclusive arm. There are no auditions for this but, if your music is accepted to Audiosocket, you can then let us know you’d like to be considered for an ASX. This is a very small collection, meaning that your music needs to be truly next level! If this is the case and it meets our current needs, you’ll likely be invited!
+							Yes, please provide your lyrics. Please make sure they’re grammatically correct. Help us make you look good!
 						</Card.Body>
 					</Accordion.Collapse>
 				</Card>
 
 				<Card>
 					<ContextAwareToggle eventKey="11">
-						What else do you offer to Audiosocket artists?
+						Can I submit explicit tracks?
 					</ContextAwareToggle>
 					<Accordion.Collapse eventKey="11">
 						<Card.Body>
-							We invest a good bit in your music up front, from ingestion, tagging, playlisting, and marketing. We offer unique opportunities for our artists, from playlist curation on our website to social media marketing, from songwriting competitions to digital distribution. The list increases for exclusive artists but we work with everyone from our creative community from within, always aiming to make the most of your music!
+							Yes, but please mark them as explicit and please include a clean version. TV supervisors require this. Explicit doesn’t have to be swearing, lyrical content can be as well. If you have questions, let us know.
 						</Card.Body>
 					</Accordion.Collapse>
 				</Card>
 
 				<Card>
-					<ContextAwareToggle eventKey="12">Can I work with other music licensing companies?</ContextAwareToggle>
+					<ContextAwareToggle eventKey="12">
+						Should I include stems or alternate versions?
+					</ContextAwareToggle>
 					<Accordion.Collapse eventKey="12">
 						<Card.Body>
-							If you’re offered a non-exclusive agreement, yes. While we are non-exclusive we do suggest you review other licensing companies pricing models as we have seen some recent companies offering all you can eat subscriptions at very low prices and that does not offer artists a sustainable career. We encourage you to do this research so that you're not competing with yourself. Clients do price shop and may find it cheaper somewhere else.
-							<br/>
-							Please note that we no longer accept or represent non-exclusive tracks that are also represented by Artlist or SoundStripe.
+							We welcome this. We can nest your stems. Otherwise, please make sure they're available if we reach out. Average turnaround time on stem requests are typically an hour. Please name your stems appropriately. <i>Example: Song Name - Guitar - Stem, Song Name - Drums - Stem.</i>
 						</Card.Body>
 					</Accordion.Collapse>
 				</Card>
 
 				<Card>
 					<ContextAwareToggle eventKey="13">
-						I’m not registered with a PRO, do I need to? Will you register my tracks?
+						When do you send payments?
 					</ContextAwareToggle>
 					<Accordion.Collapse eventKey="13">
 						<Card.Body>
-							We do recommend signing up for a PRO (Performing Rights Organization) like ASCAP, BMI or SESAC if you're going to be licensing your music. If your music lands in something royalty bearing, it’ll receive writer and publishing royalties for it airing and you'll potentially be losing out on a good bit of revenue. We recommend registering your music but you can do so in tandem with us ingesting your music and assets.
+							We send payments biannually in February and August for non exclusive tracks, monthly for exclusive tracks. If you’re interested in hearing more about our exclusive program, please let us know.
 						</Card.Body>
 					</Accordion.Collapse>
 				</Card>
 
 				<Card>
 					<ContextAwareToggle eventKey="14">
-						Do you need to administer my copyright on YouTube?
+						Will you pay my co-writers?
 					</ContextAwareToggle>
 					<Accordion.Collapse eventKey="14">
 						<Card.Body>
-							We prefer to admin because we have auto whitelisting tech in place for the tracks we admin in <a href="https://blog.audiosocket.com/demystifying-youtube-content-id-why-it-is-good-for-creators/" target="_blank">YouTube Content ID</a>. It's disruptive to our business when clients license music and receive claims from other companies. Unfortunately we are not currently accepting music with CID managed by 3rd parties. We can offer the same service and a 75/25 split your favor for CID, while keeping our clients happy.
+							We offer payment to one payee per artist entity. That payee is responsible for paying splits.
+						</Card.Body>
+					</Accordion.Collapse>
+				</Card>
+
+				<Card>
+					<ContextAwareToggle eventKey="15">
+						Where can I see my licensing stats?
+					</ContextAwareToggle>
+					<Accordion.Collapse eventKey="15">
+						<Card.Body>
+							We don’t offer stats in our current iteration, but plan to in future versions.
+						</Card.Body>
+					</Accordion.Collapse>
+				</Card>
+
+				<Card>
+					<ContextAwareToggle eventKey="16">
+						How do I download my artist statements?
+					</ContextAwareToggle>
+					<Accordion.Collapse eventKey="16">
+						<Card.Body>
+							[Info needed on functionality]
 						</Card.Body>
 					</Accordion.Collapse>
 				</Card>
