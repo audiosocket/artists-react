@@ -385,6 +385,23 @@ function ContactEdit() {
                 </Col>
               </Row>
               <Row>
+                <Col xl={2} md={6}>
+                  <Form.Label>Phone</Form.Label>
+                </Col>
+                <Col xl={4} md={6}>
+                  <Form.Control
+                    required
+                    name="phone"
+                    type="text"
+                    defaultValue={artist.contact_information ? artist.contact_information.phone : ""}
+                    placeholder="Phone"
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    Phone is required!
+                  </Form.Control.Feedback>
+                </Col>
+              </Row>
+              <Row>
                 <Col xl={2} md={6}></Col>
                 <Col xl={4} md={6} className="text-center">
                   <NavLink to="/profile" className="btn primary-btn btn-outline-light mr-5 cancel">Cancel</NavLink>

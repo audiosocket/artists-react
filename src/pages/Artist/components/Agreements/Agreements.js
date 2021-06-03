@@ -1,14 +1,32 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import "./Agreements.scss";
 import {ArtistContext} from "../../../../Store/artistContext";
 import {ACCESS_TOKEN, AGREEMENTS, BASE_URL} from "../../../../common/api";
 import Loader from "./../../../../images/loader.svg"
 import Breadcrumb from "react-bootstrap/Breadcrumb";
 import {NavLink, useHistory} from "react-router-dom";
+import fetchAgreements from "../../../../common/utlis/fetchAgreements";
 
 function Agreements() {
   const {artistState, artistActions} = React.useContext(ArtistContext);
+  const [agreements, setAgreements] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const history = useHistory();
+
+  useEffect(() => {
+    if(artistState.agreements)
+      setAgreements(artistState.agreements);
+    else
+      getAgreements();
+  }, [artistState.agreements])
+
+  const getAgreements = async () => {
+    setIsLoading(true);
+    const agreements = await fetchAgreements();
+    artistActions.artistStateChanged(agreements);
+    setAgreements(agreements);
+    setIsLoading(false);
+  }
 
   const handleSubmitReviewAgreement = async (e) => {
     e.preventDefault();
@@ -29,8 +47,8 @@ function Agreements() {
       const resultSet = await response.json();
       const rejected = resultSet.filter(agreement => agreement.status === "rejected");
       if(rejected.length === resultSet.length) {
-        localStorage.removeItem("user");
         alert("Sorry, you can't proceed without accepting agreements.\nContact at artists@audiosocket.com for more details.")
+        localStorage.removeItem("user");
         history.push("/login");
       } else {
         alert("agreement updated");
@@ -59,9 +77,9 @@ function Agreements() {
             you are unsure, or would like more information, please email <a href="mailto:artists@audiosocket.com">artists@audiosocket.com</a>.</p>
           </div>
         </section>
-        {artistState.agreements === null && <h5>Loading agreements... <img className="loading" src={Loader} alt="loading-icon"/></h5> }
-        {artistState.agreements &&
-          artistState.agreements.map((agreement, key)=> {
+        {!agreements.length && isLoading && <h5>Loading agreements... <img className="loading" src={Loader} alt="loading-icon"/></h5> }
+        {agreements.length !== 0 &&
+          agreements.map((agreement, key)=> {
             return (
               <section key={key} className="pt-4">
                 <h2 className="agreementType">{agreement.agreement.agreement_type.replace("_", " ")} Agreement</h2>
@@ -69,10 +87,7 @@ function Agreements() {
                   <p>{agreement.agreement.content}</p>
                 </div>
                 <div className="agreementContentController">
-                  {agreement.status === "accepted"
-                    ? <button onClick={handleSubmitReviewAgreement} data-id={agreement.id} data-action={"rejected"} className="btn primary-btn reject">I wish to opt-out of this agreement</button>
-                    : <button onClick={handleSubmitReviewAgreement} data-id={agreement.id} data-action={"accepted"} className="btn primary-btn accept">I wish to opt-in to this agreement</button>
-                  }
+                  <button onClick={handleSubmitReviewAgreement} data-id={agreement.id} data-action={agreement.status === "accepted" ? "rejected" : "accepted"} className={agreement.status === "accepted" ? "btn primary-btn rejected" : "btn primary-btn accepted"}>I wish to {agreement.status === "rejected" ? "opt-in to" : "opt-out of"} this agreement</button>
                   <a href={agreement.agreement.file} target="_blank" rel="noopener noreferrer" download>Download PDF</a>
                 </div>
               </section>

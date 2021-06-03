@@ -68,18 +68,8 @@ section {
                 margin-right: 0;
               }
             }
-            .additional-image-link {
+            .additional-image {
               margin: 0 15px 15px 0;
-              &:hover {
-                box-shadow: 4px 6px 6px #ccc;
-                background: #ccc;
-              }
-            }
-          }
-          &.image {
-            &:hover:not(.additional-elements) {
-              box-shadow: 4px 6px 6px #ccc;
-              background: #ccc;
             }
           }
         }

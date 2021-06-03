@@ -281,7 +281,7 @@ function Partners() {
                           checked={agreements}
                           onChange={handleChangeAgreements}
                         />
-                          This person will be logging into this artist portal and/or they need to accept the Audicsocket license agreement
+                          This person will be logging into this artist portal and/or they need to accept the Audiosocket license agreement
                           <span className={agreements ? "checkmark checked" : "checkmark"}></span>
                     </label>
                     </div>
@@ -362,7 +362,7 @@ function Partners() {
                           id="is_pro_knows"
                           type="checkbox"
                         />
-                          My PRO knows me by a different registratered name.
+                          My PRO knows me by a different registered name.
                           <span className={"checkmark"}></span>
                     </label>
                     </div>

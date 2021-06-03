@@ -58,17 +58,13 @@ function Profile() {
               <div className="parallel-info">
                 <label>cover image</label>
                 <div className="info-ans image">
-                  <a target="_blank" href={artist.cover_image ? artist.cover_image : cover}>
-                    <img className="preview" src={artist.cover_image ? artist.cover_image : cover} alt="Cover Image" />
-                  </a>
+                  <img className="preview" src={artist.cover_image ? artist.cover_image : cover} alt="Cover Image" />
                 </div>
               </div>
               <div className="parallel-info">
                 <label>banner image</label>
                 <div className="info-ans image">
-                  <a target="_blank" href={artist.banner_image ? artist.banner_image : banner}>
-                    <img src={artist.banner_image ? artist.banner_image : banner} alt="Banner Image" />
-                  </a>
+                  <img src={artist.banner_image ? artist.banner_image : banner} alt="Banner Image" />
                 </div>
               </div>
               <div className="parallel-info">
@@ -78,14 +74,12 @@ function Profile() {
                     ?
                     <div className="bg-content yellow w-custom-bg-content">
                       Have additional images for us? <NavLink to="/profile/edit">Upload them here</NavLink> for <span
-                      classname="artist-name">Jetty Rae</span>
+                      classname="artist-name">{artist.name}</span>
                     </div>
                     :
                     artist.additional_images.map((image, key) => {
                       return (
-                        <a key={key} className="additional-image-link" target="_blank" href={image}>
-                          <img src={image} alt="Image" />
-                        </a>
+                          <img className="additional-image" src={image} alt="Image" />
                       )
                     })
                   }
@@ -113,11 +107,11 @@ function Profile() {
                 <label>key facts</label>
                 <div className="info-ans">
                   {artist.key_facts
-                    ? <div>{artist.keyfacts}</div>
+                    ? <div>{artist.key_facts}</div>
                     :
                     <div className="bg-content yellow w-custom-bg-content">
                       It looks like there are no a key facts for <span
-                      className="artist-name">Jetty Rae</span> yet. <NavLink
+                      className="artist-name">"{artist.name}"</span> yet. <NavLink
                       to="/profile/edit">Tell us a bit</NavLink>, we'd love to know more!
                     </div>
                   }
