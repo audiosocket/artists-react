@@ -169,6 +169,15 @@ function ProfileEdit() {
                   <Form.Label>Additional Images</Form.Label>
                 </Col>
                 <Col xl={4} md={6}>
+                  <div className="additional-elements">
+                    {artist.additional_images.length !== 0 &&
+                      artist.additional_images.map((image, key) => {
+                        return (
+                          <img className="additional-image" src={image} alt="Image" />
+                        )
+                      })
+                    }
+                  </div>
                   <DropzoneComponent uploadedFiles={artist.additional_images ?? []} onUploadImages={handleUploadImages} />
                 </Col>
               </Row>
