@@ -13,6 +13,7 @@ import {ACCESS_TOKEN, ALBUMS, BASE_URL} from "../../../../common/api";
 import Form from "react-bootstrap/Form";
 import {NavLink} from "react-router-dom";
 import Breadcrumb from 'react-bootstrap/Breadcrumb';
+import Delete from "../../../../images/delete.svg";
 
 function AlbumsListing() {
   const {artistState, artistActions} = React.useContext(ArtistContext);
@@ -23,6 +24,7 @@ function AlbumsListing() {
   const [showAlbumModal, setShowAlbumModal] = useState(false);
   const [selectedAlbum, setSelectedAlbum] = useState(null);
   const [selectedAlbumDate, setSelectedAlbumDate] = useState('');
+  const [artwork, setArtwork] = useState(null);
 
   useEffect(() => {
     if (!artistState.albums)
@@ -49,6 +51,9 @@ function AlbumsListing() {
     } else {
       setIsLoading(true);
       const data = new FormData(form.current);
+      if(!artwork) {
+        data.delete("artwork");
+      }
       const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
       const URL = selectedAlbum ? `${BASE_URL}${ALBUMS}/${selectedAlbum.id}` : `${BASE_URL}${ALBUMS}`;
       const response = await fetch(`${URL}`,
@@ -63,6 +68,21 @@ function AlbumsListing() {
       if (!response.ok) {
         alert('Something went wrong, try later!');
       } else {
+        if(artwork) {
+          const result = await response.json();
+          const responseArtwork = await fetch(`${BASE_URL}${ALBUMS}/${result.id}/update_artwork`,
+            {
+              headers: {
+                "authorization": ACCESS_TOKEN,
+                "auth-token": userAuthToken
+              },
+              method: "PATCH",
+              body: data
+            });
+          if (!responseArtwork.ok) {
+            alert('Something went wrong, try later!');
+          }
+        }
         const albums = await fetchAlbums();
         setAlbums(albums);
         artistActions.albumsStateChanged(albums);
@@ -81,6 +101,7 @@ function AlbumsListing() {
     if(form.current) {
       form.current.reset()
     }
+    setArtwork(null);
   }
 
   const handleAlbumEditModal = (album) => {
@@ -93,6 +114,29 @@ function AlbumsListing() {
       setSelectedAlbumDate(`${year}-${month}-${day}`);
     }
   }
+
+  const handleAlbumDelete = async (album) => {
+    if(window.confirm(`Are you sure to delete "${album.name}"?`)) {
+      const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
+      const response = await fetch(`${BASE_URL}${ALBUMS}/${album.id}`,
+        {
+          headers: {
+            "authorization": ACCESS_TOKEN,
+            "auth-token": userAuthToken
+          },
+          method: "DELETE"
+        });
+      if (!response.ok) {
+        alert('Something went wrong, try later!');
+      } else {
+        alert("Album deleted!");
+        const albums = await fetchAlbums();
+        artistActions.albumsStateChanged(albums);
+        setAlbums(albums);
+      }
+    }
+  }
+
   return (
     <div className="musicWrapper">
       <div className="asBreadcrumbs">
@@ -127,7 +171,7 @@ function AlbumsListing() {
             <h2>Albums</h2>
             <a onClick={() => setShowAlbumModal(true)} className="btn primary-btn">Create an album</a>
           </div>
-          {isLoading && <h5>Loading albums... <img className="loading" src={Loader} alt="loading-icon"/></h5>}
+          {albums.length === 0 && isLoading && <h5>Loading albums... <img className="loading" src={Loader} alt="loading-icon"/></h5>}
           <div className="music-playlist">
             <ul className="music-row">
               {albums.length !== 0
@@ -137,7 +181,10 @@ function AlbumsListing() {
                       <NavLink
                         to={`/music/album/${album.id}`}>{album.name} {album.release_date ? "(Release date: " + album.release_date.split(" ")[0] + ")" : ""}
                       </NavLink>
-                      <img onClick={(e) => handleAlbumEditModal(album)} src={Edit} alt="edit-icon"/>
+                      <div className="album-actions">
+                        <img onClick={(e) => handleAlbumEditModal(album)} src={Edit} alt="edit-icon"/>
+                        <img onClick={(e) => handleAlbumDelete(album)} src={Delete} alt="delete-icon"/>
+                      </div>
                     </li>
                   )
                 })
@@ -168,37 +215,53 @@ function AlbumsListing() {
           <Modal.Body>
             <div className="create-album-modal-container">
               <div className="section">
-                  <Row>
-                    <Col xs={12}>
-                      <div className="form-group">
-                        <Form.Control
-                          required
-                          name="name"
-                          type="text"
-                          defaultValue={selectedAlbum ? selectedAlbum.name : ''}
-                          placeholder="Album Name*"
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Album name is required!
-                        </Form.Control.Feedback>
-                      </div>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col xs={12}>
-                      <div className="form-group">
-                        <Form.Control
-                          name="release_date"
-                          defaultValue={selectedAlbumDate ? selectedAlbumDate : ''}
-                          type="text"
-                          onFocus={(e) => (e.currentTarget.type = "date")}
-                          onBlur={(e) => (e.currentTarget.type = "text")}
-                          placeholder="Release Date"
-                        />
-                        <small className="text-muted">Release date is optional</small>
-                      </div>
-                    </Col>
-                  </Row>
+                <Row>
+                  <Col xs={12}>
+                    <div className="form-group">
+                      <Form.Control
+                        required
+                        name="name"
+                        type="text"
+                        defaultValue={selectedAlbum ? selectedAlbum.name : ''}
+                        placeholder="Album Name*"
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        Album name is required!
+                      </Form.Control.Feedback>
+                    </div>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col xs={12}>
+                    <div className="form-group">
+                      <Form.Control
+                        name="release_date"
+                        defaultValue={selectedAlbumDate ? selectedAlbumDate : ''}
+                        type="text"
+                        onFocus={(e) => (e.currentTarget.type = "date")}
+                        onBlur={(e) => (e.currentTarget.type = "text")}
+                        placeholder="Release Date"
+                      />
+                      <small className="text-muted">Release date is optional</small>
+                    </div>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col xs={12}>
+                    <div className="form-group">
+                      <Form.File
+                        accept=".png, .jpg, .svg"
+                        onChange={(e) => {setArtwork(e.target.files[0])}}
+                        name="artwork"
+                        label={artwork ? artwork.name : selectedAlbum && selectedAlbum.artwork ? selectedAlbum.artwork.split('/')[selectedAlbum.artwork.split("/").length-1] : ""}
+                        lang="en"
+                        data-browse="Select artwork"
+                        custom
+                      />
+                      <small className="text-muted">Artwork is optional</small>
+                    </div>
+                  </Col>
+                </Row>
               </div>
             </div>
           </Modal.Body>
