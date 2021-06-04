@@ -9,7 +9,14 @@ import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import Loader from "../../../../images/loader.svg";
 import Select from "react-select";
-import {ACCESS_TOKEN, BASE_URL, INVITE_COLLABORATORS, PRO_LIST, PUBLISHERS} from "../../../../common/api";
+import {
+  ACCESS_TOKEN, ARTISTS_COLLABORATORS,
+  BASE_URL,
+  INVITE_COLLABORATORS,
+  PRO_LIST,
+  PUBLISHERS,
+  UPDATE_ACCESS_COLLABORATORS
+} from "../../../../common/api";
 import {ArtistContext} from "../../../../Store/artistContext";
 import fetchCollaborators from "../../../../common/utlis/fetchCollaborators";
 import fetchPublishers from "../../../../common/utlis/fetchPublishers";
@@ -78,8 +85,11 @@ function Partners() {
         data.set("access", "write");
       else
         data.set("access", "read");
-      data.delete("email");
-      const url = selectedPartner ? `${BASE_URL}${INVITE_COLLABORATORS}/${selectedPartner.id}` : `${BASE_URL}${INVITE_COLLABORATORS}`;
+      if(selectedPartner) {
+        data.delete("email");
+        data.append("collaborator_id", selectedPartner.id)
+      }
+      const url = selectedPartner ? `${BASE_URL}${UPDATE_ACCESS_COLLABORATORS}` : `${BASE_URL}${INVITE_COLLABORATORS}`;
       const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
       const response = await fetch(url,
         {
@@ -188,7 +198,7 @@ function Partners() {
   const handleDeleteCollaborator = async (e, collaborator) => {
     if(window.confirm(`Are you sure to delete "${collaborator.first_name} ${collaborator.last_name}"?`)) {
       const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
-      const response = await fetch(`${BASE_URL}${INVITE_COLLABORATORS}/${collaborator.id}`,
+      const response = await fetch(`${BASE_URL}${ARTISTS_COLLABORATORS}/?collaborator_id=${collaborator.id}`,
         {
           headers: {
             "authorization": ACCESS_TOKEN,
@@ -356,7 +366,7 @@ function Partners() {
                   <Col xs={12}>
                     <div className="form-group">
                       <Form.Control
-                        readOnly={true}
+                        readOnly={!!selectedPartner}
                         name="email"
                         type="email"
                         defaultValue={selectedPartner ? selectedPartner.email : ''}
