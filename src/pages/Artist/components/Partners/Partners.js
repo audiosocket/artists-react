@@ -9,7 +9,7 @@ import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import Loader from "../../../../images/loader.svg";
 import Select from "react-select";
-import {ACCESS_TOKEN, BASE_URL, INVITE_COLLABORATORS, PUBLISHERS} from "../../../../common/api";
+import {ACCESS_TOKEN, BASE_URL, INVITE_COLLABORATORS, PRO_LIST, PUBLISHERS} from "../../../../common/api";
 import {ArtistContext} from "../../../../Store/artistContext";
 import fetchCollaborators from "../../../../common/utlis/fetchCollaborators";
 import fetchPublishers from "../../../../common/utlis/fetchPublishers";
@@ -25,6 +25,7 @@ function Partners() {
   const [showCollaboratorModal, setShowCollaboratorModal] = useState(false);
   const [showPublisherModal, setShowPublisherModal] = useState(false);
   const [pro, setPro] = useState(null);
+  const [proError, setProError] = useState(false);
   const proRef = useRef(null);
   const [agreements, setAgreements] = useState(false);
   const [access, setAccess] = useState(false);
@@ -102,14 +103,23 @@ function Partners() {
 
   const handleSubmitPublisher = async (e) => {
     e.preventDefault();
+    setProError(false);
+    if(!pro) {
+      setProError(true);
+    }
     const artistForm = e.currentTarget;
     if (artistForm.checkValidity() === false) {
       e.preventDefault();
       e.stopPropagation();
       setValidated(true);
     } else {
-      setIsLoading(true);
       const data = new FormData(form.current);
+      if(pro) {
+        data.append('pro', pro);
+      } else {
+        return false;
+      }
+      setIsLoading(true);
       const url = selectedPartner ? `${BASE_URL}${PUBLISHERS}/${selectedPartner.id}` : `${BASE_URL}${PUBLISHERS}`;
       const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
       const response = await fetch(url,
@@ -145,8 +155,10 @@ function Partners() {
   }
 
   const handelShowPublisherModal = (e, publisher = null) => {
-    if(publisher)
+    if(publisher) {
       setSelectedPartner(publisher);
+      setPro(publisher.pro ?? null);
+    }
     setShowCollaboratorModal(false);
     setShowPublisherModal(true);
   }
@@ -158,6 +170,9 @@ function Partners() {
     setAgreements(false);
     setAccess(false);
     setSelectedPartner(null);
+    setPro(null);
+    setProError(false);
+    setIsLoading(false);
   }
 
   const handleChangeAgreements = (e) => {
@@ -204,7 +219,7 @@ function Partners() {
                     return (
                       collaborator &&
                         <li key={key}>
-                          <a>{collaborator.first_name} {collaborator.last_name ?? ''} <small>MOSEEG 3753</small></a>
+                          <a>{collaborator.first_name} {collaborator.last_name ?? ''} <small>{collaborator.pro}</small></a>
                           <img onClick={(e) => handleShowCollaboratorModal(e, collaborator)} src={Edit} alt="edit-icon"/>
                         </li>
                     )
@@ -227,7 +242,7 @@ function Partners() {
                     return (
                       publisher.name &&
                         <li key={key}>
-                          <a>{publisher.name} <small>MOSEEG 3753</small></a>
+                          <a>{publisher.name} <small>{publisher.pro}</small></a>
                           <img onClick={(e) => handelShowPublisherModal(e, publisher)} src={Edit} alt="edit-icon"/>
                         </li>
                     )
@@ -319,7 +334,7 @@ function Partners() {
                   <Col xs={12}>
                     <div className="form-group">
                       <Form.Control
-                        name="cae_ipi"
+                        name="ipi"
                         type="text"
                         defaultValue={''}
                         placeholder="CAE/IPI # (optional)"
@@ -339,9 +354,10 @@ function Partners() {
                         placeholder="Select PRO"
                         className="pro-select-container-header"
                         classNamePrefix="pro-select-header react-select-popup"
-                        options={[{label: "Select PRO", value: null},{label: "No", value: false}, {label: "Yes", value: true}]}
-                        defaultValue={{label: "Select PRO", value: null}}
+                        options={PRO_LIST}
+                        defaultValue={selectedPartner ? selectedPartner.pro ? PRO_LIST.filter(item => item.value === selectedPartner.pro) : {label: "Select PRO", value: null} : {label: "Select PRO", value: null}}
                         onChange={(target) => setPro(target.value)}
+                        maxMenuHeight={160}
                         theme={theme => ({
                           ...theme,
                           colors: {
@@ -419,13 +435,13 @@ function Partners() {
                     <div className="form-group">
                       <Select
                         ref={proRef}
-                        isSearchable={false}
                         placeholder="Select PRO"
                         className="pro-select-container-header"
-                        classNamePrefix="pro-select-header react-select-popup"
-                        options={[{label: "Select PRO", value: null},{label: "No", value: false}, {label: "Yes", value: true}]}
-                        defaultValue={{label: "Select PRO", value: null}}
+                        classNamePrefix={!proError ? "pro-select-header react-select-popup" : "pro-select-header react-select-popup invalid"}
+                        options={PRO_LIST}
+                        defaultValue={selectedPartner ? selectedPartner.pro ? PRO_LIST.filter(item => item.value === selectedPartner.pro) : {label: "Select PRO", value: null} : {label: "Select PRO", value: null}}
                         onChange={(target) => setPro(target.value)}
+                        maxMenuHeight={160}
                         theme={theme => ({
                           ...theme,
                           colors: {
@@ -434,14 +450,19 @@ function Partners() {
                           },
                         })}
                       />
+                      {proError &&
+                      <small className="error">
+                        PRO is required!
+                      </small>
+                      }
                     </div>
                   </Col>
                   <Col xs={12}>
                     <div className="form-group">
                       <Form.Control
-                        name="cae_ipi"
+                        name="ipi"
                         type="text"
-                        defaultValue={''}
+                        defaultValue={selectedPartner ? selectedPartner.ipi : ''}
                         placeholder="CAE/IPI #"
                       />
                       <small className="text-muted">This field is optional</small>

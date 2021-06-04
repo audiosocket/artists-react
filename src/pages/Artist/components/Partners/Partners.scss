@@ -77,3 +77,13 @@
     }
   }
 }
+.invalid__control {
+  height: 48px;
+  border-radius: 8px !important;
+  border-color: $clr-red !important;
+}
+small {
+  &.error {
+    color: $clr-red;
+  }
+}
