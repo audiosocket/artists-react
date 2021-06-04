@@ -17,7 +17,6 @@ import csc from "country-state-city";
 import fetchCollaborators from "../../../../common/utlis/fetchCollaborators";
 import fetchPublishers from "../../../../common/utlis/fetchPublishers";
 import profile from '../../../../images/as-profile.svg';
-import setting from '../../../../images/as-setting.svg';
 import help from '../../../../images/as-help.svg';
 import signout from '../../../../images/as-signout.svg';
 import artist from '../../../../images/as-artist.svg';

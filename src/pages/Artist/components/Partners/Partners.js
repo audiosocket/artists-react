@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from "react";
 import "./Partners.scss";
 import Breadcrumb from "react-bootstrap/Breadcrumb";
-import {NavLink, useHistory} from "react-router-dom";
+import {NavLink} from "react-router-dom";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
@@ -14,6 +14,7 @@ import {ArtistContext} from "../../../../Store/artistContext";
 import fetchCollaborators from "../../../../common/utlis/fetchCollaborators";
 import fetchPublishers from "../../../../common/utlis/fetchPublishers";
 import Edit from "../../../../images/pencil.svg";
+import Delete from "../../../../images/delete.svg";
 
 function Partners() {
   const {artistState, artistActions} = React.useContext(ArtistContext);
@@ -77,6 +78,7 @@ function Partners() {
         data.set("access", "write");
       else
         data.set("access", "read");
+      data.delete("email");
       const url = selectedPartner ? `${BASE_URL}${INVITE_COLLABORATORS}/${selectedPartner.id}` : `${BASE_URL}${INVITE_COLLABORATORS}`;
       const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
       const response = await fetch(url,
@@ -183,6 +185,50 @@ function Partners() {
     setAccess(!access);
   }
 
+  const handleDeleteCollaborator = async (e, collaborator) => {
+    if(window.confirm(`Are you sure to delete "${collaborator.first_name} ${collaborator.last_name}"?`)) {
+      const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
+      const response = await fetch(`${BASE_URL}${INVITE_COLLABORATORS}/${collaborator.id}`,
+        {
+          headers: {
+            "authorization": ACCESS_TOKEN,
+            "auth-token": userAuthToken
+          },
+          method: "DELETE"
+        });
+      if (!response.ok) {
+        alert('Something went wrong, try later!');
+      } else {
+        alert("Collaborator deleted!");
+        const collaborators = await fetchCollaborators();
+        artistActions.collaboratorsStateChanged(collaborators);
+        setCollaborators(collaborators);
+      }
+    }
+  }
+
+  const handleDeletePublisher = async (e, publisher) => {
+    if(window.confirm(`Are you sure to delete "${publisher.name}"?`)) {
+      const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
+      const response = await fetch(`${BASE_URL}${PUBLISHERS}/${publisher.id}`,
+        {
+          headers: {
+            "authorization": ACCESS_TOKEN,
+            "auth-token": userAuthToken
+          },
+          method: "DELETE"
+        });
+      if (!response.ok) {
+        alert('Something went wrong, try later!');
+      } else {
+        alert("Publisher deleted!");
+        const publishers = await fetchPublishers();
+        artistActions.publishersStateChanged(publishers);
+        setPublishers(publishers);
+      }
+    }
+  }
+
   return (
     <div className="partnerWrapper">
       <div className="asBreadcrumbs">
@@ -220,7 +266,10 @@ function Partners() {
                       collaborator &&
                         <li key={key}>
                           <a>{collaborator.first_name} {collaborator.last_name ?? ''} <small>{collaborator.pro}</small></a>
-                          <img onClick={(e) => handleShowCollaboratorModal(e, collaborator)} src={Edit} alt="edit-icon"/>
+                          <div className="partner-actions">
+                            <img onClick={(e) => handleShowCollaboratorModal(e, collaborator)} src={Edit} alt="edit-icon"/>
+                            <img onClick={(e) => handleDeleteCollaborator(e, collaborator)} src={Delete} alt="delete-icon"/>
+                          </div>
                         </li>
                     )
                   })
@@ -243,7 +292,10 @@ function Partners() {
                       publisher.name &&
                         <li key={key}>
                           <a>{publisher.name} <small>{publisher.pro}</small></a>
-                          <img onClick={(e) => handelShowPublisherModal(e, publisher)} src={Edit} alt="edit-icon"/>
+                          <div className="partner-actions">
+                            <img onClick={(e) => handelShowPublisherModal(e, publisher)} src={Edit} alt="edit-icon"/>
+                            <img onClick={(e) => handleDeletePublisher(e, publisher)} src={Delete} alt="delete-icon"/>
+                          </div>
                         </li>
                     )
                   })
@@ -304,7 +356,7 @@ function Partners() {
                   <Col xs={12}>
                     <div className="form-group">
                       <Form.Control
-                        required
+                        readOnly={true}
                         name="email"
                         type="email"
                         defaultValue={selectedPartner ? selectedPartner.email : ''}

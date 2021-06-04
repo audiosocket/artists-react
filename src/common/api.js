@@ -2,6 +2,7 @@ export const ACCESS_TOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJhcHBfaWQiOiJhcnRpc3RzLXBvcn
 export const BASE_URL = "http://artist_portal_backend.square63.com/";
 export const SESSION = "api/v1/session";
 export const AUTHENTICATE_TOKEN = "api/v1/users/authenticate_token";
+export const AUTHENTICATE_COLLABORATOR_TOKEN = "/api/v1/artists_collaborators/authenticate_token";
 export const ACCEPT_INVITATION = "api/v1/users/accept_invitation";
 export const FORGOT_PASSWORD = "api/v1/users/forgot_password";
 export const RESET_PASSWORD = "api/v1/users/reset_password";
@@ -12,6 +13,8 @@ export const ALBUMS = "api/v1/albums";
 export const PUBLISHERS = "api/v1/publishers";
 export const INVITE_COLLABORATORS = "api/v1/artists/invite_collaborator";
 export const LIST_COLLABORATORS = "api/v1/artists/collaborators";
+export const ARTISTS_COLLABORATORS = "api/v1/artists_collaborators";
+export const UPDATE_ACCESS_COLLABORATORS = "api/v1/artists_collaborators/update_access";
 export const PRO_LIST = [
   {label: "Select PRO", value: null},
   {label: "USA - BMI", value: "USA - BMI"},

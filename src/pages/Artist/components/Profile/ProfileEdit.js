@@ -60,7 +60,7 @@ function ProfileEdit() {
         for(let i = 0; i < image.length; i++)
           data.append('additional_images[]', image[i]);
       }
-
+      data.delete('name');
       const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
       const response = await fetch(`${BASE_URL}${ARTIST_PROFILE_UPDATE}`,
         {

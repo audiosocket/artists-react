@@ -38,10 +38,14 @@
         width: calc(50% - 10px);
         border-radius: 5px;
         transition: all 0.1s ease-in-out;
+        .partner-actions {
+          display: flex;
+        }
         img {
           width: 15px;
           cursor: pointer;
           opacity: 0.7;
+          margin: 0 6px;
         }
         &:nth-child(odd) {
           margin-right: 20px;
