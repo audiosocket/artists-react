@@ -164,6 +164,7 @@ function Profile() {
                     <span>{artist.contact_information.postal_code}, {artist.contact_information.street}</span>
                     <span>{artist.contact_information.city}, {artist.contact_information.state}</span>
                     <span>{artist.contact_information.country}</span>
+                    <span><small className="medium-text">Phone#: </small>{artist.contact_information.phone}</span>
                   </>
                   : '-'
                 }
@@ -186,11 +187,11 @@ function Profile() {
                 {artist.payment_information
                   ?
                   <>
-                    <span><smal is="x3d" className="medium-text">Payee: </smal>{artist.payment_information.payee_name}</span>
-                    <span><smal is="x3d" className="medium-text">Bank: </smal>{artist.payment_information.bank_name}</span>
-                    <span><smal is="x3d" className="medium-text">Routing: </smal>{artist.payment_information.routing}</span>
-                    <span><smal is="x3d" className="medium-text">Account#: </smal>{artist.payment_information.account_number}</span>
-                    <span><smal is="x3d" className="medium-text">Paypal Email: </smal>{artist.payment_information.paypal_email}</span>
+                    <span><small className="medium-text">Payee: </small>{artist.payment_information.payee_name}</span>
+                    <span><small className="medium-text">Bank: </small>{artist.payment_information.bank_name}</span>
+                    <span><small className="medium-text">Routing: </small>{artist.payment_information.routing}</span>
+                    <span><small className="medium-text">Account#: </small>{artist.payment_information.account_number}</span>
+                    <span><small className="medium-text">Paypal Email: </small>{artist.payment_information.paypal_email}</span>
                   </>
                   : '-'
                 }
