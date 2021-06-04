@@ -60,11 +60,11 @@ function Header({onToggleSidebar}) {
       }
     }
     artistActions.agreementsStateChanged(agreements);
-    /*if(agreements.length === agreements.filter(agreement => agreement.status === "rejected").length) {
+    if(agreements.length === agreements.filter(agreement => agreement.status === "rejected").length) {
       localStorage.removeItem("user");
       alert("Sorry, you can't proceed without accepting agreements.\nContact at artists@audiosocket.com for more details.");
       history.push("/login");
-    }*/
+    }
     if(agreements.filter(agreement => agreement.status === "pending").length) {
       history.push("/accept-invitation");
     }
