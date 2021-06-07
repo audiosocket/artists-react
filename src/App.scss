@@ -69,6 +69,7 @@ $clr-green: hsl(68deg, 68%, 51%);
 $clr-green-bright: hsl(68deg, 80%, 55%);
 $clr-green-dark: #28a745;
 $clr-black: hsl(0deg, 0%, 10%);
+$clr-black-light: hsl(0deg, 0%, 50%);
 $clr-white: hsl(0deg, 0%, 100%);
 $clr-grey: hsl(0deg, 0%, 54%);
 $clr-grey-border: hsl(0deg, 0%, 74%);
@@ -202,7 +203,12 @@ a, .btn {
     flex-shrink: 0;
   }
 }
-
+.dropdown-toggle {
+	&::after {
+		margin-left: .455em;
+		margin-top: .255em;
+	}
+}
 button, .btn {
 	border-radius: 2.5rem;
 	font-weight: 600;
@@ -392,19 +398,18 @@ select:-webkit-autofill:focus {
         li {
           margin-top: 40px;
           a {
-            color: #212121;
+            color: $clr-black-light;
             font-size: 21px;
             text-transform: capitalize;
             text-align: left;
             line-height: 25px;
             transition: all 0.3s ease-in-out;
             &:hover {
-              font-weight: 600;
-              color:#212121;
+              color: $clr-black;
             }
             &.selected {
-              font-weight: 600;
-              color:#212121;
+			  color: $clr-black;
+			  font-weight: 600;
             }
           }
         }
@@ -481,12 +486,12 @@ select:-webkit-autofill:focus {
   .breadcrumb {
     background-color: #f6f6f6;
     .breadcrumb-item {
-      color: #212121;
+      color: $clr-black;
       a {
-	  	  color: #212121;
+	  	  color: $clr-black;
 		  font-weight: normal;
 		  &:hover {
-          	color: #212121;
+          	color: $clr-black;
           	font-weight: 600;
 		  }
       }
