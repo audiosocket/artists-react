@@ -44,7 +44,7 @@
 		color: $clr-black;
 		font-weight: normal;
 		&:hover {
-			color: $clr-green;
+			text-decoration: underline !important;
 		}
 	}
 	.remember-text {
@@ -54,6 +54,11 @@
 		.checkmark {
 			&.checked {
 				background: $clr-green;
+			}
+		}
+		.checkbox {
+			&:hover {
+				cursor: pointer;
 			}
 		}
 		img {
