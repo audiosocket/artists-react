@@ -56,6 +56,7 @@ function Login() {
       const resultSet = await response.json();
       if(response.ok) {
         authActions.userDataStateChanged(resultSet["auth_token"]);
+        localStorage.setItem("userRole", JSON.stringify(resultSet["role"]));
         const agreements = await fetchAgreements(resultSet["role"] ?? 'artist');
         const pending = agreements.filter(agreement => agreement.status === "pending").length
         const rejected = agreements.filter(agreement => agreement.status === "rejected").length
@@ -64,10 +65,13 @@ function Login() {
           alert("Sorry, you can't proceed without accepting agreements.\nContact at artists@audiosocket.com for more details.");
           history.push("/login");
         }
-        if(pending)
-          history.push("/accept-invitation");
+        if(pending) {
+          if(resultSet["role"] === 'collaborator')
+            history.push("/accept-collaborator-invitation")
+          else
+            history.push("/accept-invitation");
+        }
         else {
-          localStorage.setItem("userRole", JSON.stringify(resultSet["role"]));
           history.push("/");
         }
         e.target.reset();

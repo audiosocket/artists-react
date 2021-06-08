@@ -12,7 +12,7 @@ import {ArtistContext} from "../../../../Store/artistContext";
 import fetchAgreements from "../../../../common/utlis/fetchAgreements";
 import fetchArtist from "../../../../common/utlis/fetchArtist";
 import fetchAlbums from "../../../../common/utlis/fetchAlbums";
-import {ACCESS_TOKEN, AGREEMENTS, BASE_URL} from "../../../../common/api";
+import {ACCESS_TOKEN, AGREEMENTS, BASE_URL, LIST_ARTISTS} from "../../../../common/api";
 import csc from "country-state-city";
 import fetchCollaborators from "../../../../common/utlis/fetchCollaborators";
 import fetchPublishers from "../../../../common/utlis/fetchPublishers";
@@ -27,29 +27,36 @@ function Header({onToggleSidebar}) {
   const {artistState, artistActions} = React.useContext(ArtistContext);
   const [selectedArtist, setSelectedArtist] = useState(null);
   const [toggleSidebar, setToggleSidebar] = useState(true);
-  const [userRole, setUserRole] = useState('artist');
+  const [userRole, setUserRole] = useState(null);
+  const [artistsList, setArtistsList] = useState([]);
+  const [artistsDropdown, setArtistsDropdown] = useState([]);
 
   useEffect(() => {
-    initializeUserRole();
-    initializeAgreements();
+    const userRole = JSON.parse(localStorage.getItem("userRole") ?? "");
+    initializeUserRole(userRole);
+    initializeAgreements(userRole);
+    if(userRole === 'collaborator') {
+      listArtists();
+    }
     initializeArtist();
     initializeAlbums();
     initializeCountriesList();
     initializePartners();
   }, [])
 
-  const initializeUserRole = () => {
+  const initializeUserRole = (userRole) => {
     if(artistState.userRole)
       return;
 
-    const userRole = JSON.parse(localStorage.getItem("userRole") ?? "");
     if(userRole) {
       setUserRole(userRole);
       artistActions.userRoleStateChanged(userRole);
     }
   }
-  const initializeAgreements = async () => {
+
+  const initializeAgreements = async (userRole) => {
     setIsLoading(true);
+    setUserRole(userRole);
     const agreements = await fetchAgreements(userRole ?? 'artist');
     if(!agreements.length) { // check if signature has expired
       const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
@@ -80,6 +87,30 @@ function Header({onToggleSidebar}) {
       history.push("/accept-invitation");
     }
     setIsLoading(false);
+  }
+
+  const listArtists = async () => {
+    const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
+    const response = await fetch(`${BASE_URL}${LIST_ARTISTS}`,
+      {
+        headers: {
+          "authorization": ACCESS_TOKEN,
+          "auth-token": userAuthToken
+        }
+      });
+    if(response.ok) {
+      const resultSet = await response.json();
+      artistActions.artistsListStateChanged(resultSet["user"])
+      setArtistsList(resultSet["user"])
+      const tmp = [];
+      resultSet["user"].forEach((user, key) => {
+        tmp.push(user)
+      })
+      setArtistsDropdown(tmp);
+    } {
+      artistActions.artistsListStateChanged(null)
+      setArtistsList([])
+    }
   }
 
   const initializeArtist = async () => {
@@ -116,8 +147,10 @@ function Header({onToggleSidebar}) {
   }
 
   const handleSelectedArtist = (e) => {
-    artistActions.selectedArtistStateChanged(e.target.dataset.value);
-    setSelectedArtist(e.target.dataset.value);
+    const artistId = parseInt(e.target.dataset.id);
+    const selectedArtist = artistsDropdown.filter((artist) => artist.id === artistId)
+    artistActions.selectedArtistStateChanged(selectedArtist[0]);
+    setSelectedArtist(selectedArtist[0]);
   }
 
   const handleToggle = () => {
@@ -133,22 +166,33 @@ function Header({onToggleSidebar}) {
           <img onClick={handleToggle} src={toggleSidebar ? hamburger : close} alt="Sidebar Launcher"  className="" />
         </div>
         <NavLink className="logo-brand" to={"/"}><Navbar.Brand><img src={logo} alt="COMPANY LOGO"  className="" /></Navbar.Brand></NavLink>
-        <Navbar.Text>{selectedArtist && selectedArtist+"'s Portal"}</Navbar.Text>
+        <Navbar.Text>{selectedArtist && selectedArtist.first_name+" "+selectedArtist.last_name+"'s Portal"}</Navbar.Text>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="mr-auto desktop-view">
-            <NavDropdown title={"Choose artist"} id="collasible-nav-dropdown" className="artist-dropdown">
-              <NavDropdown.Item onClick={handleSelectedArtist} className={selectedArtist === 'Amanda' && "active"} data-value="Amanda">Amanda</NavDropdown.Item>
-              <NavDropdown.Item onClick={handleSelectedArtist} className={selectedArtist === 'Jenn' && "active"} data-value="Jenn">Jenn</NavDropdown.Item>
-              <NavDropdown.Item onClick={handleSelectedArtist} className={selectedArtist === 'Kevin' && "active"} data-value="Kevin">Kevin</NavDropdown.Item>
-            </NavDropdown>
+            {artistsDropdown.length !== 0 &&
+              <NavDropdown title={"Choose artist"} id="collasible-nav-dropdown" className="artist-dropdown">
+                {artistsDropdown.map((artist, key) => {
+                  return (
+                    <NavDropdown.Item key={key} onClick={handleSelectedArtist} data-id={artist.id} className={selectedArtist ? selectedArtist.id === artist.id && "active" : ""}>{artist.first_name + ' ' + artist.last_name}</NavDropdown.Item>
+                    );
+                  })
+                }
+              </NavDropdown>
+            }
           </Nav>
           <Nav>
-          <NavDropdown className="mobile-view" title={<img src={artist} alt="Help"/>} id="collasible-nav-dropdown" className="mobile-view choose-artist-mobile">
-            <NavDropdown.Item onClick={handleSelectedArtist} className={selectedArtist === 'Amanda' && "active"} data-value="Amanda">Amanda</NavDropdown.Item>
-            <NavDropdown.Item onClick={handleSelectedArtist} className={selectedArtist === 'Jenn' && "active"} data-value="Jenn">Jenn</NavDropdown.Item>
-            <NavDropdown.Item onClick={handleSelectedArtist} className={selectedArtist === 'Kevin' && "active"} data-value="Kevin">Kevin</NavDropdown.Item>
-          </NavDropdown>
+            {artistsDropdown.length !== 0 &&
+              <NavDropdown className="mobile-view" title={<img src={artist} alt="Help"/>} id="collasible-nav-dropdown" className="mobile-view choose-artist-mobile">
+                {artistsDropdown.map((artist, key) => {
+                  return (
+                    <NavDropdown.Item key={key} onClick={handleSelectedArtist} data-id={artist.id}
+                                      className={selectedArtist ? selectedArtist.id === artist.id && "active" : ""}>{artist.first_name + ' ' + artist.last_name}</NavDropdown.Item>
+                  );
+                })
+                }
+              </NavDropdown>
+            }
             <Nav.Link href="mailto:info@audiosocket.com">
               <span className="desktop-view">Help</span>
               <img src={help} alt="Help"  className="mobile-view" />

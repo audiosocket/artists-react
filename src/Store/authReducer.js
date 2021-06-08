@@ -9,7 +9,10 @@ export const reducer = (state, action) => {
     case USER_DATA_STATE_CHANGED:
       if (action.payload)
         localStorage.setItem("user", JSON.stringify(action.payload));
-      else localStorage.removeItem("user");
+      else {
+        localStorage.removeItem("user");
+        localStorage.removeItem("userRole");
+      }
       return {
         ...state,
         user: action.payload,

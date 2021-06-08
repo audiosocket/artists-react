@@ -6,13 +6,13 @@ import Button from "react-bootstrap/Button";
 import Loader from "../../images/loader.svg";
 import ArrowRight from "../../images/right-arrow.svg";
 import {AuthContext} from "../../Store/authContext";
-import {useHistory} from "react-router-dom";
+import {useHistory, useLocation} from "react-router-dom";
 import {
   ACCEPT_INVITATION,
   ACCESS_TOKEN,
   AUTHENTICATE_TOKEN,
   BASE_URL,
-  AGREEMENTS,
+  AGREEMENTS, AUTHENTICATE_COLLABORATOR_TOKEN,
 } from "../../common/api";
 import {Col, Row} from "react-bootstrap";
 import Download from "../../images/file.svg";
@@ -21,6 +21,7 @@ import Cancel from "../../images/cancel.svg";
 import fetchAgreements from "../../common/utlis/fetchAgreements";
 
 function Signup({userHash = ''}) {
+  const pathname = useLocation().pathname;
   const { authActions } = React.useContext(AuthContext);
   const history = useHistory();
   const form = useRef(null);
@@ -30,6 +31,8 @@ function Signup({userHash = ''}) {
   const [isPasswordUpdated, setIsPasswordUpdated] = useState(false);
   const [isAgreementStep, setIsAgreementStep] = useState(false);
   const [agreements, setAgreements] = useState([]);
+  const [isCollaborator, setIsCollaborator] = useState(false);
+  const [collaboratorToken, setCollaboratorToken] = useState(null);
 
   useEffect(() => {
     verifyHash();
@@ -43,12 +46,19 @@ function Signup({userHash = ''}) {
 
   const verifyHash = async () => {
     setIsLoading(true);
+    let url = `${BASE_URL}${AUTHENTICATE_TOKEN}`;
+    let isCollaborator = false;
+    if(pathname.split('/')[1] === 'accept-collaborator-invitation') {
+      url = `${BASE_URL}${AUTHENTICATE_COLLABORATOR_TOKEN}`;
+      setIsCollaborator(true);
+      isCollaborator = true;
+    }
     let is_valid = true;
     if(!userHash)
       is_valid = false;
 
     if(is_valid) {
-      const response = await fetch(`${BASE_URL}${AUTHENTICATE_TOKEN}?token=${userHash}`,
+      const response = await fetch(`${url}?token=${userHash}`,
         {
           headers: {
             "authorization": ACCESS_TOKEN,
@@ -63,7 +73,7 @@ function Signup({userHash = ''}) {
         if(res.password) {
           const userAuthToken = JSON.parse(localStorage.getItem("user"));
           if(userAuthToken) {
-            const result = await fetchAgreements();
+            const result = await fetchAgreements(isCollaborator ? 'collaborator' : 'artist');
             setAgreements(result)
             setIsAgreementStep(true);
             setIsPasswordUpdated(res.password);
@@ -72,12 +82,27 @@ function Signup({userHash = ''}) {
             history.push('/login');
           }
         }
+        if(isCollaborator) {
+          if(res.meta.password) {
+            const userAuthToken = JSON.parse(localStorage.getItem("user"));
+            if(userAuthToken) {
+              const result = await fetchAgreements(isCollaborator ? 'collaborator' : 'artist');
+              setAgreements(result);
+              setIsAgreementStep(true);
+              setIsPasswordUpdated(res.meta.password);
+            } else {
+              alert("Password already set, login to proceed.")
+              history.push('/login');
+            }
+          }
+          setCollaboratorToken(res.meta.token);
+        }
       }
     }
     if(!is_valid) {
       const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
       if(userAuthToken) {
-        const res = await fetchAgreements();
+        const res = await fetchAgreements(isCollaborator ? 'collaborator' : 'artist');
         const pending = res.filter(agreement => agreement.status === "pending")
         if(pending.length) {
           setAgreements(pending)
@@ -110,8 +135,11 @@ function Signup({userHash = ''}) {
         setIsLoading(false);
         return;
       }
-      data.append('token', userHash);
-      data.append('role', 'artist');
+      data.append('token', isCollaborator ? collaboratorToken : userHash);
+      if(isCollaborator)
+        data.append('role', 'collaborator');
+      else
+        data.append('role', 'artist');
       const response = await fetch(`${BASE_URL}${ACCEPT_INVITATION}`,
         {
           headers: {
@@ -120,17 +148,27 @@ function Signup({userHash = ''}) {
           method: 'PATCH',
           body: data
         });
-      if(response.status === 200) {
+      if(response.ok) {
         alert('password updated')
         const resultSet = await response.json();
         authActions.userDataStateChanged(resultSet["auth_token"]);
+        localStorage.setItem("userRole", JSON.stringify(isCollaborator ? 'collaborator' : 'artist'));
         setIsAgreementStep(true);
         setIsPasswordUpdated(true);
-        const res = await fetchAgreements();
-        setAgreements(res.filter(agreement => agreement.status === "pending"));
+        const res = await fetchAgreements(isCollaborator ? 'collaborator' : 'artist');
+        const pending = res.filter(agreement => agreement.status === "pending");
+        setAgreements(pending);
+        if(pending.length === 0) {
+          alert("Invitation process completed");
+          history.push("/")
+        }
         e.target.reset();
       } else {
-        alert("Something went wrong, try later!");
+        if(response.status === 401) {
+          alert("Link expired, contact support or login to proceed.");
+          history.push("/login")
+        } else
+          alert("Something went wrong, try later!");
       }
       setIsLoading(false);
     }
@@ -169,6 +207,7 @@ function Signup({userHash = ''}) {
       const rejected = resultSet.filter(agreement => agreement.status === "rejected");
       if(rejected.length === resultSet.length) {
         localStorage.removeItem("user");
+        localStorage.removeItem("userRole");
         alert("Sorry, you can't proceed without accepting agreements.\nContact at artists@audiosocket.com for more details.")
         history.push("/login");
       }
@@ -222,7 +261,7 @@ function Signup({userHash = ''}) {
         :
           <div className="form agreement">
             <h5 className="text-center">You must accept agreement(s) to proceed to your profile!</h5>
-            {agreements.length &&
+            {agreements.length !== 0 &&
               agreements.map((agreement, key) => {
                 return (
                 <div key={key} className={agreement.status === "pending" ? "agreement-form-container" : "agreement-form-container hide"}>
