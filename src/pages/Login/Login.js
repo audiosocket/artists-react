@@ -37,7 +37,11 @@ function Login() {
     } else {
       setIsLoading(true);
       const data = new FormData(form.current);
-      data.append('role', 'artist');
+
+      if(!data.get('role'))
+        data.append('role', 'artist');
+      else
+        data.set('role', 'collaborator')
       if(!data.get('remember_me'))
         data.append('remember_me', false)
 
@@ -52,7 +56,7 @@ function Login() {
       const resultSet = await response.json();
       if(response.ok) {
         authActions.userDataStateChanged(resultSet["auth_token"]);
-        const agreements = await fetchAgreements();
+        const agreements = await fetchAgreements(resultSet["role"] ?? 'artist');
         const pending = agreements.filter(agreement => agreement.status === "pending").length
         const rejected = agreements.filter(agreement => agreement.status === "rejected").length
         if(rejected === agreements.length) {
@@ -62,8 +66,10 @@ function Login() {
         }
         if(pending)
           history.push("/accept-invitation");
-        else
+        else {
+          localStorage.setItem("userRole", JSON.stringify(resultSet["role"]));
           history.push("/");
+        }
         e.target.reset();
       } else {
         setLoginError(true);
@@ -101,7 +107,14 @@ function Login() {
             This field is required!
           </Form.Control.Feedback>
         </Form.Group>
-
+        <div className="block-inline remember-text">
+          <Form.Check
+            type="switch"
+            id="custom-switch"
+            name="role"
+            label="Login as collaborator"
+          />
+        </div>
         <div className="block-inline remember-text">
           <div>
             <label htmlFor="remember_me" className="checkbox">
@@ -116,7 +129,6 @@ function Login() {
             </NavLink>
           </div>
         </div>
-
         <Button disabled={isLoading} variant="btn primary-btn btn-full-width" type="submit"><img className="" src={isLoading ? Loader : Lock} alt="Workflow"/>
           Sign in
         </Button>

@@ -23,7 +23,7 @@ function Agreements() {
 
   const getAgreements = async () => {
     setIsLoading(true);
-    const agreements = await fetchAgreements();
+    const agreements = await fetchAgreements(artistState.userRole ?? "artist");
     artistActions.artistStateChanged(agreements);
     setAgreements(agreements);
     setIsLoading(false);

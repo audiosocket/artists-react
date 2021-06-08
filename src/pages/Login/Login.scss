@@ -76,6 +76,19 @@
 		font-size: 80%;
 		color: #dc3545;
 	}
+	.custom-control-label {
+		cursor: pointer;
+	}
+	.custom-control-input:checked~.custom-control-label::before {
+		border-color: $clr-green;
+		background-color: $clr-green;
+	}
+	.custom-control-input:focus:not(:checked)~.custom-control-label::before {
+		border-color: $clr-green;
+	}
+	.custom-control-input:focus~.custom-control-label::before {
+		box-shadow: 0 0 0 0.2rem hsl(68deg, 80%, 75%);
+	}
 }
 
 @media(min-width: 360px) {

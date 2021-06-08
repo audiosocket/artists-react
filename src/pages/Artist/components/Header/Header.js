@@ -27,8 +27,10 @@ function Header({onToggleSidebar}) {
   const {artistState, artistActions} = React.useContext(ArtistContext);
   const [selectedArtist, setSelectedArtist] = useState(null);
   const [toggleSidebar, setToggleSidebar] = useState(true);
+  const [userRole, setUserRole] = useState('artist');
 
   useEffect(() => {
+    initializeUserRole();
     initializeAgreements();
     initializeArtist();
     initializeAlbums();
@@ -36,12 +38,22 @@ function Header({onToggleSidebar}) {
     initializePartners();
   }, [])
 
+  const initializeUserRole = () => {
+    if(artistState.userRole)
+      return;
+
+    const userRole = JSON.parse(localStorage.getItem("userRole") ?? "");
+    if(userRole) {
+      setUserRole(userRole);
+      artistActions.userRoleStateChanged(userRole);
+    }
+  }
   const initializeAgreements = async () => {
     setIsLoading(true);
-    const agreements = await fetchAgreements();
+    const agreements = await fetchAgreements(userRole ?? 'artist');
     if(!agreements.length) { // check if signature has expired
       const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
-      const response = await fetch(`${BASE_URL}${AGREEMENTS}`,
+      const response = await fetch(`${BASE_URL}${AGREEMENTS}?role=${userRole}`,
         {
           headers: {
             "authorization": ACCESS_TOKEN,
@@ -143,6 +155,7 @@ function Header({onToggleSidebar}) {
             </Nav.Link>
             <Nav.Link onClick={() => {
                 localStorage.removeItem("user");
+                localStorage.removeItem("userRole");
                 history.push("/login");
               }}>
               <span className="desktop-view">Sign out</span>
