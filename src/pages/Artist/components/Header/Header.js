@@ -21,7 +21,7 @@ import help from '../../../../images/as-help.svg';
 import signout from '../../../../images/as-signout.svg';
 import artist from '../../../../images/as-artist.svg';
 
-function Header({onToggleSidebar}) {
+function Header({onToggleSidebar, onChangeIsActiveProfile}) {
   const history = useHistory();
   const [isLoading, setIsLoading] = useState(false);
   const {artistState, artistActions} = React.useContext(ArtistContext);
@@ -71,6 +71,7 @@ function Header({onToggleSidebar}) {
         if (resultSet.message.toLowerCase() === 'signature has expired') {
           alert('Session expired, login again to access!');
           localStorage.removeItem("user");
+          localStorage.removeItem("userRole");
           history.push('/login');
           return
         }
@@ -78,9 +79,11 @@ function Header({onToggleSidebar}) {
     }
     artistActions.agreementsStateChanged(agreements);
     if(agreements.length === agreements.filter(agreement => agreement.status === "rejected").length) {
-      localStorage.removeItem("user");
-      alert("Sorry, you can't proceed without accepting agreements.\nContact at artists@audiosocket.com for more details.");
-      history.push("/login");
+      artistActions.isActiveProfileStateChanged(false);
+      onChangeIsActiveProfile(false);
+    } else {
+      artistActions.isActiveProfileStateChanged(true);
+      onChangeIsActiveProfile(true);
     }
     if(agreements.filter(agreement => agreement.status === "pending").length) {
       history.push("/accept-invitation");

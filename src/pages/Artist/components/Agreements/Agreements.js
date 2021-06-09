@@ -4,19 +4,21 @@ import {ArtistContext} from "../../../../Store/artistContext";
 import {ACCESS_TOKEN, AGREEMENTS, BASE_URL} from "../../../../common/api";
 import Loader from "./../../../../images/loader.svg"
 import Breadcrumb from "react-bootstrap/Breadcrumb";
-import {NavLink, useHistory} from "react-router-dom";
+import {NavLink} from "react-router-dom";
 import fetchAgreements from "../../../../common/utlis/fetchAgreements";
 import ArrowRight from "../../../../images/right-arrow.svg";
 
-function Agreements() {
+function Agreements({onChangeIsActiveProfile}) {
   const {artistState, artistActions} = React.useContext(ArtistContext);
   const [agreements, setAgreements] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const history = useHistory();
+  const [isActiveProfile, setIsActiveProfile] = useState(null);
 
   useEffect(() => {
-    if(artistState.agreements)
+    if(artistState.agreements) {
       setAgreements(artistState.agreements);
+      setIsActiveProfile(artistState.isActiveProfile);
+    }
     else
       getAgreements();
   }, [artistState.agreements])
@@ -48,13 +50,26 @@ function Agreements() {
       const resultSet = await response.json();
       const rejected = resultSet.filter(agreement => agreement.status === "rejected");
       if(rejected.length === resultSet.length) {
-        alert("Sorry, you can't proceed without accepting agreements.\nContact at artists@audiosocket.com for more details.")
-        localStorage.removeItem("user");
-        history.push("/login");
+        artistActions.isActiveProfileStateChanged(false);
+        handleChangeIsActiveProfile(false);
       } else {
-        alert("agreement updated");
-        artistActions.agreementsStateChanged(resultSet);
+        artistActions.isActiveProfileStateChanged(true);
+        handleChangeIsActiveProfile(true);
       }
+      alert("agreement updated");
+      setAgreements(agreements);
+      artistActions.agreementsStateChanged(resultSet);
+    }
+  }
+
+  const handleChangeIsActiveProfile = (isActiveProfile) => {
+    onChangeIsActiveProfile(isActiveProfile);
+    setIsActiveProfile(isActiveProfile);
+  }
+
+  const handleClickIsActive = () => {
+    if(isActiveProfile === false) {
+      alert(`You must accept agreements to proceed`);
     }
   }
 
@@ -96,7 +111,7 @@ function Agreements() {
           })
         }
       </div>
-      <NavLink to="/profile/edit" className="btn primary-btn next">Next <img className="" src={ArrowRight} alt="proceed-icon"/></NavLink>
+      <NavLink onClick={handleClickIsActive} to={isActiveProfile ? "/profile/edit" : "agreements"} className="btn primary-btn next">Next <img className="" src={ArrowRight} alt="proceed-icon"/></NavLink>
     </div>
   )
 }

@@ -17,23 +17,13 @@
     .primary-btn {
       text-transform: none;
       &.rejected {
-        background-color: $clr-red-light;
-        border-color: $clr-red-light;
-        color: white;
+        background-color: $clr-red-light !important;
+        border-color: $clr-red-light !important;
+        color: white !important;
         &:hover, &:active {
           background-color: $clr-red-light-extra !important;
           border-color: $clr-red-light-extra !important;
           color: white !important;
-        }
-      }
-      &.accepted {
-        background-color: $clr-green;
-        border-color: $clr-green;
-        color: black;
-        &:hover, &:active {
-          background-color: $clr-green-bright !important;
-          border-color: $clr-green-bright !important;
-          color: black !important;
         }
       }
     }

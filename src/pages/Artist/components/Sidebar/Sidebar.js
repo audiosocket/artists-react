@@ -1,8 +1,18 @@
 import React from "react";
 import './Sidebar.scss';
-import {NavLink} from "react-router-dom";
+import {NavLink, useHistory} from "react-router-dom";
+import {ArtistContext} from "../../../../Store/artistContext";
 
 function Sidebar() {
+  const {artistState, artistActions} = React.useContext(ArtistContext);
+  const history = useHistory();
+
+  const handleClickIsActive = (page) => {
+    if(artistState.isActiveProfile === false) {
+      alert(`You must accept agreements to proceed to view ${page}`);
+    }
+  }
+
   return (
     <aside>
       <ul>
@@ -23,22 +33,25 @@ function Sidebar() {
         </li>
         <li>
           <NavLink
-            activeClassName={"selected"}
-            to={"/profile"}>
+            onClick={() => handleClickIsActive('Artist Profile')}
+            activeClassName={artistState.isActiveProfile ? "selected" : ""}
+            to={artistState.isActiveProfile ? "/profile" : "/agreements"}>
             Artist
           </NavLink>
         </li>
         <li>
           <NavLink
-            activeClassName={"selected"}
-            to={"/partners"}>
+            onClick={() => handleClickIsActive('Partners')}
+            activeClassName={artistState.isActiveProfile ? "selected" : ""}
+            to={artistState.isActiveProfile ? "/partners" : "/agreements"}>
             Partners
           </NavLink>
         </li>
         <li>
           <NavLink
-            activeClassName={"selected"}
-            to={"/music"}>
+            onClick={() => handleClickIsActive('Music')}
+            activeClassName={artistState.isActiveProfile ? "selected" : ""}
+            to={artistState.isActiveProfile ? "/music" : "/agreements"}>
             Music
           </NavLink>
         </li>

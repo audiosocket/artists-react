@@ -7,7 +7,8 @@ export const initialState = {
   albums: null,
   countries: null,
   collaborators: null,
-  publishers: null
+  publishers: null,
+  isActiveProfile: null
 };
 
 export const USER_ROLE_STATE_CHANGED = "USER_ROLE_STATE_CHANGED";
@@ -19,6 +20,7 @@ export const ALBUMS_STATE_CHANGED = "ALBUMS_STATE_CHANGED";
 export const COUNTRIES_STATE_CHANGED = "COUNTRIES_STATE_CHANGED";
 export const COLLABORATORS_STATE_CHANGED = "COLLABORATORS_STATE_CHANGED";
 export const PUBLISHERS_STATE_CHANGED = "PUBLISHERS_STATE_CHANGED";
+export const IS_ACTIVE_PROFILE_STATE_CHANGED = "IS_ACTIVE_PROFILE_STATE_CHANGED";
 
 export const reducer = (state, action) => {
   switch (action.type) {
@@ -66,6 +68,11 @@ export const reducer = (state, action) => {
       return {
         ...state,
         publishers: action.payload,
+      };
+    case IS_ACTIVE_PROFILE_STATE_CHANGED:
+      return {
+        ...state,
+        isActiveProfile: action.payload,
       };
   }
   return state;

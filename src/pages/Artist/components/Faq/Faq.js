@@ -20,11 +20,11 @@ function ContextAwareToggle({ children, eventKey, callback }) {
 	const isCurrentEventKey = currentEventKey === eventKey;
 
 	return (
-		<Card.Header className={isCurrentEventKey && "active"}>
+		<Card.Header className={isCurrentEventKey ? "active" : ""}>
 			<button
 				type="button"
 				style={{ backgroundColor: isCurrentEventKey ? '' : '' }}
-				className={isCurrentEventKey && "active"}
+				className={isCurrentEventKey ? "active" : ""}
 				onClick={decoratedOnClick}
 			>
 				{children}

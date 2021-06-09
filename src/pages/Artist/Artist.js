@@ -12,33 +12,46 @@ import Music from "./components/Music/Music";
 import Faq from "./components/Faq/Faq";
 
 function Artist() {
+  const [isActiveProfile, setIsActiveProfile] = useState(true);
   const [toggleSidebar, setToggleSidebar] = useState(false);
+
+  const handleChangeIsActiveProfile = (isActiveProfile) => {
+    setIsActiveProfile(isActiveProfile);
+  }
+
   const handleToggle = (toggleSidebar) => {
     setToggleSidebar(!toggleSidebar);
   }
 
+
   return (
     <ArtistProvider>
       <div className="welcome-page">
-        <Header onToggleSidebar={handleToggle} />
+        <Header onToggleSidebar={handleToggle} onChangeIsActiveProfile={handleChangeIsActiveProfile} />
         <div className={toggleSidebar ? "content-wrapper launch-sidebar" : "content-wrapper "}>
           <Sidebar />
           <div className="right-content">
             <Switch>
-              <Route path="/profile">
-                <Profile />
-              </Route>
               <Route path="/agreements">
-                <Agreements />
+                <Agreements onChangeIsActiveProfile={handleChangeIsActiveProfile} />
               </Route>
-              <Route path="/partners">
-                <Partners />
-              </Route>
-              <Route path="/music">
-                <Music />
-              </Route>
+              {isActiveProfile &&
+                <Route path="/profile">
+                  <Profile/>
+                </Route>
+              }
+              {isActiveProfile &&
+                <Route path="/partners">
+                  <Partners/>
+                </Route>
+              }
+              {isActiveProfile &&
+                <Route path="/music">
+                  <Music/>
+                </Route>
+              }
               <Route path="/faq">
-                <Faq />
+                <Faq/>
               </Route>
               <Route path="/">
                 <Welcome />

@@ -10,7 +10,8 @@ import {
   ALBUMS_STATE_CHANGED,
   COUNTRIES_STATE_CHANGED,
   COLLABORATORS_STATE_CHANGED,
-  PUBLISHERS_STATE_CHANGED
+  PUBLISHERS_STATE_CHANGED,
+  IS_ACTIVE_PROFILE_STATE_CHANGED
 } from "./artistReducer";
 
 const ArtistContext = React.createContext();
@@ -44,6 +45,9 @@ const ArtistProvider = (props) => {
     },
     publishersStateChanged: (publishers) => {
       dispatch({ type: PUBLISHERS_STATE_CHANGED, payload: publishers });
+    },
+    isActiveProfileStateChanged: (isActiveProfile) => {
+      dispatch({ type: IS_ACTIVE_PROFILE_STATE_CHANGED, payload: isActiveProfile });
     },
   };
 

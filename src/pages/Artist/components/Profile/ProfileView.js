@@ -1,7 +1,5 @@
 import React, {useEffect, useState} from "react";
 import "./Profile.scss";
-import cover from '../../../../images/artist-cover.jpg';
-import banner from '../../../../images/artist-banner.jpg';
 import {ArtistContext} from "../../../../Store/artistContext";
 import fetchArtist from "../../../../common/utlis/fetchArtist";
 import Loader from "../../../../images/loader.svg";
@@ -84,7 +82,7 @@ function Profile() {
                     ?
                     <div className="bg-content yellow w-custom-bg-content">
                       Have additional images for us? <NavLink to="/profile/edit">Upload them here</NavLink> for <span
-                      classname="artist-name">{artist.name}</span>.
+                      className="artist-name">{artist.name}</span>.
                     </div>
                     :
                     artist.additional_images.map((image, key) => {
