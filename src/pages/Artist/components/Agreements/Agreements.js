@@ -69,7 +69,7 @@ function Agreements({onChangeIsActiveProfile}) {
 
   const handleClickIsActive = () => {
     if(isActiveProfile === false) {
-      alert(`You must accept agreements to proceed`);
+      alert(`You must accept agreements to unlock Artist profile`);
     }
   }
 

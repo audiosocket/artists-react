@@ -9,7 +9,7 @@ function Sidebar() {
 
   const handleClickIsActive = (page) => {
     if(artistState.isActiveProfile === false) {
-      alert(`You must accept agreements to proceed to view ${page}`);
+      alert(`You must accept agreements to unlock ${page} page`);
     }
   }
 
@@ -33,7 +33,7 @@ function Sidebar() {
         </li>
         <li>
           <NavLink
-            onClick={() => handleClickIsActive('Artist Profile')}
+            onClick={() => handleClickIsActive('Artist')}
             activeClassName={artistState.isActiveProfile ? "selected" : ""}
             to={artistState.isActiveProfile ? "/profile" : "/agreements"}>
             Artist
