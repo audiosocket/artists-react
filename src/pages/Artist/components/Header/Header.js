@@ -29,7 +29,6 @@ function Header({onToggleSidebar}) {
   const [toggleSidebar, setToggleSidebar] = useState(true);
   const [userRole, setUserRole] = useState(null);
   const [artistsList, setArtistsList] = useState([]);
-  const [artistsDropdown, setArtistsDropdown] = useState([]);
 
   useEffect(() => {
     const userRole = JSON.parse(localStorage.getItem("userRole") ?? "");
@@ -102,12 +101,7 @@ function Header({onToggleSidebar}) {
       const resultSet = await response.json();
       artistActions.artistsListStateChanged(resultSet["user"])
       setArtistsList(resultSet["user"])
-      const tmp = [];
-      resultSet["user"].forEach((user, key) => {
-        tmp.push(user)
-      })
-      setArtistsDropdown(tmp);
-    } {
+    } else {
       artistActions.artistsListStateChanged(null)
       setArtistsList([])
     }
@@ -148,7 +142,7 @@ function Header({onToggleSidebar}) {
 
   const handleSelectedArtist = (e) => {
     const artistId = parseInt(e.target.dataset.id);
-    const selectedArtist = artistsDropdown.filter((artist) => artist.id === artistId)
+    const selectedArtist = artistsList.filter((artist) => artist.id === artistId)
     artistActions.selectedArtistStateChanged(selectedArtist[0]);
     setSelectedArtist(selectedArtist[0]);
   }
@@ -170,9 +164,9 @@ function Header({onToggleSidebar}) {
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="mr-auto desktop-view">
-            {artistsDropdown.length !== 0 &&
+            {artistsList.length !== 0 &&
               <NavDropdown title={"Choose artist"} id="collasible-nav-dropdown" className="artist-dropdown">
-                {artistsDropdown.map((artist, key) => {
+                {artistsList.map((artist, key) => {
                   return (
                     <NavDropdown.Item key={key} onClick={handleSelectedArtist} data-id={artist.id} className={selectedArtist ? selectedArtist.id === artist.id && "active" : ""}>{artist.first_name + ' ' + artist.last_name}</NavDropdown.Item>
                     );
@@ -182,9 +176,9 @@ function Header({onToggleSidebar}) {
             }
           </Nav>
           <Nav>
-            {artistsDropdown.length !== 0 &&
+            {artistsList.length !== 0 &&
               <NavDropdown className="mobile-view" title={<img src={artist} alt="Help"/>} id="collasible-nav-dropdown" className="mobile-view choose-artist-mobile">
-                {artistsDropdown.map((artist, key) => {
+                {artistsList.map((artist, key) => {
                   return (
                     <NavDropdown.Item key={key} onClick={handleSelectedArtist} data-id={artist.id}
                                       className={selectedArtist ? selectedArtist.id === artist.id && "active" : ""}>{artist.first_name + ' ' + artist.last_name}</NavDropdown.Item>

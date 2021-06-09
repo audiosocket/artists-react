@@ -69,7 +69,7 @@ function Profile() {
               <div className="parallel-info">
                 <label>banner image</label>
                 <div className="info-ans image">
-                  {artist.cover_image
+                  {artist.banner_image
                     ? <img src={artist.banner_image} alt="Banner Image" />
                     : <div className="bg-content yellow w-custom-bg-content">
                       Wants to add a banner image? Click <i className="medium-text">Edit</i> button to get started.
