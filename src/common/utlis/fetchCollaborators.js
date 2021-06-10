@@ -1,9 +1,10 @@
 import React from "react";
 import {ACCESS_TOKEN, BASE_URL, LIST_COLLABORATORS} from "../api";
 
-async function fetchCollaborators() {
+async function fetchCollaborators(artist_id = null) {
   const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
-  const response = await fetch(`${BASE_URL}${LIST_COLLABORATORS}?pagination=false`,
+  const url = artist_id ? `${BASE_URL}${LIST_COLLABORATORS}?pagination=false&artist_id=${artist_id}` : `${BASE_URL}${LIST_COLLABORATORS}?pagination=false`
+  const response = await fetch(url,
     {
       headers: {
         "authorization": ACCESS_TOKEN,

@@ -20,6 +20,7 @@ import profile from '../../../../images/as-profile.svg';
 import help from '../../../../images/as-help.svg';
 import signout from '../../../../images/as-signout.svg';
 import artist from '../../../../images/as-artist.svg';
+import fetchArtistsList from "../../../../common/utlis/fetchArtistsList";
 
 function Header({onToggleSidebar, onChangeIsActiveProfile}) {
   const history = useHistory();
@@ -37,11 +38,19 @@ function Header({onToggleSidebar, onChangeIsActiveProfile}) {
     if(userRole === 'collaborator') {
       listArtists();
     }
+    initializeCountriesList();
     initializeArtist();
     initializeAlbums();
-    initializeCountriesList();
     initializePartners();
   }, [])
+
+  useEffect(() => {
+    if(selectedArtist) {
+      initializeArtist(selectedArtist.id);
+      initializeAlbums(selectedArtist.id);
+      initializePartners(selectedArtist.id);
+    }
+  }, [selectedArtist])
 
   const initializeUserRole = (userRole) => {
     if(artistState.userRole)
@@ -92,34 +101,31 @@ function Header({onToggleSidebar, onChangeIsActiveProfile}) {
   }
 
   const listArtists = async () => {
-    const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
-    const response = await fetch(`${BASE_URL}${LIST_ARTISTS}`,
-      {
-        headers: {
-          "authorization": ACCESS_TOKEN,
-          "auth-token": userAuthToken
+    setIsLoading(true);
+    const artistsList = await fetchArtistsList();
+    artistActions.artistsListStateChanged(artistsList)
+    setArtistsList(artistsList)
+    if(artistsList.length > 0) {
+      artistsList.every((artist) => {
+        if(artist.agreements) {
+          setSelectedArtist(artist);
+          return false;
         }
-      });
-    if(response.ok) {
-      const resultSet = await response.json();
-      artistActions.artistsListStateChanged(resultSet["user"])
-      setArtistsList(resultSet["user"])
-    } else {
-      artistActions.artistsListStateChanged(null)
-      setArtistsList([])
+      })
     }
+    setIsLoading(false);
   }
 
-  const initializeArtist = async () => {
+  const initializeArtist = async (artist_id = null) => {
     setIsLoading(true);
-    const artist = await fetchArtist();
+    const artist = await fetchArtist(artist_id);
     artistActions.artistStateChanged(artist);
     setIsLoading(false);
   }
 
-  const initializeAlbums = async () => {
+  const initializeAlbums = async (artist_id = null) => {
     setIsLoading(true);
-    const albums = await fetchAlbums();
+    const albums = await fetchAlbums(artist_id);
     artistActions.albumsStateChanged(albums);
     setIsLoading(false);
   }
@@ -134,20 +140,30 @@ function Header({onToggleSidebar, onChangeIsActiveProfile}) {
     artistActions.countriesStateChanged(list);
   }
 
-  const initializePartners = async () => {
+  const initializePartners = async (artist_id = null) => {
     setIsLoading(true);
-    const collaborators = await fetchCollaborators();
+    const collaborators = await fetchCollaborators(artist_id);
     artistActions.collaboratorsStateChanged(collaborators);
-    const publishers = await fetchPublishers();
+    const publishers = await fetchPublishers(artist_id);
     artistActions.publishersStateChanged(publishers);
     setIsLoading(false);
   }
 
   const handleSelectedArtist = (e) => {
     const artistId = parseInt(e.target.dataset.id);
-    const selectedArtist = artistsList.filter((artist) => artist.id === artistId)
-    artistActions.selectedArtistStateChanged(selectedArtist[0]);
-    setSelectedArtist(selectedArtist[0]);
+    let selectedArtist = artistsList.filter((artist) => artist.id === artistId)
+    selectedArtist = selectedArtist.length > 0 ? selectedArtist[0] : null;
+
+    if(!selectedArtist)
+      return false;
+
+    if(selectedArtist.agreements) {
+      artistActions.selectedArtistStateChanged(selectedArtist);
+      setSelectedArtist(selectedArtist);
+    } else {
+      alert(`You can't access ${selectedArtist.first_name} ${selectedArtist.last_name}'s portal without accepting their agreements!`);
+      return false;
+    }
   }
 
   const handleToggle = () => {

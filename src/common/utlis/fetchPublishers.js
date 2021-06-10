@@ -1,9 +1,10 @@
 import React from "react";
 import {ACCESS_TOKEN, BASE_URL, PUBLISHERS} from "../api";
 
-async function fetchPublishers() {
+async function fetchPublishers(artist_id = null) {
   const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
-  const response = await fetch(`${BASE_URL}${PUBLISHERS}?pagination=false`,
+  const url = artist_id ? `${BASE_URL}${PUBLISHERS}?pagination=false&artist_id=${artist_id}` : `${BASE_URL}${PUBLISHERS}?pagination=false`;
+  const response = await fetch(url,
     {
       headers: {
         "authorization": ACCESS_TOKEN,

@@ -1,11 +1,10 @@
 import React from "react";
 import './Sidebar.scss';
-import {NavLink, useHistory} from "react-router-dom";
+import {NavLink} from "react-router-dom";
 import {ArtistContext} from "../../../../Store/artistContext";
 
 function Sidebar() {
   const {artistState, artistActions} = React.useContext(ArtistContext);
-  const history = useHistory();
 
   const handleClickIsActive = (page) => {
     if(artistState.isActiveProfile === false) {
@@ -24,6 +23,16 @@ function Sidebar() {
             Welcome
           </NavLink>
         </li>
+        {artistState.userRole === 'collaborator' &&
+          <li>
+            <NavLink
+              activeClassName={"selected"}
+              exact={true}
+              to={"/invites"}>
+              Invites
+            </NavLink>
+          </li>
+        }
         <li>
           <NavLink
             activeClassName={"selected"}

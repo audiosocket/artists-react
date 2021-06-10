@@ -1,0 +1,64 @@
+.invite-contain-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+  font-weight: 700;
+  .invite-artist {
+    flex: 1 1 50%;
+  }
+  .access-type {
+    flex: 1 1 25%;
+  }
+  .agreements {
+    flex: 1 1 25%;
+  }
+}
+.agreementBody {
+  .pt-4 {
+    padding-top: 0 !important;
+    &:first-of-type {
+      margin-top: 0;
+    }
+  }
+}
+.invite-contain {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #F6F6F6;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 7px;
+  zoom: 1.2;
+  .invite-artist {
+    flex: 1 1 50%;
+  }
+  .access-type {
+    flex: 1 1 25%;
+    text-transform: capitalize;
+  }
+  .custom-switch {
+    flex: 1 1 25%;
+  }
+  .custom-control-label {
+    &:hover {
+      cursor: pointer;
+    }
+  }
+  .custom-switch .custom-control-input:disabled:checked~.custom-control-label::before {
+    opacity: 0.5;
+    border-color: #28a745;
+    background-color: #28a745;
+  }
+  .custom-control-input:checked~.custom-control-label::before {
+    border-color: #28a745;
+    background-color: #28a745;
+  }
+  .custom-control-input:focus:not(:checked)~.custom-control-label::before {
+    border-color: #28a745;
+  }
+  .custom-control-input:focus~.custom-control-label::before {
+    box-shadow: 0 0 0 0.2rem hsl(68deg, 80%, 55%);
+  }
+}

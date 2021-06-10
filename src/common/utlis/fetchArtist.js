@@ -1,9 +1,10 @@
 import React from "react";
 import {ACCESS_TOKEN, ARTIST_PROFILE_SHOW, BASE_URL} from "../api";
 
-async function fetchArtist() {
+async function fetchArtist(artist_id = null) {
   const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
-  const response = await fetch(`${BASE_URL}${ARTIST_PROFILE_SHOW}`,
+  const url = artist_id ? `${BASE_URL}${ARTIST_PROFILE_SHOW}?artist_id=${artist_id}` : `${BASE_URL}${ARTIST_PROFILE_SHOW}`;
+  const response = await fetch(url,
     {
       headers: {
         "authorization": ACCESS_TOKEN,

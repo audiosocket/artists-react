@@ -10,10 +10,12 @@ import Profile from "./components/Profile/Profile";
 import Partners from "./components/Partners/Partners";
 import Music from "./components/Music/Music";
 import Faq from "./components/Faq/Faq";
+import Invites from "./components/Invites/Invites";
 
 function Artist() {
   const [isActiveProfile, setIsActiveProfile] = useState(true);
   const [toggleSidebar, setToggleSidebar] = useState(false);
+  const userRole = JSON.parse(localStorage.getItem("userRole") ?? "");
 
   const handleChangeIsActiveProfile = (isActiveProfile) => {
     setIsActiveProfile(isActiveProfile);
@@ -32,6 +34,11 @@ function Artist() {
           <Sidebar />
           <div className="right-content">
             <Switch>
+              {userRole === 'collaborator' &&
+              <Route path="/invites">
+                <Invites/>
+              </Route>
+              }
               <Route path="/agreements">
                 <Agreements onChangeIsActiveProfile={handleChangeIsActiveProfile} />
               </Route>
