@@ -55,12 +55,16 @@
       }
     }
     .dropdown-menu {
+      min-width: 8rem;
       a {
         font-weight: normal;
         color: hsl(0deg, 0%, 10%);
-        &.dropdown-item.active,
-        &.dropdown-item:active {
-          background-color: #eee;
+        &.dropdown-item {
+          font-size: 14px;
+          &.active,
+          &:active {
+            background-color: #eee;
+          }
         }
       }
     }

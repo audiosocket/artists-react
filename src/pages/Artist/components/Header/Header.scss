@@ -44,6 +44,9 @@ header {
         }
       }
       .artist-dropdown {
+        .dropdown-menu {
+          min-width: 8rem;
+        }
         margin-left: 40px;
         a {
           display: flex;
