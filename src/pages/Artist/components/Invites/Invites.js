@@ -5,7 +5,6 @@ import {ACCESS_TOKEN, ARTISTS_COLLABORATORS, BASE_URL} from "../../../../common/
 import Loader from "./../../../../images/loader.svg"
 import Breadcrumb from "react-bootstrap/Breadcrumb";
 import {NavLink} from "react-router-dom";
-import Form from "react-bootstrap/Form";
 import fetchArtistsList from "../../../../common/utlis/fetchArtistsList";
 import NavDropdown from "react-bootstrap/NavDropdown";
 
