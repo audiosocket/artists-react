@@ -71,7 +71,7 @@ function Album({id = null}) {
 
     if(collaborators) {
       let tmp = [];
-      tmp.push({label: "Select collaborator", value: null})
+      tmp.push({label: "Select writer/collaborator", value: null})
       for (let i = 0; i < collaborators.length; i++) {
         if(collaborators[i].first_name)
           tmp.push({label: collaborators[i].first_name +' '+ collaborators[i].last_name ?? '', value: collaborators[i].id});
@@ -321,7 +321,7 @@ function Album({id = null}) {
                       <div className="track-title">
                         <div className="titleName">
                           <p>{track.title}</p>
-                          <em>Uploaded {track.created_at.split(' ')[0]}</em>
+                          <em>Uploaded {track.created_at ? track.created_at.split(' ')[0] : ""}</em>
                         </div>
                       </div>
                       <div className="track-writter">{track.collaborator ? track.collaborator.first_name + ' '+ track.collaborator.last_name : "-"}</div>
@@ -406,11 +406,11 @@ function Album({id = null}) {
                     <div className="form-group">
                       <Select
                         ref={collaboratorRef}
-                        placeholder="Select collaborator"
+                        placeholder="Select writer/collaborator"
                         className="collaborator-select-container-header"
                         classNamePrefix="collaborator-select-header react-select-popup"
                         options={collaboratorsDropdown}
-                        defaultValue={selectedTrack ? selectedTrack.collaborator ? collaboratorsDropdown.filter(item => parseInt(item.value) === parseInt(selectedTrack.collaborator.id)) : {label: "Select collaborator", value: null} : {label: "Select collaborator", value: null}}
+                        defaultValue={selectedTrack ? selectedTrack.collaborator ? collaboratorsDropdown.filter(item => parseInt(item.value) === parseInt(selectedTrack.collaborator.id)) : {label: "Select writer/collaborator", value: null} : {label: "Select writer/collaborator", value: null}}
                         onChange={(target) => setCollaborator(target.value)}
                         maxMenuHeight={120}
                         theme={theme => ({

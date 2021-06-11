@@ -52,6 +52,11 @@ function Header({onToggleSidebar, onChangeIsActiveProfile}) {
     }
   }, [selectedArtist])
 
+  useEffect(() => {
+    if(artistState.artistsList)
+      setArtistsList(artistState.artistsList);
+  }, [artistState.artistsList])
+
   const initializeUserRole = (userRole) => {
     if(artistState.userRole)
       return;

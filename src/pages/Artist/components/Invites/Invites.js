@@ -26,7 +26,6 @@ function Invites() {
     const artist_id = e.target.dataset.id;
     const status = e.target.dataset.key;
     let selectedArtist = artistsList.filter((artist) => artist.id === parseInt(e.target.dataset.id));
-    selectedArtist = selectedArtist[0];
     if(!selectedArtist.length)
       return false;
     const data = new FormData();
@@ -65,7 +64,7 @@ function Invites() {
         </Breadcrumb>
       </div>
       <div className="agreementBody">
-        {!artistsList.length && isLoading && <h5>Loading agreements... <img className="loading" src={Loader} alt="loading-icon"/></h5> }
+        {!artistsList.length && isLoading && <h5>Loading artists... <img className="loading" src={Loader} alt="loading-icon"/></h5> }
         {artistsList.length !== 0 &&
         <div className="section-head">
           <h2 className="pt-0">Following {artistsList.length === 1 ? 'artist has' : 'artists have'} invited you as a collaborator</h2>
@@ -74,7 +73,7 @@ function Invites() {
         <div className="invite-contain-head">
           <span className="invite-artist">Artist</span>
           <span className="access-type">Permissions</span>
-          <span className="agreements">Status</span>
+          <span className="agreements">Status {artistsList.length !== 0 && isLoading && <img className="loading" src={Loader} alt="loading-icon"/>}</span>
         </div>
         {artistsList.length !== 0 &&
           artistsList.map((artist, key)=> {

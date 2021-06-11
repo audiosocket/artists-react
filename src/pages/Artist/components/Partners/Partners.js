@@ -275,7 +275,7 @@ function Partners() {
                     return (
                       collaborator &&
                         <li key={key}>
-                          <a>{collaborator.first_name} {collaborator.last_name ?? ''} <small>{collaborator.pro}</small></a>
+                          <a>{collaborator.first_name} {collaborator.last_name ?? ''} <small><i>Permissions: {collaborator.access}</i></small><small><i>{collaborator.pro ? ", "+collaborator.pro : ""}</i></small> - <strong className={"status "+collaborator.status}>{collaborator.status ?? ''}</strong></a>
                           <div className="partner-actions">
                             <img onClick={(e) => handleShowCollaboratorModal(e, collaborator)} src={Edit} alt="edit-icon"/>
                             <img onClick={(e) => handleDeleteCollaborator(e, collaborator)} src={Delete} alt="delete-icon"/>
@@ -301,7 +301,7 @@ function Partners() {
                     return (
                       publisher.name &&
                         <li key={key}>
-                          <a>{publisher.name} <small>{publisher.pro}</small></a>
+                          <a>{publisher.name} <small><i>{publisher.pro ? "PRO: "+publisher.pro : ""}</i></small><small><i>{publisher.ipi ? ", IPI: "+publisher.ipi : ""}</i></small></a>
                           <div className="partner-actions">
                             <img onClick={(e) => handelShowPublisherModal(e, publisher)} src={Edit} alt="edit-icon"/>
                             <img onClick={(e) => handleDeletePublisher(e, publisher)} src={Delete} alt="delete-icon"/>

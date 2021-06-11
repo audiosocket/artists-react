@@ -70,6 +70,18 @@
             }
           }
         }
+        .status {
+          text-transform: capitalize;
+          &.pending {
+            color: $clr-blue-light;
+          }
+          &.accepted {
+            color: $clr-green-dark;
+          }
+          &.rejected {
+            color: $clr-red;
+          }
+        }
       }
     }
   }
