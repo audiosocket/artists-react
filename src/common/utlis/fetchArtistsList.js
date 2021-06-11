@@ -12,9 +12,9 @@ async function fetchArtistsList() {
     });
   const resultSet = await response.json();
   if (!response.ok) {
-    return {};
+    return [];
   } else {
-    return resultSet["user"];
+    return resultSet["artists_collaborators"];
   }
 }
 export default fetchArtistsList;

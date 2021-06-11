@@ -1,9 +1,9 @@
 import React from "react";
-import {ACCESS_TOKEN, BASE_URL, LIST_COLLABORATORS} from "../api";
+import {ACCESS_TOKEN, BASE_URL, COLLABORATOR_LIST_COLLABORATORS, LIST_COLLABORATORS} from "../api";
 
 async function fetchCollaborators(artist_id = null) {
   const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
-  const url = artist_id ? `${BASE_URL}${LIST_COLLABORATORS}?pagination=false&artist_id=${artist_id}` : `${BASE_URL}${LIST_COLLABORATORS}?pagination=false`
+  const url = artist_id ? `${BASE_URL}${COLLABORATOR_LIST_COLLABORATORS}?pagination=false&artist_id=${artist_id}` : `${BASE_URL}${LIST_COLLABORATORS}?pagination=false`
   const response = await fetch(url,
     {
       headers: {

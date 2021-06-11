@@ -38,6 +38,32 @@
     flex: 1 1 25%;
     text-transform: capitalize;
   }
+  .invite-status {
+    flex: 1 1 25%;
+    .dropdown-toggle {
+      padding-left: 0;
+      padding-right: 0;
+      text-transform: capitalize;
+      color: hsl(0deg, 0%, 10%);
+      font-weight: normal;
+      &:hover {
+        color: hsl(0deg, 0%, 50%);;
+      }
+      &::after {
+        vertical-align: 0.155em;
+      }
+    }
+    .dropdown-menu {
+      a {
+        font-weight: normal;
+        color: hsl(0deg, 0%, 10%);
+        &.dropdown-item.active,
+        &.dropdown-item:active {
+          background-color: #eee;
+        }
+      }
+    }
+  }
   .custom-switch {
     flex: 1 1 25%;
   }

@@ -7,6 +7,7 @@ import Breadcrumb from "react-bootstrap/Breadcrumb";
 import {NavLink} from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import fetchArtistsList from "../../../../common/utlis/fetchArtistsList";
+import NavDropdown from "react-bootstrap/NavDropdown";
 
 function Invites() {
   const {artistState, artistActions} = React.useContext(ArtistContext);
@@ -20,13 +21,14 @@ function Invites() {
   }, [artistState.artistsList])
 
   const handleChangeStatus = async (e) => {
+    e.preventDefault();
     setIsLoading(true);
     const artist_id = e.target.dataset.id;
+    const status = e.target.dataset.key;
     let selectedArtist = artistsList.filter((artist) => artist.id === parseInt(e.target.dataset.id));
     selectedArtist = selectedArtist[0];
-    if(selectedArtist.access === "read")
+    if(!selectedArtist.length)
       return false;
-    const status = selectedArtist.agreements ? 'rejected' : 'accepted';
     const data = new FormData();
     data.append('status', status);
     const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
@@ -72,7 +74,7 @@ function Invites() {
         <div className="invite-contain-head">
           <span className="invite-artist">Artist</span>
           <span className="access-type">Permissions</span>
-          <span className="agreements">Agreements</span>
+          <span className="agreements">Status</span>
         </div>
         {artistsList.length !== 0 &&
           artistsList.map((artist, key)=> {
@@ -81,16 +83,11 @@ function Invites() {
                 <div className="invite-contain">
                   <div className="invite-artist">{artist.first_name+' '+artist.last_name}</div>
                   <span className="access-type">{artist.access}</span>
-                  <Form.Check
-                    disabled={artist.access === "read"}
-                    type="switch"
-                    id={"custom-switch-"+key}
-                    name="role"
-                    defaultChecked={artist.agreements}
-                    onChange={handleChangeStatus}
-                    data-id={artist.id}
-                    label={artist.agreements ? "Accepted" : "Rejected"}
-                  />
+                  <NavDropdown title={artist.status} id="collasible-nav-dropdown" className="invite-status">
+                    <NavDropdown.Item key={"pending"} onClick={handleChangeStatus} data-id={artist.id} data-key="pending" className={artist.status === "pending" ? "active" : ""}>Pending</NavDropdown.Item>
+                    <NavDropdown.Item key={"accepted"} onClick={handleChangeStatus} data-id={artist.id} data-key="accepted" className={artist.status === "accepted" ? "active" : ""}>Accepted</NavDropdown.Item>
+                    <NavDropdown.Item key={"rejected"} onClick={handleChangeStatus} data-id={artist.id} data-key="rejected" className={artist.status === "rejected" ? "active" : ""}>Rejected</NavDropdown.Item>
+                  </NavDropdown>
                 </div>
               </section>
             )

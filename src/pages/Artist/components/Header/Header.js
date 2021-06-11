@@ -103,15 +103,13 @@ function Header({onToggleSidebar, onChangeIsActiveProfile}) {
   const listArtists = async () => {
     setIsLoading(true);
     const artistsList = await fetchArtistsList();
-    artistActions.artistsListStateChanged(artistsList)
-    setArtistsList(artistsList)
+    artistActions.artistsListStateChanged(artistsList);
+    setArtistsList(artistsList);
     if(artistsList.length > 0) {
-      artistsList.every((artist) => {
-        if(artist.agreements) {
-          setSelectedArtist(artist);
-          return false;
-        }
-      })
+      const acceptedArtists = artistsList.filter(artist => artist.status === "accepted");
+      if(acceptedArtists.length > 0) {
+        setSelectedArtist(acceptedArtists[0]);
+      }
     }
     setIsLoading(false);
   }
@@ -157,11 +155,11 @@ function Header({onToggleSidebar, onChangeIsActiveProfile}) {
     if(!selectedArtist)
       return false;
 
-    if(selectedArtist.agreements) {
+    if(selectedArtist.status === "accepted") {
       artistActions.selectedArtistStateChanged(selectedArtist);
       setSelectedArtist(selectedArtist);
     } else {
-      alert(`You can't access ${selectedArtist.first_name} ${selectedArtist.last_name}'s portal without accepting their agreements!`);
+      alert(`You can't access ${selectedArtist.first_name} ${selectedArtist.last_name}'s portal without accepting their invite!`);
       return false;
     }
   }
