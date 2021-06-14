@@ -24,12 +24,14 @@ function AlbumEdit({id = null}) {
   useEffect(() => {
     if(artistState.albums) {
       const filteredAlbum = artistState.albums.filter(album => parseInt(album.id) === parseInt(id));
-      setAlbum(filteredAlbum[0] ?? null)
-      if(filteredAlbum[0].release_date) {
-        const day = filteredAlbum[0].release_date.substr(0,2);
-        const month = filteredAlbum[0].release_date.substr(3,2);
-        const year = filteredAlbum[0].release_date.substr(6,4);
-        setSelectedAlbumDate(`${year}-${month}-${day}`);
+      if(filteredAlbum.length > 0) {
+        setAlbum(filteredAlbum[0] ?? null)
+        if(filteredAlbum[0].release_date) {
+          const day = filteredAlbum[0].release_date.substr(0,2);
+          const month = filteredAlbum[0].release_date.substr(3,2);
+          const year = filteredAlbum[0].release_date.substr(6,4);
+          setSelectedAlbumDate(`${year}-${month}-${day}`);
+        }
       }
     } else {
       getAlbum();
@@ -41,12 +43,14 @@ function AlbumEdit({id = null}) {
     const albums = await fetchAlbums();
     artistActions.albumsStateChanged(albums);
     const filteredAlbum = albums.filter(album => parseInt(album.id) === parseInt(id));
-    setAlbum(filteredAlbum[0] ?? null)
-    if(filteredAlbum[0].release_date) {
-      const day = filteredAlbum[0].release_date.substr(0,2);
-      const month = filteredAlbum[0].release_date.substr(3,2);
-      const year = filteredAlbum[0].release_date.substr(6,4);
-      setSelectedAlbumDate(`${year}-${month}-${day}`);
+    if(filteredAlbum.length > 0) {
+      setAlbum(filteredAlbum[0] ?? null)
+      if (filteredAlbum[0].release_date) {
+        const day = filteredAlbum[0].release_date.substr(0, 2);
+        const month = filteredAlbum[0].release_date.substr(3, 2);
+        const year = filteredAlbum[0].release_date.substr(6, 4);
+        setSelectedAlbumDate(`${year}-${month}-${day}`);
+      }
     }
     setIsLoading(false);
   }

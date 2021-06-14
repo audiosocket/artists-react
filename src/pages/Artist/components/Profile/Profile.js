@@ -6,26 +6,36 @@ import ProfileView from "./ProfileView";
 import ContactEdit from "./ContactEdit";
 import Payment from "./Payment/Payment";
 import Tax from "./Tax/Tax";
+import {ArtistContext} from "../../../../Store/artistContext";
 
 function Profile() {
+  const {artistState} = React.useContext(ArtistContext);
 
   return (
     <Switch>
       <Route exact={true} path="/profile">
-        <ProfileView />
+        <ProfileView/>
       </Route>
+      {(!artistState.selectedArtist || artistState.selectedArtist.access === 'write') &&
       <Route exact={true} path="/profile/edit">
-        <ProfileEdit />
+        <ProfileEdit/>
       </Route>
+      }
+      {(!artistState.selectedArtist || artistState.selectedArtist.access === 'write') &&
       <Route exact={true} path="/profile/contact/edit">
-        <ContactEdit />
+        <ContactEdit/>
       </Route>
+      }
+      {(!artistState.selectedArtist || artistState.selectedArtist.access === 'write') &&
       <Route exact={true} path="/profile/payment/edit">
-        <Payment />
+        <Payment/>
       </Route>
+      }
+      {(!artistState.selectedArtist || artistState.selectedArtist.access === 'write') &&
       <Route exact={true} path="/profile/tax/edit">
-        <Tax />
+        <Tax/>
       </Route>
+      }
     </Switch>
   )
 }

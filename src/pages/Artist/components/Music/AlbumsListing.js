@@ -169,7 +169,9 @@ function AlbumsListing() {
         <section className="pt-4">
           <div className="section-head">
             <h2>Albums</h2>
-            <a onClick={() => setShowAlbumModal(true)} className="btn primary-btn">Create an album</a>
+            {(!artistState.selectedArtist || artistState.selectedArtist.access === 'write') &&
+              <a onClick={() => setShowAlbumModal(true)} className="btn primary-btn">Create an album</a>
+            }
           </div>
           {albums.length === 0 && isLoading && <h5>Loading albums... <img className="loading" src={Loader} alt="loading-icon"/></h5>}
           <div className="music-playlist">
@@ -181,10 +183,12 @@ function AlbumsListing() {
                       <NavLink
                         to={`/music/album/${album.id}`}>{album.name} {album.release_date ? "(Release date: " + album.release_date.split(" ")[0] + ")" : ""}
                       </NavLink>
-                      <div className="album-actions">
-                        <img onClick={(e) => handleAlbumEditModal(album)} src={Edit} alt="edit-icon"/>
-                        <img onClick={(e) => handleAlbumDelete(album)} src={Delete} alt="delete-icon"/>
-                      </div>
+                      {(!artistState.selectedArtist || artistState.selectedArtist.access === 'write') &&
+                        <div className="album-actions">
+                          <img onClick={(e) => handleAlbumEditModal(album)} src={Edit} alt="edit-icon"/>
+                          <img onClick={(e) => handleAlbumDelete(album)} src={Delete} alt="delete-icon"/>
+                        </div>
+                      }
                     </li>
                   )
                 })

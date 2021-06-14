@@ -42,7 +42,9 @@ function Profile() {
         <div className="section-content">
           <div className="section-head">
             <h2>Profile</h2>
-            <NavLink to="/profile/edit" className="btn primary-btn">Edit</NavLink>
+            {(!artistState.selectedArtist || artistState.selectedArtist.access === 'write') &&
+              <NavLink to="/profile/edit" className="btn primary-btn">Edit</NavLink>
+            }
           </div>
           {Object.keys(artist).length === 0 && isLoading && <h5>Loading profile... <img className="loading" src={Loader} alt="loading-icon"/></h5>}
           {Object.keys(artist).length !== 0 &&
@@ -148,7 +150,9 @@ function Profile() {
         <div className="section-content">
           <div className="section-head">
             <h2>Contact</h2>
-            <NavLink to="/profile/contact/edit" className="btn primary-btn">Edit</NavLink>
+            {(!artistState.selectedArtist || artistState.selectedArtist.access === 'write') &&
+              <NavLink to="/profile/contact/edit" className="btn primary-btn">Edit</NavLink>
+            }
           </div>
           {Object.keys(artist).length === 0 && isLoading && <h5>Loading contact... <img className="loading" src={Loader} alt="loading-icon"/></h5>}
           <div className="section-body">
@@ -175,7 +179,9 @@ function Profile() {
         <div className="section-content">
           <div className="section-head">
             <h2>Payment</h2>
-            <NavLink to="/profile/payment/edit" className="btn primary-btn">Edit</NavLink>
+            {(!artistState.selectedArtist || artistState.selectedArtist.access === 'write') &&
+              <NavLink to="/profile/payment/edit" className="btn primary-btn">Edit</NavLink>
+            }
           </div>
           {Object.keys(artist).length === 0 && isLoading && <h5>Loading payment... <img className="loading" src={Loader} alt="loading-icon"/></h5>}
           <div className="section-body">
@@ -202,7 +208,9 @@ function Profile() {
         <div className="section-content">
           <div className="section-head">
             <h2>Tax</h2>
-            <NavLink to="/profile/tax/edit" className="btn primary-btn">Edit</NavLink>
+            {(!artistState.selectedArtist || artistState.selectedArtist.access === 'write') &&
+              <NavLink to="/profile/tax/edit" className="btn primary-btn">Edit</NavLink>
+            }
           </div>
           {Object.keys(artist).length === 0 && isLoading && <h5>Loading tax... <img className="loading" src={Loader} alt="loading-icon"/></h5>}
           <div className="section-body">

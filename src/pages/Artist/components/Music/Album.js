@@ -268,10 +268,12 @@ function Album({id = null}) {
         <section >
           <div className="section-head">
             <h2>{album ? album.name : ''}</h2>
-            <div className="sec-controls">
-              <NavLink to={"/music/album/"+id+"/edit"} className="btn primary-btn mr-2">Edit</NavLink>
-              <a onClick={handleAlbumDelete} className="close-btn btn delete">{isDeleting ? <>Deleting...<img className="loading" src={Loader} alt="icon"/></> : "Delete" }</a>
-            </div>
+            {(!artistState.selectedArtist || artistState.selectedArtist.access === 'write') &&
+              <div className="sec-controls">
+                <NavLink to={"/music/album/"+id+"/edit"} className="btn primary-btn mr-2">Edit</NavLink>
+                <a onClick={handleAlbumDelete} className="close-btn btn delete">{isDeleting ? <>Deleting...<img className="loading" src={Loader} alt="icon"/></> : "Delete" }</a>
+              </div>
+            }
           </div>
           <div className="section-body">
             <div className="bg-content yellow bgSecondVersion">
@@ -284,7 +286,9 @@ function Album({id = null}) {
         <section className="pt-4">
           <div className="section-head">
             <h2>Artwork</h2>
-            <NavLink to={"/music/album/"+id+"/artwork"} className="btn primary-btn">Edit</NavLink>
+            {(!artistState.selectedArtist || artistState.selectedArtist.access === 'write') &&
+              <NavLink to={"/music/album/" + id + "/artwork"} className="btn primary-btn">Edit</NavLink>
+            }
             {album && !album.artwork &&
               <p className="sec-head-para mb-0">Time to add some artwork to this album! Click the <i className="medium-text">Edit</i> button above to get started.</p>
             }
@@ -304,7 +308,9 @@ function Album({id = null}) {
         <section className="pt-4">
           <div className="section-head">
             <h2>Tracks</h2>
-            <a onClick={handleAddMusicModal} className="btn primary-btn mr-2">Add music</a>
+            {(!artistState.selectedArtist || artistState.selectedArtist.access === 'write') &&
+              <a onClick={handleAddMusicModal} className="btn primary-btn mr-2">Add music</a>
+            }
           </div>
           <div className="section-body">
             <div className="track-wrapper">
@@ -331,20 +337,28 @@ function Album({id = null}) {
                       <div className="track-writter">{track.collaborator ? track.collaborator.first_name + ' '+ track.collaborator.last_name : "-"}</div>
                       <div className="track-publisher">{track.publisher ? track.publisher.name : "-"}</div>
                       <div className="track-status">{track.status ? track.status.toLowerCase() === "unclassified" ? "Submitted for classification" : track.status : ""}</div>
-                      <div className="track-edit">
-                        {track.status === "pending"
-                          ?
-                          <>
-                            <a className="track-action" title="Edit track" onClick={(e) => handleEditMusicModal(track)}><img src={Edit} alt="Edit"/></a>
-                            <a className="track-action" title="Delete track" onClick={(e) => handleDeleteMusic(track)}><img src={Delete} alt="Delete"/></a>
-                          </>
-                          :
-                          <>
-                            <a className="disabled" title="Track is under review, can't edit."><img src={EditDisable} alt="Edit"/></a>
-                            <a className="disabled" title="Track is under review, can't delete."><img src={DeleteDisable} alt="Delete"/></a>
-                          </>
-                          }
-                      </div>
+                      {(!artistState.selectedArtist || artistState.selectedArtist.access === 'write')
+                        ?
+                          <div className="track-edit">
+                            {track.status === "pending"
+                              ?
+                              <>
+                                <a className="track-action" title="Edit track" onClick={(e) => handleEditMusicModal(track)}><img src={Edit} alt="Edit"/></a>
+                                <a className="track-action" title="Delete track" onClick={(e) => handleDeleteMusic(track)}><img src={Delete} alt="Delete"/></a>
+                              </>
+                              :
+                              <>
+                                <a className="disabled" title="Track is under review, can't edit."><img src={EditDisable} alt="Edit"/></a>
+                                <a className="disabled" title="Track is under review, can't delete."><img src={DeleteDisable} alt="Delete"/></a>
+                              </>
+                              }
+                          </div>
+                        :
+                          <div className="track-edit">
+                            <a className="disabled" title="You don't have access to edit track."><img src={EditDisable} alt="Edit"/></a>
+                            <a className="disabled" title="You don't have access to delete track."><img src={DeleteDisable} alt="Delete"/></a>
+                          </div>
+                      }
                     </div>
                   )
                 })

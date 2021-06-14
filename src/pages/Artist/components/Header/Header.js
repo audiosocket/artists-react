@@ -114,6 +114,7 @@ function Header({onToggleSidebar, onChangeIsActiveProfile}) {
       const acceptedArtists = artistsList.filter(artist => artist.status === "accepted");
       if(acceptedArtists.length > 0) {
         setSelectedArtist(acceptedArtists[0]);
+        artistActions.selectedArtistStateChanged(acceptedArtists[0]);
       }
     }
     setIsLoading(false);

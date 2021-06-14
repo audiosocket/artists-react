@@ -265,7 +265,9 @@ function Partners() {
         <section className="pt-4">
           <div className="section-head">
             <h2>Collaborators</h2>
-            <a onClick={handleShowCollaboratorModal} className="btn primary-btn">Add a collaborator</a>
+            {(!artistState.selectedArtist || artistState.selectedArtist.access === 'write') &&
+              <a onClick={handleShowCollaboratorModal} className="btn primary-btn">Add a collaborator</a>
+            }
           </div>
           <div className="partner-list">
             <ul className="partner-row">
@@ -276,10 +278,12 @@ function Partners() {
                       collaborator &&
                         <li key={key}>
                           <a>{collaborator.first_name} {collaborator.last_name ?? ''} <small><i>Permissions: {collaborator.access}</i></small><small><i>{collaborator.pro ? ", "+collaborator.pro : ""}</i></small> - <strong className={"status "+collaborator.status}>{collaborator.status ?? ''}</strong></a>
-                          <div className="partner-actions">
-                            <img onClick={(e) => handleShowCollaboratorModal(e, collaborator)} src={Edit} alt="edit-icon"/>
-                            <img onClick={(e) => handleDeleteCollaborator(e, collaborator)} src={Delete} alt="delete-icon"/>
-                          </div>
+                          {(!artistState.selectedArtist || artistState.selectedArtist.access === 'write') &&
+                            <div className="partner-actions">
+                              <img onClick={(e) => handleShowCollaboratorModal(e, collaborator)} src={Edit} alt="edit-icon"/>
+                              <img onClick={(e) => handleDeleteCollaborator(e, collaborator)} src={Delete} alt="delete-icon"/>
+                            </div>
+                          }
                         </li>
                     )
                   })
@@ -291,7 +295,9 @@ function Partners() {
         <section className="pt-4">
           <div className="section-head">
             <h2>Publishers</h2>
-            <a onClick={handelShowPublisherModal} className="btn primary-btn">Add a publisher</a>
+            {(!artistState.selectedArtist || artistState.selectedArtist.access === 'write') &&
+              <a onClick={handelShowPublisherModal} className="btn primary-btn">Add a publisher</a>
+            }
           </div>
           <div className="partner-list">
             <ul className="partner-row">
@@ -302,10 +308,12 @@ function Partners() {
                       publisher.name &&
                         <li key={key}>
                           <a>{publisher.name} <small><i>{publisher.pro ? "PRO: "+publisher.pro : ""}</i></small><small><i>{publisher.ipi ? ", IPI: "+publisher.ipi : ""}</i></small></a>
-                          <div className="partner-actions">
-                            <img onClick={(e) => handelShowPublisherModal(e, publisher)} src={Edit} alt="edit-icon"/>
-                            <img onClick={(e) => handleDeletePublisher(e, publisher)} src={Delete} alt="delete-icon"/>
-                          </div>
+                          {(!artistState.selectedArtist || artistState.selectedArtist.access === 'write') &&
+                            <div className="partner-actions">
+                              <img onClick={(e) => handelShowPublisherModal(e, publisher)} src={Edit} alt="edit-icon"/>
+                              <img onClick={(e) => handleDeletePublisher(e, publisher)} src={Delete} alt="delete-icon"/>
+                            </div>
+                          }
                         </li>
                     )
                   })
