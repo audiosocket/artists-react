@@ -13,7 +13,11 @@ async function fetchArtist(artist_id = null) {
     });
   const resultSet = await response.json();
   if (!response.ok) {
-    return {};
+    if(resultSet.message) {
+      return resultSet;
+    } else {
+      return {};
+    }
   } else {
     return resultSet;
   }

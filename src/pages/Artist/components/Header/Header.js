@@ -122,6 +122,15 @@ function Header({onToggleSidebar, onChangeIsActiveProfile}) {
   const initializeArtist = async (artist_id = null) => {
     setIsLoading(true);
     const artist = await fetchArtist(artist_id);
+    if(artist.message) {
+      if (artist.message.toLowerCase() === 'signature has expired') {
+        alert('Session expired, login again to access!');
+        localStorage.removeItem("user");
+        localStorage.removeItem("userRole");
+        history.push('/login');
+        return;
+      }
+    }
     artistActions.artistStateChanged(artist);
     setIsLoading(false);
   }

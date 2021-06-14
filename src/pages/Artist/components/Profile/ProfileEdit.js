@@ -175,7 +175,7 @@ function ProfileEdit() {
                         {artist.additional_images.length !== 0 &&
                           artist.additional_images.map((image, key) => {
                             return (
-                              <img className="additional-image" src={image} alt="Image" />
+                              <img key={key} className="additional-image" src={image} alt="Image" />
                             )
                           })
                         }
