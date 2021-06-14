@@ -73,8 +73,10 @@
 	.login-error {
 		width: 100%;
 		text-align: center;
-		font-size: 80%;
-		color: #dc3545;
+		color: $clr-red;
+	}
+	.success {
+		color: $clr-green-dark;
 	}
 	.custom-control-label {
 		cursor: pointer;

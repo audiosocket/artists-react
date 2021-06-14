@@ -61,7 +61,7 @@ function ForgotPassword() {
       <h2 className="">Get a link to reset your password on your email</h2>
       {responseMessage === 'error'
         ? <p className="login-error">User doesn't exist!</p>
-        : responseMessage === 'success' ? <h4 className="mb-4">Password reset link sent to your email address!</h4> : ''
+        : responseMessage === 'success' ? <h4 className="mb-4 success">Password reset link sent to your email address!</h4> : ''
       }
       <Form className="form" noValidate validated={validated} ref={form} onSubmit={handleSubmit}>
         <Form.Group controlId="formBasicEmail">
