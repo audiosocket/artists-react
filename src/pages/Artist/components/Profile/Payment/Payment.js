@@ -23,7 +23,7 @@ function Payment() {
       getArtistProfile();
     else
       setArtist(artistState.artist);
-  }, [])
+  }, [artistState.artist])
 
   const getArtistProfile = async () => {
     setIsLoading(true);

@@ -45,11 +45,15 @@ function Album({id = null}) {
     if(artistState.albums) {
       const filteredAlbum = artistState.albums.filter(album => parseInt(album.id) === parseInt(id));
       setAlbum(filteredAlbum[0] ?? null)
+      if(!filteredAlbum.length) {
+        alert("Invalid album");
+        history.push('/music');
+      }
     } else {
       getAlbum();
     }
     preparePartnersDropdown()
-  }, [])
+  }, [artistState.albums])
 
   const getAlbum = async () => {
     setIsLoading(true);

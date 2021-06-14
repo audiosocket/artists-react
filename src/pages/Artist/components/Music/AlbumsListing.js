@@ -31,7 +31,7 @@ function AlbumsListing() {
       getAlbums()
     else
       setAlbums(artistState.albums)
-  }, [])
+  }, [artistState.albums])
 
   const getAlbums = async () => {
     setIsLoading(true);

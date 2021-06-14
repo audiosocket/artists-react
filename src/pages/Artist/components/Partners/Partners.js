@@ -49,7 +49,7 @@ function Partners() {
       getPublishers()
     else
       setPublishers(artistState.publishers)
-  }, [])
+  }, [artistState.collaborators, artistState.publishers])
 
   const getCollaborators = async () => {
     setIsLoading(true);

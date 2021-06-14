@@ -47,7 +47,7 @@ function ContactEdit() {
       setCountriesList(artistState.countries)
     }
 
-  }, [])
+  }, [artistState.artist])
 
   useEffect(() => {
     if(artistState.countries && artistState.artist.contact_information) {
