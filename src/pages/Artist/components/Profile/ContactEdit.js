@@ -390,15 +390,11 @@ function ContactEdit() {
                 </Col>
                 <Col xl={4} md={6}>
                   <Form.Control
-                    required
                     name="phone"
                     type="text"
                     defaultValue={artist.contact_information ? artist.contact_information.phone : ""}
                     placeholder="Phone"
                   />
-                  <Form.Control.Feedback type="invalid">
-                    Phone is required!
-                  </Form.Control.Feedback>
                 </Col>
               </Row>
               <Row>

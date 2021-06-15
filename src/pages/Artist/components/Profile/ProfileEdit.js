@@ -96,6 +96,56 @@ function ProfileEdit() {
     setImage(images);
   }
 
+  const handleUploadCover = (e) => {
+    let img = e.target.files[0];
+    let reader = new FileReader();
+    //Read the contents of Image File.
+    reader.readAsDataURL(e.target.files[0]);
+    reader.onload = function (e) {
+      //Initiate the JavaScript Image object.
+      let image = new Image();
+      //Set the Base64 string return from FileReader as source.
+      image.src = e.target.result;
+      //Validate the File Height and Width.
+      image.onload = function () {
+        let height = this.height;
+        let width = this.width;
+        if (width < 353 || height < 353) {
+          alert("Cover Image must be min 353px x 353px\nUploaded image is "+width+"px x "+height+"px!");
+          return false;
+        } else {
+          setCoverImage(img)
+          return false;
+        }
+      };
+    };
+  }
+
+  const handleUploadBanner = (e) => {
+    let img = e.target.files[0];
+    let reader = new FileReader();
+    //Read the contents of Image File.
+    reader.readAsDataURL(e.target.files[0]);
+    reader.onload = function (e) {
+      //Initiate the JavaScript Image object.
+      let image = new Image();
+      //Set the Base64 string return from FileReader as source.
+      image.src = e.target.result;
+      //Validate the File Height and Width.
+      image.onload = function () {
+        let height = this.height;
+        let width = this.width;
+        if (width < 1440 || height < 448) {
+          alert("Banner Image must be min 1440px x 448px\nUploaded image is "+width+"px x "+height+"px!");
+          return false;
+        } else {
+          setBannerImage(img)
+          return true;
+        }
+      };
+    };
+  }
+
   return (
     <div className="artist-wrapper">
       <div className="asBreadcrumbs">
@@ -141,7 +191,7 @@ function ProfileEdit() {
                     <Col xl={4} md={6}>
                       <Form.File
                         accept=".png, .jpg, .svg"
-                        onChange={(e) => {setCoverImage(e.target.files[0])}}
+                        onChange={(e) => {handleUploadCover(e)}}
                         name="cover_image"
                         label={coverImage ? coverImage.name : artist.cover_image ? artist.cover_image.split('/')[artist.cover_image.split("/").length-1] : ""}
                         lang="en"
@@ -157,7 +207,7 @@ function ProfileEdit() {
                     <Col xl={4} md={6}>
                       <Form.File
                         accept=".png, .jpg, .svg"
-                        onChange={(e) => {setBannerImage(e.target.files[0])}}
+                        onChange={(e) => {handleUploadBanner(e)}}
                         name="banner_image"
                         label={bannerImage ? bannerImage.name : artist.banner_image ? artist.banner_image.split('/')[artist.banner_image.split("/").length-1] : ""}
                         lang="en"

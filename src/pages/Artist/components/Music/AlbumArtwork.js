@@ -41,11 +41,17 @@ function AlbumArtwrok({id = null}) {
   const handleSubmitEditArtwork = async (e) => {
     e.preventDefault();
     const albumForm = e.currentTarget;
+    if(!artwork) {
+      alert("Update artwork before saving!")
+    }
     if (albumForm.checkValidity() === false) {
       e.preventDefault();
       e.stopPropagation();
       setValidated(true);
     } else {
+      if(!artwork) {
+        return false;
+      }
       setIsLoading(true);
       const data = new FormData(form.current);
       const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
@@ -67,6 +73,31 @@ function AlbumArtwrok({id = null}) {
       }
       setIsLoading(false);
     }
+  }
+
+  const handleUploadArtwork = (e) => {
+    let img = e.target.files[0];
+    let reader = new FileReader();
+    //Read the contents of Image File.
+    reader.readAsDataURL(e.target.files[0]);
+    reader.onload = function (e) {
+      //Initiate the JavaScript Image object.
+      let image = new Image();
+      //Set the Base64 string return from FileReader as source.
+      image.src = e.target.result;
+      //Validate the File Height and Width.
+      image.onload = function () {
+        let height = this.height;
+        let width = this.width;
+        if (width < 353 || height < 353) {
+          alert("Artwork Image must be min 353px x 353px\nUploaded image is "+width+"px x "+height+"px!");
+          return false;
+        } else {
+          setArtwork(img)
+          return false;
+        }
+      };
+    };
   }
 
   return (
@@ -105,8 +136,9 @@ function AlbumArtwrok({id = null}) {
               </Col>
               <Col xl={4} md={6}>
                 <Form.File
+                  required
                   accept=".png, .jpg, .svg"
-                  onChange={(e) => {setArtwork(e.target.files[0])}}
+                  onChange={(e) => { handleUploadArtwork(e)}}
                   name="artwork"
                   label={artwork ? artwork.name : album && album.artwork ? album.artwork.split('/')[album.artwork.split("/").length-1] : ""}
                   lang="en"
