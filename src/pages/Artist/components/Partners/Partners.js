@@ -357,22 +357,6 @@ function Partners() {
                   </Col>
                   <Col xs={12}>
                     <div className="form-group">
-                      <label htmlFor="agreements" className="partners checkbox my-3">
-                        <input
-                          name="agreements"
-                          id="agreements"
-                          type="checkbox"
-                          value={agreements}
-                          checked={agreements}
-                          onChange={handleChangeAgreements}
-                        />
-                          This person will be logging into this artist portal and/or they need to accept the Audiosocket license agreement
-                          <span className={agreements ? "checkmark checked" : "checkmark"}></span>
-                    </label>
-                    </div>
-                  </Col>
-                  <Col xs={12}>
-                    <div className="form-group">
                       <Form.Control
                         readOnly={!!selectedPartner}
                         name="email"
@@ -384,22 +368,6 @@ function Partners() {
                     <Form.Control.Feedback type="invalid">
                       Email is required!
                     </Form.Control.Feedback>
-                  </Col>
-                  <Col xs={12}>
-                    <div className="form-group">
-                      <label htmlFor="access" className="partners checkbox my-3">
-                        <input
-                          name="access"
-                          id="access"
-                          type="checkbox"
-                          value={access}
-                          checked={access}
-                          onChange={handleChangeAccess}
-                        />
-                          Allow this person to update artist information, edit/create tracks and add/remove collaborators.
-                          <span className={access ? "checkmark checked" : "checkmark"}></span>
-                    </label>
-                    </div>
                   </Col>
                   <Col xs={12}>
                     <div className="form-group">
@@ -451,6 +419,38 @@ function Partners() {
                           My PRO knows me by a different registered name.
                           <span className={"checkmark"}></span>
                     </label>
+                    </div>
+                  </Col>
+                  <Col xs={12}>
+                    <div className="form-group">
+                      <label htmlFor="agreements" className="partners checkbox my-3">
+                        <input
+                          name="agreements"
+                          id="agreements"
+                          type="checkbox"
+                          value={agreements}
+                          checked={agreements}
+                          onChange={handleChangeAgreements}
+                        />
+                        This person will be logging into this artist portal and/or they need to accept the Audiosocket license agreement
+                        <span className={agreements ? "checkmark checked" : "checkmark"}></span>
+                      </label>
+                    </div>
+                  </Col>
+                  <Col xs={12}>
+                    <div className="form-group">
+                      <label htmlFor="access" className="partners checkbox my-3">
+                        <input
+                          name="access"
+                          id="access"
+                          type="checkbox"
+                          value={access}
+                          checked={access}
+                          onChange={handleChangeAccess}
+                        />
+                        Allow this person to update artist information, edit/create tracks and add/remove collaborators.
+                        <span className={access ? "checkmark checked" : "checkmark"}></span>
+                      </label>
                     </div>
                   </Col>
 
