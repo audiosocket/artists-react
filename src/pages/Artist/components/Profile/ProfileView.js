@@ -166,7 +166,9 @@ function Profile() {
                     <span>{artist.contact_information.postal_code}, {artist.contact_information.street}</span>
                     <span>{artist.contact_information.city}, {artist.contact_information.state}</span>
                     <span>{artist.contact_information.country}</span>
-                    <span><small className="medium-text">Phone#: </small>{artist.contact_information.phone}</span>
+                    {artist.contact_information.phone &&
+                      <span><small className="medium-text">Phone#: </small>{artist.contact_information.phone}</span>
+                    }
                   </>
                   : '-'
                 }
@@ -195,7 +197,9 @@ function Profile() {
                     <span><small className="medium-text">Bank: </small>{artist.payment_information.bank_name}</span>
                     <span><small className="medium-text">Routing: </small>{artist.payment_information.routing}</span>
                     <span><small className="medium-text">Account#: </small>{artist.payment_information.account_number}</span>
-                    <span><small className="medium-text">Paypal Email: </small>{artist.payment_information.paypal_email}</span>
+                    {artist.contact_information && artist.contact_information.country.toLowerCase() !== 'united states' &&
+                      <span><small className="medium-text">Paypal Email: </small>{artist.payment_information.paypal_email}</span>
+                    }
                   </>
                   : '-'
                 }
