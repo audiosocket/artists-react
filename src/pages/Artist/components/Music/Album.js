@@ -50,7 +50,7 @@ function Album({id = null}) {
         history.push('/music');
       }
       if(filteredAlbum.length > 0 && filteredAlbum[0].tracks.length) {
-        const isDeletable = filteredAlbum[0].tracks.filter(track => (track.status === "unclassified" || track.status === "accepeted"));
+        const isDeletable = filteredAlbum[0].tracks.filter(track => (track.status === "unclassified" || track.status === "accepted"));
         if(isDeletable.length > 0) {
           setIsDeletable(false);
         }

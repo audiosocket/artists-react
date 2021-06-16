@@ -187,7 +187,7 @@ function AlbumsListing() {
                       {(!artistState.selectedArtist || artistState.selectedArtist.access === 'write') &&
                         <div className="album-actions">
                           <img onClick={(e) => handleAlbumEditModal(album)} src={Edit} alt="edit-icon"/>
-                          {album.tracks.length > 0 && album.tracks.filter(track => (track.status === "unclassified" || track.status === "accepeted")).length > 0
+                          {album.tracks.length > 0 && album.tracks.filter(track => (track.status === "unclassified" || track.status === "accepted")).length > 0
                             ? <img className="disable-delete" title={"You can't delete album whose track is submitted"} src={DeleteDisable} alt="Disable Delete"/>
                             : <img onClick={(e) => handleAlbumDelete(album)} src={Delete} alt="delete-icon"/>
                           }
