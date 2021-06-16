@@ -182,7 +182,7 @@ function AlbumsListing() {
                   return (
                     <li key={key}>
                       <NavLink
-                        to={`/music/album/${album.id}`}>{album.name} {album.release_date ? "(Release date: " + album.release_date.split(" ")[0] + ")" : ""}
+                        to={`/music/album/${album.id}`}>{album.name} <small><i>{album.release_date ? "(Release date: " + album.release_date.split(" ")[0] + ")" : ""}</i></small>
                       </NavLink>
                       {(!artistState.selectedArtist || artistState.selectedArtist.access === 'write') &&
                         <div className="album-actions">

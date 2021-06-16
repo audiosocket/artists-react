@@ -14,8 +14,7 @@ import {
   BASE_URL,
   INVITE_COLLABORATORS,
   PRO_LIST,
-  PUBLISHERS,
-  UPDATE_ACCESS_COLLABORATORS
+  PUBLISHERS
 } from "../../../../common/api";
 import {ArtistContext} from "../../../../Store/artistContext";
 import fetchCollaborators from "../../../../common/utlis/fetchCollaborators";
@@ -87,9 +86,8 @@ function Partners() {
         data.set("access", "read");
       if(selectedPartner) {
         data.delete("email");
-        data.append("id", selectedPartner.id)
       }
-      const url = selectedPartner ? `${BASE_URL}${UPDATE_ACCESS_COLLABORATORS}` : `${BASE_URL}${INVITE_COLLABORATORS}`;
+      const url = selectedPartner ? `${BASE_URL}${ARTISTS_COLLABORATORS}/${selectedPartner.id}/update_access` : `${BASE_URL}${INVITE_COLLABORATORS}`;
       const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
       const response = await fetch(url,
         {

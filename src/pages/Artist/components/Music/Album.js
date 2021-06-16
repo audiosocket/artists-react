@@ -127,7 +127,7 @@ function Album({id = null}) {
         data.delete('file');
       }
       if(collaborator)
-        data.append('collaborator_id', collaborator)
+        data.append('artists_collaborator_id', collaborator)
       if(publisher)
         data.append('publisher_id', publisher)
 
@@ -137,16 +137,20 @@ function Album({id = null}) {
         data.set("public_domain", false);
 
       if(isSubmitting) {
+        const tmpCollaboratorId = collaborator ? collaborator : selectedTrack.collaborator.id;
         if(window.confirm(`Are you sure to submit "${data.get('title')}" for classification?`)) {
-          const tmp = collaboratorsDropdown.filter(item => item.value = collaborator);
+          const tmp = collaboratorsDropdown.filter(item => item.value = tmpCollaboratorId);
           if(tmp.length > 0) {
             if(tmp[0].status !== 'accepted') {
               alert("Track whose writer/collaborator haven't accepted invite can't be submitted for classification.");
               setIsSubmitting(false);
               return false;
+            } else {
+              data.append('status', 'unclassified');
             }
+          } else {
+            data.append('status', 'unclassified');
           }
-          data.append('status', 'unclassified');
         } else {
           setIsSubmitting(false);
           return false;

@@ -37,6 +37,9 @@
             width: 20px;
             margin-left: 3px;
             margin-right: 3px;
+            &:hover {
+              cursor: inherit;
+            }
           }
         }
         &:nth-child(odd) {
