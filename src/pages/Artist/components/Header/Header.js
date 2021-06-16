@@ -22,7 +22,7 @@ import signout from '../../../../images/as-signout.svg';
 import artist from '../../../../images/as-artist.svg';
 import fetchArtistsList from "../../../../common/utlis/fetchArtistsList";
 
-function Header({onToggleSidebar, onChangeIsActiveProfile}) {
+function Header({onToggleSidebar, onChangeIsActiveProfile, onChangeIsProfileCompleted}) {
   const history = useHistory();
   const [isLoading, setIsLoading] = useState(false);
   const {artistState, artistActions} = React.useContext(ArtistContext);
@@ -133,6 +133,15 @@ function Header({onToggleSidebar, onChangeIsActiveProfile}) {
       }
     }
     artistActions.artistStateChanged(artist);
+    if(artist) {
+      if(!artist.contact_information || !artist.payment_information || !artist.tax_information) {
+        artistActions.isProfileCompletedStateChanged(false);
+        onChangeIsProfileCompleted(false);
+      } else {
+        artistActions.isProfileCompletedStateChanged(true);
+        onChangeIsProfileCompleted(true);
+      }
+    }
     setIsLoading(false);
   }
 

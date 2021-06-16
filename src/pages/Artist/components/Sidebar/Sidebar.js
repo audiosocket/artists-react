@@ -4,11 +4,14 @@ import {NavLink} from "react-router-dom";
 import {ArtistContext} from "../../../../Store/artistContext";
 
 function Sidebar() {
-  const {artistState, artistActions} = React.useContext(ArtistContext);
+  const {artistState} = React.useContext(ArtistContext);
 
   const handleClickIsActive = (page) => {
     if(artistState.isActiveProfile === false) {
       alert(`You must accept agreements to unlock ${page} page`);
+    }
+    else if(artistState.isProfileCompleted === false && (page === 'Partners' || page === 'Music')) {
+      alert(`You must complete artist profile to unlock ${page} page`);
     }
   }
 
@@ -51,16 +54,16 @@ function Sidebar() {
         <li>
           <NavLink
             onClick={() => handleClickIsActive('Partners')}
-            activeClassName={artistState.isActiveProfile ? "selected" : ""}
-            to={artistState.isActiveProfile ? "/partners" : "/agreements"}>
+            activeClassName={artistState.isActiveProfile ? artistState.isProfileCompleted ? "selected" : "" : ""}
+            to={artistState.isActiveProfile ? artistState.isProfileCompleted ? "/partners" : "/profile" : "/agreements"}>
             Partners
           </NavLink>
         </li>
         <li>
           <NavLink
             onClick={() => handleClickIsActive('Music')}
-            activeClassName={artistState.isActiveProfile ? "selected" : ""}
-            to={artistState.isActiveProfile ? "/music" : "/agreements"}>
+            activeClassName={artistState.isActiveProfile ? artistState.isProfileCompleted ? "selected" : "" : ""}
+            to={artistState.isActiveProfile ? artistState.isProfileCompleted ? "/music" : "/profile" : "/agreements"}>
             Music
           </NavLink>
         </li>

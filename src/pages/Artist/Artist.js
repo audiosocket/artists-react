@@ -14,11 +14,16 @@ import Invites from "./components/Invites/Invites";
 
 function Artist() {
   const [isActiveProfile, setIsActiveProfile] = useState(true);
+  const [isProfileCompleted, setIsProfileCompleted] = useState(true);
   const [toggleSidebar, setToggleSidebar] = useState(false);
   const userRole = JSON.parse(localStorage.getItem("userRole") ?? "");
 
   const handleChangeIsActiveProfile = (isActiveProfile) => {
     setIsActiveProfile(isActiveProfile);
+  }
+
+  const handleChangeIsProfileCompleted = (isProfileCompleted) => {
+    setIsProfileCompleted(isProfileCompleted);
   }
 
   const handleToggle = (toggleSidebar) => {
@@ -29,7 +34,7 @@ function Artist() {
   return (
     <ArtistProvider>
       <div className="welcome-page">
-        <Header onToggleSidebar={handleToggle} onChangeIsActiveProfile={handleChangeIsActiveProfile} />
+        <Header onToggleSidebar={handleToggle} onChangeIsActiveProfile={handleChangeIsActiveProfile} onChangeIsProfileCompleted={handleChangeIsProfileCompleted} />
         <div className={toggleSidebar ? "content-wrapper launch-sidebar" : "content-wrapper "}>
           <Sidebar />
           <div className="right-content">
@@ -40,19 +45,19 @@ function Artist() {
               </Route>
               }
               <Route path="/agreements">
-                <Agreements onChangeIsActiveProfile={handleChangeIsActiveProfile} />
+                <Agreements onChangeIsActiveProfile={handleChangeIsActiveProfile}/>
               </Route>
               {isActiveProfile &&
-                <Route path="/profile">
-                  <Profile/>
-                </Route>
+              <Route path={"/profile"}>
+                <Profile onChangeIsProfileCompleted={handleChangeIsProfileCompleted}/>
+              </Route>
               }
-              {isActiveProfile &&
+              {isActiveProfile === true && isProfileCompleted === true &&
                 <Route path="/partners">
                   <Partners/>
                 </Route>
               }
-              {isActiveProfile &&
+              {isActiveProfile === true && isProfileCompleted === true &&
                 <Route path="/music">
                   <Music/>
                 </Route>

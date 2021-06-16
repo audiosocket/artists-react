@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import "./Profile.scss";
 import {Route, Switch} from "react-router-dom";
 import ProfileEdit from "./ProfileEdit";
@@ -8,8 +8,20 @@ import Payment from "./Payment/Payment";
 import Tax from "./Tax/Tax";
 import {ArtistContext} from "../../../../Store/artistContext";
 
-function Profile() {
-  const {artistState} = React.useContext(ArtistContext);
+function Profile({onChangeIsProfileCompleted}) {
+  const {artistState, artistActions} = React.useContext(ArtistContext);
+
+  useEffect(() => {
+    if(artistState.artist) {
+      if(!artistState.artist.contact_information || !artistState.artist.payment_information || !artistState.artist.tax_information) {
+        artistActions.isProfileCompletedStateChanged(false);
+        onChangeIsProfileCompleted(false);
+      } else {
+        artistActions.isProfileCompletedStateChanged(true);
+        onChangeIsProfileCompleted(true);
+      }
+    }
+  }, [artistState.artist])
 
   return (
     <Switch>

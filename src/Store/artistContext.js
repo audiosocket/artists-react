@@ -11,7 +11,8 @@ import {
   COUNTRIES_STATE_CHANGED,
   COLLABORATORS_STATE_CHANGED,
   PUBLISHERS_STATE_CHANGED,
-  IS_ACTIVE_PROFILE_STATE_CHANGED
+  IS_ACTIVE_PROFILE_STATE_CHANGED,
+  IS_PROFILE_COMPLETED_STATE_CHANGED,
 } from "./artistReducer";
 
 const ArtistContext = React.createContext();
@@ -48,6 +49,9 @@ const ArtistProvider = (props) => {
     },
     isActiveProfileStateChanged: (isActiveProfile) => {
       dispatch({ type: IS_ACTIVE_PROFILE_STATE_CHANGED, payload: isActiveProfile });
+    },
+    isProfileCompletedStateChanged: (isProfileCompleted) => {
+      dispatch({ type: IS_PROFILE_COMPLETED_STATE_CHANGED, payload: isProfileCompleted });
     },
   };
 
