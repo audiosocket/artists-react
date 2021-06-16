@@ -87,7 +87,7 @@ function Partners() {
         data.set("access", "read");
       if(selectedPartner) {
         data.delete("email");
-        data.append("collaborator_id", selectedPartner.id)
+        data.append("id", selectedPartner.id)
       }
       const url = selectedPartner ? `${BASE_URL}${UPDATE_ACCESS_COLLABORATORS}` : `${BASE_URL}${INVITE_COLLABORATORS}`;
       const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
@@ -196,9 +196,9 @@ function Partners() {
   }
 
   const handleDeleteCollaborator = async (e, collaborator) => {
-    if(window.confirm(`Are you sure to delete "${collaborator.first_name} ${collaborator.last_name}"?`)) {
+    if(window.confirm(`Are you sure to delete "${collaborator.first_name} ${collaborator.last_name ?? ''}"?`)) {
       const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
-      const response = await fetch(`${BASE_URL}${ARTISTS_COLLABORATORS}/?collaborator_id=${collaborator.id}`,
+      const response = await fetch(`${BASE_URL}${ARTISTS_COLLABORATORS}/${collaborator.id}`,
         {
           headers: {
             "authorization": ACCESS_TOKEN,
@@ -347,7 +347,7 @@ function Partners() {
                         required
                         name="name"
                         type="text"
-                        defaultValue={selectedPartner ? selectedPartner.first_name + ' '+ selectedPartner.last_name : ''}
+                        defaultValue={selectedPartner ? selectedPartner.last_name ? selectedPartner.first_name + ' '+ selectedPartner.last_name : selectedPartner.first_name : ''}
                         placeholder="Collaborator Name*"
                       />
                       <Form.Control.Feedback type="invalid">

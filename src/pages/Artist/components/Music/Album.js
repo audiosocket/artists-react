@@ -91,8 +91,9 @@ function Album({id = null}) {
       let tmp = [];
       tmp.push({label: "Select writer/collaborator", value: null})
       for (let i = 0; i < collaborators.length; i++) {
-        if(collaborators[i].first_name)
-          tmp.push({label: collaborators[i].first_name +' '+ collaborators[i].last_name ?? '', value: collaborators[i].id});
+        if(collaborators[i].first_name) {
+          tmp.push({label: collaborators[i].first_name +' '+ collaborators[i].last_name + ' - ' + collaborators[i].status ?? '', value: collaborators[i].id, status: collaborators[i].status});
+        }
       }
       setCollaboratorsDropdown(tmp);
     }
@@ -137,6 +138,14 @@ function Album({id = null}) {
 
       if(isSubmitting) {
         if(window.confirm(`Are you sure to submit "${data.get('title')}" for classification?`)) {
+          const tmp = collaboratorsDropdown.filter(item => item.value = collaborator);
+          if(tmp.length > 0) {
+            if(tmp[0].status !== 'accepted') {
+              alert("Track whose writer/collaborator haven't accepted invite can't be submitted for classification.");
+              setIsSubmitting(false);
+              return false;
+            }
+          }
           data.append('status', 'unclassified');
         } else {
           setIsSubmitting(false);
@@ -348,7 +357,12 @@ function Album({id = null}) {
                           <em>Uploaded {track.created_at ? track.created_at.split(' ')[0] : ""}</em>
                         </div>
                       </div>
-                      <div className="track-writter">{track.collaborator ? track.collaborator.first_name + ' '+ track.collaborator.last_name : "-"}</div>
+                      <div className="track-writter">
+                        {track.collaborator
+                          ? <>{track.collaborator.first_name} {track.collaborator.last_name} <small className={track.collaborator.status}><i>({track.collaborator.status})</i></small></>
+                          : "-"
+                        }
+                      </div>
                       <div className="track-publisher">{track.publisher ? track.publisher.name : "-"}</div>
                       <div className="track-status">{track.status ? track.status.toLowerCase() === "unclassified" ? "Submitted for classification" : track.status : ""}</div>
                       {(!artistState.selectedArtist || artistState.selectedArtist.access === 'write')

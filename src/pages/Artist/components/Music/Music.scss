@@ -313,6 +313,15 @@
     }
     .track-writter{
       @include flex(1 1 20%);
+      small {
+        display: block;
+        &.pending, &.rejected {
+          color: $clr-red;
+        }
+        &.accepted {
+          color: $clr-green-dark;
+        }
+      }
     }
     .track-publisher{
       @include flex(1 1 20%);
