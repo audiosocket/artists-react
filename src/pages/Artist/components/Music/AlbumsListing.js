@@ -14,6 +14,7 @@ import Form from "react-bootstrap/Form";
 import {NavLink} from "react-router-dom";
 import Breadcrumb from 'react-bootstrap/Breadcrumb';
 import Delete from "../../../../images/delete.svg";
+import DeleteDisable from "../../../../images/delete-slash.png";
 
 function AlbumsListing() {
   const {artistState, artistActions} = React.useContext(ArtistContext);
@@ -186,7 +187,10 @@ function AlbumsListing() {
                       {(!artistState.selectedArtist || artistState.selectedArtist.access === 'write') &&
                         <div className="album-actions">
                           <img onClick={(e) => handleAlbumEditModal(album)} src={Edit} alt="edit-icon"/>
-                          <img onClick={(e) => handleAlbumDelete(album)} src={Delete} alt="delete-icon"/>
+                          {album.tracks.length > 0 && album.tracks.filter(track => (track.status === "unclassified" || track.status === "accepeted")).length > 0
+                            ? <img className="disable-delete" title={"You can't delete album whose track is submitted"} src={DeleteDisable} alt="Disable Delete"/>
+                            : <img onClick={(e) => handleAlbumDelete(album)} src={Delete} alt="delete-icon"/>
+                          }
                         </div>
                       }
                     </li>

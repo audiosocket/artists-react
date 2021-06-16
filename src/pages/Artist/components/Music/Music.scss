@@ -33,6 +33,11 @@
           cursor: pointer;
           opacity: 0.7;
           margin: 0 6px;
+          &.disable-delete {
+            width: 20px;
+            margin-left: 3px;
+            margin-right: 3px;
+          }
         }
         &:nth-child(odd) {
           margin-right: 20px;
@@ -46,7 +51,7 @@
         &:hover {
           background-color: #F6F6F6;
           img {
-            &:hover {
+            &:hover:not(.disable-delete) {
               opacity: 1;
             }
           }

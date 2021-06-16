@@ -20,6 +20,7 @@ function AlbumEdit({id = null}) {
   const [album, setAlbum] = useState(null);
   const [selectedAlbumDate, setSelectedAlbumDate] = useState('');
   const history = useHistory();
+  const [isDeletable, setIsDeletable] = useState(true);
 
   useEffect(() => {
     if(artistState.albums) {
@@ -31,6 +32,12 @@ function AlbumEdit({id = null}) {
           const month = filteredAlbum[0].release_date.substr(3,2);
           const year = filteredAlbum[0].release_date.substr(6,4);
           setSelectedAlbumDate(`${year}-${month}-${day}`);
+        }
+        if(filteredAlbum[0].tracks.length) {
+          const isDeletable = filteredAlbum[0].tracks.filter(track => (track.status === "unclassified" || track.status === "accepeted"));
+          if(isDeletable.length > 0) {
+            setIsDeletable(false);
+          }
         }
       }
     } else {
@@ -137,7 +144,7 @@ function AlbumEdit({id = null}) {
           <div className="section-head">
             <h2>Edit Album</h2>
             <div className="sec-controls">
-              <a onClick={handleAlbumDelete} className="close-btn btn delete">{isDeleting ? <>Deleting...<img className="loading" src={Loader} alt="icon"/></> : "Delete" }</a>
+              <a onClick={isDeletable && handleAlbumDelete} className={isDeletable ? "close-btn btn delete" : "close-btn btn delete disabled"}>{isDeleting ? <>Deleting...<img className="loading" src={Loader} alt="icon"/></> : "Delete" }</a>
             </div>
           </div>
         </section>

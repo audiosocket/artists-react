@@ -19,7 +19,6 @@ import Select from "react-select";
 import fetchCollaborators from "../../../../common/utlis/fetchCollaborators";
 import fetchPublishers from "../../../../common/utlis/fetchPublishers";
 
-
 function Album({id = null}) {
   const {artistState, artistActions} = React.useContext(ArtistContext);
   const [isLoading, setIsLoading] = useState(false);
@@ -40,6 +39,7 @@ function Album({id = null}) {
   const [publishersDropdown, setPublishersDropdown] = useState([]);
   const [collaborator, setCollaborator] = useState(null);
   const [publisher, setPublisher] = useState(null);
+  const [isDeletable, setIsDeletable] = useState(true);
 
   useEffect(() => {
     if(artistState.albums) {
@@ -48,6 +48,12 @@ function Album({id = null}) {
       if(!filteredAlbum.length) {
         alert("Invalid album");
         history.push('/music');
+      }
+      if(filteredAlbum.length > 0 && filteredAlbum[0].tracks.length) {
+        const isDeletable = filteredAlbum[0].tracks.filter(track => (track.status === "unclassified" || track.status === "accepeted"));
+        if(isDeletable.length > 0) {
+          setIsDeletable(false);
+        }
       }
     } else {
       getAlbum();
@@ -65,14 +71,22 @@ function Album({id = null}) {
   }
 
   const preparePartnersDropdown = async () => {
-    const collaborators = artistState.collaborators ?? await fetchCollaborators();
-    if(!artistState.collaborators)
-      artistActions.collaboratorsStateChanged(collaborators ?? null);
-
-    const publishers = artistState.publishers ?? await fetchPublishers();
-    if(!artistState.publishers)
-      artistActions.publishersStateChanged(publishers ?? null);
-
+    let collaborators = null;
+    try {
+      collaborators = artistState.collaborators ?? await fetchCollaborators();
+      if (!artistState.collaborators)
+        artistActions.collaboratorsStateChanged(collaborators ?? null);
+    } catch (error) {
+      collaborators = null;
+    }
+    let publishers = null;
+    try {
+      publishers = artistState.publishers ?? await fetchPublishers();
+      if (!artistState.publishers)
+        artistActions.publishersStateChanged(publishers ?? null);
+    } catch (error) {
+      publishers = null;
+    }
     if(collaborators) {
       let tmp = [];
       tmp.push({label: "Select writer/collaborator", value: null})
@@ -271,7 +285,7 @@ function Album({id = null}) {
             {(!artistState.selectedArtist || artistState.selectedArtist.access === 'write') &&
               <div className="sec-controls">
                 <NavLink to={"/music/album/"+id+"/edit"} className="btn primary-btn mr-2">Edit</NavLink>
-                <a onClick={handleAlbumDelete} className="close-btn btn delete">{isDeleting ? <>Deleting...<img className="loading" src={Loader} alt="icon"/></> : "Delete" }</a>
+                <a onClick={isDeletable && handleAlbumDelete} className={isDeletable ? "close-btn btn delete" : "close-btn btn delete disabled"}>{isDeleting ? <>Deleting...<img className="loading" src={Loader} alt="icon"/></> : "Delete" }</a>
               </div>
             }
           </div>
