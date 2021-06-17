@@ -126,10 +126,10 @@ function Album({id = null}) {
       } else {
         data.delete('file');
       }
-      if(collaborator)
-        data.append('artists_collaborator_id', collaborator)
-      if(publisher)
-        data.append('publisher_id', publisher)
+      if(collaborator || selectedTrack.collaborator)
+        data.append('artists_collaborator_id', collaborator ? collaborator : selectedTrack.collaborator.id)
+      if(publisher || selectedTrack.publisher)
+        data.append('publisher_id', publisher ? publisher : selectedTrack.publisher.id)
 
       if(data.get("public_domain"))
         data.set("public_domain", true);
