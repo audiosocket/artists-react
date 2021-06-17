@@ -10,6 +10,7 @@ import Button from "react-bootstrap/Button";
 import {ACCESS_TOKEN, ARTIST_PROFILE_UPDATE, BASE_URL} from "../../../../common/api";
 import DropzoneComponent from "../../../../common/Dropzone/DropzoneComponent";
 import Breadcrumb from "react-bootstrap/Breadcrumb";
+import Notes from "../../../../common/Notes/Notes";
 
 function ProfileEdit() {
   const {artistState, artistActions} = React.useContext(ArtistContext);
@@ -183,6 +184,7 @@ function ProfileEdit() {
                         type="text"
                       />
                     </Col>
+                    <Notes/>
                   </Row>
                   <Row>
                     <Col xl={2} md={6}>
