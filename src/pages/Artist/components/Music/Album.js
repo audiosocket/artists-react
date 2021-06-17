@@ -385,10 +385,10 @@ function Album({id = null}) {
                               </>
                               :
                               <>
-                                <OverlayTrigger overlay={<Tooltip>Track is under review, can't edit.</Tooltip>}>
+                                <OverlayTrigger overlay={<Tooltip>You can't edit this track, add a note if you want any change.</Tooltip>}>
                                   <a className="disabled"><img src={EditDisable} alt="Edit"/></a>
                                 </OverlayTrigger>
-                                <OverlayTrigger overlay={<Tooltip>Track is under review, can't delete.</Tooltip>}>
+                                <OverlayTrigger overlay={<Tooltip>You can't delete this track, add a note if you want any change.</Tooltip>}>
                                   <a className="disabled"><img src={DeleteDisable} alt="Delete"/></a>
                                 </OverlayTrigger>
                               </>
