@@ -18,6 +18,8 @@ import {ACCESS_TOKEN, ALBUMS, BASE_URL} from "../../../../common/api";
 import Select from "react-select";
 import fetchCollaborators from "../../../../common/utlis/fetchCollaborators";
 import fetchPublishers from "../../../../common/utlis/fetchPublishers";
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
+import Tooltip from 'react-bootstrap/Tooltip'
 
 function Album({id = null}) {
   const {artistState, artistActions} = React.useContext(ArtistContext);
@@ -298,7 +300,10 @@ function Album({id = null}) {
             {(!artistState.selectedArtist || artistState.selectedArtist.access === 'write') &&
               <div className="sec-controls">
                 <NavLink to={"/music/album/"+id+"/edit"} className="btn primary-btn mr-2">Edit</NavLink>
-                <a onClick={isDeletable && handleAlbumDelete} className={isDeletable ? "close-btn btn delete" : "close-btn btn delete disabled"}>{isDeleting ? <>Deleting...<img className="loading" src={Loader} alt="icon"/></> : "Delete" }</a>
+                {isDeletable
+                  ? <a onClick={handleAlbumDelete} className={"close-btn btn delete"}>{isDeleting ? <>Deleting...<img className="loading" src={Loader} alt="icon"/></> : "Delete" }</a>
+                  : <OverlayTrigger overlay={<Tooltip>Album whose track is under review or accepted can't be deleted.</Tooltip>}><a className={"close-btn btn delete"}>Delete</a></OverlayTrigger>
+                }
               </div>
             }
           </div>
@@ -380,15 +385,23 @@ function Album({id = null}) {
                               </>
                               :
                               <>
-                                <a className="disabled" title="Track is under review, can't edit."><img src={EditDisable} alt="Edit"/></a>
-                                <a className="disabled" title="Track is under review, can't delete."><img src={DeleteDisable} alt="Delete"/></a>
+                                <OverlayTrigger overlay={<Tooltip>Track is under review, can't edit.</Tooltip>}>
+                                  <a className="disabled"><img src={EditDisable} alt="Edit"/></a>
+                                </OverlayTrigger>
+                                <OverlayTrigger overlay={<Tooltip>Track is under review, can't delete.</Tooltip>}>
+                                  <a className="disabled"><img src={DeleteDisable} alt="Delete"/></a>
+                                </OverlayTrigger>
                               </>
                               }
                           </div>
                         :
                           <div className="track-edit">
-                            <a className="disabled" title="You don't have access to edit track."><img src={EditDisable} alt="Edit"/></a>
-                            <a className="disabled" title="You don't have access to delete track."><img src={DeleteDisable} alt="Delete"/></a>
+                            <OverlayTrigger overlay={<Tooltip>You don't have access to edit track.</Tooltip>}>
+                              <a className="disabled"><img src={EditDisable} alt="Edit"/></a>
+                            </OverlayTrigger>
+                            <OverlayTrigger overlay={<Tooltip>You don't have access to delete track.</Tooltip>}>
+                              <a className="disabled"><img src={DeleteDisable} alt="Delete"/></a>
+                            </OverlayTrigger>
                           </div>
                       }
                     </div>

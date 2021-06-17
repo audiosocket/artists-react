@@ -10,6 +10,8 @@ import {NavLink, useHistory} from "react-router-dom";
 import {Breadcrumb} from "react-bootstrap";
 import Loader from "../../../../images/loader.svg";
 import Button from "react-bootstrap/Button";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import Tooltip from "react-bootstrap/Tooltip";
 
 function AlbumEdit({id = null}) {
   const {artistState, artistActions} = React.useContext(ArtistContext);
@@ -144,7 +146,10 @@ function AlbumEdit({id = null}) {
           <div className="section-head">
             <h2>Edit Album</h2>
             <div className="sec-controls">
-              <a onClick={isDeletable && handleAlbumDelete} className={isDeletable ? "close-btn btn delete" : "close-btn btn delete disabled"}>{isDeleting ? <>Deleting...<img className="loading" src={Loader} alt="icon"/></> : "Delete" }</a>
+              {isDeletable
+                ? <a onClick={handleAlbumDelete} className={"close-btn btn delete"}>{isDeleting ? <>Deleting...<img className="loading" src={Loader} alt="icon"/></> : "Delete" }</a>
+                : <OverlayTrigger overlay={<Tooltip>Album whose track is under review or accepted can't be deleted.</Tooltip>}><a className={"close-btn btn delete"}>Delete</a></OverlayTrigger>
+              }
             </div>
           </div>
         </section>

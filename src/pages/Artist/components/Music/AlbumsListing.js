@@ -15,6 +15,8 @@ import {NavLink} from "react-router-dom";
 import Breadcrumb from 'react-bootstrap/Breadcrumb';
 import Delete from "../../../../images/delete.svg";
 import DeleteDisable from "../../../../images/delete-slash.png";
+import Tooltip from "react-bootstrap/Tooltip";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 
 function AlbumsListing() {
   const {artistState, artistActions} = React.useContext(ArtistContext);
@@ -188,7 +190,7 @@ function AlbumsListing() {
                         <div className="album-actions">
                           <img onClick={(e) => handleAlbumEditModal(album)} src={Edit} alt="edit-icon"/>
                           {album.tracks.length > 0 && album.tracks.filter(track => (track.status === "unclassified" || track.status === "accepted")).length > 0
-                            ? <img className="disable-delete" title={"You can't delete album whose track is submitted"} src={DeleteDisable} alt="Disable Delete"/>
+                            ? <OverlayTrigger overlay={<Tooltip>Album whose track is under review or accepted can't be deleted.</Tooltip>}><img className="disable-delete" src={DeleteDisable} alt="Disable Delete"/></OverlayTrigger>
                             : <img onClick={(e) => handleAlbumDelete(album)} src={Delete} alt="delete-icon"/>
                           }
                         </div>
