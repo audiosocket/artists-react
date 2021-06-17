@@ -7,6 +7,7 @@ import Breadcrumb from "react-bootstrap/Breadcrumb";
 import {NavLink} from "react-router-dom";
 import fetchAgreements from "../../../../common/utlis/fetchAgreements";
 import ArrowRight from "../../../../images/right-arrow.svg";
+import Notiflix from "notiflix-react";
 
 function Agreements({onChangeIsActiveProfile}) {
   const {artistState, artistActions} = React.useContext(ArtistContext);
@@ -45,7 +46,7 @@ function Agreements({onChangeIsActiveProfile}) {
         method: 'PATCH',
       });
     if(!response.ok) {
-      alert("Something went wrong, try later!");
+      Notiflix.Notify.Failure('Something went wrong, try later!');
     } else {
       const resultSet = await response.json();
       const rejected = resultSet.filter(agreement => agreement.status === "rejected");
@@ -56,7 +57,7 @@ function Agreements({onChangeIsActiveProfile}) {
         artistActions.isActiveProfileStateChanged(true);
         handleChangeIsActiveProfile(true);
       }
-      alert("agreement updated");
+      Notiflix.Notify.Success('Agreement updated!');
       setAgreements(agreements);
       artistActions.agreementsStateChanged(resultSet);
     }
@@ -69,7 +70,7 @@ function Agreements({onChangeIsActiveProfile}) {
 
   const handleClickIsActive = () => {
     if(isActiveProfile === false) {
-      alert(`You must accept agreements to unlock Artist profile`);
+      Notiflix.Notify.Failure('You must accept agreements to unlock Artist profile');
     }
   }
 

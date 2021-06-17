@@ -9,6 +9,7 @@ import { AuthContext } from "../../Store/authContext";
 import {ACCESS_TOKEN, BASE_URL, SESSION} from "../../common/api";
 import Loader from "./../../images/loader.svg"
 import fetchAgreements from "../../common/utlis/fetchAgreements";
+import Notiflix from "notiflix-react";
 
 function Login() {
   const { authActions } = React.useContext(AuthContext);
@@ -16,18 +17,28 @@ function Login() {
   const form = useRef(null);
   const [validated, setValidated] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [loginError, setLoginError] = useState(false);
   const [rememberMe, setRemeberMe] = useState(false);
 
   useEffect(() => {
     if(localStorage.getItem('user')) {
-      alert('Already logged in');
-      history.push('/');
+      //Notiflix.Report.Success('Already Logged In','Log out first to switch account.','Proceed', () => {history.push('/')});
+      Notiflix.Confirm.Show(
+        'Already Logged In',
+        'Do you want to log out?',
+        'Yes',
+        'No',
+        function(){
+          localStorage.removeItem("user");
+          localStorage.removeItem("userRole");
+        },
+        function(){
+          history.push('/')
+        }
+      );
     }
   }, [])
 
   const handleSubmit = async (e) => {
-    setLoginError(false);
     e.preventDefault();
     const loginForm = e.currentTarget;
     if (loginForm.checkValidity() === false) {
@@ -70,7 +81,7 @@ function Login() {
         }
         e.target.reset();
       } else {
-        setLoginError(true);
+        Notiflix.Notify.Failure('Invalid email/password, try again!');
       }
       setIsLoading(false);
     }
@@ -86,9 +97,6 @@ function Login() {
         <img className="" src={Logo} alt="Workflow" onClick={() => {history.push("/")}} />
       </div>
       <h2 className="">Sign in to your artist account</h2>
-      {loginError &&
-      <p className="login-error">Invalid email/password, try again!</p>
-      }
       <Form className="form" noValidate validated={validated} ref={form} onSubmit={handleSubmit}>
         <Form.Group controlId="formBasicEmail">
           <Form.Label>Email address</Form.Label>
