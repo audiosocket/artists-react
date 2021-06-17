@@ -11,6 +11,7 @@ import {ACCESS_TOKEN, ARTIST_PROFILE_UPDATE, BASE_URL} from "../../../../common/
 import DropzoneComponent from "../../../../common/Dropzone/DropzoneComponent";
 import Breadcrumb from "react-bootstrap/Breadcrumb";
 import Notes from "../../../../common/Notes/Notes";
+import fetchNotes from "../../../../common/utlis/fetchNotes";
 
 function ProfileEdit() {
   const {artistState, artistActions} = React.useContext(ArtistContext);
@@ -23,13 +24,23 @@ function ProfileEdit() {
   const [coverImage, setCoverImage] = useState(null);
   const [bannerImage, setBannerImage] = useState(null);
   const [image, setImage] = useState([]);
+  const [notes, setNotes] = useState([]);
+  const [profileSubmit, setProfileSubmit] = useState(false);
 
   useEffect(() => {
+    getNotes();
     if(!artistState.artist)
       getArtistProfile();
     else
       setArtist(artistState.artist);
   }, [artistState.artist])
+
+  const getNotes = async () => {
+    setIsLoading(true);
+    const notes = await fetchNotes();
+    setNotes(notes);
+    setIsLoading(false);
+  }
 
   const getArtistProfile = async () => {
     setIsLoading(true);
@@ -41,6 +52,8 @@ function ProfileEdit() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if(!profileSubmit)
+      return false;
     const artistForm = e.currentTarget;
     if (artistForm.checkValidity() === false) {
       e.preventDefault();
@@ -75,7 +88,9 @@ function ProfileEdit() {
       const artist = await response.json();
       if(!response.ok) {
         alert('Something went wrong, try later!');
+        setProfileSubmit(false);
       } else {
+        setProfileSubmit(false);
         setArtist(artist);
         artistActions.artistStateChanged(artist);
         history.push('/profile');
@@ -147,6 +162,14 @@ function ProfileEdit() {
     };
   }
 
+  const handleChangeNotes = (notes) => {
+    setNotes(notes);
+  }
+
+  const handleProfileSubmit = () => {
+    setProfileSubmit(true);
+  }
+
   return (
     <div className="artist-wrapper">
       <div className="asBreadcrumbs">
@@ -184,7 +207,9 @@ function ProfileEdit() {
                         type="text"
                       />
                     </Col>
-                    <Notes/>
+                    {!isLoading &&
+                      <Notes type={"ArtistProfile"} notes={notes} notable_id={artist.id} onChangeNotes={handleChangeNotes} />
+                    }
                   </Row>
                   <Row>
                     <Col xl={2} md={6}>
@@ -315,7 +340,7 @@ function ProfileEdit() {
                     <Col xl={2} md={6}></Col>
                     <Col xl={4} md={6} className="text-center">
                       <NavLink to="/profile" className="btn primary-btn btn-outline-light mr-5 cancel">Cancel</NavLink>
-                      <Button type="submit" className="btn primary-btn submit">{isLoading ? <>Saving...<img className="" src={Loader} alt="icon"/></> : "Save" }</Button>
+                      <Button type="submit" onClick={handleProfileSubmit} className="btn primary-btn submit">{isLoading ? <>Saving...<img className="" src={Loader} alt="icon"/></> : "Save" }</Button>
                     </Col>
                   </Row>
                 </Form>

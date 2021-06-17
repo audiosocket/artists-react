@@ -37,15 +37,21 @@
           .existing-notes {
             max-height: 300px;
             overflow-y: auto;
-            margin-bottom: 70px;
+            margin-bottom: 50px;
+            .note-item {
+              margin-bottom: 20px;
+            }
             .note {
               padding: 20px 20px;
-              margin-bottom: 15px;
               background-color: #f6f6f6;
               border-radius: 12px;
               max-width: 90%;
+              small {
+                text-transform: capitalize;
+              }
             }
             img {
+              margin-top: 10px;
               width: 230px;
               border-radius: 7px;
             }
@@ -59,11 +65,16 @@
               &.form-control {
                 border-radius: 48px;
                 background-color: #f6f6f6;
-                border: 0;
                 resize: none;
                 height: 48px;
                 padding: 15px 20px;
                 line-height: normal !important;
+                &:invalid {
+                  background-position: top calc(.675em + .1875rem) right calc(.375em + .1875rem);
+                }
+                &:valid {
+                  background-position: top calc(.675em + .1875rem) right calc(.375em + .1875rem);
+                }
               }
             }
             .controlArea {
@@ -80,46 +91,28 @@
                   width: 18px;
                   transform: rotate(-45deg);
                 }
+                img {
+                  width: 25px;
+                }
                 &:hover {
+                  cursor: pointer;
                   background-color: #eee;
                 }
               }
             }
           }
         }
-        // textarea {
-        //   &.form-control {
-        //     border-radius: 0;
-        //     border-width: 1px 0 0 0;
-        //     resize: none;
-        //     height: 60px;
-        //     padding: 10px 20px;
-        //     line-height: normal !important;
-        //     &:focus {
-        //       border-top: 1px solid #ced4da;
-        //     }
-        //   }
-        //   &~.controlArea {
-        //     border-top: 1px solid transparent;
-        //     padding: 7px 15px;
-        //     background-color: #ffffff;
-        //     @include transition(all 0.3s ease-in-out);
-        //     text-align: right;
-        //     label {
-        //       svg {    
-        //         width: 18px;
-        //         transform: rotate(-45deg);
-        //       }
-        //     }
-        //   }
-        //   &:focus {
-        //     &~.controlArea {
-        //       border-top: 1px solid #ced4da;
-        //       background-color: #F6F6F6;
-        //     }
-        //   }
-        // }
       }
     }
+  }
+  .was-validated {
+    textarea {
+      &.form-control {
+        &:invalid {
+          border-color: $clr-red-light;
+        }
+      }
+    }
+
   }
 }

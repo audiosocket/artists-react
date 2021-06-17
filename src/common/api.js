@@ -15,6 +15,7 @@ export const INVITE_COLLABORATORS = "api/v1/artists/invite_collaborator";
 export const LIST_COLLABORATORS = "api/v1/artists/collaborators";
 export const ARTISTS_COLLABORATORS = "api/v1/artists_collaborators";
 export const LIST_ARTISTS = "api/v1/artists";
+export const NOTES = "api/v1/notes";
 
 export const COLLABORATOR_ARTIST_PROFILE_SHOW = "api/v1/collaborator/artists/show_profile";
 export const COLLABORATOR_ALBUMS = "api/v1/collaborator/albums";

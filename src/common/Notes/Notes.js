@@ -3,33 +3,81 @@ import "./Notes.scss"
 import NotesIcon from "../../images/add-notes.svg";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import Loader from "../../images/loader.svg";
-import dummy from "../../images/artist-banner.jpg";
+import {ACCESS_TOKEN, BASE_URL, NOTES} from "../api";
+import Notiflix from "notiflix-react";
+import Tooltip from "react-bootstrap/Tooltip";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 
-function Notes() {
+function Notes(props) {
   const [showNotesModal, setShowNotesModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const form = useRef(null);
+  const [file, setFile] = useState(null);
+  const formNotes = useRef(null);
   const [validated, setValidated] = useState(false);
 
-  const handleSubmitNotes = () => {
-
+  const handleSubmitNotes = async (e) => {
+    e.preventDefault();
+    const musicForm = e.currentTarget;
+    if (musicForm.checkValidity() === false) {
+      e.preventDefault();
+      e.stopPropagation();
+      setValidated(true);
+    } else {
+      setIsLoading(true);
+      const data = new FormData(formNotes.current);
+      if(!file) {
+        data.delete('file')
+      } else {
+        data.delete('file')
+        data.append('files[]', file);
+      }
+      data.append('notable_id', props.notable_id)
+      const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
+      const response = await fetch(`${BASE_URL}${NOTES}?notable_type=${props.type}`,
+        {
+          headers: {
+            "authorization": ACCESS_TOKEN,
+            "auth-token": userAuthToken
+          },
+          method: "POST",
+          body: data
+        });
+      if(response.ok) {
+        const results = await response.json();
+        Notiflix.Notify.Success('Note added, your request will be proceed soon!');
+        props.onChangeNotes(results);
+        handleClose();
+      } else {
+        Notiflix.Notify.Failure('Something went wrong, try again!');
+      }
+      setIsLoading(false);
+    }
   }
 
-  const handleShowNotesModal = () => {
+  const handleFileChange = (e) => {
+    e.preventDefault();
+    if(e.target.files[0])
+      setFile(e.target.files[0])
+  }
+
+  const handleShowNotesModal = (e) => {
+    e.preventDefault();
     setShowNotesModal(!showNotesModal);
   }
 
   const handleClose = () => {
-
+    setShowNotesModal(false);
+    setValidated(false);
+    setFile(null);
   }
 
   return (
     <div className="notes-container">
-      <span className="notes-badge">2</span>
+      {props.notes.length > 0 &&
+        <span className="notes-badge">{props.notes.length}</span>
+      }
       <img onClick={handleShowNotesModal} src={NotesIcon} alt="add-note"/>
       {showNotesModal &&
         <Modal
@@ -40,7 +88,7 @@ function Notes() {
           centered
           className="notes-modal customArtistModal"
         >
-          <Form noValidate validated={validated} ref={form} onSubmit={handleSubmitNotes}>
+          <Form noValidate validated={validated} ref={formNotes} onSubmit={handleSubmitNotes}>
             <Modal.Header closeButton>
               <Modal.Title id="contained-modal-title-vcenter">
                 Notes
@@ -50,48 +98,67 @@ function Notes() {
               <div className="notes-modal-container">
                 <div className="section">
                   <div className="existing-notes">
-                    <div className="note">
-                      Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-                    </div>
-                    <div className="note">
-                      Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-                    </div>
-                    <img src={dummy} alt="Picture"/>
+                  {props.notes.length > 0 &&
+                    props.notes.map((note, key) => {
+                      return (
+                        <div key={key} className="note-item">
+                          <div className="note">
+                            {note.description}
+                            <small><br/>- {note.status === 'pending' ? 'In process' : note.status}</small>
+                          </div>
+                          {note.files.length > 0 &&
+                            <img src={note.files[0]} alt="Picture"/>
+                          }
+                        </div>
+                      )
+                    })
+                  }
                   </div>
+                  <Form.Control
+                    required
+                    rows={3}
+                    name="form"
+                    type="hidden"
+                    value={"notes"}
+                    placeholder="Type a note*"
+                  />
                   <div className="typeSec">
                     <div className="form-group">
                       <Form.Control
                         required
                         as="textarea"
                         rows={3}
-                        name="name"
+                        name="description"
                         type="textarea"
                         defaultValue={''}
                         placeholder="Type a note*"
                       />
-                      <Form.Control.Feedback type="invalid">
-                        Message is required!
-                      </Form.Control.Feedback>
                     </div>
-                    <div className="controlArea">
-                      <label>
-                        <Form.File
-                          accept=".png, .jpg, .svg"
-                          name="attachments"
-                          label={""}
-                          lang="en"
-                          className="d-none"
-                        />
-                        <svg aria-hidden="true" focusable="false" data-prefix="far" data-icon="paperclip" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="svg-inline--fa fa-paperclip fa-w-16 fa-5x"><path fill="gray" d="M67.508 468.467c-58.005-58.013-58.016-151.92 0-209.943l225.011-225.04c44.643-44.645 117.279-44.645 161.92 0 44.743 44.749 44.753 117.186 0 161.944l-189.465 189.49c-31.41 31.413-82.518 31.412-113.926.001-31.479-31.482-31.49-82.453 0-113.944L311.51 110.491c4.687-4.687 12.286-4.687 16.972 0l16.967 16.971c4.685 4.686 4.685 12.283 0 16.969L184.983 304.917c-12.724 12.724-12.73 33.328 0 46.058 12.696 12.697 33.356 12.699 46.054-.001l189.465-189.489c25.987-25.989 25.994-68.06.001-94.056-25.931-25.934-68.119-25.932-94.049 0l-225.01 225.039c-39.249 39.252-39.258 102.795-.001 142.057 39.285 39.29 102.885 39.287 142.162-.028A739446.174 739446.174 0 0 1 439.497 238.49c4.686-4.687 12.282-4.684 16.969.004l16.967 16.971c4.685 4.686 4.689 12.279.004 16.965a755654.128 755654.128 0 0 0-195.881 195.996c-58.034 58.092-152.004 58.093-210.048.041z" class=""></path></svg>
-                      </label>
-                    </div>
+                    <OverlayTrigger overlay={<Tooltip>{file ? file.name+" uploaded" : "Add attachment"}</Tooltip>}>
+                      <div className="controlArea">
+                        <label>
+                          <Form.File
+                            accept=".png, .jpg, .svg"
+                            name="file"
+                            onChange={handleFileChange}
+                            label={""}
+                            lang="en"
+                            className="d-none"
+                          />
+                          {file
+                            ? <img className="preview" src={URL.createObjectURL(file)}></img>
+                            : <svg aria-hidden="true" focusable="false" data-prefix="far" data-icon="paperclip" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" className="svg-inline--fa fa-paperclip fa-w-16 fa-5x"><path fill="gray" d="M67.508 468.467c-58.005-58.013-58.016-151.92 0-209.943l225.011-225.04c44.643-44.645 117.279-44.645 161.92 0 44.743 44.749 44.753 117.186 0 161.944l-189.465 189.49c-31.41 31.413-82.518 31.412-113.926.001-31.479-31.482-31.49-82.453 0-113.944L311.51 110.491c4.687-4.687 12.286-4.687 16.972 0l16.967 16.971c4.685 4.686 4.685 12.283 0 16.969L184.983 304.917c-12.724 12.724-12.73 33.328 0 46.058 12.696 12.697 33.356 12.699 46.054-.001l189.465-189.489c25.987-25.989 25.994-68.06.001-94.056-25.931-25.934-68.119-25.932-94.049 0l-225.01 225.039c-39.249 39.252-39.258 102.795-.001 142.057 39.285 39.29 102.885 39.287 142.162-.028A739446.174 739446.174 0 0 1 439.497 238.49c4.686-4.687 12.282-4.684 16.969.004l16.967 16.971c4.685 4.686 4.689 12.279.004 16.965a755654.128 755654.128 0 0 0-195.881 195.996c-58.034 58.092-152.004 58.093-210.048.041z"></path></svg>
+                          }
+                        </label>
+                      </div>
+                    </OverlayTrigger>
                   </div>
                 </div>
               </div>
             </Modal.Body>
             <Modal.Footer>
-              <Button className="btn btn-outline-light" onClick={handleClose}>Cancel</Button>
-              <Button type="submit" className="btn primary-btn submit">{isLoading ? <>Creating...<img src={Loader} alt="icon"/></> : "Add note"}</Button>
+              <Button onClick={handleClose} className="btn btn-outline-light">Cancel</Button>
+              <Button type="submit" className="btn primary-btn submit">{isLoading ? <>Adding...<img src={Loader} alt="icon"/></> : "Add note"}</Button>
             </Modal.Footer>
           </Form>
         </Modal>
