@@ -8,13 +8,13 @@ import Button from 'react-bootstrap/Button';
 import {ACCESS_TOKEN, BASE_URL, RESET_PASSWORD} from "../../common/api";
 import Loader from "./../../images/loader.svg"
 import Back from "../../images/back.svg";
+import Notiflix from "notiflix-react";
 
 function ResetPassword({userHash = ''}) {
   const history = useHistory();
   const form = useRef(null);
   const [validated, setValidated] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [responseMessage, setResponseMessage] = useState('');
   const [isConfirmError, setIsConfirmError] = useState(false);
 
   useEffect(() => {
@@ -29,7 +29,6 @@ function ResetPassword({userHash = ''}) {
   }, [])
 
   const handleSubmit = async (e) => {
-    setResponseMessage('');
     e.preventDefault();
     const forgotPasswordForm = e.currentTarget;
     if (forgotPasswordForm.checkValidity() === false) {
@@ -50,9 +49,13 @@ function ResetPassword({userHash = ''}) {
         });
       if(response.ok) {
         e.target.reset();
-        setResponseMessage('success');
+        Notiflix.Report.Success( 'Success', `Password updated, login to proceed!`, 'Login', () => {
+          history.push('/login')
+        } );
       } else {
-        setResponseMessage('error');
+        Notiflix.Report.Failure( 'Error', `Link broken or not valid!`, 'Ok', () => {
+          history.push('/login')
+        } );
       }
       setIsLoading(false);
     }
@@ -76,36 +79,28 @@ function ResetPassword({userHash = ''}) {
         <img className="" src={Logo} alt="Workflow" onClick={() => {history.push("/")}} />
       </div>
       <h2 className="">Reset your password</h2>
-      {responseMessage === 'error'
-        ? <p className="login-error">Link broken or not valid!</p>
-        : responseMessage === 'success' ? <h4 className="mb-4 success">Password updated, login to proceed!</h4> : ''
-      }
       <Form className="form" noValidate validated={validated} ref={form} onSubmit={handleSubmit}>
-        {responseMessage !== 'success' &&
-          <>
-            <Form.Group controlId="formBasicPassword">
-              <Form.Label>Password</Form.Label>
-              <Form.Control onChange={handleConfirmPassword} required type="password" name="password" placeholder="Password"/>
-              <Form.Control.Feedback type="invalid">
-                This field is required!
-              </Form.Control.Feedback>
-            </Form.Group>
-            <Form.Group className={isConfirmError && 'invalid'} controlId="formBasicPasswordConfirm">
-              <Form.Label>Confirm Password</Form.Label>
-              <Form.Control onChange={handleConfirmPassword} required type="password" name="password_confirmation" placeholder="Confirm Password"/>
-              {!isConfirmError &&
-              <Form.Control.Feedback type="invalid">
-                This field is required!
-              </Form.Control.Feedback>
-              }
-              {isConfirmError &&
-              <small className="invalid">
-                Passwords don't match
-              </small>
-              }
-            </Form.Group>
-          </>
-        }
+        <Form.Group controlId="formBasicPassword">
+          <Form.Label>Password</Form.Label>
+          <Form.Control onChange={handleConfirmPassword} required type="password" name="password" placeholder="Password"/>
+          <Form.Control.Feedback type="invalid">
+            This field is required!
+          </Form.Control.Feedback>
+        </Form.Group>
+        <Form.Group className={isConfirmError && 'invalid'} controlId="formBasicPasswordConfirm">
+          <Form.Label>Confirm Password</Form.Label>
+          <Form.Control onChange={handleConfirmPassword} required type="password" name="password_confirmation" placeholder="Confirm Password"/>
+          {!isConfirmError &&
+          <Form.Control.Feedback type="invalid">
+            This field is required!
+          </Form.Control.Feedback>
+          }
+          {isConfirmError &&
+          <small className="invalid">
+            Passwords don't match
+          </small>
+          }
+        </Form.Group>
         <div className="block-inline remember-text">
           <div className="text-sm">
             <NavLink to={"/login"}>

@@ -8,13 +8,13 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import {ACCESS_TOKEN, BASE_URL, FORGOT_PASSWORD} from "../../common/api";
 import Loader from "./../../images/loader.svg"
+import Notiflix from "notiflix-react";
 
 function ForgotPassword() {
   const history = useHistory();
   const form = useRef(null);
   const [validated, setValidated] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [responseMessage, setResponseMessage] = useState('');
 
   useEffect(() => {
     if(localStorage.getItem('user')) {
@@ -24,7 +24,6 @@ function ForgotPassword() {
   }, [])
 
   const handleSubmit = async (e) => {
-    setResponseMessage('');
     e.preventDefault();
     const forgotPasswordForm = e.currentTarget;
     if (forgotPasswordForm.checkValidity() === false) {
@@ -44,10 +43,12 @@ function ForgotPassword() {
           body: data
         });
       if(response.ok) {
-        setResponseMessage("success");
+        Notiflix.Report.Success( 'Success', `Password reset link sent to ${data.get('email')}!`, 'Ok', () => {
+          history.push('/login')
+        } );
         e.target.reset();
       } else {
-        setResponseMessage("error");
+        Notiflix.Report.Failure( 'Error', `User "${data.get('email')}" doesn't exists, please enter a valid email address.`, 'Ok' );
       }
       setIsLoading(false);
     }
@@ -59,10 +60,6 @@ function ForgotPassword() {
         <img className="" src={Logo} alt="Workflow" onClick={() => {history.push("/")}} />
       </div>
       <h2 className="">Get a link to reset your password on your email</h2>
-      {responseMessage === 'error'
-        ? <p className="login-error">User doesn't exist!</p>
-        : responseMessage === 'success' ? <h4 className="mb-4 success">Password reset link sent to your email address!</h4> : ''
-      }
       <Form className="form" noValidate validated={validated} ref={form} onSubmit={handleSubmit}>
         <Form.Group controlId="formBasicEmail">
           <Form.Label>Email address</Form.Label>
