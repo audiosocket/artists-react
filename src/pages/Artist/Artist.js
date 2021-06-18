@@ -16,7 +16,7 @@ function Artist() {
   const [isActiveProfile, setIsActiveProfile] = useState(true);
   const [isProfileCompleted, setIsProfileCompleted] = useState(true);
   const [toggleSidebar, setToggleSidebar] = useState(false);
-  const userRole = JSON.parse(localStorage.getItem("userRole") ?? "");
+  const userRole = localStorage.getItem("userRole") ? JSON.parse(localStorage.getItem("userRole") ?? "") : "";
 
   const handleChangeIsActiveProfile = (isActiveProfile) => {
     setIsActiveProfile(isActiveProfile);
