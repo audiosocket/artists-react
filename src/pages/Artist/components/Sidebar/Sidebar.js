@@ -1,17 +1,23 @@
 import React from "react";
 import './Sidebar.scss';
-import {NavLink} from "react-router-dom";
+import {NavLink, useHistory} from "react-router-dom";
 import {ArtistContext} from "../../../../Store/artistContext";
+import Notiflix from "notiflix-react";
 
 function Sidebar() {
   const {artistState} = React.useContext(ArtistContext);
+  const history = useHistory();
 
   const handleClickIsActive = (page) => {
     if(artistState.isActiveProfile === false) {
-      alert(`You must accept agreements to unlock ${page} page`);
+      Notiflix.Report.Warning( 'Not authorized', `You must accept agreements to unlock ${page} page`, 'Go to agreements', () => {
+        history.push('/agreements');
+      } );
     }
     else if(artistState.isProfileCompleted === false && (page === 'Partners' || page === 'Music')) {
-      alert(`You must complete artist profile to unlock ${page} page`);
+      Notiflix.Report.Warning( 'Not authorized', `You must complete artist profile to unlock ${page} page`, 'Go to profile', () => {
+        history.push('/profile');
+      } );
     }
   }
 

@@ -3,19 +3,27 @@ import "./Profile.scss";
 import {ArtistContext} from "../../../../Store/artistContext";
 import fetchArtist from "../../../../common/utlis/fetchArtist";
 import Loader from "../../../../images/loader.svg";
-import {NavLink} from "react-router-dom";
+import {NavLink, useHistory} from "react-router-dom";
 import Breadcrumb from "react-bootstrap/Breadcrumb";
+import Notiflix from "notiflix-react";
 
 function Profile() {
   const {artistState, artistActions} = React.useContext(ArtistContext);
   const [isLoading, setIsLoading] = useState(false);
   const [artist, setArtist] = useState({});
+  const history = useHistory();
 
   useEffect(() => {
     if(!artistState.artist)
       getArtistProfile();
-    else
+    else {
+      if(Object.keys(artistState.artist).length <= 1) {
+        Notiflix.Report.Failure( 'Not accessible', `You don't have access to profile!`, 'Ok', () => {
+          history.push("/");
+        } );
+      }
       setArtist(artistState.artist);
+    }
   }, [artistState.artist])
 
   const getArtistProfile = async () => {
@@ -80,7 +88,7 @@ function Profile() {
               <div className="parallel-info">
                 <label>additional images</label>
                 <div className="info-ans additional-elements image">
-                  {!artist.additional_images.length
+                  {!artist.additional_images
                     ?
                     <div className="bg-content yellow w-custom-bg-content">
                       Have additional images for us? <NavLink to="/profile/edit">Upload them here</NavLink> for <span
@@ -130,8 +138,8 @@ function Profile() {
               <div className="parallel-info social">
                 <label>Social Links</label>
                 <div className="info-ans">
-                  {!artist.social.length && '-'}
-                  {artist.social.map((link, key) => {
+                  {!artist.social && '-'}
+                  {artist.social && artist.social.map((link, key) => {
                     return (
                       link
                         ?

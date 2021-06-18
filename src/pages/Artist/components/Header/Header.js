@@ -21,6 +21,7 @@ import help from '../../../../images/as-help.svg';
 import signout from '../../../../images/as-signout.svg';
 import artist from '../../../../images/as-artist.svg';
 import fetchArtistsList from "../../../../common/utlis/fetchArtistsList";
+import Notiflix from "notiflix-react";
 
 function Header({onToggleSidebar, onChangeIsActiveProfile, onChangeIsProfileCompleted}) {
   const history = useHistory();
@@ -83,10 +84,11 @@ function Header({onToggleSidebar, onChangeIsActiveProfile, onChangeIsProfileComp
       if(!response.ok) {
         const resultSet = await response.json();
         if (resultSet.message.toLowerCase() === 'signature has expired') {
-          alert('Session expired, login again to access!');
-          localStorage.removeItem("user");
-          localStorage.removeItem("userRole");
-          history.push('/login');
+          Notiflix.Report.Failure( 'Session expired', `Your session is timed out, please login again to continue.`, 'Login', () => {
+            localStorage.removeItem("user");
+            localStorage.removeItem("userRole");
+            history.push('/login');
+          } );
           return
         }
       }
@@ -125,10 +127,11 @@ function Header({onToggleSidebar, onChangeIsActiveProfile, onChangeIsProfileComp
     const artist = await fetchArtist(artist_id);
     if(artist.message) {
       if (artist.message.toLowerCase() === 'signature has expired') {
-        alert('Session expired, login again to access!');
-        localStorage.removeItem("user");
-        localStorage.removeItem("userRole");
-        history.push('/login');
+        Notiflix.Report.Failure( 'Session expired', `Your session is timed out, please login again to continue.`, 'Login', () => {
+          localStorage.removeItem("user");
+          localStorage.removeItem("userRole");
+          history.push('/login');
+        } );
         return;
       }
     }
@@ -183,7 +186,9 @@ function Header({onToggleSidebar, onChangeIsActiveProfile, onChangeIsProfileComp
       artistActions.selectedArtistStateChanged(selectedArtist);
       setSelectedArtist(selectedArtist);
     } else {
-      alert(`You can't access ${selectedArtist.first_name} ${selectedArtist.last_name}'s portal without accepting their invite!`);
+      Notiflix.Report.Warning( 'Not authorized', `You can't access ${selectedArtist.first_name}${selectedArtist.last_name ? ' '+selectedArtist.last_name : ''}'s portal without accepting their invite!`, 'Go to invites', () => {
+        history.push('/invites');
+      } );
       return false;
     }
   }

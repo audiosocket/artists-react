@@ -32,8 +32,14 @@ function ProfileEdit() {
     getNotes();
     if(!artistState.artist)
       getArtistProfile();
-    else
+    else {
+      if(Object.keys(artistState.artist).length <= 1) {
+        Notiflix.Report.Failure( 'Not accessible', `You don't have access to profile!`, 'Ok', () => {
+          history.push("/");
+        } );
+      }
       setArtist(artistState.artist);
+    }
   }, [artistState.artist])
 
   const getNotes = async () => {
@@ -259,7 +265,7 @@ function ProfileEdit() {
                     </Col>
                     <Col xl={10} md={10}>
                       <div className="info-ans additional-elements image">
-                        {artist.additional_images.length !== 0 &&
+                        {artist.additional_images &&
                           artist.additional_images.map((image, key) => {
                             return (
                               <img key={key} className="additional-image" src={image} alt="Image" />
@@ -325,21 +331,21 @@ function ProfileEdit() {
                     <Col xl={4} md={6}>
                       <Form.Control
                         name="social[]"
-                        defaultValue={artist.social[0] ?? ""}
+                        defaultValue={artist.social ? artist.social[0] ?? "" : ""}
                         type="text"
                         placeholder="Social link 1"
                         className="mb-1"
                       />
                       <Form.Control
                         name="social[]"
-                        defaultValue={artist.social[1] ?? ""}
+                        defaultValue={artist.social ? artist.social[1] ?? "" : ""}
                         type="text"
                         placeholder="Social link 2"
                         className="mb-1"
                       />
                       <Form.Control
                         name="social[]"
-                        defaultValue={artist.social[2] ?? ""}
+                        defaultValue={artist.social ? artist.social[2] ?? "" : ""}
                         type="text"
                         placeholder="Social link 3"
                         className="mb-1"
