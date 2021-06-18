@@ -34,6 +34,7 @@ function Partners() {
   const [pro, setPro] = useState(null);
   const [proError, setProError] = useState(false);
   const proRef = useRef(null);
+  const [differentName, setDifferentName] = useState(false);
   const [agreements, setAgreements] = useState(false);
   const [access, setAccess] = useState(false);
   const [selectedPartner, setSelectedPartner] = useState(null);
@@ -76,18 +77,25 @@ function Partners() {
     } else {
       setIsLoading(true);
       const data = new FormData(form.current);
-      if(data.get("agreements") && data.get("agreements") === "true")
-        data.set("agreements", true);
+      if(pro)
+        data.append("collaborator_profile_attributes[pro]", pro)
+      if(!pro && selectedPartner.collaborator_profile.pro) {
+        data.append("collaborator_profile_attributes[pro]", selectedPartner.collaborator_profile.pro)
+      }
+      if(data.get("collaborator_profile_attributes[different_registered_name]"))
+        data.set("collaborator_profile_attributes[different_registered_name]", true)
       else
-        data.set("agreements", false);
+        data.set("collaborator_profile_attributes[different_registered_name]", false)
+      if(data.get("agreements") && data.get("agreements") === "true" && !data.get("access")) {
+        data.delete("agreements")
+        data.set("access", "read");
+      }
       if(data.get("access") && data.get("access") === "true")
         data.set("access", "write");
-      else
-        data.set("access", "read");
       if(selectedPartner) {
         data.delete("email");
       }
-      const url = selectedPartner ? `${BASE_URL}${ARTISTS_COLLABORATORS}/${selectedPartner.id}/update_access` : `${BASE_URL}${INVITE_COLLABORATORS}`;
+      const url = selectedPartner ? `${BASE_URL}${ARTISTS_COLLABORATORS}/${selectedPartner.id}` : `${BASE_URL}${INVITE_COLLABORATORS}`;
       const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
       const response = await fetch(url,
         {
@@ -157,8 +165,9 @@ function Partners() {
   const handleShowCollaboratorModal = (e, collaborator = null) => {
     if(collaborator) {
       setSelectedPartner(collaborator);
-      setAgreements(collaborator.agreements ?? false)
-      setAccess(collaborator.access === "write" ? true : false)
+      setDifferentName(collaborator.collaborator_profile ? !!collaborator.collaborator_profile.different_registered_name : false)
+      setAgreements(collaborator.access === "read")
+      setAccess(collaborator.access === "write")
     }
     setShowPublisherModal(false);
     setShowCollaboratorModal(true);
@@ -183,6 +192,7 @@ function Partners() {
     setPro(null);
     setProError(false);
     setIsLoading(false);
+    setDifferentName(false);
   }
 
   const handleChangeAgreements = (e) => {
@@ -235,6 +245,10 @@ function Partners() {
         setPublishers(publishers);
       }
     }
+  }
+
+  const handleChangeDifferentName = (e) => {
+    setDifferentName(!differentName);
   }
 
   return (
@@ -342,7 +356,8 @@ function Partners() {
                   <Col xs={12}>
                     <div className="form-group">
                       <Form.Control
-                        required
+                        required={!selectedPartner}
+                        readOnly={!!selectedPartner}
                         name="name"
                         type="text"
                         defaultValue={selectedPartner ? selectedPartner.last_name ? selectedPartner.first_name + ' '+ selectedPartner.last_name : selectedPartner.first_name : ''}
@@ -357,6 +372,7 @@ function Partners() {
                     <div className="form-group">
                       <Form.Control
                         readOnly={!!selectedPartner}
+                        required={!selectedPartner}
                         name="email"
                         type="email"
                         defaultValue={selectedPartner ? selectedPartner.email : ''}
@@ -370,9 +386,9 @@ function Partners() {
                   <Col xs={12}>
                     <div className="form-group">
                       <Form.Control
-                        name="ipi"
+                        name="collaborator_profile_attributes[ipi]"
                         type="text"
-                        defaultValue={''}
+                        defaultValue={selectedPartner && selectedPartner.collaborator_profile ? selectedPartner.collaborator_profile.ipi : ''}
                         placeholder="CAE/IPI # (optional)"
                       />
                       <div>
@@ -391,7 +407,7 @@ function Partners() {
                         className="pro-select-container-header"
                         classNamePrefix="pro-select-header react-select-popup"
                         options={PRO_LIST}
-                        defaultValue={selectedPartner ? selectedPartner.pro ? PRO_LIST.filter(item => item.value === selectedPartner.pro) : {label: "Select PRO", value: null} : {label: "Select PRO", value: null}}
+                        defaultValue={selectedPartner && selectedPartner.collaborator_profile ? PRO_LIST.filter(item => item.value === selectedPartner.collaborator_profile.pro) : {label: "Select PRO", value: null}}
                         onChange={(target) => setPro(target.value)}
                         maxMenuHeight={160}
                         theme={theme => ({
@@ -408,14 +424,17 @@ function Partners() {
 
                   <Col xs={12}>
                     <div className="form-group">
-                      <label htmlFor="is_pro_knows" className="checkbox my-3">
+                      <label htmlFor="collaborator_profile_attributes[different_registered_name]" className="checkbox my-3">
                         <input
-                          name="is_pro_knows"
-                          id="is_pro_knows"
+                          name="collaborator_profile_attributes[different_registered_name]"
+                          id="collaborator_profile_attributes[different_registered_name]"
                           type="checkbox"
+                          value={differentName}
+                          checked={differentName}
+                          onChange={handleChangeDifferentName}
                         />
                           My PRO knows me by a different registered name.
-                          <span className={"checkmark"}></span>
+                          <span className={differentName ? "checkmark checked" : "checkmark"}></span>
                     </label>
                     </div>
                   </Col>
