@@ -10,6 +10,7 @@ import {NavLink, useHistory} from "react-router-dom";
 import {Breadcrumb} from "react-bootstrap";
 import Loader from "../../../../images/loader.svg";
 import Button from "react-bootstrap/Button";
+import Notiflix from "notiflix-react";
 
 function AlbumArtwrok({id = null}) {
   const {artistState, artistActions} = React.useContext(ArtistContext);
@@ -34,7 +35,12 @@ function AlbumArtwrok({id = null}) {
     const albums = await fetchAlbums();
     artistActions.albumsStateChanged(albums);
     const filteredAlbum = albums.filter(album => parseInt(album.id) === parseInt(id));
-    setAlbum(filteredAlbum[0] ?? null)
+    if(filteredAlbum.length > 0)
+      setAlbum(filteredAlbum[0]);
+    else {
+      history.push('/music');
+      Notiflix.Report.Failure( 'Invalid album', `Album doesn't exist`, 'Ok');
+    }
     setIsLoading(false);
   }
 
@@ -42,7 +48,7 @@ function AlbumArtwrok({id = null}) {
     e.preventDefault();
     const albumForm = e.currentTarget;
     if(!artwork) {
-      alert("Update artwork before saving!")
+      Notiflix.Report.Info( 'Select artwork', `Please select artwork image for your album before saving!`, 'Ok' );
     }
     if (albumForm.checkValidity() === false) {
       e.preventDefault();
@@ -65,10 +71,11 @@ function AlbumArtwrok({id = null}) {
           body: data
         });
       if (!response.ok) {
-        alert('Something went wrong, try later!');
+        Notiflix.Notify.Failure('Something went wrong, try later!');
       } else {
         const albums = await fetchAlbums();
         artistActions.albumsStateChanged(albums);
+        Notiflix.Notify.Success('Arwork updated successfully!');
         history.push(`/music/album/${id}`);
       }
       setIsLoading(false);
@@ -90,7 +97,7 @@ function AlbumArtwrok({id = null}) {
         let height = this.height;
         let width = this.width;
         if (width < 353 || height < 353) {
-          alert("Artwork Image must be min 353px x 353px\nUploaded image is "+width+"px x "+height+"px!");
+          Notiflix.Report.Warning( 'Upload failed', `Artwork Image must be min 353px x 353px\nUploaded image is ${width}px x ${height}!`, 'Ok' );
           return false;
         } else {
           setArtwork(img)

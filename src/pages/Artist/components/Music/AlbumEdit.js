@@ -12,6 +12,7 @@ import Loader from "../../../../images/loader.svg";
 import Button from "react-bootstrap/Button";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
+import Notiflix from "notiflix-react";
 
 function AlbumEdit({id = null}) {
   const {artistState, artistActions} = React.useContext(ArtistContext);
@@ -41,6 +42,9 @@ function AlbumEdit({id = null}) {
             setIsDeletable(false);
           }
         }
+      } else {
+        history.push('/music');
+        Notiflix.Report.Failure( 'Invalid album', `Album doesn't exist`, 'Ok');
       }
     } else {
       getAlbum();
@@ -60,6 +64,9 @@ function AlbumEdit({id = null}) {
         const year = filteredAlbum[0].release_date.substr(6, 4);
         setSelectedAlbumDate(`${year}-${month}-${day}`);
       }
+    } else {
+      history.push('/music');
+      Notiflix.Report.Failure( 'Invalid album', `Album doesn't exist`, 'Ok');
     }
     setIsLoading(false);
   }
@@ -85,10 +92,11 @@ function AlbumEdit({id = null}) {
           body: data
         });
       if (!response.ok) {
-        alert('Something went wrong, try later!');
+        Notiflix.Notify.Failure('Something went wrong, try later!');
       } else {
         const albums = await fetchAlbums();
         artistActions.albumsStateChanged(albums);
+        Notiflix.Notify.Success('Album updated successfully!');
         history.push(`/music/album/${id}`);
       }
       setIsLoading(false);
@@ -97,27 +105,34 @@ function AlbumEdit({id = null}) {
 
   const handleAlbumDelete = async (e) => {
     e.preventDefault();
-    if(window.confirm(`Are you sure to delete "${album.name}"?`)) {
-      setIsDeleting(true);
-      const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
-      const response = await fetch(`${BASE_URL}${ALBUMS}/${id}`,
-        {
-          headers: {
-            "authorization": ACCESS_TOKEN,
-            "auth-token": userAuthToken
-          },
-          method: "DELETE"
-        });
-      if (!response.ok) {
-        alert('Something went wrong, try later!');
-        setIsDeleting(false);
-      } else {
-        const albums = await fetchAlbums();
-        artistActions.albumsStateChanged(albums);
-        setIsDeleting(false);
-        history.push(`/music`);
+    Notiflix.Confirm.Show(
+      'Please confirm',
+      `Are you sure to delete album "${album.name}"?`,
+      'Yes',
+      'No',
+      async function(){
+        setIsDeleting(true);
+        const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
+        const response = await fetch(`${BASE_URL}${ALBUMS}/${id}`,
+          {
+            headers: {
+              "authorization": ACCESS_TOKEN,
+              "auth-token": userAuthToken
+            },
+            method: "DELETE"
+          });
+        if (!response.ok) {
+          Notiflix.Notify.Failure('Something went wrong, try later!');
+          setIsDeleting(false);
+        } else {
+          const albums = await fetchAlbums();
+          artistActions.albumsStateChanged(albums);
+          setIsDeleting(false);
+          Notiflix.Notify.Success('Album deleted successfully!');
+          history.push(`/music`);
+        }
       }
-    }
+    );
   }
 
   return (

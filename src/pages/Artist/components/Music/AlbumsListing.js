@@ -9,7 +9,7 @@ import {ArtistContext} from "../../../../Store/artistContext";
 import fetchAlbums from "../../../../common/utlis/fetchAlbums";
 import Loader from "../../../../images/loader.svg";
 import Edit from "../../../../images/pencil.svg";
-import {ACCESS_TOKEN, ALBUMS, BASE_URL} from "../../../../common/api";
+import {ACCESS_TOKEN, ALBUMS, BASE_URL, PUBLISHERS} from "../../../../common/api";
 import Form from "react-bootstrap/Form";
 import {NavLink} from "react-router-dom";
 import Breadcrumb from 'react-bootstrap/Breadcrumb';
@@ -17,6 +17,7 @@ import Delete from "../../../../images/delete.svg";
 import DeleteDisable from "../../../../images/delete-slash.png";
 import Tooltip from "react-bootstrap/Tooltip";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import Notiflix from "notiflix-react";
 
 function AlbumsListing() {
   const {artistState, artistActions} = React.useContext(ArtistContext);
@@ -69,7 +70,7 @@ function AlbumsListing() {
           body: data
         });
       if (!response.ok) {
-        alert('Something went wrong, try later!');
+        Notiflix.Notify.Failure('Something went wrong, try later!');
       } else {
         if(artwork) {
           const result = await response.json();
@@ -83,7 +84,7 @@ function AlbumsListing() {
               body: data
             });
           if (!responseArtwork.ok) {
-            alert('Something went wrong, try later!');
+            Notiflix.Notify.Failure('Something went wrong, try later!');
           }
         }
         const albums = await fetchAlbums();
@@ -91,6 +92,7 @@ function AlbumsListing() {
         artistActions.albumsStateChanged(albums);
         handleClose();
         e.target.reset();
+        Notiflix.Report.Success( 'Request fulfilled', `Album ${selectedAlbum ? "updated" : "created"} successfully!`, 'Ok' );
       }
       setIsLoading(false);
     }
@@ -119,25 +121,56 @@ function AlbumsListing() {
   }
 
   const handleAlbumDelete = async (album) => {
-    if(window.confirm(`Are you sure to delete "${album.name}"?`)) {
-      const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
-      const response = await fetch(`${BASE_URL}${ALBUMS}/${album.id}`,
-        {
-          headers: {
-            "authorization": ACCESS_TOKEN,
-            "auth-token": userAuthToken
-          },
-          method: "DELETE"
-        });
-      if (!response.ok) {
-        alert('Something went wrong, try later!');
-      } else {
-        alert("Album deleted!");
-        const albums = await fetchAlbums();
-        artistActions.albumsStateChanged(albums);
-        setAlbums(albums);
+    Notiflix.Confirm.Show(
+      'Please confirm',
+      `Are you sure to delete album "${album.name}"?`,
+      'Yes',
+      'No',
+      async function(){
+        const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
+        const response = await fetch(`${BASE_URL}${ALBUMS}/${album.id}`,
+          {
+            headers: {
+              "authorization": ACCESS_TOKEN,
+              "auth-token": userAuthToken
+            },
+            method: "DELETE"
+          });
+        if (!response.ok) {
+          Notiflix.Notify.Failure('Something went wrong, try later!');
+        } else {
+          Notiflix.Report.Success( 'Request fulfilled', `Album "${album.name}" deleted successfully!`, 'Ok' );
+          const albums = await fetchAlbums();
+          artistActions.albumsStateChanged(albums);
+          setAlbums(albums);
+        }
       }
-    }
+    );
+  }
+
+  const handleUploadArtwork = (e) => {
+    let img = e.target.files[0];
+    let reader = new FileReader();
+    //Read the contents of Image File.
+    reader.readAsDataURL(e.target.files[0]);
+    reader.onload = function (e) {
+      //Initiate the JavaScript Image object.
+      let image = new Image();
+      //Set the Base64 string return from FileReader as source.
+      image.src = e.target.result;
+      //Validate the File Height and Width.
+      image.onload = function () {
+        let height = this.height;
+        let width = this.width;
+        if (width < 353 || height < 353) {
+          Notiflix.Report.Warning( 'Upload failed', `Artwork Image must be min 353px x 353px\nUploaded image is ${width}px x ${height}!`, 'Ok' );
+          return false;
+        } else {
+          setArtwork(img)
+          return false;
+        }
+      };
+    };
   }
 
   return (
@@ -261,7 +294,7 @@ function AlbumsListing() {
                     <div className="form-group">
                       <Form.File
                         accept=".png, .jpg, .svg"
-                        onChange={(e) => {setArtwork(e.target.files[0])}}
+                        onChange={handleUploadArtwork}
                         name="artwork"
                         label={artwork ? artwork.name : selectedAlbum && selectedAlbum.artwork ? selectedAlbum.artwork.split('/')[selectedAlbum.artwork.split("/").length-1] : ""}
                         lang="en"

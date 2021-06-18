@@ -129,7 +129,7 @@ function ProfileEdit() {
         let height = this.height;
         let width = this.width;
         if (width < 353 || height < 353) {
-          alert("Cover Image must be min 353px x 353px\nUploaded image is "+width+"px x "+height+"px!");
+          Notiflix.Report.Warning( 'Upload failed', `Cover Image must be min 353px x 353px\nUploaded image is ${width}px x ${height}!`, 'Ok' );
           return false;
         } else {
           setCoverImage(img)
@@ -154,7 +154,7 @@ function ProfileEdit() {
         let height = this.height;
         let width = this.width;
         if (width < 1440 || height < 448) {
-          alert("Banner Image must be min 1440px x 448px\nUploaded image is "+width+"px x "+height+"px!");
+          Notiflix.Report.Warning( 'Upload failed', `Banner Image must be min 1440px x 448px\nUploaded image is ${width}px x ${height}!`, 'Ok' );
           return false;
         } else {
           setBannerImage(img)

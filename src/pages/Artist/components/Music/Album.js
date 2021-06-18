@@ -20,6 +20,7 @@ import fetchCollaborators from "../../../../common/utlis/fetchCollaborators";
 import fetchPublishers from "../../../../common/utlis/fetchPublishers";
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Tooltip from 'react-bootstrap/Tooltip'
+import Notiflix from "notiflix-react";
 
 function Album({id = null}) {
   const {artistState, artistActions} = React.useContext(ArtistContext);
@@ -48,8 +49,8 @@ function Album({id = null}) {
       const filteredAlbum = artistState.albums.filter(album => parseInt(album.id) === parseInt(id));
       setAlbum(filteredAlbum[0] ?? null)
       if(!filteredAlbum.length) {
-        alert("Invalid album");
         history.push('/music');
+        Notiflix.Report.Failure( 'Invalid album', `Album doesn't exist`, 'Ok');
       }
       if(filteredAlbum.length > 0 && filteredAlbum[0].tracks.length) {
         const isDeletable = filteredAlbum[0].tracks.filter(track => (track.status === "unclassified" || track.status === "accepted"));
@@ -68,7 +69,12 @@ function Album({id = null}) {
     const albums = await fetchAlbums();
     artistActions.albumsStateChanged(albums);
     const filteredAlbum = albums.filter(album => parseInt(album.id) === parseInt(id));
-    setAlbum(filteredAlbum[0] ?? null)
+    if(filteredAlbum.length > 0)
+      setAlbum(filteredAlbum[0]);
+    else {
+      history.push('/music');
+      Notiflix.Report.Failure( 'Invalid album', `Album doesn't exist`, 'Ok');
+    }
     setIsLoading(false);
   }
 
@@ -128,10 +134,10 @@ function Album({id = null}) {
       } else {
         data.delete('file');
       }
-      if(collaborator || selectedTrack.collaborator)
-        data.append('artists_collaborator_id', collaborator ? collaborator : selectedTrack.collaborator.id)
-      if(publisher || selectedTrack.publisher)
-        data.append('publisher_id', publisher ? publisher : selectedTrack.publisher.id)
+      if(collaborator ?? (selectedTrack ? selectedTrack.collaborator : false))
+        data.append('artists_collaborator_id', collaborator ?? (selectedTrack.collaborator ? selectedTrack.collaborator.id : null))
+      if(publisher ?? (selectedTrack ? selectedTrack.publisher : false))
+        data.append('publisher_id', publisher ?? (selectedTrack.publisher ? selectedTrack.publisher.id : null))
 
       if(data.get("public_domain"))
         data.set("public_domain", true);
@@ -139,23 +145,18 @@ function Album({id = null}) {
         data.set("public_domain", false);
 
       if(isSubmitting) {
-        const tmpCollaboratorId = collaborator ? collaborator : selectedTrack.collaborator.id;
-        if(window.confirm(`Are you sure to submit "${data.get('title')}" for classification?`)) {
-          const tmp = collaboratorsDropdown.filter(item => item.value = tmpCollaboratorId);
-          if(tmp.length > 0) {
-            if(tmp[0].status !== 'accepted') {
-              alert("Track whose writer/collaborator haven't accepted invite can't be submitted for classification.");
-              setIsSubmitting(false);
-              return false;
-            } else {
-              data.append('status', 'unclassified');
-            }
+        const tmpCollaboratorId = collaborator ?? (selectedTrack ? (selectedTrack.collaborator ? selectedTrack.collaborator.id : null) : null);
+        const tmp = collaboratorsDropdown.filter(item => item.value === tmpCollaboratorId);
+        if(tmp.length > 0) {
+          if(tmp[0].status !== 'accepted') {
+            Notiflix.Report.Failure( 'Request failed', `Track whose writer/collaborator haven't accepted invite can't be submitted for classification.`, 'Ok' );
+            setIsSubmitting(false);
+            return false;
           } else {
             data.append('status', 'unclassified');
           }
         } else {
-          setIsSubmitting(false);
-          return false;
+          data.append('status', 'unclassified');
         }
       } else {
         setIsLoading(true);
@@ -173,7 +174,7 @@ function Album({id = null}) {
           body: data
         });
       if (!response.ok) {
-        alert('Something went wrong, try later!');
+        Notiflix.Notify.Failure('Something went wrong, try later!');
       } else {
         const albums = await fetchAlbums();
         artistActions.albumsStateChanged(albums);
@@ -181,6 +182,8 @@ function Album({id = null}) {
         setAlbum(filteredAlbum[0] ?? null)
         handleClose();
         e.target.reset();
+        let message = isSubmitting ? "Track submitted for classification successfully" : `${selectedTrack ? "Track updated successfully" : "Track added to your album successfully"}`
+        Notiflix.Report.Success( 'Request fulfilled', message, 'Ok' );
       }
       setIsSubmitting(false);
       setIsLoading(false);
@@ -189,49 +192,63 @@ function Album({id = null}) {
 
   const handleAlbumDelete = async (e) => {
     e.preventDefault();
-    if(window.confirm(`Are you sure to delete "${album.name}"?`)) {
-      setIsDeleting(true);
-      const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
-      const response = await fetch(`${BASE_URL}${ALBUMS}/${id}`,
-        {
-          headers: {
-            "authorization": ACCESS_TOKEN,
-            "auth-token": userAuthToken
-          },
-          method: "DELETE"
-        });
-      if (!response.ok) {
-        alert('Something went wrong, try later!');
-        setIsDeleting(false);
-      } else {
-        const albums = await fetchAlbums();
-        artistActions.albumsStateChanged(albums);
-        setIsDeleting(false);
-        history.push(`/music`);
+    Notiflix.Confirm.Show(
+      'Please confirm',
+      `Are you sure to delete album "${album.name}"?`,
+      'Yes',
+      'No',
+      async function(){
+        setIsDeleting(true);
+        const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
+        const response = await fetch(`${BASE_URL}${ALBUMS}/${id}`,
+          {
+            headers: {
+              "authorization": ACCESS_TOKEN,
+              "auth-token": userAuthToken
+            },
+            method: "DELETE"
+          });
+        if (!response.ok) {
+          Notiflix.Notify.Failure('Something went wrong, try later!');
+          setIsDeleting(false);
+        } else {
+          const albums = await fetchAlbums();
+          history.push(`/music`);
+          Notiflix.Report.Success( 'Request fulfilled', `Album "${album.name}" deleted successfully!`, 'Ok' );
+          artistActions.albumsStateChanged(albums);
+          setIsDeleting(false);
+        }
       }
-    }
+    );
   }
 
   const handleDeleteMusic = async (track) => {
-    if(window.confirm(`Are you sure to delete "${track.title}"?`)) {
-      const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
-      const response = await fetch(`${BASE_URL}${ALBUMS}/${id}/tracks/${track.id}`,
-        {
-          headers: {
-            "authorization": ACCESS_TOKEN,
-            "auth-token": userAuthToken
-          },
-          method: "DELETE"
-        });
-      if (!response.ok) {
-        alert('Something went wrong, try later!');
-      } else {
-        const albums = await fetchAlbums();
-        artistActions.albumsStateChanged(albums);
-        const filteredAlbum = albums.filter(album => parseInt(album.id) === parseInt(id));
-        setAlbum(filteredAlbum[0] ?? null)
+    Notiflix.Confirm.Show(
+      'Please confirm',
+      `Are you sure to delete track "${track.title}"?`,
+      'Yes',
+      'No',
+      async function(){
+        const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
+        const response = await fetch(`${BASE_URL}${ALBUMS}/${id}/tracks/${track.id}`,
+          {
+            headers: {
+              "authorization": ACCESS_TOKEN,
+              "auth-token": userAuthToken
+            },
+            method: "DELETE"
+          });
+        if (!response.ok) {
+          Notiflix.Notify.Failure('Something went wrong, try later!');
+        } else {
+          const albums = await fetchAlbums();
+          artistActions.albumsStateChanged(albums);
+          const filteredAlbum = albums.filter(album => parseInt(album.id) === parseInt(id));
+          setAlbum(filteredAlbum[0] ?? null)
+          Notiflix.Report.Success( 'Request fulfilled', `Track "${track.title}" deleted successfully!`, 'Ok' );
+        }
       }
-    }
+    );
   }
 
   const handleAddMusicModal = () => {
