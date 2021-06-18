@@ -35,7 +35,11 @@ function Login() {
           history.push('/')
         }
       );
+    } else {
+      localStorage.removeItem("user");
+      localStorage.removeItem("userRole");
     }
+
   }, [])
 
   const handleSubmit = async (e) => {
