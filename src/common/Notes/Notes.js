@@ -78,7 +78,9 @@ function Notes(props) {
       {props.notes.length > 0 &&
         <span className="notes-badge">{props.notes.length}</span>
       }
-      <img onClick={handleShowNotesModal} src={NotesIcon} alt="add-note"/>
+      <OverlayTrigger placement={props.tooltipPosition || "top"} overlay={<Tooltip id="tooltip-right">{props.tooltipText || "Add a note to request changes"}</Tooltip>}>
+        <img onClick={handleShowNotesModal} src={NotesIcon} alt="add-note"/>
+      </OverlayTrigger>
       {showNotesModal &&
         <Modal
           show={showNotesModal}

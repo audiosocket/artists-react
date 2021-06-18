@@ -103,7 +103,21 @@ body {
   overflow-x: hidden;
   overflow-y: auto;
 }
-
+.tooltip > div.tooltip-inner {
+	background-color: $clr-white !important;
+	color: $clr-black !important;
+	border-radius: 10px !important;
+	padding: 5px 10px;
+	box-shadow: 0px 1px 10px #ccc !important;
+}
+.tooltip.bs-tooltip-top > div.arrow::before {
+	border-top-color: $clr-white !important;
+	box-shadow: none !important;
+}
+.tooltip.bs-tooltip-right > div.arrow::before {
+	border-right-color: $clr-white !important;
+	box-shadow: none !important;
+}
 button,
 input,
 select,

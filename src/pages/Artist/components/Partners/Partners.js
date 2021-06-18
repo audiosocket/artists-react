@@ -109,9 +109,9 @@ function Partners() {
         });
       const collaborators = await response.json();
       if(!response.ok) {
-        alert('Something went wrong, try later!');
+        Notiflix.Notify.Failure('Something went wrong, try later!');
       } else {
-        //const collaborators = await fetchCollaborators();
+        Notiflix.Notify.Success(`Collaborator ${selectedPartner ? 'updated' : 'created'} successfully!`);
         setCollaborators(collaborators.length ? collaborators : []);
         artistActions.collaboratorsStateChanged(collaborators.length ? collaborators : null);
         handleClose();
@@ -152,9 +152,9 @@ function Partners() {
         });
       const publishers = await response.json();
       if(!response.ok) {
-        alert('Something went wrong, try later!');
+        Notiflix.Notify.Failure('Something went wrong, try later!');
       } else {
-        //const publishers = await fetchPublishers();
+        Notiflix.Notify.Success(`Publisher ${selectedPartner ? 'updated' : 'created'} successfully!`);
         setPublishers(publishers.length ? publishers : []);
         artistActions.publishersStateChanged(publishers.length ? publishers : null);
         handleClose();
