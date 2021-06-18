@@ -9,6 +9,7 @@ import {Col, Row} from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import {ACCESS_TOKEN, ARTIST_PROFILE_UPDATE, BASE_URL} from "../../../../../common/api";
 import Breadcrumb from "react-bootstrap/Breadcrumb";
+import Notiflix from "notiflix-react";
 
 function Payment() {
   const {artistState, artistActions} = React.useContext(ArtistContext);
@@ -57,10 +58,11 @@ function Payment() {
         });
       const artist = await response.json();
       if(!response.ok) {
-        alert('Something went wrong, try later!');
+        Notiflix.Notify.Failure('Something went wrong, try later!');
       } else {
         setArtist(artist);
         artistActions.artistStateChanged(artist);
+        Notiflix.Notify.Success('Payment information updated!');
         history.push('/profile');
       }
       setIsLoading(false);

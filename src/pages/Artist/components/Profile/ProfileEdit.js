@@ -12,6 +12,7 @@ import DropzoneComponent from "../../../../common/Dropzone/DropzoneComponent";
 import Breadcrumb from "react-bootstrap/Breadcrumb";
 import Notes from "../../../../common/Notes/Notes";
 import fetchNotes from "../../../../common/utlis/fetchNotes";
+import Notiflix from "notiflix-react";
 
 function ProfileEdit() {
   const {artistState, artistActions} = React.useContext(ArtistContext);
@@ -87,12 +88,13 @@ function ProfileEdit() {
         });
       const artist = await response.json();
       if(!response.ok) {
-        alert('Something went wrong, try later!');
+        Notiflix.Notify.Failure('Something went wrong, try later!');
         setProfileSubmit(false);
       } else {
         setProfileSubmit(false);
         setArtist(artist);
         artistActions.artistStateChanged(artist);
+        Notiflix.Notify.Success('Profile updated!');
         history.push('/profile');
       }
       setIsLoading(false);

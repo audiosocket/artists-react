@@ -21,6 +21,7 @@ import fetchCollaborators from "../../../../common/utlis/fetchCollaborators";
 import fetchPublishers from "../../../../common/utlis/fetchPublishers";
 import Edit from "../../../../images/pencil.svg";
 import Delete from "../../../../images/delete.svg";
+import Notiflix from "notiflix-react";
 
 function Partners() {
   const {artistState, artistActions} = React.useContext(ArtistContext);
@@ -79,8 +80,8 @@ function Partners() {
       const data = new FormData(form.current);
       if(pro)
         data.append("collaborator_profile_attributes[pro]", pro)
-      if(!pro && selectedPartner.collaborator_profile.pro) {
-        data.append("collaborator_profile_attributes[pro]", selectedPartner.collaborator_profile.pro)
+      if(!pro && selectedPartner) {
+        data.append("collaborator_profile_attributes[pro]", selectedPartner.collaborator_profile ? selectedPartner.collaborator_profile.pro : '')
       }
       if(data.get("collaborator_profile_attributes[different_registered_name]"))
         data.set("collaborator_profile_attributes[different_registered_name]", true)
@@ -204,47 +205,59 @@ function Partners() {
   }
 
   const handleDeleteCollaborator = async (e, collaborator) => {
-    if(window.confirm(`Are you sure to delete "${collaborator.first_name} ${collaborator.last_name ?? ''}"?`)) {
-      const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
-      const response = await fetch(`${BASE_URL}${ARTISTS_COLLABORATORS}/${collaborator.id}`,
-        {
-          headers: {
-            "authorization": ACCESS_TOKEN,
-            "auth-token": userAuthToken
-          },
-          method: "DELETE"
-        });
-      if (!response.ok) {
-        alert('Something went wrong, try later!');
-      } else {
-        alert("Collaborator deleted!");
-        const collaborators = await fetchCollaborators();
-        artistActions.collaboratorsStateChanged(collaborators);
-        setCollaborators(collaborators);
+    Notiflix.Confirm.Show(
+      'Please confirm',
+      `Are you sure to delete "${collaborator.first_name} ${collaborator.last_name ?? ''}" collaborator?`,
+      'Yes',
+      'No',
+      async function(){
+        const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
+        const response = await fetch(`${BASE_URL}${ARTISTS_COLLABORATORS}/${collaborator.id}`,
+          {
+            headers: {
+              "authorization": ACCESS_TOKEN,
+              "auth-token": userAuthToken
+            },
+            method: "DELETE"
+          });
+        if (!response.ok) {
+          Notiflix.Notify.Failure('Something went wrong, try later!');
+        } else {
+          Notiflix.Report.Success( 'Request fulfilled', `Collaborator "${collaborator.first_name} ${collaborator.last_name ?? ''}" deleted successfully!`, 'Ok' );
+          const collaborators = await fetchCollaborators();
+          artistActions.collaboratorsStateChanged(collaborators);
+          setCollaborators(collaborators);
+        }
       }
-    }
+    );
   }
 
   const handleDeletePublisher = async (e, publisher) => {
-    if(window.confirm(`Are you sure to delete "${publisher.name}"?`)) {
-      const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
-      const response = await fetch(`${BASE_URL}${PUBLISHERS}/${publisher.id}`,
-        {
-          headers: {
-            "authorization": ACCESS_TOKEN,
-            "auth-token": userAuthToken
-          },
-          method: "DELETE"
-        });
-      if (!response.ok) {
-        alert('Something went wrong, try later!');
-      } else {
-        alert("Publisher deleted!");
-        const publishers = await fetchPublishers();
-        artistActions.publishersStateChanged(publishers);
-        setPublishers(publishers);
+    Notiflix.Confirm.Show(
+      'Please confirm',
+      `Are you sure to delete "${publisher.name}" publisher?`,
+      'Yes',
+      'No',
+      async function(){
+        const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
+        const response = await fetch(`${BASE_URL}${PUBLISHERS}/${publisher.id}`,
+          {
+            headers: {
+              "authorization": ACCESS_TOKEN,
+              "auth-token": userAuthToken
+            },
+            method: "DELETE"
+          });
+        if (!response.ok) {
+          Notiflix.Notify.Failure('Something went wrong, try later!');
+        } else {
+          Notiflix.Report.Success( 'Request fulfilled', `Publisher "${publisher.name}" deleted successfully!`, 'Ok' );
+          const publishers = await fetchPublishers();
+          artistActions.publishersStateChanged(publishers);
+          setPublishers(publishers);
+        }
       }
-    }
+    );
   }
 
   const handleChangeDifferentName = (e) => {
