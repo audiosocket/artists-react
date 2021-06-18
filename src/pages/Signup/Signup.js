@@ -103,7 +103,10 @@ function Signup({userHash = ''}) {
       }
     }
     if(!is_valid) {
-      const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
+      let userAuthToken = '';
+      if(localStorage.getItem("user")) {
+        userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
+      }
       if(userAuthToken) {
         const res = await fetchAgreements(isCollaborator ? 'collaborator' : 'artist');
         const pending = res.filter(agreement => agreement.status === "pending")
@@ -115,7 +118,9 @@ function Signup({userHash = ''}) {
           history.push('/');
         }
       } else {
-        history.push('/login');
+        Notiflix.Report.Failure( 'Error', `Link broken or not valid, contact support or login to proceed!`, 'Ok', () => {
+          history.push('/login')
+        } );
       }
     }
     setIsLoading(false);
@@ -207,6 +212,7 @@ function Signup({userHash = ''}) {
     if(!response.ok) {
       Notiflix.Notify.Failure('Something went wrong, try later!');
     } else {
+      Notiflix.Notify.Success('Agreements updated successfully!');
       const resultSet = await response.json();
       const pending = resultSet.filter(agreement => agreement.status === "pending");
       setAgreements(pending);
