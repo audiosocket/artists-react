@@ -20,7 +20,7 @@
         font-weight: 500;
         @include flexbox;
         @include justify-content(space-between);
-        @include align-items(center);
+        @include align-items(flex-start);
         line-height: normal;
         width: calc(50% - 10px);
         border-radius: 5px;

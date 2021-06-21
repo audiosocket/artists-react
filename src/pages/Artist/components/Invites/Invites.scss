@@ -1,3 +1,5 @@
+@import '../../../../App.scss';
+
 .invite-contain-head {
   height: 50px;
   display: flex;
@@ -90,5 +92,31 @@
   }
   .custom-control-input:focus~.custom-control-label::before {
     box-shadow: 0 0 0 0.2rem hsl(68deg, 80%, 55%);
+  }
+}
+
+@media #{$phone-portrait} {
+  .section-head {
+    h2 {
+      font-size: 25px;
+    }
+  }
+  .invite-contain-head {
+    padding: 10px 10px;
+    .invite-artist {
+      flex: 1 1 35%;
+    }
+    .agreements {
+      padding-left: 10px;
+    }
+  }
+  .invite-contain {
+    padding: 7px 10px;
+    .invite-artist {
+      flex: 1 1 35%;
+    }
+    .invite-status {
+      padding-left: 10px;
+    }
   }
 }
