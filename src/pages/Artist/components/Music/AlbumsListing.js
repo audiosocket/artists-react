@@ -227,6 +227,7 @@ function AlbumsListing() {
                               <>
                                 <OverlayTrigger overlay={<Tooltip>Album whose track is under review or accepted can't be deleted.</Tooltip>}><img className="disable-delete" src={DeleteDisable} alt="Disable Delete"/></OverlayTrigger>
                                 <Notes
+                                  title={album.name}
                                   type={"Album"}
                                   id={album.id}
                                   tooltipPosition="top"

@@ -204,10 +204,11 @@ function ProfileEdit() {
                     </Col>
                     {!isLoading &&
                       <Notes
+                        title={artist.name}
                         type={"ArtistProfile"}
                         id={artist.id}
                         tooltipPosition="right"
-                        tooltipText="Add a note here to change artist name"
+                        tooltipText="Add a note here to request changes"
                       />
                     }
                   </Row>
