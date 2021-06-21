@@ -410,6 +410,7 @@ function Album({id = null}) {
                                   <a className="disabled"><img src={DeleteDisable} alt="Delete"/></a>
                                 </OverlayTrigger>
                                 <Notes
+                                  title={track.title}
                                   type={"Track"}
                                   id={track.id}
                                   tooltipPosition="top"

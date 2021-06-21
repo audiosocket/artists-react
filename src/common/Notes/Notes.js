@@ -103,7 +103,7 @@ function Notes(props) {
         <Form noValidate validated={validated} ref={formNotes} onSubmit={handleSubmitNotes}>
           <Modal.Header closeButton>
             <Modal.Title id="contained-modal-title-vcenter">
-              {props.type === "ArtistProfile" ? "Artist Profile " : props.type} Notes
+              {props.title} Notes
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>

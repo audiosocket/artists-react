@@ -29,6 +29,9 @@
 .notes-modal {
   &.customArtistModal {
     .modal-dialog {
+      .modal-title {
+        text-transform: capitalize;
+      }
       .modal-body {
         padding-bottom: 0;
         .loading {
