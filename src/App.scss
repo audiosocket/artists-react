@@ -593,7 +593,7 @@ select:-webkit-autofill:focus {
 
 @media #{$phone-landscape} {
   .next-btn {
-    width: 100%;
+    width: auto;
     @include flexbox;
     @include justify-content(flex-end);
     position: fixed;
@@ -601,8 +601,10 @@ select:-webkit-autofill:focus {
     right: 0;
     bottom: 0;
     padding: 10px 15px;
-    background-color: rgba(0, 0, 0, 0.25);
     z-index: 999;
+	a {
+	  box-shadow: 0px 2px 10px 3px #ccc;
+	}
   }
 }
 
