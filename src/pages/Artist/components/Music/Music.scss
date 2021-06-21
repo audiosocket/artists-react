@@ -73,7 +73,9 @@
   z-index: 1041;
   .modal-dialog {
     max-width: 700px;
-    width: 100%;
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
     .modal-content {
       border-radius: 15px;
       overflow: hidden;
@@ -90,14 +92,14 @@
       }
     }
     .modal-body {
-      padding: 40px 0 25px;
+      padding: 40px 15px 25px;
       border-bottom: 1px solid #dee2e6;
       .create-album-modal-container,
       .music-modal-container,
       .publisher-modal-container,
       .collabortor-modal-container {
         max-width: 500px;
-        width: 100%;
+        width: 95%;
         margin: 0 auto;
         .form-control {
           height: 48px;
@@ -213,7 +215,7 @@
   &.customArtistModal-lg {
     .modal-dialog {
       max-width: 850px;
-      width: 100%;
+      width: 95%;
       .modalBodyInner {
         max-width: 600px;
       }
@@ -385,6 +387,25 @@
     }
     & > div {
       padding: 0 10px 0;
+    }
+  }
+}
+
+@media #{$phone-portrait} {
+  .customArtistModal-lg,
+  .customArtistModal {
+    .modal-dialog {
+      .modal-footer {
+        @include flexbox;
+        @include flex-direction(column);
+        height: auto;
+        width: 100%;
+        button {
+          padding: 15px 10px;
+          width: 100%;
+          font-size: 16px;
+        }
+      }
     }
   }
 }

@@ -646,6 +646,11 @@ select:-webkit-autofill:focus {
 }
 
 @media #{$phone-portrait} {
+  button, .btn {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    font-size: 14px;
+  }
   .welcome-page {
     .content-wrapper {
       aside {
