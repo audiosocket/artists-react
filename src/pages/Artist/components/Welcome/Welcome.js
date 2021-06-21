@@ -7,6 +7,9 @@ function Welcome() {
 
   return (
     <div className="welcome-content">
+      <div class="next-btn">
+        <NavLink to="/agreements" className="btn primary-btn next">Next <img className="" src={ArrowRight} alt="proceed-icon"/></NavLink>
+      </div>
       <section>
         <h3><strong>What happens now?</strong></h3>
         <h5><strong>Good question! Try these on for size:</strong></h5>
@@ -48,7 +51,6 @@ function Welcome() {
           </div>
         </div>
       </section>
-      <NavLink to="/agreements" className="btn primary-btn next">Next <img className="" src={ArrowRight} alt="proceed-icon"/></NavLink>
     </div>
   )
 }
