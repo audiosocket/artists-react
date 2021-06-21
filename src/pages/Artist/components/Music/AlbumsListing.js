@@ -2,14 +2,13 @@ import React, {useEffect, useRef, useState} from "react";
 import "./Music.scss";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
-import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import {ArtistContext} from "../../../../Store/artistContext";
 import fetchAlbums from "../../../../common/utlis/fetchAlbums";
 import Loader from "../../../../images/loader.svg";
 import Edit from "../../../../images/pencil.svg";
-import {ACCESS_TOKEN, ALBUMS, BASE_URL, PUBLISHERS} from "../../../../common/api";
+import {ACCESS_TOKEN, ALBUMS, BASE_URL} from "../../../../common/api";
 import Form from "react-bootstrap/Form";
 import {NavLink} from "react-router-dom";
 import Breadcrumb from 'react-bootstrap/Breadcrumb';
@@ -18,6 +17,7 @@ import DeleteDisable from "../../../../images/delete-slash.png";
 import Tooltip from "react-bootstrap/Tooltip";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Notiflix from "notiflix-react";
+import Notes from "../../../../common/Notes/Notes";
 
 function AlbumsListing() {
   const {artistState, artistActions} = React.useContext(ArtistContext);
@@ -223,7 +223,16 @@ function AlbumsListing() {
                         <div className="album-actions">
                           <img onClick={(e) => handleAlbumEditModal(album)} src={Edit} alt="edit-icon"/>
                           {album.tracks.length > 0 && album.tracks.filter(track => (track.status === "unclassified" || track.status === "accepted")).length > 0
-                            ? <OverlayTrigger overlay={<Tooltip >Album whose track is under review or accepted can't be deleted.</Tooltip>}><img className="disable-delete" src={DeleteDisable} alt="Disable Delete"/></OverlayTrigger>
+                            ?
+                              <>
+                                <OverlayTrigger overlay={<Tooltip>Album whose track is under review or accepted can't be deleted.</Tooltip>}><img className="disable-delete" src={DeleteDisable} alt="Disable Delete"/></OverlayTrigger>
+                                <Notes
+                                  type={"Album"}
+                                  id={album.id}
+                                  tooltipPosition="top"
+                                  tooltipText="Add a note here to delete album"
+                                />
+                              </>
                             : <img onClick={(e) => handleAlbumDelete(album)} src={Delete} alt="delete-icon"/>
                           }
                         </div>

@@ -25,11 +25,9 @@ function ProfileEdit() {
   const [coverImage, setCoverImage] = useState(null);
   const [bannerImage, setBannerImage] = useState(null);
   const [image, setImage] = useState([]);
-  const [notes, setNotes] = useState([]);
   const [profileSubmit, setProfileSubmit] = useState(false);
 
   useEffect(() => {
-    getNotes();
     if(!artistState.artist)
       getArtistProfile();
     else {
@@ -41,13 +39,6 @@ function ProfileEdit() {
       setArtist(artistState.artist);
     }
   }, [artistState.artist])
-
-  const getNotes = async () => {
-    setIsLoading(true);
-    const notes = await fetchNotes();
-    setNotes(notes);
-    setIsLoading(false);
-  }
 
   const getArtistProfile = async () => {
     setIsLoading(true);
@@ -170,10 +161,6 @@ function ProfileEdit() {
     };
   }
 
-  const handleChangeNotes = (notes) => {
-    setNotes(notes);
-  }
-
   const handleProfileSubmit = () => {
     setProfileSubmit(true);
   }
@@ -218,12 +205,9 @@ function ProfileEdit() {
                     {!isLoading &&
                       <Notes
                         type={"ArtistProfile"}
-                        notes={notes}
-                        notable_id={artist.id}
+                        id={artist.id}
                         tooltipPosition="right"
                         tooltipText="Add a note here to change artist name"
-                        onChangeNotes={handleChangeNotes}
-
                       />
                     }
                   </Row>

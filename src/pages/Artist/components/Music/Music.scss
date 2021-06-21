@@ -64,7 +64,9 @@
     }
   }
 }
-
+.notes-container {
+  line-height: inherit;
+}
 /***************** POPUP styling *********************/
 .customArtistModal,
 .customArtistModal-lg {
@@ -356,6 +358,14 @@
             width: 20px;
             margin-left: -2px;
           }
+        }
+      }
+      .notes-container {
+        display: inline-block;
+        img {
+          width: 18px;
+          margin-top: 8px;
+          margin-left: 5px;
         }
       }
     }

@@ -31,6 +31,14 @@
     .modal-dialog {
       .modal-body {
         padding-bottom: 0;
+        .loading {
+          font-size: 20px;
+          text-align: center;
+          padding-bottom: 40px;
+          img {
+            width: 50px;
+          }
+        }
         .notes-modal-container {
           width: 95%;
           margin: 0 auto;

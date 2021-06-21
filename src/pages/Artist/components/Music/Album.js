@@ -21,6 +21,7 @@ import fetchPublishers from "../../../../common/utlis/fetchPublishers";
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Tooltip from 'react-bootstrap/Tooltip'
 import Notiflix from "notiflix-react";
+import Notes from "../../../../common/Notes/Notes";
 
 function Album({id = null}) {
   const {artistState, artistActions} = React.useContext(ArtistContext);
@@ -402,12 +403,18 @@ function Album({id = null}) {
                               </>
                               :
                               <>
-                                <OverlayTrigger overlay={<Tooltip>You can't edit this track, add a note if you want any change.</Tooltip>}>
+                                <OverlayTrigger overlay={<Tooltip>You can't edit this track, add a note if you want any changes.</Tooltip>}>
                                   <a className="disabled"><img src={EditDisable} alt="Edit"/></a>
                                 </OverlayTrigger>
-                                <OverlayTrigger overlay={<Tooltip>You can't delete this track, add a note if you want any change.</Tooltip>}>
+                                <OverlayTrigger overlay={<Tooltip>You can't delete this track, add a note if you want any changes.</Tooltip>}>
                                   <a className="disabled"><img src={DeleteDisable} alt="Delete"/></a>
                                 </OverlayTrigger>
+                                <Notes
+                                  type={"Track"}
+                                  id={track.id}
+                                  tooltipPosition="top"
+                                  tooltipText="Add a note here to request changes"
+                                />
                               </>
                               }
                           </div>
