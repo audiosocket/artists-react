@@ -191,18 +191,17 @@ function ProfileEdit() {
               {Object.keys(artist).length !== 0 &&
                 <Form noValidate validated={validated} ref={form} onSubmit={handleSubmit}>
                   <Row>
-                    <Col xl={2} md={6}>
+                    <Col xl={2} md={4}>
                       <Form.Label>Artist Name</Form.Label>
                     </Col>
-                    <Col xl={4} md={6}>
+                    <Col xl={4} md={8} className="artist-name-bonding">
                       <Form.Control
                         readOnly={true}
                         name="name"
                         defaultValue={artist.name}
                         type="text"
                       />
-                    </Col>
-                    {!isLoading &&
+                      {!isLoading &&
                       <Notes
                         title={artist.name}
                         type={"ArtistProfile"}
@@ -211,12 +210,13 @@ function ProfileEdit() {
                         tooltipText="Add a note here to request changes"
                       />
                     }
+                    </Col>
                   </Row>
                   <Row>
-                    <Col xl={2} md={6}>
+                    <Col xl={2} md={4}>
                       <Form.Label>Cover Image</Form.Label>
                     </Col>
-                    <Col xl={4} md={6}>
+                    <Col xl={4} md={8}>
                       <Form.File
                         accept=".png, .jpg, .svg"
                         onChange={(e) => {handleUploadCover(e)}}
@@ -229,10 +229,10 @@ function ProfileEdit() {
                     </Col>
                   </Row>
                   <Row>
-                    <Col xl={2} md={6}>
+                    <Col xl={2} md={4}>
                       <Form.Label>Banner Image</Form.Label>
                     </Col>
-                    <Col xl={4} md={6}>
+                    <Col xl={4} md={8}>
                       <Form.File
                         accept=".png, .jpg, .svg"
                         onChange={(e) => {handleUploadBanner(e)}}
@@ -248,7 +248,7 @@ function ProfileEdit() {
                     <Col xl={2} md={6}>
                       <Form.Label>Additional Images</Form.Label>
                     </Col>
-                    <Col xl={10} md={10}>
+                    <Col xl={10} md={12}>
                       <div className="info-ans additional-elements image">
                         {artist.additional_images &&
                           artist.additional_images.map((image, key) => {
@@ -261,16 +261,16 @@ function ProfileEdit() {
                     </Col>
                   </div>
                   <Row>
-                    <Col xl={2} md={6}></Col>
-                    <Col xl={4} md={6}>
+                    <Col xl={2} md={4}></Col>
+                    <Col xl={4} md={8}>
                       <DropzoneComponent uploadedFiles={artist.additional_images ?? []} onUploadImages={handleUploadImages} />
                     </Col>
                   </Row>
                   <Row>
-                    <Col xl={2} md={6}>
+                    <Col xl={2} md={4}>
                       <Form.Label>Sounds Like</Form.Label>
                     </Col>
-                    <Col xl={4} md={6}>
+                    <Col xl={4} md={8}>
                       <Form.Control
                         name="sounds_like"
                         defaultValue={artist.sounds_like}
@@ -280,10 +280,10 @@ function ProfileEdit() {
                     </Col>
                   </Row>
                   <Row>
-                    <Col xl={2} md={6}>
+                    <Col xl={2} md={4}>
                       <Form.Label>Bio</Form.Label>
                     </Col>
-                    <Col xl={4} md={6}>
+                    <Col xl={4} md={8}>
                       <Form.Control
                         name="bio"
                         defaultValue={artist.bio}
@@ -297,10 +297,10 @@ function ProfileEdit() {
                     </Col>
                   </Row>
                   <Row>
-                    <Col xl={2} md={6}>
+                    <Col xl={2} md={4}>
                       <Form.Label>Key Facts</Form.Label>
                     </Col>
-                    <Col xl={4} md={6}>
+                    <Col xl={4} md={8}>
                       <Form.Control
                         name="key_facts"
                         defaultValue={artist.key_facts}
@@ -310,10 +310,10 @@ function ProfileEdit() {
                     </Col>
                   </Row>
                   <Row>
-                    <Col xl={2} md={6}>
+                    <Col xl={2} md={4}>
                       <Form.Label>Social Links</Form.Label>
                     </Col>
-                    <Col xl={4} md={6}>
+                    <Col xl={4} md={8}>
                       <Form.Control
                         name="social[]"
                         defaultValue={artist.social ? artist.social[0] ?? "" : ""}
@@ -337,9 +337,9 @@ function ProfileEdit() {
                       />
                     </Col>
                   </Row>
-                  <Row>
-                    <Col xl={2} md={6}></Col>
-                    <Col xl={4} md={6} className="text-center">
+                  <Row className="mt-5">
+                    <Col xl={2} md={4}></Col>
+                    <Col xl={4} md={8} className="text-center">
                       <NavLink to="/profile" className="btn primary-btn btn-outline-light mr-5 cancel">Cancel</NavLink>
                       <Button type="submit" onClick={handleProfileSubmit} className="btn primary-btn submit">{isLoading ? <>Saving...<img className="" src={Loader} alt="icon"/></> : "Save" }</Button>
                     </Col>

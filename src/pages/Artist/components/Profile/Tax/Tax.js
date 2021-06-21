@@ -103,10 +103,10 @@ function Tax() {
           {Object.keys(artist).length !== 0 &&
           <Form noValidate validated={validated} ref={form} onSubmit={handleSubmit}>
             <Row>
-              <Col xl={2} md={6}>
+              <Col xl={2} md={4}>
                 <Form.Label>ID/Social Security Number</Form.Label>
               </Col>
-              <Col xl={4} md={6}>
+              <Col xl={4} md={8}>
                 <Form.Control
                   required
                   name="ssn"
@@ -119,9 +119,9 @@ function Tax() {
                 </Form.Control.Feedback>
               </Col>
             </Row>
-            <Row>
-              <Col xl={2} md={6}></Col>
-              <Col xl={4} md={6} className="text-center mt-4">
+            <Row className="mt-5">
+              <Col xl={2} md={0}></Col>
+              <Col xl={4} md={12} className="text-center">
                 <NavLink to="/profile" className="btn primary-btn btn-outline-light mr-5 cancel">Cancel</NavLink>
                 <Button type="submit" className="btn primary-btn submit">{isLoading ? <>Saving...<img className="" src={Loader} alt="icon"/></> : "Save" }</Button>
               </Col>

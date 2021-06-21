@@ -34,7 +34,7 @@ section {
         margin-bottom: 25px;
         line-height: normal;
         label {
-          width: 200px;
+          min-width: 200px;
           font-weight: 700;
           color: #212121;
           font-size: 16px;
@@ -109,6 +109,7 @@ section {
       margin-bottom: 15px;
       .form-label {
         font-weight: 600;
+        margin-bottom: 10px;
       }
       .custom-invalid-feedback {
         width: 100%;
@@ -163,4 +164,27 @@ section {
 
 .form-control {
   color: #212121;
+}
+
+.artist-name-bonding {
+  @include flexbox;
+  @include justify-content(flex-start);
+  @include align-items(center);
+} 
+
+
+
+@media #{$phone-landscape} {
+  .artist-section-control {
+    .section-content {
+      .section-body {
+        .parallel-info {
+          @include flex-direction(column);
+          label {
+            margin-bottom: 15px;
+          }
+        }
+      }
+    }
+  }
 }

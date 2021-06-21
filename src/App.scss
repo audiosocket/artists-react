@@ -595,7 +595,7 @@ select:-webkit-autofill:focus {
   .welcome-page {
     .content-wrapper {
       aside {
-        top: 46px;
+        top: 76px;
         ul {
           li {
             &:first-child {
@@ -619,9 +619,29 @@ select:-webkit-autofill:focus {
     bottom: 0;
     padding: 10px 15px;
     z-index: 999;
-	a {
-	  box-shadow: 0px 2px 10px 3px #ccc;
-	}
+    a {
+      box-shadow: 0px 2px 10px 3px #ccc;
+    }
+  }
+  .musicWrapper, .partnerWrapper {
+    .music-playlist, .partner-list {
+      .music-row, .partner-row {
+        flex-direction: column;
+        li {
+          width: 100%;
+          margin-right: 0;
+          &:nth-child(odd) {
+            margin-right: 0;
+          }
+          .album-actions, .partner-actions {
+            min-width: 100px;
+            margin-left: 7px;
+            text-align: right;
+            justify-content: flex-end;
+          }
+        }
+      }
+    }
   }
 }
 

@@ -103,10 +103,10 @@ function Payment() {
           {Object.keys(artist).length !== 0 &&
           <Form noValidate validated={validated} ref={form} onSubmit={handleSubmit}>
             <Row>
-              <Col xl={2} md={6}>
+              <Col xl={2} md={4}>
                 <Form.Label>Payee Name</Form.Label>
               </Col>
-              <Col xl={4} md={6}>
+              <Col xl={4} md={8}>
                 <Form.Control
                   required
                   name="payee_name"
@@ -120,10 +120,10 @@ function Payment() {
               </Col>
             </Row>
             <Row>
-              <Col xl={2} md={6}>
+              <Col xl={2} md={4}>
                 <Form.Label>Bank Name</Form.Label>
               </Col>
-              <Col xl={4} md={6}>
+              <Col xl={4} md={8}>
                 <Form.Control
                   required
                   name="bank_name"
@@ -137,10 +137,10 @@ function Payment() {
               </Col>
             </Row>
             <Row>
-              <Col xl={2} md={6}>
+              <Col xl={2} md={4}>
                 <Form.Label>Routing</Form.Label>
               </Col>
-              <Col xl={4} md={6}>
+              <Col xl={4} md={8}>
                 <Form.Control
                   required
                   name="routing"
@@ -154,10 +154,10 @@ function Payment() {
               </Col>
             </Row>
             <Row>
-              <Col xl={2} md={6}>
+              <Col xl={2} md={4}>
                 <Form.Label>Account Number</Form.Label>
               </Col>
-              <Col xl={4} md={6}>
+              <Col xl={4} md={8}>
                 <Form.Control
                   required
                   name="account_number"
@@ -172,10 +172,10 @@ function Payment() {
             </Row>
             {artist.contact_information && artist.contact_information.country.toLowerCase() !== 'united states' &&
               <Row>
-                <Col xl={2} md={6}>
+                <Col xl={2} md={4}>
                   <Form.Label>Paypal Email</Form.Label>
                 </Col>
-                <Col xl={4} md={6}>
+                <Col xl={4} md={8}>
                   <Form.Control
                     required
                     name="paypal_email"
@@ -189,9 +189,9 @@ function Payment() {
                 </Col>
               </Row>
             }
-            <Row>
-              <Col xl={2} md={6}></Col>
-              <Col xl={4} md={6} className="text-center mt-4">
+            <Row className="mt-5">
+              <Col xl={2} md={0}></Col>
+              <Col xl={4} md={12} className="text-center mt-4">
                 <NavLink to="/profile" className="btn primary-btn btn-outline-light mr-5 cancel">Cancel</NavLink>
                 <Button type="submit" className="btn primary-btn submit">{isLoading ? <>Saving...<img className="" src={Loader} alt="icon"/></> : "Save" }</Button>
               </Col>

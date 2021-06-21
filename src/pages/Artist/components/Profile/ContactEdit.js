@@ -249,10 +249,10 @@ function ContactEdit() {
           {Object.keys(artist).length !== 0 &&
             <Form noValidate validated={validated} ref={form} onSubmit={handleSubmit}>
               <Row>
-                <Col xl={2} md={6}>
+                <Col xl={2} md={4}>
                   <Form.Label>Name</Form.Label>
                 </Col>
-                <Col xl={4} md={6}>
+                <Col xl={4} md={8}>
                   <Form.Control
                     required
                     name="name"
@@ -266,10 +266,10 @@ function ContactEdit() {
                 </Col>
               </Row>
               <Row>
-                <Col xl={2} md={6}>
+                <Col xl={2} md={4}>
                   <Form.Label>Address</Form.Label>
                 </Col>
-                <Col xl={4} md={6}>
+                <Col xl={4} md={8}>
                   <Form.Control
                     required
                     name="street"
@@ -283,10 +283,10 @@ function ContactEdit() {
                 </Col>
               </Row>
               <Row>
-                <Col xl={2} md={6}>
+                <Col xl={2} md={4}>
                   <Form.Label>Country</Form.Label>
                 </Col>
-                <Col xl={4} md={6}>
+                <Col xl={4} md={8}>
                   <Select
                     ref={countryRef}
                     placeholder="Select Country"
@@ -312,10 +312,10 @@ function ContactEdit() {
                 </Col>
               </Row>
               <Row>
-                <Col xl={2} md={6}>
+                <Col xl={2} md={4}>
                   <Form.Label>State</Form.Label>
                 </Col>
-                <Col xl={4} md={6}>
+                <Col xl={4} md={8}>
                   <Select
                     ref={stateRef}
                     placeholder="Select State"
@@ -341,10 +341,10 @@ function ContactEdit() {
                 </Col>
               </Row>
               <Row>
-                <Col xl={2} md={6}>
+                <Col xl={2} md={4}>
                   <Form.Label>City</Form.Label>
                 </Col>
-                <Col xl={4} md={6}>
+                <Col xl={4} md={8}>
                   <Select
                     ref={cityRef}
                     placeholder="Select City"
@@ -370,10 +370,10 @@ function ContactEdit() {
                 </Col>
               </Row>
               <Row>
-                <Col xl={2} md={6}>
+                <Col xl={2} md={4}>
                   <Form.Label>Postal Code</Form.Label>
                 </Col>
-                <Col xl={4} md={6}>
+                <Col xl={4} md={8}>
                   <Form.Control
                     required
                     name="postal_code"
@@ -387,10 +387,10 @@ function ContactEdit() {
                 </Col>
               </Row>
               <Row>
-                <Col xl={2} md={6}>
+                <Col xl={2} md={4}>
                   <Form.Label>Phone</Form.Label>
                 </Col>
-                <Col xl={4} md={6}>
+                <Col xl={4} md={8}>
                   <Form.Control
                     name="phone"
                     type="text"
@@ -399,9 +399,9 @@ function ContactEdit() {
                   />
                 </Col>
               </Row>
-              <Row>
-                <Col xl={2} md={6}></Col>
-                <Col xl={4} md={6} className="text-center">
+              <Row className="mt-5">
+                <Col xl={2} md={0}></Col>
+                <Col xl={4} md={12} className="text-center">
                   <NavLink to="/profile" className="btn primary-btn btn-outline-light mr-5 cancel">Cancel</NavLink>
                   <Button type="submit" className="btn primary-btn submit">{isLoading ? <>Saving...<img className="" src={Loader} alt="icon"/></> : "Save" }</Button>
                 </Col>
