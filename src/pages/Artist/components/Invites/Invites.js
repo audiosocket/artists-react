@@ -7,6 +7,7 @@ import Breadcrumb from "react-bootstrap/Breadcrumb";
 import {NavLink} from "react-router-dom";
 import fetchArtistsList from "../../../../common/utlis/fetchArtistsList";
 import NavDropdown from "react-bootstrap/NavDropdown";
+import ArrowRight from "../../../../images/right-arrow.svg";
 
 function Invites() {
   const {artistState, artistActions} = React.useContext(ArtistContext);
@@ -52,6 +53,10 @@ function Invites() {
 
   return (
     <div className="agreementWrapper">
+      <div className="next-btn">
+        <NavLink to={"/agreements"} className="btn primary-btn next">Next <img
+          className="" src={ArrowRight} alt="proceed-icon"/></NavLink>
+      </div>
       <div className="asBreadcrumbs">
         <Breadcrumb>
           <li className="breadcrumb-item">

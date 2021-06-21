@@ -4,11 +4,11 @@ import {Link, NavLink} from "react-router-dom";
 import ArrowRight from "../../../../images/right-arrow.svg";
 
 function Welcome() {
-
+  const role = JSON.parse(localStorage.getItem("userRole") ?? "");
   return (
     <div className="welcome-content">
       <div class="next-btn">
-        <NavLink to="/agreements" className="btn primary-btn next">Next <img className="" src={ArrowRight} alt="proceed-icon"/></NavLink>
+        <NavLink to={role === "artist" ? "/agreements" : "/invites"} className="btn primary-btn next">Next <img className="" src={ArrowRight} alt="proceed-icon"/></NavLink>
       </div>
       <section>
         <h3><strong>What happens now?</strong></h3>
