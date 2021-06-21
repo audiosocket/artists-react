@@ -19,12 +19,24 @@ function ResetPassword({userHash = ''}) {
 
   useEffect(() => {
     if(localStorage.getItem('user')) {
-      alert('Already logged in');
-      history.push('/');
+      Notiflix.Confirm.Show(
+        'Already Logged In',
+        'Do you want to log out?',
+        'Yes',
+        'No',
+        function(){
+          localStorage.removeItem("user");
+          localStorage.removeItem("userRole");
+        },
+        function(){
+          history.push('/')
+        }
+      );
     }
     if(!userHash) {
-      alert("Token expired or not valid!")
-      history.push("/login");
+      Notiflix.Report.Failure( 'Error', `Link expired, contact support or login to proceed.`, 'Ok', () => {
+        history.push('/login')
+      } );
     }
   }, [])
 
