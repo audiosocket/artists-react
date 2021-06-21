@@ -149,7 +149,7 @@ function Album({id = null}) {
         const tmpCollaboratorId = collaborator ?? (selectedTrack ? (selectedTrack.collaborator ? selectedTrack.collaborator.id : null) : null);
         const tmp = collaboratorsDropdown.filter(item => item.value === tmpCollaboratorId);
         if(tmp.length > 0) {
-          if(tmp[0].status !== 'accepted') {
+          if(tmp[0].status !== 'accepted' && tmp[0].value !== null) {
             Notiflix.Report.Failure( 'Request failed', `Track whose writer/collaborator haven't accepted invite can't be submitted for classification.`, 'Ok' );
             setIsSubmitting(false);
             return false;

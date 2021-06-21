@@ -18,8 +18,19 @@ function ForgotPassword() {
 
   useEffect(() => {
     if(localStorage.getItem('user')) {
-      alert('Already logged in');
-      history.push('/');
+      Notiflix.Confirm.Show(
+        'Already Logged In',
+        'Do you want to log out?',
+        'Yes',
+        'No',
+        function(){
+          localStorage.removeItem("user");
+          localStorage.removeItem("userRole");
+        },
+        function(){
+          history.push('/')
+        }
+      );
     }
   }, [])
 
