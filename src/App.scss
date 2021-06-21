@@ -150,6 +150,16 @@ a, .btn {
 	}
 }
 
+.next-btn {
+  width: 100%;
+  @include flexbox;
+  @include justify-content(flex-end);
+  position: absolute;
+  top: 15px;
+  right: 0;
+  padding-right: 50px;
+}
+
 /*=====  checkbox  ======*/
 .checkbox {
 	position: relative;
@@ -430,9 +440,10 @@ select:-webkit-autofill:focus {
     }
     .right-content {
       flex: 1;
-      padding: 50px;
+      padding: 70px 50px 50px;
       max-height: calc(100vh - 112px);
       overflow: auto;
+      position: relative;
     }
   }
 }
@@ -557,7 +568,7 @@ select:-webkit-autofill:focus {
       .right-content {
         flex: none;
         max-height: inherit;
-        padding: 50px 15px;
+        padding: 70px 15px;
         width: 100%;
         height: calc(100vh - 76px);
         overflow-y: auto;
@@ -574,6 +585,24 @@ select:-webkit-autofill:focus {
         }
       }
     }
+  }
+  .next-btn {
+    padding-right: 15px;
+  }
+}
+
+@media #{$phone-landscape} {
+  .next-btn {
+    width: 100%;
+    @include flexbox;
+    @include justify-content(flex-end);
+    position: fixed;
+    top: unset;
+    right: 0;
+    bottom: 0;
+    padding: 10px 15px;
+    background-color: rgba(0, 0, 0, 0.25);
+    z-index: 999;
   }
 }
 
