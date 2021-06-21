@@ -6,6 +6,7 @@ import Loader from "../../../../images/loader.svg";
 import {NavLink, useHistory} from "react-router-dom";
 import Breadcrumb from "react-bootstrap/Breadcrumb";
 import Notiflix from "notiflix-react";
+import ArrowRight from "../../../../images/right-arrow.svg";
 
 function Profile() {
   const {artistState, artistActions} = React.useContext(ArtistContext);
@@ -34,8 +35,19 @@ function Profile() {
     setIsLoading(false);
   }
 
+  const handleNext = () => {
+    if(artist) {
+      if(!artist.contact_information || !artist.payment_information || !artist.tax_information) {
+        Notiflix.Notify.Failure('You must complete artist profile to unlock Partners page');
+      }
+    }
+  }
+
   return (
     <div className="artist-wrapper">
+      <div className="next-btn">
+        <NavLink onClick={handleNext} to={(!artist.contact_information || !artist.payment_information || !artist.tax_information) ? "/profile" : "partners"} className="btn primary-btn next">Next <img className="" src={ArrowRight} alt="proceed-icon"/></NavLink>
+      </div>
       <div className="asBreadcrumbs">
         <Breadcrumb>
           <li className="breadcrumb-item">

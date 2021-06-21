@@ -22,6 +22,7 @@ import fetchPublishers from "../../../../common/utlis/fetchPublishers";
 import Edit from "../../../../images/pencil.svg";
 import Delete from "../../../../images/delete.svg";
 import Notiflix from "notiflix-react";
+import ArrowRight from "../../../../images/right-arrow.svg";
 
 function Partners() {
   const {artistState, artistActions} = React.useContext(ArtistContext);
@@ -266,6 +267,9 @@ function Partners() {
 
   return (
     <div className="partnerWrapper">
+      <div className="next-btn">
+        <NavLink to="/music" className="btn primary-btn next">Next <img className="" src={ArrowRight} alt="proceed-icon"/></NavLink>
+      </div>
       <div className="asBreadcrumbs">
         <Breadcrumb>
           <li className="breadcrumb-item">

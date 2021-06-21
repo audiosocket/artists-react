@@ -68,7 +68,7 @@ function Agreements({onChangeIsActiveProfile}) {
     setIsActiveProfile(isActiveProfile);
   }
 
-  const handleClickIsActive = () => {
+  const handleNext = () => {
     if(isActiveProfile === false) {
       Notiflix.Notify.Failure('You must accept agreements to unlock Artist profile');
     }
@@ -76,6 +76,9 @@ function Agreements({onChangeIsActiveProfile}) {
 
   return (
     <div className="agreementWrapper">
+      <div className="next-btn">
+        <NavLink onClick={handleNext} to={isActiveProfile ? "/profile" : "agreements"} className="btn primary-btn next">Next <img className="" src={ArrowRight} alt="proceed-icon"/></NavLink>
+      </div>
       <div className="asBreadcrumbs">
         <Breadcrumb>
           <li className="breadcrumb-item">
@@ -112,7 +115,6 @@ function Agreements({onChangeIsActiveProfile}) {
           })
         }
       </div>
-      <NavLink onClick={handleClickIsActive} to={isActiveProfile ? "/profile/edit" : "agreements"} className="btn primary-btn next">Next <img className="" src={ArrowRight} alt="proceed-icon"/></NavLink>
     </div>
   )
 }
