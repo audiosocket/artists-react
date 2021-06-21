@@ -207,7 +207,7 @@ function Partners() {
   const handleDeleteCollaborator = async (e, collaborator) => {
     Notiflix.Confirm.Show(
       'Please confirm',
-      `Are you sure to delete "${collaborator.first_name} ${collaborator.last_name ?? ''}" collaborator?`,
+      `Are you sure to delete collaborator "${collaborator.first_name} ${collaborator.last_name ?? ''}"?`,
       'Yes',
       'No',
       async function(){
@@ -235,7 +235,7 @@ function Partners() {
   const handleDeletePublisher = async (e, publisher) => {
     Notiflix.Confirm.Show(
       'Please confirm',
-      `Are you sure to delete "${publisher.name}" publisher?`,
+      `Are you sure to delete publisher "${publisher.name}"?`,
       'Yes',
       'No',
       async function(){
