@@ -592,6 +592,23 @@ select:-webkit-autofill:focus {
 }
 
 @media #{$phone-landscape} {
+  .welcome-page {
+    .content-wrapper {
+      aside {
+        top: 46px;
+        ul {
+          li {
+            &:first-child {
+              margin-top: 0;
+            }
+          }
+        }
+      }
+      .right-content {
+        padding: 40px 15px;
+      }
+    }
+  }
   .next-btn {
     width: 100%;
     @include flexbox;

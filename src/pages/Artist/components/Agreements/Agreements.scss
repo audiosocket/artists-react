@@ -55,3 +55,22 @@
     padding: 12px 0;
   }
 }
+
+@media #{$phone-portrait} {
+  .agreementWrapper {
+    .agreementBody {
+      .agreementType {
+        font-size: 25px;
+      }
+    }
+    .agreementContent {
+      padding: 12px 10px;
+    }
+    .agreementContentController {
+      flex-direction: column;
+      & > * {
+        margin: 7px 0;
+      }
+    }
+  }
+}
