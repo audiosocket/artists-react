@@ -40,6 +40,7 @@ function Partners() {
   const [agreements, setAgreements] = useState(false);
   const [access, setAccess] = useState(false);
   const [selectedPartner, setSelectedPartner] = useState(null);
+  const [registeredName, setRegisteredName] = useState(null);
 
   useEffect(() => {
     if (!artistState.collaborators)
@@ -170,6 +171,7 @@ function Partners() {
     if(collaborator) {
       setSelectedPartner(collaborator);
       setDifferentName(collaborator.collaborator_profile ? !!collaborator.collaborator_profile.different_registered_name : false)
+      setRegisteredName(collaborator.collaborator_profile ? collaborator.collaborator_profile.different_registered_name || null : null)
       setAgreements(collaborator.access === "read")
       setAccess(collaborator.access === "write")
     }
@@ -197,6 +199,7 @@ function Partners() {
     setProError(false);
     setIsLoading(false);
     setDifferentName(false);
+    setRegisteredName(null);
   }
 
   const handleChangeAgreements = (e) => {
@@ -464,7 +467,7 @@ function Partners() {
                           required
                           name="different_registered_name"
                           type="text"
-                          defaultValue={selectedPartner ? selectedPartner.collaborator_profile ? selectedPartner.collaborator_profile.different_registered_name : '' : ''}
+                          defaultValue={selectedPartner ? registeredName ?? '' : ''}
                           placeholder="Please list your full name as registered with your PRO. Ex: First Middle Last*"
                         />
                         <Form.Control.Feedback type="invalid">
