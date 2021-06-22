@@ -15,6 +15,9 @@
       @include flexbox;
       @include align-items(center);
       flex-wrap: wrap;
+      .notes-container {
+        margin-left: 3px;
+      }
       li  {
         padding: 10px 7px 10px 10px;
         font-weight: 500;
@@ -364,10 +367,10 @@
       }
       .notes-container {
         display: inline-block;
+        margin-left: 4%;
         img {
           width: 18px;
-          margin-top: 8px;
-          margin-left: 5px;
+          margin-top: 6px;
         }
       }
     }
