@@ -138,10 +138,10 @@ function AlbumArtwrok({id = null}) {
         <Form noValidate validated={validated} ref={form} onSubmit={handleSubmitEditArtwork}>
           <div className="section">
             <Row>
-              <Col xl={2} md={6}>
-                <Form.Label>Artwork</Form.Label>
+              <Col xl={2} md={4}>
+                <Form.Label className="mb-2">Artwork</Form.Label>
               </Col>
-              <Col xl={4} md={6}>
+              <Col xl={4} md={8}>
                 <Form.File
                   required
                   accept=".png, .jpg, .svg"
@@ -159,8 +159,8 @@ function AlbumArtwrok({id = null}) {
             </Row>
           </div>
           <Row>
-            <Col xl={2} md={6}></Col>
-            <Col xl={4} md={6} className="text-center mt-4">
+            <Col xl={2} md={0}></Col>
+            <Col xl={4} md={12} className="text-center mt-4">
               <NavLink to={"/music/album/"+id} className="btn primary-btn btn-outline-light mr-5 cancel">Cancel</NavLink>
               <Button type="submit" className="btn primary-btn submit">{isLoading ? <>Saving...<img className="loading" src={Loader} alt="icon"/></> : "Save" }</Button>
             </Col>

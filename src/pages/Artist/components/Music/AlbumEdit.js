@@ -172,10 +172,10 @@ function AlbumEdit({id = null}) {
         <Form noValidate validated={validated} ref={form} onSubmit={handleSubmitEditAlbum}>
           <div className="section">
             <Row>
-              <Col xl={2} md={6}>
-                <Form.Label>Album Name*</Form.Label>
+              <Col xl={2} md={4}>
+                <Form.Label className="mb-2">Album Name*</Form.Label>
               </Col>
-              <Col xl={4} md={6}>
+              <Col xl={4} md={8}>
                 <Form.Control
                   required
                   name="name"
@@ -189,10 +189,10 @@ function AlbumEdit({id = null}) {
               </Col>
             </Row>
             <Row>
-              <Col xl={2} md={6}>
-                <Form.Label>Release Date</Form.Label>
+              <Col xl={2} md={4}>
+                <Form.Label className="mb-2">Release Date</Form.Label>
               </Col>
-              <Col xl={4} md={6}>
+              <Col xl={4} md={8}>
                 <Form.Control
                   name="release_date"
                   defaultValue={selectedAlbumDate ? selectedAlbumDate : ''}
@@ -204,8 +204,8 @@ function AlbumEdit({id = null}) {
             </Row>
           </div>
           <Row>
-            <Col xl={2} md={6}></Col>
-            <Col xl={4} md={6} className="text-center mt-4">
+            <Col xl={2} md={0}></Col>
+            <Col xl={4} md={12} className="text-center mt-4">
               <NavLink to={"/music/album/"+id} className="btn primary-btn btn-outline-light mr-5 cancel">Cancel</NavLink>
               <Button type="submit" className="btn primary-btn submit">{isLoading ? <>Saving...<img className="loading" src={Loader} alt="icon"/></> : "Save" }</Button>
             </Col>
