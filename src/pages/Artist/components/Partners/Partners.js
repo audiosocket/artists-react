@@ -84,8 +84,10 @@ function Partners() {
       if(!pro && selectedPartner) {
         data.append("collaborator_profile_attributes[pro]", selectedPartner.collaborator_profile ? selectedPartner.collaborator_profile.pro : '')
       }
-      if(data.get("collaborator_profile_attributes[different_registered_name]"))
-        data.set("collaborator_profile_attributes[different_registered_name]", true)
+      if(data.get("collaborator_profile_attributes[different_registered_name]")) {
+        data.set("collaborator_profile_attributes[different_registered_name]", data.get('different_registered_name'))
+        data.delete("different_registered_name")
+      }
       else
         data.set("collaborator_profile_attributes[different_registered_name]", false)
       if(data.get("agreements") && data.get("agreements") === "true" && !data.get("access")) {
@@ -388,17 +390,17 @@ function Partners() {
                   <Col xs={12}>
                     <div className="form-group">
                       <Form.Control
-                        readOnly={!!selectedPartner}
                         required={!selectedPartner}
+                        readOnly={!!selectedPartner}
                         name="email"
                         type="email"
                         defaultValue={selectedPartner ? selectedPartner.email : ''}
                         placeholder="Email*"
                       />
+                      <Form.Control.Feedback type="invalid">
+                        Email is required!
+                      </Form.Control.Feedback>
                     </div>
-                    <Form.Control.Feedback type="invalid">
-                      Email is required!
-                    </Form.Control.Feedback>
                   </Col>
                   <Col xs={12}>
                     <div className="form-group">
@@ -455,6 +457,22 @@ function Partners() {
                     </label>
                     </div>
                   </Col>
+                  {differentName &&
+                    <Col xs={12}>
+                      <div className="form-group">
+                        <Form.Control
+                          required
+                          name="different_registered_name"
+                          type="text"
+                          defaultValue={selectedPartner ? selectedPartner.collaborator_profile ? selectedPartner.collaborator_profile.different_registered_name : '' : ''}
+                          placeholder="Please list your full name as registered with your PRO. Ex: First Middle Last*"
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          Registered name is required!
+                        </Form.Control.Feedback>
+                      </div>
+                    </Col>
+                  }
                   <Col xs={12}>
                     <div className="form-group">
                       <label htmlFor="agreements" className="partners checkbox my-3">
