@@ -59,7 +59,7 @@ function ForgotPassword() {
         } );
         e.target.reset();
       } else {
-        Notiflix.Report.Failure( 'Error', `User "${data.get('email')}" doesn't exists, please enter a valid email address.`, 'Ok' );
+        Notiflix.Report.Failure( 'Invalid user', `User "${data.get('email')}" doesn't exist, please enter a valid email address.`, 'Ok' );
       }
       setIsLoading(false);
     }
