@@ -206,7 +206,7 @@ function ProfileEdit() {
                         title={artist.name}
                         type={"ArtistProfile"}
                         id={artist.id}
-                        tooltipPosition="right"
+                        tooltipPosition="top"
                         tooltipText="Add a note here to request changes"
                       />
                     }
