@@ -1,7 +1,8 @@
 @import "../../App.scss";
 
 .login-block {
-  width: 40rem;
+  max-width: 40rem;
+  width: 100%;
   .btn {
     &.download {
       background-color: transparent;
