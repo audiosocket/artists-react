@@ -200,7 +200,7 @@ function Header({onToggleSidebar, onChangeIsActiveProfile, onChangeIsProfileComp
 
   return (
     <>
-    <header>
+    <header className="fixed-top">
       <Navbar collapseOnSelect expand="lg" variant="dark" className="custom-nav">
         <div className="not-for-desktop">
           <img onClick={handleToggle} src={toggleSidebar ? hamburger : close} alt="Sidebar Launcher"  className="" />

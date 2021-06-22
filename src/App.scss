@@ -403,9 +403,11 @@ select:-webkit-autofill:focus {
   // min-height: 100vh;
   // display: flex;
   // flex-direction: column;
+  -webkit-overflow-scrolling: touch;
   .content-wrapper {
     flex: 1;
     display: flex;
+    padding-top: 110px;
     aside {
       background-color: #F6F6F6;
       max-width: 324px;
@@ -552,6 +554,7 @@ select:-webkit-autofill:focus {
     overflow-x: hidden;
     overflow-y: auto;
     .content-wrapper {
+      padding-top: 70px;
       aside {
         flex: none;
         height: inherit;
