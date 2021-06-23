@@ -90,7 +90,7 @@ function Partners() {
         data.delete("different_registered_name")
       }
       else
-        data.set("collaborator_profile_attributes[different_registered_name]", false)
+        data.delete("collaborator_profile_attributes[different_registered_name]")
       if(data.get("agreements") && data.get("agreements") === "true" && !data.get("access")) {
         data.delete("agreements")
         data.set("access", "read");
