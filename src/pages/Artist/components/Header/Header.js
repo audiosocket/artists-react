@@ -12,7 +12,7 @@ import {ArtistContext} from "../../../../Store/artistContext";
 import fetchAgreements from "../../../../common/utlis/fetchAgreements";
 import fetchArtist from "../../../../common/utlis/fetchArtist";
 import fetchAlbums from "../../../../common/utlis/fetchAlbums";
-import {ACCESS_TOKEN, AGREEMENTS, BASE_URL} from "../../../../common/api";
+import {ACCESS_TOKEN, AGREEMENTS, ARTISTS_COLLABORATORS, BASE_URL} from "../../../../common/api";
 import csc from "country-state-city";
 import fetchCollaborators from "../../../../common/utlis/fetchCollaborators";
 import fetchPublishers from "../../../../common/utlis/fetchPublishers";
@@ -189,8 +189,6 @@ function Header({onToggleSidebar, onChangeIsActiveProfile, onChangeIsProfileComp
     if(!statusCheck) {
       artistActions.selectedArtistStateChanged(selectedArtist);
       setSelectedArtist(selectedArtist);
-      if(selectedArtist.status === "accepted")
-        handleClose();
       return true;
     }
 
@@ -219,14 +217,37 @@ function Header({onToggleSidebar, onChangeIsActiveProfile, onChangeIsProfileComp
       Notiflix.Report.Warning('No artist selected', 'Please choose artist first before confirming!', 'Ok');
     } else {
       if(selectedArtist.status === ('pending' || 'rejected')) {
-        Notiflix.Report.Failure('Not authorized', `You must accept ${selectedArtist.first_name}${selectedArtist.last_name ? ' '+selectedArtist.last_name : ''}'s invite before proceeding further. You may choose another artist (if any).`, 'Ok');
+        Notiflix.Report.Failure('Not authorized', `You can't access ${selectedArtist.first_name}${selectedArtist.last_name ? ' '+selectedArtist.last_name : ''}'s portal without accepting their invite!. You may choose another artist (if any).`, 'Ok');
       } else
         handleClose();
     }
   }
 
-  const handleInviteAction = () => {
-
+  const handleInviteAction = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    const status = e.target.dataset.action;
+    const data = new FormData();
+    data.append('status', status);
+    const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
+    const response = await fetch(`${BASE_URL}${ARTISTS_COLLABORATORS}/${selectedArtist.id}/update_status`,
+      {
+        headers: {
+          "authorization": ACCESS_TOKEN,
+          "auth-token": userAuthToken
+        },
+        method: 'PATCH',
+        body: data
+      });
+    if(!response.ok) {
+      Notiflix.Notify.Failure('Something went wrong, try later!');
+    } else {
+      const artistsList = await fetchArtistsList();
+      artistActions.artistsListStateChanged(artistsList)
+      setArtistsList(artistsList);
+      Notiflix.Report.Success( 'Request fulfilled', `Your invite status updated successfully!`, 'Ok', handleClose() );
+    }
+    setIsLoading(false);
   }
 
   return (
@@ -315,15 +336,13 @@ function Header({onToggleSidebar, onChangeIsActiveProfile, onChangeIsProfileComp
               </NavDropdown>
               }
             </div>
-            {selectedArtist &&
+            {selectedArtist && selectedArtist.status !== "accepted" &&
               <div className="section">
-                <Button onClick={handleInviteAction} data-action={"rejected"}
-                        variant="btn primary-btn reject btn-full-width">
+                <Button onClick={handleInviteAction} data-action={"rejected"} variant="btn primary-btn reject btn-full-width">
                   <img className="" src={Cancel} alt="download-btn"/>
                   Reject
                 </Button>
-                <Button onClick={handleInviteAction} data-action={"accepted"}
-                        variant="btn primary-btn accept btn-full-width">
+                <Button onClick={handleInviteAction} data-action={"accepted"} variant="btn primary-btn accept btn-full-width">
                   <img className="" src={Check} alt="download-btn"/>
                   Accept
                 </Button>
@@ -332,7 +351,7 @@ function Header({onToggleSidebar, onChangeIsActiveProfile, onChangeIsProfileComp
           </div>
         </Modal.Body>
         <Modal.Footer>
-          <Button onClick={handleChooseArtist} className="btn primary-btn submit">Confirm</Button>
+          <Button onClick={(e) => handleChooseArtist(e)} className="btn primary-btn submit">{isLoading ? 'Processing...' : 'Confirm'}</Button>
         </Modal.Footer>
       </Form>
     </Modal>

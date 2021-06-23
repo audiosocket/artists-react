@@ -13,11 +13,11 @@ import Notiflix from "notiflix-react";
 function Invites() {
   const {artistState, artistActions} = React.useContext(ArtistContext);
   const [isLoading, setIsLoading] = useState(false);
-  const [artistsList, setArtistList] = useState([]);
+  const [artistsList, setArtistsList] = useState([]);
 
   useEffect(() => {
     if(artistState.artistsList) {
-      setArtistList(artistState.artistsList);
+      setArtistsList(artistState.artistsList);
     }
   }, [artistState.artistsList])
 
@@ -46,7 +46,7 @@ function Invites() {
     } else {
       const artistsList = await fetchArtistsList();
       artistActions.artistsListStateChanged(artistsList)
-      setArtistList(artistsList);
+      setArtistsList(artistsList);
       Notiflix.Report.Success( 'Request fulfilled', `Your invite status updated successfully!`, 'Ok' );
     }
     setIsLoading(false);
