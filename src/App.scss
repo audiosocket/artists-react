@@ -268,7 +268,7 @@ button, .btn {
   background-color: $clr-red-light !important;
   border-color: $clr-red-light !important;
   color: white !important;
-  &:hover, &:active {
+  &:hover, &:active, &:focus {
     background-color: $clr-red-light-extra !important;
     border-color: $clr-red-light-extra !important;
     color: white !important;
