@@ -104,7 +104,7 @@ function Agreements({onChangeIsActiveProfile}) {
               <section key={key} className="pt-4">
                 <h2 className="agreementType">{agreement.agreement.agreement_type.replace("_", " ")} Agreement</h2>
                 <div className="agreementContent mt-3">
-                  <p>{agreement.agreement.content}</p>
+                  <p dangerouslySetInnerHTML={{__html: agreement.agreement.content}} />
                 </div>
                 <div className="agreementContentController">
                   <button onClick={handleSubmitReviewAgreement} data-id={agreement.id} data-action={agreement.status === "accepted" ? "rejected" : "accepted"} className={agreement.status === "accepted" ? "btn primary-btn rejected" : "btn primary-btn accepted"}>I wish to {agreement.status === "rejected" ? "opt-in to" : "opt-out of"} this agreement</button>

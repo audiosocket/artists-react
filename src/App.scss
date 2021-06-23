@@ -254,12 +254,12 @@ button, .btn {
 }
 
 .primary-btn {
-	background: $clr-green;
-	border-color: $clr-green;
+	background: $clr-green-bright;
+	border-color: $clr-green-bright;
 	&:hover, &:focus, &:active {
-		background-color: $clr-green-bright !important;
+		background-color: $clr-green !important;
 		color: $clr-black !important;
-		border-color: $clr-green-bright !important;
+		border-color: $clr-green !important;
 		box-shadow: none !important;
 	}
 }
