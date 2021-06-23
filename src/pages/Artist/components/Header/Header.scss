@@ -79,7 +79,16 @@ header {
         .modal-body {
           padding: 40px 15px 40px;
           .choose-artist-modal-container {
-
+            .dropdown-menu {
+              padding: 0;
+              .dropdown-item {
+                padding: 8px;
+                &.active, &:active {
+                  background-color: $clr-green-bright;
+                  color: white;
+                }
+              }
+            }
           }
         }
       }
