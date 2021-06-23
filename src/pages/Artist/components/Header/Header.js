@@ -25,8 +25,6 @@ import Notiflix from "notiflix-react";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
-import Cancel from "../../../../images/cancel.svg";
-import Check from "../../../../images/check.svg";
 
 function Header({onToggleSidebar, onChangeIsActiveProfile, onChangeIsProfileCompleted}) {
   const history = useHistory();
@@ -323,9 +321,9 @@ function Header({onToggleSidebar, onChangeIsActiveProfile, onChangeIsProfileComp
         </Modal.Header>
         <Modal.Body>
           <div className="choose-artist-modal-container">
-            <div className="section">
+            <div className="section form-group">
               {artistsList.length !== 0 &&
-              <NavDropdown title={selectedArtist ? selectedArtist.first_name + ' ' + selectedArtist.last_name : "Choose artist"} id="collasible-nav-dropdown" className="artist-dropdown">
+              <NavDropdown title={selectedArtist ? selectedArtist.first_name + ' ' + selectedArtist.last_name : "Choose artist"} id="collasible-nav-dropdown" className="form-control choose-artist-select">
                 {
                   artistsList.map((artist, key) => {
                     return (
@@ -337,13 +335,11 @@ function Header({onToggleSidebar, onChangeIsActiveProfile, onChangeIsProfileComp
               }
             </div>
             {selectedArtist && selectedArtist.status !== "accepted" &&
-              <div className="section">
-                <Button onClick={handleInviteAction} data-action={"rejected"} variant="btn primary-btn reject btn-full-width">
-                  <img className="" src={Cancel} alt="download-btn"/>
+              <div className="popup-btn-wrapper">
+                <Button onClick={handleInviteAction} data-action={"rejected"} className="primary-btn rejected-btn" variant="btn primary-btn reject btn-full-width">
                   Reject
                 </Button>
                 <Button onClick={handleInviteAction} data-action={"accepted"} variant="btn primary-btn accept btn-full-width">
-                  <img className="" src={Check} alt="download-btn"/>
                   Accept
                 </Button>
               </div>

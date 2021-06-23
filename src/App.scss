@@ -264,6 +264,17 @@ button, .btn {
 	}
 }
 
+.rejected-btn {
+  background-color: $clr-red-light !important;
+  border-color: $clr-red-light !important;
+  color: white !important;
+  &:hover, &:active, &:focus {
+    background-color: $clr-red-light-extra !important;
+    border-color: $clr-red-light-extra !important;
+    color: white !important;
+  }
+}
+
 h1,h2,h3 {
 	font-weight: 600;
 }

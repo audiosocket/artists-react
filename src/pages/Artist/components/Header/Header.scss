@@ -173,6 +173,41 @@ header {
   }
 }
 
+.choose-artist-select {
+  height: 48px;
+  a {
+    padding: 0;
+    @include flexbox;
+    @include justify-content(space-between);
+    @include align-items(center);
+    height: 100%;
+    &:hover {
+      color: #212121;
+    }
+    &:after {
+      margin-top: 0;
+    }
+    & + .dropdown-menu {
+      padding: 10px;
+      top: 5px !important;
+      width: 95%;
+      height: 107px;
+      overflow-x: hidden;
+      overflow-y: auto;
+      & > a {
+        height: auto;
+      }
+    }
+  } 
+}
+
+.popup-btn-wrapper {
+  padding-top: 24px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 24px;
+}
+
 @media #{$phone-portrait} {
   header {
     .custom-nav {
