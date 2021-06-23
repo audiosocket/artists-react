@@ -273,7 +273,7 @@ function Signup({userHash = ''}) {
                 <div key={key} className={agreement.status === "pending" ? "agreement-form-container" : "agreement-form-container hide"}>
                   <h3 className="agreement-type">{agreement.agreement.agreement_type.replace("_", " ")} Agreement</h3>
                   <Form.Group>
-                    <div className="agreement-container">{agreement.agreement.content}</div>
+                    <div className="agreement-container" dangerouslySetInnerHTML={{__html: agreement.agreement.content}} />
                   </Form.Group>
                   <Form.Group>
                     <a href={agreement.agreement.file} target="_blank" rel="noopener noreferrer" download>
