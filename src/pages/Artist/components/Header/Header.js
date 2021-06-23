@@ -12,7 +12,7 @@ import {ArtistContext} from "../../../../Store/artistContext";
 import fetchAgreements from "../../../../common/utlis/fetchAgreements";
 import fetchArtist from "../../../../common/utlis/fetchArtist";
 import fetchAlbums from "../../../../common/utlis/fetchAlbums";
-import {ACCESS_TOKEN, AGREEMENTS, BASE_URL, LIST_ARTISTS} from "../../../../common/api";
+import {ACCESS_TOKEN, AGREEMENTS, BASE_URL} from "../../../../common/api";
 import csc from "country-state-city";
 import fetchCollaborators from "../../../../common/utlis/fetchCollaborators";
 import fetchPublishers from "../../../../common/utlis/fetchPublishers";
@@ -22,6 +22,11 @@ import signout from '../../../../images/as-signout.svg';
 import artist from '../../../../images/as-artist.svg';
 import fetchArtistsList from "../../../../common/utlis/fetchArtistsList";
 import Notiflix from "notiflix-react";
+import Form from "react-bootstrap/Form";
+import Modal from "react-bootstrap/Modal";
+import Button from "react-bootstrap/Button";
+import Cancel from "../../../../images/cancel.svg";
+import Check from "../../../../images/check.svg";
 
 function Header({onToggleSidebar, onChangeIsActiveProfile, onChangeIsProfileCompleted}) {
   const history = useHistory();
@@ -31,22 +36,25 @@ function Header({onToggleSidebar, onChangeIsActiveProfile, onChangeIsProfileComp
   const [toggleSidebar, setToggleSidebar] = useState(true);
   const [userRole, setUserRole] = useState(null);
   const [artistsList, setArtistsList] = useState([]);
+  const [showChooseArtistModal, setShowChooseArtistModal] = useState(false);
 
   useEffect(() => {
     const userRole = JSON.parse(localStorage.getItem("userRole") ?? "");
     initializeUserRole(userRole);
     initializeAgreements(userRole);
+    initializeCountriesList();
     if(userRole === 'collaborator') {
       listArtists();
     }
-    initializeCountriesList();
-    initializeArtist();
-    initializeAlbums();
-    initializePartners();
+    if(!artistState.selectedArtist) {
+      initializeArtist();
+      initializeAlbums();
+      initializePartners();
+    }
   }, [])
 
   useEffect(() => {
-    if(selectedArtist) {
+    if(selectedArtist && selectedArtist.status === 'accepted') {
       initializeArtist(selectedArtist.id);
       initializeAlbums(selectedArtist.id);
       initializePartners(selectedArtist.id);
@@ -113,11 +121,7 @@ function Header({onToggleSidebar, onChangeIsActiveProfile, onChangeIsProfileComp
     artistActions.artistsListStateChanged(artistsList);
     setArtistsList(artistsList);
     if(artistsList.length > 0) {
-      const acceptedArtists = artistsList.filter(artist => artist.status === "accepted");
-      if(acceptedArtists.length > 0) {
-        setSelectedArtist(acceptedArtists[0]);
-        artistActions.selectedArtistStateChanged(acceptedArtists[0]);
-      }
+      setShowChooseArtistModal(true);
     }
     setIsLoading(false);
   }
@@ -174,13 +178,21 @@ function Header({onToggleSidebar, onChangeIsActiveProfile, onChangeIsProfileComp
     setIsLoading(false);
   }
 
-  const handleSelectedArtist = (e) => {
+  const handleSelectedArtist = (e, statusCheck = true) => {
     const artistId = parseInt(e.target.dataset.id);
     let selectedArtist = artistsList.filter((artist) => artist.id === artistId)
     selectedArtist = selectedArtist.length > 0 ? selectedArtist[0] : null;
 
     if(!selectedArtist)
       return false;
+
+    if(!statusCheck) {
+      artistActions.selectedArtistStateChanged(selectedArtist);
+      setSelectedArtist(selectedArtist);
+      if(selectedArtist.status === "accepted")
+        handleClose();
+      return true;
+    }
 
     if(selectedArtist.status === "accepted") {
       artistActions.selectedArtistStateChanged(selectedArtist);
@@ -196,6 +208,25 @@ function Header({onToggleSidebar, onChangeIsActiveProfile, onChangeIsProfileComp
   const handleToggle = () => {
     setToggleSidebar(!toggleSidebar);
     onToggleSidebar(!toggleSidebar);
+  }
+
+  const handleClose = () => {
+    setShowChooseArtistModal(!showChooseArtistModal);
+  }
+
+  const handleChooseArtist = () => {
+    if(!selectedArtist) {
+      Notiflix.Report.Warning('No artist selected', 'Please choose artist first before confirming!', 'Ok');
+    } else {
+      if(selectedArtist.status === ('pending' || 'rejected')) {
+        Notiflix.Report.Failure('Not authorized', `You must accept ${selectedArtist.first_name}${selectedArtist.last_name ? ' '+selectedArtist.last_name : ''}'s invite before proceeding further. You may choose another artist (if any).`, 'Ok');
+      } else
+        handleClose();
+    }
+  }
+
+  const handleInviteAction = () => {
+
   }
 
   return (
@@ -253,6 +284,58 @@ function Header({onToggleSidebar, onChangeIsActiveProfile, onChangeIsProfileComp
         </Navbar.Collapse>
       </Navbar>
     </header>
+    <Modal
+      show={showChooseArtistModal}
+      onHide={handleClose}
+      size="sm"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+      className="customArtistModal choose-artist-modal"
+      backdrop="static"
+      keyboard={false}
+    >
+      <Form noValidate>
+        <Modal.Header closeButton>
+          <Modal.Title id="contained-modal-title-vcenter">
+            Choose Artist
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <div className="choose-artist-modal-container">
+            <div className="section">
+              {artistsList.length !== 0 &&
+              <NavDropdown title={selectedArtist ? selectedArtist.first_name + ' ' + selectedArtist.last_name : "Choose artist"} id="collasible-nav-dropdown" className="artist-dropdown">
+                {
+                  artistsList.map((artist, key) => {
+                    return (
+                      <NavDropdown.Item key={key} onClick={(e) => handleSelectedArtist(e, false)} data-id={artist.id} className={selectedArtist ? selectedArtist.id === artist.id && "active" : ""}>{artist.first_name + ' ' + artist.last_name} - {artist.status}</NavDropdown.Item>
+                    );
+                  })
+                }
+              </NavDropdown>
+              }
+            </div>
+            {selectedArtist &&
+              <div className="section">
+                <Button onClick={handleInviteAction} data-action={"rejected"}
+                        variant="btn primary-btn reject btn-full-width">
+                  <img className="" src={Cancel} alt="download-btn"/>
+                  Reject
+                </Button>
+                <Button onClick={handleInviteAction} data-action={"accepted"}
+                        variant="btn primary-btn accept btn-full-width">
+                  <img className="" src={Check} alt="download-btn"/>
+                  Accept
+                </Button>
+              </div>
+            }
+          </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={handleChooseArtist} className="btn primary-btn submit">Confirm</Button>
+        </Modal.Footer>
+      </Form>
+    </Modal>
     </>
   );
 }

@@ -71,6 +71,22 @@ header {
   display: none;
 }
 
+.customArtistModal {
+  &.choose-artist-modal {
+    .modal-dialog {
+      max-width: 500px;
+      .modal-content {
+        .modal-body {
+          padding: 40px 15px 40px;
+          .choose-artist-modal-container {
+
+          }
+        }
+      }
+
+    }
+  }
+}
 
 @media #{$desktop-start} {
   header {
