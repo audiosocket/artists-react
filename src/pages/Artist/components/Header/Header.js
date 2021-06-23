@@ -302,9 +302,9 @@ function Header({onToggleSidebar, onChangeIsActiveProfile, onChangeIsProfileComp
         </Modal.Header>
         <Modal.Body>
           <div className="choose-artist-modal-container">
-            <div className="section">
+            <div className="section form-group">
               {artistsList.length !== 0 &&
-              <NavDropdown title={selectedArtist ? selectedArtist.first_name + ' ' + selectedArtist.last_name : "Choose artist"} id="collasible-nav-dropdown" className="artist-dropdown">
+              <NavDropdown title={selectedArtist ? selectedArtist.first_name + ' ' + selectedArtist.last_name : "Choose artist"} id="collasible-nav-dropdown" className="form-control choose-artist-select">
                 {
                   artistsList.map((artist, key) => {
                     return (
@@ -316,15 +316,13 @@ function Header({onToggleSidebar, onChangeIsActiveProfile, onChangeIsProfileComp
               }
             </div>
             {selectedArtist &&
-              <div className="section">
-                <Button onClick={handleInviteAction} data-action={"rejected"}
+              <div className="popup-btn-wrapper">
+                <Button className="primary-btn rejected-btn" onClick={handleInviteAction} data-action={"rejected"}
                         variant="btn primary-btn reject btn-full-width">
-                  <img className="" src={Cancel} alt="download-btn"/>
                   Reject
                 </Button>
                 <Button onClick={handleInviteAction} data-action={"accepted"}
                         variant="btn primary-btn accept btn-full-width">
-                  <img className="" src={Check} alt="download-btn"/>
                   Accept
                 </Button>
               </div>
