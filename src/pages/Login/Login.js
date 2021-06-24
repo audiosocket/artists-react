@@ -114,7 +114,7 @@ function Login() {
           <Form.Label>Password</Form.Label>
           <Form.Control required type="password" name="password" placeholder="Password" />
           <Form.Control.Feedback type="invalid">
-            This field is required!
+            Password is required!
           </Form.Control.Feedback>
         </Form.Group>
         <div className="block-inline remember-text">

@@ -311,7 +311,7 @@ function Partners() {
                     return (
                       collaborator &&
                         <li key={key}>
-                          <a>{collaborator.first_name} {collaborator.last_name ?? ''} <small><i>Permissions: {collaborator.access}</i></small><small><i>{collaborator.pro ? ", "+collaborator.pro : ""}</i></small> - <strong className={"status "+collaborator.status}>{collaborator.status ?? ''}</strong></a>
+                          <a>{collaborator.first_name} {collaborator.last_name ?? ''} <small><i>Permissions: {collaborator.access}</i></small><small><i>{collaborator.collaborator_profile && collaborator.collaborator_profile.pro ? ", PRO: "+collaborator.collaborator_profile.pro : ""}</i></small><small><i>{collaborator.collaborator_profile && collaborator.collaborator_profile.ipi ? ", IPI: "+collaborator.collaborator_profile.ipi : ""}</i></small> - <strong className={"status "+collaborator.status}>{collaborator.status ?? ''}</strong></a>
                           {(!artistState.selectedArtist || artistState.selectedArtist.access === 'write') &&
                             <div className="partner-actions">
                               <img onClick={(e) => handleShowCollaboratorModal(e, collaborator)} src={Edit} alt="edit-icon"/>

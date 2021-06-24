@@ -187,6 +187,7 @@ header {
 
 .choose-artist-select {
   height: 48px;
+  border-radius: 8px;
   a {
     padding: 0;
     @include flexbox;

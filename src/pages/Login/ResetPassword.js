@@ -96,7 +96,7 @@ function ResetPassword({userHash = ''}) {
           <Form.Label>Password</Form.Label>
           <Form.Control onChange={handleConfirmPassword} required type="password" name="password" placeholder="Password"/>
           <Form.Control.Feedback type="invalid">
-            This field is required!
+            Password is required!
           </Form.Control.Feedback>
         </Form.Group>
         <Form.Group className={isConfirmError && 'invalid'} controlId="formBasicPasswordConfirm">
@@ -104,7 +104,7 @@ function ResetPassword({userHash = ''}) {
           <Form.Control onChange={handleConfirmPassword} required type="password" name="password_confirmation" placeholder="Confirm Password"/>
           {!isConfirmError &&
           <Form.Control.Feedback type="invalid">
-            This field is required!
+            Confirm Password is required!
           </Form.Control.Feedback>
           }
           {isConfirmError &&

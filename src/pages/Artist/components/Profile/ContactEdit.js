@@ -301,7 +301,7 @@ function ContactEdit() {
                     placeholder="Address"
                   />
                   <Form.Control.Feedback type="invalid">
-                    Street is required!
+                    Address is required!
                   </Form.Control.Feedback>
                 </Col>
               </Row>
