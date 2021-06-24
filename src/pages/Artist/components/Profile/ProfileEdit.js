@@ -1,17 +1,20 @@
 import React, {useEffect, useRef, useState} from "react";
 import "./Profile.scss";
 import {ArtistContext} from "../../../../Store/artistContext";
-import fetchArtist from "../../../../common/utlis/fetchArtist";
 import Loader from "../../../../images/loader.svg";
 import {NavLink, useHistory} from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import {Col, Row} from "react-bootstrap";
 import Button from "react-bootstrap/Button";
-import {ACCESS_TOKEN, ARTIST_PROFILE_UPDATE, BASE_URL} from "../../../../common/api";
+import {
+  ACCESS_TOKEN,
+  ARTIST_PROFILE_UPDATE,
+  BASE_URL,
+  COLLABORATOR_ARTIST_PROFILE_UPDATE
+} from "../../../../common/api";
 import DropzoneComponent from "../../../../common/Dropzone/DropzoneComponent";
 import Breadcrumb from "react-bootstrap/Breadcrumb";
 import Notes from "../../../../common/Notes/Notes";
-import fetchNotes from "../../../../common/utlis/fetchNotes";
 import Notiflix from "notiflix-react";
 
 function ProfileEdit() {
@@ -28,25 +31,17 @@ function ProfileEdit() {
   const [profileSubmit, setProfileSubmit] = useState(false);
 
   useEffect(() => {
-    if(!artistState.artist)
-      getArtistProfile();
-    else {
+    if(artistState.artist) {
+      setIsLoading(false);
       if(Object.keys(artistState.artist).length <= 1) {
         Notiflix.Report.Failure( 'Not accessible', `You don't have access to profile!`, 'Ok', () => {
           history.push("/");
         } );
       }
       setArtist(artistState.artist);
-    }
+    } else
+      setIsLoading(true);
   }, [artistState.artist])
-
-  const getArtistProfile = async () => {
-    setIsLoading(true);
-    const artist = await fetchArtist();
-    artistActions.artistStateChanged(artist);
-    setArtist(artist);
-    setIsLoading(false);
-  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -73,8 +68,15 @@ function ProfileEdit() {
           data.append('additional_images[]', image[i]);
       }
       data.delete('name');
+      const userRole = artistState.userRole || JSON.parse(localStorage.getItem("userRole") ?? "");
+      let artist_id =  userRole === "collaborator" && artistState.selectedArtist && artistState.selectedArtist.id;
+      let url = `${BASE_URL}${ARTIST_PROFILE_UPDATE}`;
+      if(userRole === "collaborator") {
+        artist_id = artistState.selectedArtist && artistState.selectedArtist.id;
+        url = `${BASE_URL}${COLLABORATOR_ARTIST_PROFILE_UPDATE}?artist_id=${artist_id}`
+      }
       const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
-      const response = await fetch(`${BASE_URL}${ARTIST_PROFILE_UPDATE}`,
+      const response = await fetch(url,
         {
           headers: {
             "authorization": ACCESS_TOKEN,
@@ -198,7 +200,7 @@ function ProfileEdit() {
                       <Form.Control
                         readOnly={true}
                         name="name"
-                        defaultValue={artist.name}
+                        value={artist.name}
                         type="text"
                       />
                       {!isLoading &&
@@ -316,21 +318,21 @@ function ProfileEdit() {
                     <Col xl={4} md={8}>
                       <Form.Control
                         name="social[]"
-                        defaultValue={artist.social ? artist.social[0] ?? "" : ""}
+                        defaultValue={artist.social ? artist.social[0] || "" : ""}
                         type="text"
                         placeholder="Social link 1"
                         className="mb-1"
                       />
                       <Form.Control
                         name="social[]"
-                        defaultValue={artist.social ? artist.social[1] ?? "" : ""}
+                        defaultValue={artist.social ? artist.social[1] || "" : ""}
                         type="text"
                         placeholder="Social link 2"
                         className="mb-1"
                       />
                       <Form.Control
                         name="social[]"
-                        defaultValue={artist.social ? artist.social[2] ?? "" : ""}
+                        defaultValue={artist.social ? artist.social[2] || "" : ""}
                         type="text"
                         placeholder="Social link 3"
                         className="mb-1"

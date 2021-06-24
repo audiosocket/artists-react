@@ -1,13 +1,17 @@
 import React, {useEffect, useRef, useState} from "react";
 import "./../Profile.scss";
 import {ArtistContext} from "../../../../../Store/artistContext";
-import fetchArtist from "../../../../../common/utlis/fetchArtist";
 import Loader from "../../../../../images/loader.svg";
 import {NavLink, useHistory} from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import {Col, Row} from "react-bootstrap";
 import Button from "react-bootstrap/Button";
-import {ACCESS_TOKEN, ARTIST_PROFILE_UPDATE, BASE_URL} from "../../../../../common/api";
+import {
+  ACCESS_TOKEN,
+  ARTIST_PROFILE_UPDATE,
+  BASE_URL,
+  COLLABORATOR_ARTIST_PROFILE_UPDATE
+} from "../../../../../common/api";
 import Breadcrumb from "react-bootstrap/Breadcrumb";
 import Notiflix from "notiflix-react";
 
@@ -20,19 +24,19 @@ function Payment() {
   const [validated, setValidated] = useState(false);
 
   useEffect(() => {
-    if(!artistState.artist)
-      getArtistProfile();
-    else
+    if(artistState.artist) {
+      setIsLoading(false);
+      if(Object.keys(artistState.artist).length <= 1) {
+        Notiflix.Report.Failure( 'Not accessible', `You don't have access to profile!`, 'Ok', () => {
+          history.push("/");
+        } );
+      }
+      if(form.current)
+        form.current.reset();
       setArtist(artistState.artist);
+    } else
+      setIsLoading(true);
   }, [artistState.artist])
-
-  const getArtistProfile = async () => {
-    setIsLoading(true);
-    const artist = await fetchArtist();
-    artistActions.artistStateChanged(artist);
-    setArtist(artist);
-    setIsLoading(false);
-  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -45,8 +49,15 @@ function Payment() {
       setIsLoading(true);
       const data = new FormData(form.current);
       const json = prepareJson(data);
+      const userRole = artistState.userRole || JSON.parse(localStorage.getItem("userRole") ?? "");
+      let artist_id =  userRole === "collaborator" && artistState.selectedArtist && artistState.selectedArtist.id;
+      let url = `${BASE_URL}${ARTIST_PROFILE_UPDATE}`;
+      if(userRole === "collaborator") {
+        artist_id = artistState.selectedArtist && artistState.selectedArtist.id;
+        url = `${BASE_URL}${COLLABORATOR_ARTIST_PROFILE_UPDATE}?artist_id=${artist_id}`
+      }
       const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
-      const response = await fetch(`${BASE_URL}${ARTIST_PROFILE_UPDATE}`,
+      const response = await fetch(url,
         {
           headers: {
             "authorization": ACCESS_TOKEN,

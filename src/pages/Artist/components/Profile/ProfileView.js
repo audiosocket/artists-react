@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from "react";
 import "./Profile.scss";
 import {ArtistContext} from "../../../../Store/artistContext";
-import fetchArtist from "../../../../common/utlis/fetchArtist";
 import Loader from "../../../../images/loader.svg";
 import {NavLink, useHistory} from "react-router-dom";
 import Breadcrumb from "react-bootstrap/Breadcrumb";
@@ -15,25 +14,17 @@ function Profile() {
   const history = useHistory();
 
   useEffect(() => {
-    if(!artistState.artist)
-      getArtistProfile();
-    else {
+    if(artistState.artist) {
+      setIsLoading(false);
       if(Object.keys(artistState.artist).length <= 1) {
         Notiflix.Report.Failure( 'Not accessible', `You don't have access to profile!`, 'Ok', () => {
           history.push("/");
         } );
       }
       setArtist(artistState.artist);
-    }
+    } else
+      setIsLoading(true);
   }, [artistState.artist])
-
-  const getArtistProfile = async () => {
-    setIsLoading(true);
-    const artist = await fetchArtist();
-    artistActions.artistStateChanged(artist);
-    setArtist(artist);
-    setIsLoading(false);
-  }
 
   const handleNext = () => {
     if(artist) {

@@ -1,13 +1,17 @@
 import React, {useEffect, useRef, useState} from "react";
 import "./Profile.scss";
 import {ArtistContext} from "../../../../Store/artistContext";
-import fetchArtist from "../../../../common/utlis/fetchArtist";
 import Loader from "../../../../images/loader.svg";
 import {NavLink, useHistory} from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import {Col, Row} from "react-bootstrap";
 import Button from "react-bootstrap/Button";
-import {ACCESS_TOKEN, ARTIST_PROFILE_UPDATE, BASE_URL} from "../../../../common/api";
+import {
+  ACCESS_TOKEN,
+  ARTIST_PROFILE_UPDATE,
+  BASE_URL,
+  COLLABORATOR_ARTIST_PROFILE_UPDATE
+} from "../../../../common/api";
 import csc from 'country-state-city'
 import Select from 'react-select'
 import Breadcrumb from "react-bootstrap/Breadcrumb";
@@ -37,36 +41,46 @@ function ContactEdit() {
   const [cityError, setCityError] = useState(false);
 
   useEffect(() => {
-    if(!artistState.artist)
-      getArtistProfile();
-    else
+    if(artistState.artist) {
+      setIsLoading(false);
+      if(Object.keys(artistState.artist).length <= 1) {
+        Notiflix.Report.Failure( 'Not accessible', `You don't have access to profile!`, 'Ok', () => {
+          history.push("/");
+        } );
+      }
       setArtist(artistState.artist);
+    } else
+      setIsLoading(true);
+
     if(!artistState.countries) {
       prepareCountriesList();
     }
     else {
       setCountriesList(artistState.countries)
     }
-
-  }, [artistState.artist])
-
-  useEffect(() => {
     if(artistState.countries && artistState.artist.contact_information) {
-      prepareStatesDropdown()
-      prepareCitiesDropdown()
+      let states = prepareStatesDropdown();
+      let cities = prepareCitiesDropdown();
       setSelectedCountry(artistState.artist.contact_information.country)
       setSelectedState(artistState.artist.contact_information.state)
       setSelectedCity(artistState.artist.contact_information.city)
+      if(form.current) {
+        countryRef.current.select.setValue(artistState.countries.filter((country) => country.value === artistState.artist.contact_information.country)[0])
+        stateRef.current.select.setValue(states.filter((state) => state.value === artistState.artist.contact_information.state)[0])
+        cityRef.current.select.setValue(cities.filter((city) => city.value === artistState.artist.contact_information.city)[0])
+      }
     }
-  }, [artistState.artist])
+    if(artistState.artist && !artistState.artist.contact_information && form.current) {
+      form.current.reset();
+      countryRef.current.select.setValue({label: "Select Country", value: null, key: null});
+      stateRef.current.select.setValue({label: "Select State", value: null, countryCode: null});
+      cityRef.current.select.setValue({label: "Select State", value: null, countryCode: null});
+      setSelectedCountry(null);
+      setSelectedState(null);
+      setSelectedCity(null);
+    }
 
-  const getArtistProfile = async () => {
-    setIsLoading(true);
-    const artist = await fetchArtist();
-    artistActions.artistStateChanged(artist);
-    setArtist(artist);
-    setIsLoading(false);
-  }
+  }, [artistState.artist])
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -87,8 +101,15 @@ function ContactEdit() {
       setIsLoading(true);
       const data = new FormData(form.current);
       const json = prepareJson(data);
+      const userRole = artistState.userRole || JSON.parse(localStorage.getItem("userRole") ?? "");
+      let artist_id =  userRole === "collaborator" && artistState.selectedArtist && artistState.selectedArtist.id;
+      let url = `${BASE_URL}${ARTIST_PROFILE_UPDATE}`;
+      if(userRole === "collaborator") {
+        artist_id = artistState.selectedArtist && artistState.selectedArtist.id;
+        url = `${BASE_URL}${COLLABORATOR_ARTIST_PROFILE_UPDATE}?artist_id=${artist_id}`
+      }
       const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
-      const response = await fetch(`${BASE_URL}${ARTIST_PROFILE_UPDATE}`,
+      const response = await fetch(url,
         {
           headers: {
             "authorization": ACCESS_TOKEN,
@@ -147,6 +168,7 @@ function ContactEdit() {
       list.push({label: state.name, value: state.name, countryCode: state.countryCode, stateCode: state.isoCode})
     });
     setStatesList(list);
+    return list;
   }
 
   const prepareCitiesDropdown = () => {
@@ -166,6 +188,7 @@ function ContactEdit() {
       list.push({label: city.name, value: city.name})
     });
     setCitiesList(list);
+    return list;
   }
 
   const handleCountrySelection = (target) => {
