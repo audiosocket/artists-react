@@ -5,7 +5,7 @@ import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Loader from "../../images/loader.svg";
-import {ACCESS_TOKEN, BASE_URL, NOTES} from "../api";
+import {ACCESS_TOKEN, BASE_URL, COLLABORATOR_NOTES, NOTES} from "../api";
 import Notiflix from "notiflix-react";
 import Tooltip from "react-bootstrap/Tooltip";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
@@ -27,7 +27,7 @@ function Notes(props) {
 
   const getNotes = async () => {
     setIsLoading(true);
-    const notes = await fetchNotes(props.type, props.id);
+    const notes = await fetchNotes(props.type, props.id, props.role || "artist", props.artist_id || null);
     setNotes(notes);
     setIsLoading(false);
   }
@@ -49,8 +49,14 @@ function Notes(props) {
         data.append('files[]', file);
       }
       data.append('notable_id', props.id)
+      data.append('notable_type', props.type)
+      let url = `${BASE_URL}${NOTES}`;
+      if(props.role === 'collaborator') {
+        url = `${BASE_URL}${COLLABORATOR_NOTES}`;
+        data.append('artist_id', props.artist_id)
+      }
       const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
-      const response = await fetch(`${BASE_URL}${NOTES}?notable_type=${props.type}`,
+      const response = await fetch(url,
         {
           headers: {
             "authorization": ACCESS_TOKEN,

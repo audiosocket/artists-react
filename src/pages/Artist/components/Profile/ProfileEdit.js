@@ -205,6 +205,8 @@ function ProfileEdit() {
                       />
                       {!isLoading &&
                       <Notes
+                        role={artistState.userRole || JSON.parse(localStorage.getItem("userRole") ?? "")}
+                        artist_id={artistState.selectedArtist ? artistState.selectedArtist.id : null}
                         title={artist.name}
                         type={"ArtistProfile"}
                         id={artist.id}
