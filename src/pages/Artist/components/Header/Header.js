@@ -52,12 +52,19 @@ function Header({onToggleSidebar, onChangeIsActiveProfile, onChangeIsProfileComp
   }, [])
 
   useEffect(() => {
-    if(selectedArtist && selectedArtist.status === 'accepted') {
+    if(artistState.selectedArtist && artistState.selectedArtist.status === 'accepted') {
       initializeArtist(selectedArtist.id);
       initializeAlbums(selectedArtist.id);
       initializePartners(selectedArtist.id);
     }
-  }, [selectedArtist])
+    if(artistState.selectedArtist && artistState.selectedArtist.status !== 'accepted') {
+      setShowChooseArtistModal(true);
+      if(artistState.selectedArtist)
+        setSelectedArtist(artistState.selectedArtist)
+      if(artistState.artistsList)
+        setArtistsList(artistState.artistsList);
+    }
+  }, [artistState.selectedArtist])
 
   useEffect(() => {
     if(artistState.artistsList)
@@ -214,7 +221,7 @@ function Header({onToggleSidebar, onChangeIsActiveProfile, onChangeIsProfileComp
     if(!selectedArtist) {
       Notiflix.Report.Warning('No artist selected', 'Please choose artist first before confirming!', 'Ok');
     } else {
-      if(selectedArtist.status === ('pending' || 'rejected')) {
+      if(selectedArtist.status !== 'accepted') {
         Notiflix.Report.Failure('Not authorized', `You can't access ${selectedArtist.first_name}${selectedArtist.last_name ? ' '+selectedArtist.last_name : ''}'s portal without accepting their invite!. You may choose another artist (if any).`, 'Ok');
       } else
         handleClose();
@@ -241,10 +248,11 @@ function Header({onToggleSidebar, onChangeIsActiveProfile, onChangeIsProfileComp
       Notiflix.Notify.Failure('Something went wrong, try later!');
     } else {
       const artistsList = await fetchArtistsList();
-      artistActions.artistsListStateChanged(artistsList)
+      artistActions.artistsListStateChanged(artistsList);
       setArtistsList(artistsList);
       const tmpSelected = artistsList.filter((artist) => artist.id === selectedArtist.id);
       setSelectedArtist(tmpSelected[0] || null);
+      artistActions.selectedArtistStateChanged(tmpSelected[0] || null)
       Notiflix.Notify.Success('Your invite status updated successfully!');
     }
     setIsLoading(false);
@@ -324,6 +332,7 @@ function Header({onToggleSidebar, onChangeIsActiveProfile, onChangeIsProfileComp
         <Modal.Body>
           <div className="choose-artist-modal-container">
             <div className="section form-group">
+              <label>Select an artist from your invites</label>
               {artistsList.length !== 0 &&
               <NavDropdown title={selectedArtist ? selectedArtist.first_name + ' ' + selectedArtist.last_name : "Choose artist"} id="collasible-nav-dropdown" className="form-control choose-artist-select">
                 {
@@ -337,6 +346,8 @@ function Header({onToggleSidebar, onChangeIsActiveProfile, onChangeIsProfileComp
               }
             </div>
             {selectedArtist && selectedArtist.status !== "accepted" &&
+              <>
+              <p>Selected artist invite status is <strong>{selectedArtist.status}</strong>, you must accept invite to proceed!</p>
               <div className="popup-btn-wrapper">
                 <Button onClick={handleInviteAction} data-action={"rejected"} className="primary-btn rejected-btn" variant="btn primary-btn reject btn-full-width">
                   Reject
@@ -345,6 +356,7 @@ function Header({onToggleSidebar, onChangeIsActiveProfile, onChangeIsProfileComp
                   Accept
                 </Button>
               </div>
+              </>
             }
           </div>
         </Modal.Body>

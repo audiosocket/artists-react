@@ -79,6 +79,9 @@ header {
         .modal-body {
           padding: 40px 15px 40px;
           .choose-artist-modal-container {
+            label {
+              margin-bottom: 1rem;
+            }
             .dropdown-menu {
               padding: 0;
               .dropdown-item {

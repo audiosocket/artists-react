@@ -27,7 +27,8 @@ function Invites() {
     const artist_id = e.target.dataset.id;
     const status = e.target.dataset.key;
     let selectedArtist = artistsList.filter((artist) => artist.id === parseInt(e.target.dataset.id));
-    if(!selectedArtist.length)
+    selectedArtist = selectedArtist.length > 0 ? selectedArtist[0] : null;
+    if(!selectedArtist)
       return false;
     const data = new FormData();
     data.append('status', status);
@@ -45,7 +46,12 @@ function Invites() {
       Notiflix.Notify.Failure('Something went wrong, try later!');
     } else {
       const artistsList = await fetchArtistsList();
-      artistActions.artistsListStateChanged(artistsList)
+      artistActions.artistsListStateChanged(artistsList);
+      if(artistState.selectedArtist.id === selectedArtist.id) {
+        let tmpSelectedArtist = artistsList.filter((artist) => artist.id === selectedArtist.id)
+        tmpSelectedArtist = tmpSelectedArtist.length > 0 ? tmpSelectedArtist[0] : null;
+        artistActions.selectedArtistStateChanged(tmpSelectedArtist);
+      }
       setArtistsList(artistsList);
       Notiflix.Report.Success( 'Request fulfilled', `Your invite status updated successfully!`, 'Ok' );
     }
