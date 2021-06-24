@@ -184,7 +184,7 @@ function AlbumsListing() {
             Music
           </li>
           <li className="breadcrumb-item active">
-            Albms
+            Albums
           </li>
         </Breadcrumb>
       </div>

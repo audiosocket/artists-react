@@ -91,7 +91,7 @@ function Invites() {
             return (
               <section key={key} className="pt-4">
                 <div className="invite-contain">
-                  <div className="invite-artist">{artist.first_name+' '+artist.last_name}</div>
+                  <div className="invite-artist">{artist.name}</div>
                   <span className="access-type">{artist.access}</span>
                   <NavDropdown title={artist.status} id="collasible-nav-dropdown" className="invite-status">
                     <NavDropdown.Item key={"pending"} onClick={handleChangeStatus} data-id={artist.id} data-key="pending" className={artist.status === "pending" ? "active" : ""}>Pending</NavDropdown.Item>

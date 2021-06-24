@@ -201,7 +201,7 @@ function Header({onToggleSidebar, onChangeIsActiveProfile, onChangeIsProfileComp
       artistActions.selectedArtistStateChanged(selectedArtist);
       setSelectedArtist(selectedArtist);
     } else {
-      Notiflix.Report.Warning( 'Not authorized', `You can't access ${selectedArtist.first_name}${selectedArtist.last_name ? ' '+selectedArtist.last_name : ''}'s portal without accepting their invite!`, 'Go to invites', () => {
+      Notiflix.Report.Warning( 'Not authorized', `You can't access ${selectedArtist.name}'s portal without accepting their invite!`, 'Go to invites', () => {
         history.push('/invites');
       } );
       return false;
@@ -222,7 +222,7 @@ function Header({onToggleSidebar, onChangeIsActiveProfile, onChangeIsProfileComp
       Notiflix.Report.Warning('No artist selected', 'Please choose artist first before confirming!', 'Ok');
     } else {
       if(selectedArtist.status !== 'accepted') {
-        Notiflix.Report.Failure('Not authorized', `You can't access ${selectedArtist.first_name}${selectedArtist.last_name ? ' '+selectedArtist.last_name : ''}'s portal without accepting their invite!. You may choose another artist (if any).`, 'Ok');
+        Notiflix.Report.Failure('Not authorized', `You can't access ${selectedArtist.name}'s portal without accepting their invite!. You may choose another artist (if any).`, 'Ok');
       } else
         handleClose();
     }
@@ -266,7 +266,7 @@ function Header({onToggleSidebar, onChangeIsActiveProfile, onChangeIsProfileComp
           <img onClick={handleToggle} src={toggleSidebar ? hamburger : close} alt="Sidebar Launcher"  className="" />
         </div>
         <NavLink className="logo-brand" to={"/"}><Navbar.Brand><img src={logo} alt="COMPANY LOGO"  className="" /></Navbar.Brand></NavLink>
-        <Navbar.Text>{selectedArtist && selectedArtist.first_name+" "+selectedArtist.last_name+"'s Portal"}</Navbar.Text>
+        <Navbar.Text>{selectedArtist && selectedArtist.name+"'s Portal"}</Navbar.Text>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="mr-auto desktop-view">
@@ -274,7 +274,7 @@ function Header({onToggleSidebar, onChangeIsActiveProfile, onChangeIsProfileComp
               <NavDropdown title={"Choose artist"} id="collasible-nav-dropdown" className="artist-dropdown">
                 {artistsList.map((artist, key) => {
                   return (
-                    <NavDropdown.Item key={key} onClick={handleSelectedArtist} data-id={artist.id} className={selectedArtist ? selectedArtist.id === artist.id && "active" : ""}>{artist.first_name + ' ' + artist.last_name}</NavDropdown.Item>
+                    <NavDropdown.Item key={key} onClick={handleSelectedArtist} data-id={artist.id} className={selectedArtist ? selectedArtist.id === artist.id && "active" : ""}>{artist.name}</NavDropdown.Item>
                     );
                   })
                 }
@@ -286,8 +286,7 @@ function Header({onToggleSidebar, onChangeIsActiveProfile, onChangeIsProfileComp
               <NavDropdown className="mobile-view" title={<img src={artist} alt="Help"/>} id="collasible-nav-dropdown" className="mobile-view choose-artist-mobile">
                 {artistsList.map((artist, key) => {
                   return (
-                    <NavDropdown.Item key={key} onClick={handleSelectedArtist} data-id={artist.id}
-                                      className={selectedArtist ? selectedArtist.id === artist.id && "active" : ""}>{artist.first_name + ' ' + artist.last_name}</NavDropdown.Item>
+                    <NavDropdown.Item key={key} onClick={handleSelectedArtist} data-id={artist.id} className={selectedArtist ? selectedArtist.id === artist.id && "active" : ""}>{artist.name}</NavDropdown.Item>
                   );
                 })
                 }
@@ -334,11 +333,11 @@ function Header({onToggleSidebar, onChangeIsActiveProfile, onChangeIsProfileComp
             <div className="section form-group">
               <label>Select an artist from your invites</label>
               {artistsList.length !== 0 &&
-              <NavDropdown title={selectedArtist ? selectedArtist.first_name + ' ' + selectedArtist.last_name : "Choose artist"} id="collasible-nav-dropdown" className="form-control choose-artist-select">
+              <NavDropdown title={selectedArtist ? selectedArtist.name : "Choose artist"} id="collasible-nav-dropdown" className="form-control choose-artist-select">
                 {
                   artistsList.map((artist, key) => {
                     return (
-                      <NavDropdown.Item key={key} onClick={(e) => handleSelectedArtist(e, false)} data-id={artist.id} className={selectedArtist ? selectedArtist.id === artist.id && "active" : ""}>{artist.first_name + ' ' + artist.last_name} - {artist.status}</NavDropdown.Item>
+                      <NavDropdown.Item key={key} onClick={(e) => handleSelectedArtist(e, false)} data-id={artist.id} className={selectedArtist ? selectedArtist.id === artist.id && "active" : ""}>{artist.name}</NavDropdown.Item>
                     );
                   })
                 }
@@ -347,7 +346,7 @@ function Header({onToggleSidebar, onChangeIsActiveProfile, onChangeIsProfileComp
             </div>
             {selectedArtist && selectedArtist.status !== "accepted" &&
               <>
-              <p>Selected artist invite status is <strong>{selectedArtist.status}</strong>, you must accept invite to proceed!</p>
+              <p>Selected artist's invite status is <strong>{selectedArtist.status}</strong>, you must accept invite to proceed!</p>
               <div className="popup-btn-wrapper">
                 <Button onClick={handleInviteAction} data-action={"rejected"} className="primary-btn rejected-btn" variant="btn primary-btn reject btn-full-width">
                   Reject
