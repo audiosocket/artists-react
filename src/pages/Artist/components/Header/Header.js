@@ -243,7 +243,9 @@ function Header({onToggleSidebar, onChangeIsActiveProfile, onChangeIsProfileComp
       const artistsList = await fetchArtistsList();
       artistActions.artistsListStateChanged(artistsList)
       setArtistsList(artistsList);
-      Notiflix.Report.Success( 'Request fulfilled', `Your invite status updated successfully!`, 'Ok', handleClose() );
+      const tmpSelected = artistsList.filter((artist) => artist.id === selectedArtist.id);
+      setSelectedArtist(tmpSelected[0] || null);
+      Notiflix.Notify.Success('Your invite status updated successfully!');
     }
     setIsLoading(false);
   }
