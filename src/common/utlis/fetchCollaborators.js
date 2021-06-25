@@ -13,7 +13,10 @@ async function fetchCollaborators(artist_id = null) {
     });
   const resultSet = await response.json();
   if (!response.ok) {
-    return [];
+    if(resultSet["message"] === "Not accessible")
+      return resultSet["message"];
+    else
+      return [];
   } else {
     return resultSet["artists_collaborators"];
   }

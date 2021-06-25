@@ -23,6 +23,7 @@ import Edit from "../../../../images/pencil.svg";
 import Delete from "../../../../images/delete.svg";
 import Notiflix from "notiflix-react";
 import ArrowRight from "../../../../images/right-arrow.svg";
+import fetchArtistsList from "../../../../common/utlis/fetchArtistsList";
 
 function Partners() {
   const {artistState, artistActions} = React.useContext(ArtistContext);
@@ -227,10 +228,18 @@ function Partners() {
         if (!response.ok) {
           Notiflix.Notify.Failure('Something went wrong, try later!');
         } else {
-          Notiflix.Report.Success( 'Request fulfilled', `Collaborator "${collaborator.first_name} ${collaborator.last_name ?? ''}" deleted successfully!`, 'Ok' );
+          Notiflix.Notify.Success(`Collaborator "${collaborator.first_name} ${collaborator.last_name ?? ''}" deleted successfully!`);
           const collaborators = await fetchCollaborators(userRole === "collaborator" && artist_id);
-          artistActions.collaboratorsStateChanged(collaborators);
-          setCollaborators(collaborators);
+          if(userRole === "collaborator" && collaborators === "Not accessible") {
+            artistActions.selectedArtistStateChanged(null);
+            artistActions.collaboratorsStateChanged(null);
+            const artistsList = await fetchArtistsList();
+            artistActions.artistsListStateChanged(artistsList);
+            setCollaborators([]);
+          } else {
+            artistActions.collaboratorsStateChanged(collaborators);
+            setCollaborators(collaborators);
+          }
         }
       }
     );
@@ -262,7 +271,7 @@ function Partners() {
         if (!response.ok) {
           Notiflix.Notify.Failure('Something went wrong, try later!');
         } else {
-          Notiflix.Report.Success( 'Request fulfilled', `Publisher "${publisher.name}" deleted successfully!`, 'Ok' );
+          Notiflix.Notify.Success(`Publisher "${publisher.name}" deleted successfully!`);
           const publishers = await fetchPublishers(userRole === "collaborator" && artist_id);
           artistActions.publishersStateChanged(publishers);
           setPublishers(publishers);

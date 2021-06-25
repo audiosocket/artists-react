@@ -64,6 +64,8 @@ function Header({onToggleSidebar, onChangeIsActiveProfile, onChangeIsProfileComp
       if(artistState.artistsList)
         setArtistsList(artistState.artistsList);
     }
+    if(userRole === 'collaborator' && !artistState.selectedArtist)
+      setShowChooseArtistModal(true);
   }, [artistState.selectedArtist])
 
   useEffect(() => {
