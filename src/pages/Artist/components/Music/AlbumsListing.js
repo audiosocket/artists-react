@@ -8,7 +8,14 @@ import {ArtistContext} from "../../../../Store/artistContext";
 import fetchAlbums from "../../../../common/utlis/fetchAlbums";
 import Loader from "../../../../images/loader.svg";
 import Edit from "../../../../images/pencil.svg";
-import {ACCESS_TOKEN, ALBUMS, BASE_URL} from "../../../../common/api";
+import {
+  ACCESS_TOKEN,
+  ALBUMS,
+  ARTISTS_COLLABORATORS,
+  BASE_URL, COLLABORATOR_ALBUMS,
+  COLLABORATOR_ARTIST_COLLABORATORS, COLLABORATOR_INVITE_COLLABORATORS,
+  INVITE_COLLABORATORS
+} from "../../../../common/api";
 import Form from "react-bootstrap/Form";
 import {NavLink} from "react-router-dom";
 import Breadcrumb from 'react-bootstrap/Breadcrumb';
@@ -31,19 +38,9 @@ function AlbumsListing() {
   const [artwork, setArtwork] = useState(null);
 
   useEffect(() => {
-    if (!artistState.albums)
-      getAlbums()
-    else
+    if (artistState.albums)
       setAlbums(artistState.albums)
   }, [artistState.albums])
-
-  const getAlbums = async () => {
-    setIsLoading(true);
-    const albums = await fetchAlbums();
-    artistActions.albumsStateChanged(albums);
-    setAlbums(albums);
-    setIsLoading(false);
-  }
 
   const handleCreateAlbum = async (e) => {
     e.preventDefault();
@@ -58,9 +55,16 @@ function AlbumsListing() {
       if(!artwork) {
         data.delete("artwork");
       }
+      let url = selectedAlbum ? `${BASE_URL}${ALBUMS}/${selectedAlbum.id}` : `${BASE_URL}${ALBUMS}`;
+      let artist_id = null;
+      const userRole = artistState.userRole || JSON.parse(localStorage.getItem("userRole") ?? "");
+      if(userRole === "collaborator") {
+        artist_id =  artistState.selectedArtist && artistState.selectedArtist.id;
+        data.append("artist_id", artist_id);
+        url = selectedAlbum ? `${BASE_URL}${COLLABORATOR_ALBUMS}/${selectedAlbum.id}` : `${BASE_URL}${COLLABORATOR_ALBUMS}`;
+      }
       const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
-      const URL = selectedAlbum ? `${BASE_URL}${ALBUMS}/${selectedAlbum.id}` : `${BASE_URL}${ALBUMS}`;
-      const response = await fetch(`${URL}`,
+      const response = await fetch(url,
         {
           headers: {
             "authorization": ACCESS_TOKEN,
@@ -74,7 +78,11 @@ function AlbumsListing() {
       } else {
         if(artwork) {
           const result = await response.json();
-          const responseArtwork = await fetch(`${BASE_URL}${ALBUMS}/${result.id}/update_artwork`,
+          let artworkURL = `${BASE_URL}${ALBUMS}/${result.id}/update_artwork`;
+          if(userRole === "collaborator") {
+            artworkURL = `${BASE_URL}${COLLABORATOR_ALBUMS}/${result.id}/update_artwork?artist_id=${artist_id}`;
+          }
+          const responseArtwork = await fetch(artworkURL,
             {
               headers: {
                 "authorization": ACCESS_TOKEN,
@@ -87,12 +95,12 @@ function AlbumsListing() {
             Notiflix.Notify.Failure('Something went wrong, try later!');
           }
         }
-        const albums = await fetchAlbums();
+        const albums = await fetchAlbums(userRole === "collaborator" && artist_id);
         setAlbums(albums);
         artistActions.albumsStateChanged(albums);
         handleClose();
         e.target.reset();
-        Notiflix.Report.Success( 'Request fulfilled', `Album ${selectedAlbum ? "updated" : "created"} successfully!`, 'Ok' );
+        Notiflix.Notify.Success(`Album ${selectedAlbum ? "updated" : "created"} successfully!`);
       }
       setIsLoading(false);
     }
@@ -127,8 +135,15 @@ function AlbumsListing() {
       'Yes',
       'No',
       async function(){
+        let url = `${BASE_URL}${ALBUMS}/${album.id}`;
+        let artist_id = null;
+        const userRole = artistState.userRole || JSON.parse(localStorage.getItem("userRole") ?? "");
+        if(userRole === "collaborator") {
+          artist_id = artistState.selectedArtist && artistState.selectedArtist.id;
+          url = `${BASE_URL}${COLLABORATOR_ALBUMS}/${album.id}?artist_id=${artist_id}`;
+        }
         const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
-        const response = await fetch(`${BASE_URL}${ALBUMS}/${album.id}`,
+        const response = await fetch(url,
           {
             headers: {
               "authorization": ACCESS_TOKEN,
@@ -140,7 +155,7 @@ function AlbumsListing() {
           Notiflix.Notify.Failure('Something went wrong, try later!');
         } else {
           Notiflix.Report.Success( 'Request fulfilled', `Album "${album.name}" deleted successfully!`, 'Ok' );
-          const albums = await fetchAlbums();
+          const albums = await fetchAlbums(userRole === "collaborator" && artist_id);
           artistActions.albumsStateChanged(albums);
           setAlbums(albums);
         }
@@ -227,6 +242,8 @@ function AlbumsListing() {
                               <>
                                 <OverlayTrigger overlay={<Tooltip>Album whose track is under review or accepted can't be deleted.</Tooltip>}><img className="disable-delete" src={DeleteDisable} alt="Disable Delete"/></OverlayTrigger>
                                 <Notes
+                                  role={artistState.userRole || JSON.parse(localStorage.getItem("userRole") ?? "")}
+                                  artist_id={artistState.selectedArtist ? artistState.selectedArtist.id : null}
                                   title={album.name}
                                   type={"Album"}
                                   id={album.id}

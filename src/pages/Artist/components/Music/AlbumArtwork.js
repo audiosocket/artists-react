@@ -5,7 +5,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import {ArtistContext} from "../../../../Store/artistContext";
 import fetchAlbums from "../../../../common/utlis/fetchAlbums";
-import {ACCESS_TOKEN, ALBUMS, BASE_URL} from "../../../../common/api";
+import {ACCESS_TOKEN, ALBUMS, BASE_URL, COLLABORATOR_ALBUMS} from "../../../../common/api";
 import {NavLink, useHistory} from "react-router-dom";
 import {Breadcrumb} from "react-bootstrap";
 import Loader from "../../../../images/loader.svg";
@@ -24,25 +24,14 @@ function AlbumArtwrok({id = null}) {
   useEffect(() => {
     if(artistState.albums) {
       const filteredAlbum = artistState.albums.filter(album => parseInt(album.id) === parseInt(id));
-      setAlbum(filteredAlbum[0] ?? null)
-    } else {
-      getAlbum();
+      if(filteredAlbum.length > 0)
+        setAlbum(filteredAlbum[0]);
+      else {
+        history.push('/music');
+        Notiflix.Report.Failure( 'Invalid album', `Album doesn't exist`, 'Ok');
+      }
     }
-  }, [])
-
-  const getAlbum = async () => {
-    setIsLoading(true);
-    const albums = await fetchAlbums();
-    artistActions.albumsStateChanged(albums);
-    const filteredAlbum = albums.filter(album => parseInt(album.id) === parseInt(id));
-    if(filteredAlbum.length > 0)
-      setAlbum(filteredAlbum[0]);
-    else {
-      history.push('/music');
-      Notiflix.Report.Failure( 'Invalid album', `Album doesn't exist`, 'Ok');
-    }
-    setIsLoading(false);
-  }
+  }, [artistState.albums])
 
   const handleSubmitEditArtwork = async (e) => {
     e.preventDefault();
@@ -60,8 +49,16 @@ function AlbumArtwrok({id = null}) {
       }
       setIsLoading(true);
       const data = new FormData(form.current);
+      let url = `${BASE_URL}${ALBUMS}/${id}/update_artwork`;
+      let artist_id = null;
+      const userRole = artistState.userRole || JSON.parse(localStorage.getItem("userRole") ?? "");
+      if(userRole === "collaborator") {
+        artist_id =  artistState.selectedArtist && artistState.selectedArtist.id;
+        data.append("artist_id", artist_id);
+        url = `${BASE_URL}${COLLABORATOR_ALBUMS}/${id}/update_artwork`;
+      }
       const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
-      const response = await fetch(`${BASE_URL}${ALBUMS}/${id}/update_artwork`,
+      const response = await fetch(url,
         {
           headers: {
             "authorization": ACCESS_TOKEN,
@@ -73,7 +70,7 @@ function AlbumArtwrok({id = null}) {
       if (!response.ok) {
         Notiflix.Notify.Failure('Something went wrong, try later!');
       } else {
-        const albums = await fetchAlbums();
+        const albums = await fetchAlbums(userRole === "collaborator" && artist_id);
         artistActions.albumsStateChanged(albums);
         Notiflix.Notify.Success('Arwork updated successfully!');
         history.push(`/music/album/${id}`);

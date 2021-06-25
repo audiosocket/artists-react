@@ -5,7 +5,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import {ArtistContext} from "../../../../Store/artistContext";
 import fetchAlbums from "../../../../common/utlis/fetchAlbums";
-import {ACCESS_TOKEN, ALBUMS, BASE_URL} from "../../../../common/api";
+import {ACCESS_TOKEN, ALBUMS, BASE_URL, COLLABORATOR_ALBUMS} from "../../../../common/api";
 import {NavLink, useHistory} from "react-router-dom";
 import {Breadcrumb} from "react-bootstrap";
 import Loader from "../../../../images/loader.svg";
@@ -46,30 +46,8 @@ function AlbumEdit({id = null}) {
         history.push('/music');
         Notiflix.Report.Failure( 'Invalid album', `Album doesn't exist`, 'Ok');
       }
-    } else {
-      getAlbum();
     }
-  }, [])
-
-  const getAlbum = async () => {
-    setIsLoading(true);
-    const albums = await fetchAlbums();
-    artistActions.albumsStateChanged(albums);
-    const filteredAlbum = albums.filter(album => parseInt(album.id) === parseInt(id));
-    if(filteredAlbum.length > 0) {
-      setAlbum(filteredAlbum[0] ?? null)
-      if (filteredAlbum[0].release_date) {
-        const day = filteredAlbum[0].release_date.substr(0, 2);
-        const month = filteredAlbum[0].release_date.substr(3, 2);
-        const year = filteredAlbum[0].release_date.substr(6, 4);
-        setSelectedAlbumDate(`${year}-${month}-${day}`);
-      }
-    } else {
-      history.push('/music');
-      Notiflix.Report.Failure( 'Invalid album', `Album doesn't exist`, 'Ok');
-    }
-    setIsLoading(false);
-  }
+  }, [artistState.albums])
 
   const handleSubmitEditAlbum = async (e) => {
     e.preventDefault();
@@ -81,8 +59,16 @@ function AlbumEdit({id = null}) {
     } else {
       setIsLoading(true);
       const data = new FormData(form.current);
+      let url = `${BASE_URL}${ALBUMS}/${id}`;
+      let artist_id = null;
+      const userRole = artistState.userRole || JSON.parse(localStorage.getItem("userRole") ?? "");
+      if(userRole === "collaborator") {
+        artist_id =  artistState.selectedArtist && artistState.selectedArtist.id;
+        data.append("artist_id", artist_id);
+        url = `${BASE_URL}${COLLABORATOR_ALBUMS}/${id}`;
+      }
       const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
-      const response = await fetch(`${BASE_URL}${ALBUMS}/${id}`,
+      const response = await fetch(url,
         {
           headers: {
             "authorization": ACCESS_TOKEN,
@@ -94,7 +80,7 @@ function AlbumEdit({id = null}) {
       if (!response.ok) {
         Notiflix.Notify.Failure('Something went wrong, try later!');
       } else {
-        const albums = await fetchAlbums();
+        const albums = await fetchAlbums(userRole === "collaborator" && artist_id);
         artistActions.albumsStateChanged(albums);
         Notiflix.Notify.Success('Album updated successfully!');
         history.push(`/music/album/${id}`);
@@ -112,8 +98,15 @@ function AlbumEdit({id = null}) {
       'No',
       async function(){
         setIsDeleting(true);
+        let url = `${BASE_URL}${ALBUMS}/${id}`;
+        let artist_id = null;
+        const userRole = artistState.userRole || JSON.parse(localStorage.getItem("userRole") ?? "");
+        if(userRole === "collaborator") {
+          artist_id = artistState.selectedArtist && artistState.selectedArtist.id;
+          url = `${BASE_URL}${COLLABORATOR_ALBUMS}/${id}?artist_id=${artist_id}`;
+        }
         const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
-        const response = await fetch(`${BASE_URL}${ALBUMS}/${id}`,
+        const response = await fetch(url,
           {
             headers: {
               "authorization": ACCESS_TOKEN,
@@ -125,11 +118,11 @@ function AlbumEdit({id = null}) {
           Notiflix.Notify.Failure('Something went wrong, try later!');
           setIsDeleting(false);
         } else {
-          const albums = await fetchAlbums();
+          const albums = await fetchAlbums(userRole === "collaborator" && artist_id);
+          history.push(`/music`);
           artistActions.albumsStateChanged(albums);
           setIsDeleting(false);
           Notiflix.Notify.Success('Album deleted successfully!');
-          history.push(`/music`);
         }
       }
     );

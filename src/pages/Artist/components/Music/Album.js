@@ -14,7 +14,7 @@ import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
-import {ACCESS_TOKEN, ALBUMS, BASE_URL} from "../../../../common/api";
+import {ACCESS_TOKEN, ALBUMS, BASE_URL, COLLABORATOR_ALBUMS} from "../../../../common/api";
 import Select from "react-select";
 import fetchCollaborators from "../../../../common/utlis/fetchCollaborators";
 import fetchPublishers from "../../../../common/utlis/fetchPublishers";
@@ -48,8 +48,9 @@ function Album({id = null}) {
   useEffect(() => {
     if(artistState.albums) {
       const filteredAlbum = artistState.albums.filter(album => parseInt(album.id) === parseInt(id));
-      setAlbum(filteredAlbum[0] ?? null)
-      if(!filteredAlbum.length) {
+      if(filteredAlbum.length > 0)
+        setAlbum(filteredAlbum[0]);
+      else {
         history.push('/music');
         Notiflix.Report.Failure( 'Invalid album', `Album doesn't exist`, 'Ok');
       }
@@ -59,30 +60,18 @@ function Album({id = null}) {
           setIsDeletable(false);
         }
       }
-    } else {
-      getAlbum();
     }
     preparePartnersDropdown()
   }, [artistState.albums])
 
-  const getAlbum = async () => {
-    setIsLoading(true);
-    const albums = await fetchAlbums();
-    artistActions.albumsStateChanged(albums);
-    const filteredAlbum = albums.filter(album => parseInt(album.id) === parseInt(id));
-    if(filteredAlbum.length > 0)
-      setAlbum(filteredAlbum[0]);
-    else {
-      history.push('/music');
-      Notiflix.Report.Failure( 'Invalid album', `Album doesn't exist`, 'Ok');
-    }
-    setIsLoading(false);
-  }
-
   const preparePartnersDropdown = async () => {
+    const userRole = artistState.userRole || JSON.parse(localStorage.getItem("userRole") ?? "");
+    let artist_id = null;
+    if(userRole === "collaborator")
+      artist_id = artistState.selectedArtist && artistState.selectedArtist.id;
     let collaborators = null;
     try {
-      collaborators = artistState.collaborators ?? await fetchCollaborators();
+      collaborators = artistState.collaborators ?? await fetchCollaborators(artist_id);
       if (!artistState.collaborators)
         artistActions.collaboratorsStateChanged(collaborators ?? null);
     } catch (error) {
@@ -90,7 +79,7 @@ function Album({id = null}) {
     }
     let publishers = null;
     try {
-      publishers = artistState.publishers ?? await fetchPublishers();
+      publishers = artistState.publishers ?? await fetchPublishers(artist_id);
       if (!artistState.publishers)
         artistActions.publishersStateChanged(publishers ?? null);
     } catch (error) {
@@ -101,7 +90,7 @@ function Album({id = null}) {
       tmp.push({label: "Select writer/collaborator", value: null})
       for (let i = 0; i < collaborators.length; i++) {
         if(collaborators[i].first_name) {
-          tmp.push({label: collaborators[i].first_name +' '+ collaborators[i].last_name + ' - ' + collaborators[i].status ?? '', value: collaborators[i].id, status: collaborators[i].status});
+          tmp.push({label: collaborators[i].first_name +(collaborators[i].last_name ? ' '+collaborators[i].last_name : '') + ' - ' + collaborators[i].status ?? '', value: collaborators[i].id, status: collaborators[i].status});
         }
       }
       setCollaboratorsDropdown(tmp);
@@ -162,9 +151,16 @@ function Album({id = null}) {
       } else {
         setIsLoading(true);
       }
-
+      let url = selectedTrack ? `${BASE_URL}${ALBUMS}/${id}/tracks/${selectedTrack.id}` : `${BASE_URL}${ALBUMS}/${id}/tracks`;
+      let artist_id = null;
+      const userRole = artistState.userRole || JSON.parse(localStorage.getItem("userRole") ?? "");
+      if(userRole === "collaborator") {
+        artist_id = artistState.selectedArtist && artistState.selectedArtist.id;
+        data.append("artist_id", artist_id)
+        url = selectedTrack ? `${BASE_URL}${COLLABORATOR_ALBUMS}/${id}/tracks/${selectedTrack.id}` : `${BASE_URL}${COLLABORATOR_ALBUMS}/${id}/tracks`;
+      }
       const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
-      const URL = selectedTrack ? `${BASE_URL}${ALBUMS}/${id}/tracks/${selectedTrack.id}` : `${BASE_URL}${ALBUMS}/${id}/tracks`;
+      const URL = url;
       const response = await fetch(`${URL}`,
         {
           headers: {
@@ -177,7 +173,7 @@ function Album({id = null}) {
       if (!response.ok) {
         Notiflix.Notify.Failure('Something went wrong, try later!');
       } else {
-        const albums = await fetchAlbums();
+        const albums = await fetchAlbums(userRole === "collaborator" && artist_id);
         artistActions.albumsStateChanged(albums);
         const filteredAlbum = albums.filter(album => parseInt(album.id) === parseInt(id));
         setAlbum(filteredAlbum[0] ?? null)
@@ -200,8 +196,15 @@ function Album({id = null}) {
       'No',
       async function(){
         setIsDeleting(true);
+        let url = `${BASE_URL}${ALBUMS}/${id}`;
+        let artist_id = null;
+        const userRole = artistState.userRole || JSON.parse(localStorage.getItem("userRole") ?? "");
+        if(userRole === "collaborator") {
+          artist_id = artistState.selectedArtist && artistState.selectedArtist.id;
+          url = `${BASE_URL}${COLLABORATOR_ALBUMS}/${id}?artist_id=${artist_id}`;
+        }
         const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
-        const response = await fetch(`${BASE_URL}${ALBUMS}/${id}`,
+        const response = await fetch(url,
           {
             headers: {
               "authorization": ACCESS_TOKEN,
@@ -213,11 +216,11 @@ function Album({id = null}) {
           Notiflix.Notify.Failure('Something went wrong, try later!');
           setIsDeleting(false);
         } else {
-          const albums = await fetchAlbums();
+          const albums = await fetchAlbums(userRole === "collaborator" && artist_id);
           history.push(`/music`);
-          Notiflix.Report.Success( 'Request fulfilled', `Album "${album.name}" deleted successfully!`, 'Ok' );
           artistActions.albumsStateChanged(albums);
           setIsDeleting(false);
+          Notiflix.Notify.Success('Album deleted successfully!');
         }
       }
     );
@@ -230,8 +233,15 @@ function Album({id = null}) {
       'Yes',
       'No',
       async function(){
+        let url = `${BASE_URL}${ALBUMS}/${id}/tracks/${track.id}`;
+        let artist_id = null;
+        const userRole = artistState.userRole || JSON.parse(localStorage.getItem("userRole") ?? "");
+        if(userRole === "collaborator") {
+          artist_id = artistState.selectedArtist && artistState.selectedArtist.id;
+          url = `${BASE_URL}${COLLABORATOR_ALBUMS}/${id}/tracks/${track.id}?artist_id=${artist_id}`;
+        }
         const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
-        const response = await fetch(`${BASE_URL}${ALBUMS}/${id}/tracks/${track.id}`,
+        const response = await fetch(url,
           {
             headers: {
               "authorization": ACCESS_TOKEN,
@@ -242,7 +252,7 @@ function Album({id = null}) {
         if (!response.ok) {
           Notiflix.Notify.Failure('Something went wrong, try later!');
         } else {
-          const albums = await fetchAlbums();
+          const albums = await fetchAlbums(userRole === "collaborator" && artist_id);
           artistActions.albumsStateChanged(albums);
           const filteredAlbum = albums.filter(album => parseInt(album.id) === parseInt(id));
           setAlbum(filteredAlbum[0] ?? null)
@@ -410,6 +420,8 @@ function Album({id = null}) {
                                   <a className="disabled"><img src={DeleteDisable} alt="Delete"/></a>
                                 </OverlayTrigger>
                                 <Notes
+                                  role={artistState.userRole || JSON.parse(localStorage.getItem("userRole") ?? "")}
+                                  artist_id={artistState.selectedArtist ? artistState.selectedArtist.id : null}
                                   title={track.title}
                                   type={"Track"}
                                   id={track.id}
