@@ -345,6 +345,9 @@ function Header({onToggleSidebar, onChangeIsActiveProfile, onChangeIsProfileComp
                 }
               </NavDropdown>
               }
+              {artistsList.length === 0 &&
+                <p><i>No artist invite found!</i></p>
+              }
             </div>
             {selectedArtist && selectedArtist.status !== "accepted" &&
               <>
@@ -362,7 +365,10 @@ function Header({onToggleSidebar, onChangeIsActiveProfile, onChangeIsProfileComp
           </div>
         </Modal.Body>
         <Modal.Footer>
-          <Button onClick={(e) => handleChooseArtist(e)} className="btn primary-btn submit">{isLoading ? 'Processing...' : 'Confirm'}</Button>
+          {artistsList.length !== 0
+            ? <Button onClick={(e) => handleChooseArtist(e)} className="btn primary-btn submit">{isLoading ? 'Processing...' : 'Confirm'}</Button>
+            : <Button onClick={() => {localStorage.removeItem("user");localStorage.removeItem("userRole");history.push("/login")}} className="btn primary-btn submit">Sign out</Button>
+          }
         </Modal.Footer>
       </Form>
     </Modal>
