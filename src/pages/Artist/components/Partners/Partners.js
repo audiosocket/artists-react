@@ -11,7 +11,7 @@ import Loader from "../../../../images/loader.svg";
 import Select from "react-select";
 import {
   ACCESS_TOKEN, ARTISTS_COLLABORATORS,
-  BASE_URL,
+  BASE_URL, COLLABORATOR_ARTIST_COLLABORATORS, COLLABORATOR_INVITE_COLLABORATORS, COLLABORATOR_PUBLISHERS,
   INVITE_COLLABORATORS,
   PRO_LIST,
   PUBLISHERS
@@ -43,32 +43,11 @@ function Partners() {
   const [registeredName, setRegisteredName] = useState(null);
 
   useEffect(() => {
-    if (!artistState.collaborators)
-      getCollaborators()
-    else
+    if (artistState.collaborators)
       setCollaborators(artistState.collaborators)
-
-    if (!artistState.publishers)
-      getPublishers()
-    else
+    if (artistState.publishers)
       setPublishers(artistState.publishers)
   }, [artistState.collaborators, artistState.publishers])
-
-  const getCollaborators = async () => {
-    setIsLoading(true);
-    const collaborators = await fetchCollaborators();
-    setCollaborators(collaborators ?? []);
-    artistActions.collaboratorsStateChanged(collaborators ?? null);
-    setIsLoading(false);
-  }
-
-  const getPublishers = async () => {
-    setIsLoading(true);
-    const publishers = await fetchPublishers();
-    setPublishers(publishers ?? []);
-    artistActions.publishersStateChanged(publishers ?? null);
-    setIsLoading(false);
-  }
 
   const handleSubmitCollaborator = async (e) => {
     e.preventDefault();
@@ -100,7 +79,13 @@ function Partners() {
       if(selectedPartner) {
         data.delete("email");
       }
-      const url = selectedPartner ? `${BASE_URL}${ARTISTS_COLLABORATORS}/${selectedPartner.id}` : `${BASE_URL}${INVITE_COLLABORATORS}`;
+      let url = selectedPartner ? `${BASE_URL}${ARTISTS_COLLABORATORS}/${selectedPartner.id}` : `${BASE_URL}${INVITE_COLLABORATORS}`;
+      const userRole = artistState.userRole || JSON.parse(localStorage.getItem("userRole") ?? "");
+      if(userRole === "collaborator") {
+        let artist_id =  artistState.selectedArtist && artistState.selectedArtist.id;
+        data.append("artist_id", artist_id);
+        url = selectedPartner ? `${BASE_URL}${COLLABORATOR_ARTIST_COLLABORATORS}/${selectedPartner.id}` : `${BASE_URL}${COLLABORATOR_INVITE_COLLABORATORS}`;
+      }
       const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
       const response = await fetch(url,
         {
@@ -143,7 +128,13 @@ function Partners() {
         return false;
       }
       setIsLoading(true);
-      const url = selectedPartner ? `${BASE_URL}${PUBLISHERS}/${selectedPartner.id}` : `${BASE_URL}${PUBLISHERS}`;
+      let url = selectedPartner ? `${BASE_URL}${PUBLISHERS}/${selectedPartner.id}` : `${BASE_URL}${PUBLISHERS}`;
+      const userRole = artistState.userRole || JSON.parse(localStorage.getItem("userRole") ?? "");
+      if(userRole === "collaborator") {
+        let artist_id =  artistState.selectedArtist && artistState.selectedArtist.id;
+        data.append("artist_id", artist_id);
+        url = selectedPartner ? `${BASE_URL}${COLLABORATOR_PUBLISHERS}/${selectedPartner.id}` : `${BASE_URL}${COLLABORATOR_PUBLISHERS}`;
+      }
       const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
       const response = await fetch(url,
         {
@@ -217,8 +208,15 @@ function Partners() {
       'Yes',
       'No',
       async function(){
+        let artist_id = null;
+        let url = `${BASE_URL}${ARTISTS_COLLABORATORS}/${collaborator.id}`;
+        const userRole = artistState.userRole || JSON.parse(localStorage.getItem("userRole") ?? "");
+        if(userRole === "collaborator") {
+          artist_id =  artistState.selectedArtist && artistState.selectedArtist.id;
+          url = `${BASE_URL}${COLLABORATOR_ARTIST_COLLABORATORS}/${collaborator.id}?artist_id=${artist_id}`;
+        }
         const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
-        const response = await fetch(`${BASE_URL}${ARTISTS_COLLABORATORS}/${collaborator.id}`,
+        const response = await fetch(url,
           {
             headers: {
               "authorization": ACCESS_TOKEN,
@@ -230,7 +228,7 @@ function Partners() {
           Notiflix.Notify.Failure('Something went wrong, try later!');
         } else {
           Notiflix.Report.Success( 'Request fulfilled', `Collaborator "${collaborator.first_name} ${collaborator.last_name ?? ''}" deleted successfully!`, 'Ok' );
-          const collaborators = await fetchCollaborators();
+          const collaborators = await fetchCollaborators(userRole === "collaborator" && artist_id);
           artistActions.collaboratorsStateChanged(collaborators);
           setCollaborators(collaborators);
         }
@@ -245,8 +243,15 @@ function Partners() {
       'Yes',
       'No',
       async function(){
+        let artist_id = null;
+        let url = `${BASE_URL}${COLLABORATOR_PUBLISHERS}/${publisher.id}`;
+        const userRole = artistState.userRole || JSON.parse(localStorage.getItem("userRole") ?? "");
+        if(userRole === "collaborator") {
+           artist_id =  artistState.selectedArtist && artistState.selectedArtist.id;
+          url = `${BASE_URL}${COLLABORATOR_PUBLISHERS}/${publisher.id}?artist_id=${artist_id}`;
+        }
         const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
-        const response = await fetch(`${BASE_URL}${PUBLISHERS}/${publisher.id}`,
+        const response = await fetch(url,
           {
             headers: {
               "authorization": ACCESS_TOKEN,
@@ -258,7 +263,7 @@ function Partners() {
           Notiflix.Notify.Failure('Something went wrong, try later!');
         } else {
           Notiflix.Report.Success( 'Request fulfilled', `Publisher "${publisher.name}" deleted successfully!`, 'Ok' );
-          const publishers = await fetchPublishers();
+          const publishers = await fetchPublishers(userRole === "collaborator" && artist_id);
           artistActions.publishersStateChanged(publishers);
           setPublishers(publishers);
         }

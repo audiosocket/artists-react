@@ -24,6 +24,8 @@ export const COLLABORATOR_ARTIST_PROFILE_UPDATE = "api/v1/collaborator/artists/u
 export const COLLABORATOR_ALBUMS = "api/v1/collaborator/albums";
 export const COLLABORATOR_PUBLISHERS = "api/v1/collaborator/publishers";
 export const COLLABORATOR_LIST_COLLABORATORS = "api/v1/collaborator/artists/collaborators";
+export const COLLABORATOR_INVITE_COLLABORATORS = "api/v1/collaborator/artists/invite_collaborator";
+export const COLLABORATOR_ARTIST_COLLABORATORS = "api/v1/collaborator/artists_collaborators";
 
 export const PRO_LIST = [
   {label: "Select PRO", value: null},
