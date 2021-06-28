@@ -13,6 +13,7 @@ import {
   PUBLISHERS_STATE_CHANGED,
   IS_ACTIVE_PROFILE_STATE_CHANGED,
   IS_PROFILE_COMPLETED_STATE_CHANGED,
+  WELCOME_CONTENT_STATE_CHANGED,
 } from "./artistReducer";
 
 const ArtistContext = React.createContext();
@@ -52,6 +53,9 @@ const ArtistProvider = (props) => {
     },
     isProfileCompletedStateChanged: (isProfileCompleted) => {
       dispatch({ type: IS_PROFILE_COMPLETED_STATE_CHANGED, payload: isProfileCompleted });
+    },
+    welcomeContentStateChanged: (welcomeContent) => {
+      dispatch({ type: WELCOME_CONTENT_STATE_CHANGED, payload: welcomeContent });
     },
   };
 

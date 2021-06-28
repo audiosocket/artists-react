@@ -9,7 +9,8 @@ export const initialState = {
   collaborators: null,
   publishers: null,
   isActiveProfile: null,
-  isProfileCompleted: null
+  isProfileCompleted: null,
+  welcomeContent: null
 };
 
 export const USER_ROLE_STATE_CHANGED = "USER_ROLE_STATE_CHANGED";
@@ -23,6 +24,7 @@ export const COLLABORATORS_STATE_CHANGED = "COLLABORATORS_STATE_CHANGED";
 export const PUBLISHERS_STATE_CHANGED = "PUBLISHERS_STATE_CHANGED";
 export const IS_ACTIVE_PROFILE_STATE_CHANGED = "IS_ACTIVE_PROFILE_STATE_CHANGED";
 export const IS_PROFILE_COMPLETED_STATE_CHANGED = "IS_PROFILE_COMPLETED_STATE_CHANGED";
+export const WELCOME_CONTENT_STATE_CHANGED = "WELCOME_CONTENT_STATE_CHANGED";
 
 export const reducer = (state, action) => {
   switch (action.type) {
@@ -80,6 +82,11 @@ export const reducer = (state, action) => {
       return {
         ...state,
         isProfileCompleted: action.payload,
+      };
+    case WELCOME_CONTENT_STATE_CHANGED:
+      return {
+        ...state,
+        welcomeContent: action.payload,
       };
   }
   return state;

@@ -5,14 +5,20 @@ import ArrowRight from "../../../../images/right-arrow.svg";
 import {ACCESS_TOKEN, WELCOME_METADATA, BASE_URL} from "../../../../common/api";
 import Notiflix from "notiflix-react";
 import Loader from "../../../../images/loader.svg";
+import {ArtistContext} from "../../../../Store/artistContext";
 
 function Welcome() {
   const role = JSON.parse(localStorage.getItem("userRole") ?? "");
   const [metaData, setMetadata] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const {artistState, artistActions} = React.useContext(ArtistContext);
 
   useEffect(() => {
-    fetchWelcomeMetadata();
+    if(artistState.welcomeContent) {
+      setMetadata(artistState.welcomeContent);
+    } else {
+      fetchWelcomeMetadata();
+    }
   }, [])
 
   const fetchWelcomeMetadata = async () => {
@@ -32,6 +38,7 @@ function Welcome() {
       const resultSet = await response.json();
       if(resultSet['content']) {
         setMetadata(resultSet['content']);
+        artistActions.welcomeContentStateChanged(resultSet['content']);
       }
     }
     setIsLoading(false);
