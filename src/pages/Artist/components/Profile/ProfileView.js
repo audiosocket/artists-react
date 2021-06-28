@@ -6,9 +6,14 @@ import {NavLink, useHistory} from "react-router-dom";
 import Breadcrumb from "react-bootstrap/Breadcrumb";
 import Notiflix from "notiflix-react";
 import ArrowRight from "../../../../images/right-arrow.svg";
+import Waiting from "../../../../images/waiting.svg";
+import Check from "../../../../images/check-solid.svg";
+import Cancel from "../../../../images/close-circle-2.svg";
+import Tooltip from "react-bootstrap/Tooltip";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 
 function Profile() {
-  const {artistState, artistActions} = React.useContext(ArtistContext);
+  const {artistState} = React.useContext(ArtistContext);
   const [isLoading, setIsLoading] = useState(false);
   const [artist, setArtist] = useState({});
   const history = useHistory();
@@ -67,7 +72,17 @@ function Profile() {
               </div>
 
               <div className="parallel-info">
-                <label>cover image</label>
+                <label>
+                  cover image
+                  {artist.cover_image &&
+                    <OverlayTrigger placement={"top"} overlay={<Tooltip id="tooltip-right">{artist.cover_image_status === "approved" ? "Your cover image has been approved" : artist.cover_image_status === "pending" ? "Your cover image is under review" : "Your cover image has been rejected"}</Tooltip>}>
+                      {artist.cover_image_status === "approved"
+                        ? <img src={Check} alt="approved"/>
+                        : artist.cover_image_status === "pending" ? <img src={Waiting} alt="pending"/> : <img src={Cancel} alt="cancel"/>
+                      }
+                    </OverlayTrigger>
+                  }
+                </label>
                 <div className="info-ans image">
                   {artist.cover_image
                     ? <img className="preview" src={artist.cover_image} alt="Cover Image"/>
@@ -78,7 +93,17 @@ function Profile() {
                 </div>
               </div>
               <div className="parallel-info">
-                <label>banner image</label>
+                <label>
+                  Banner image
+                  {artist.banner_image &&
+                  <OverlayTrigger placement={"top"} overlay={<Tooltip id="tooltip-right">{artist.banner_image_status === "approved" ? "Your banner image has been approved" : artist.banner_image_status === "pending" ? "Your banner image is under review" : "Your banner image has been rejected"}</Tooltip>}>
+                    {artist.banner_image_status === "approved"
+                      ? <img src={Check} alt="approved"/>
+                      : artist.banner_image_status === "pending" ? <img src={Waiting} alt="pending"/> : <img src={Cancel} alt="cancel"/>
+                    }
+                  </OverlayTrigger>
+                  }
+                </label>
                 <div className="info-ans image">
                   {artist.banner_image
                     ? <img src={artist.banner_image} alt="Banner Image" />

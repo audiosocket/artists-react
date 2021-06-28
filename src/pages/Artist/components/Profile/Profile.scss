@@ -41,6 +41,11 @@ section {
           text-transform: capitalize;
           text-align: left;
           margin-right: 25px;
+          img {
+            width: 25px;
+            margin-left: 10px;
+            vertical-align: middle;
+          }
         }
         .info-ans {
           color: #212121;
