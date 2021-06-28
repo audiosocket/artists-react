@@ -58,21 +58,13 @@ function Welcome() {
 
           <div className='sub-section'>
             <h4><strong>US citizens</strong></h4>
-            <p>We need one W-9 form on file per artist. If you are an existing artist and have already sent us one, you do not need to send another.</p>
-            <p>Please <a href="">download from the IRS</a>, fill it out and sign it. You can either mail the completed form to us at the address below, or scan it and email to <a href="mailto:accounting@audiosocket.com">accounting@audiosocket.com</a>. Please include your artist namel</p>
-            <p>If you don't send one we must withhold 28% of all future payments for tax purposes, so it's very important.</p>
+            <p>We need one W9 form on file per artist entity for whomever the payee will be. If you are an existing artist and have already sent us one, you do not need to send another. Please download one here, fill it out and sign it.</p>
+            <p>Please return the W9 to <a href="mailto:artists@audiosocket.com">artists@audiosocket.com</a>.Please include your artist name. The payee on the W9 must match the bank information payee.</p>
           </div>
 
           <div className='sub-section'>
             <h4><strong>International artists</strong></h4>
-            <p>Taxes are a little more complicated for you, so we've <a href="">written a document</a> to help you through the process. It may soom like a hassle, but once it's done you'll thank us for not retaining 28% of your sync revenue!</p>
-          </div>
-
-          <div className='sub-section our-address'>
-            <h4><strong>Our address</strong></h4>
-            <p>audiosocket</p>
-            <p>3518 Fremont Ave N #400</p>
-            <p>Seattle, WA 98103</p>
+            <p>Please complete a W8 form and return a copy to <a href="mailto:artists@audiosocket.com">artists@audiosocket.com</a>.</p>
           </div>
         </div>
       </section>
