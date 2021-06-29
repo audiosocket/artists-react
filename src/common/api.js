@@ -29,6 +29,7 @@ export const COLLABORATOR_ARTIST_COLLABORATORS = "api/v1/collaborator/artists_co
 
 export const PRO_LIST = [
   {label: "Select PRO", value: null},
+  {label: "NS (no society)", value: "NS"},
   {label: "USA - BMI", value: "USA - BMI"},
   {label: "USA - SESAC", value: "USA - SESAC"},
   {label: "United Kingdom - PRS", value: "United Kingdom - PRS"},
@@ -74,4 +75,5 @@ export const PRO_LIST = [
   {label: "Switzerland - SUISA", value: "Switzerland - SUISA"},
   {label: "Trinidad & Tobago - COTT", value: "Trinidad & Tobago - COTT"},
   {label: "Turkey - MESAM", value: "Turkey - MESAM"},
-  {label: "Uruguay - AGADU", value: "Uruguay - AGADU"} ];
+  {label: "Uruguay - AGADU", value: "Uruguay - AGADU"},
+  {label: "Other", value: 'other'} ];

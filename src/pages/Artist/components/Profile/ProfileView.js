@@ -202,9 +202,8 @@ function Profile() {
                     <span>{artist.contact_information.postal_code}, {artist.contact_information.street}</span>
                     <span>{artist.contact_information.city}, {artist.contact_information.state}</span>
                     <span>{artist.contact_information.country}</span>
-                    {artist.contact_information.phone &&
-                      <span><small className="medium-text">Phone#: </small>{artist.contact_information.phone}</span>
-                    }
+                    <span><a href={"tel:"+artist.contact_information.phone}>{artist.contact_information.phone}</a></span>
+                    <span><a href={"mailto:"+artist.contact_information.email}>{artist.contact_information.email}</a></span>
                   </>
                   : '-'
                 }

@@ -102,5 +102,6 @@
 small {
   &.error {
     color: $clr-red;
+    display: block;
   }
 }

@@ -60,8 +60,10 @@ function Partners() {
     } else {
       setIsLoading(true);
       const data = new FormData(form.current);
-      if(pro)
-        data.append("collaborator_profile_attributes[pro]", pro)
+      if(pro) {
+        if(pro !== "other")
+          data.append('collaborator_profile_attributes[pro]', pro);
+      }
       if(!pro && selectedPartner) {
         data.append("collaborator_profile_attributes[pro]", selectedPartner.collaborator_profile ? selectedPartner.collaborator_profile.pro : '')
       }
@@ -124,7 +126,8 @@ function Partners() {
     } else {
       const data = new FormData(form.current);
       if(pro) {
-        data.append('pro', pro);
+        if(pro !== "other")
+          data.append('pro', pro);
       } else {
         return false;
       }
@@ -162,9 +165,14 @@ function Partners() {
   const handleShowCollaboratorModal = (e, collaborator = null) => {
     if(collaborator) {
       setSelectedPartner(collaborator);
+      if(collaborator.collaborator_profile.pro && PRO_LIST.filter(item => item.value === collaborator.collaborator_profile.pro).length === 0) {
+        setPro("other");
+      } else {
+        setPro(collaborator.collaborator_profile ? collaborator.collaborator_profile.pro : null);
+      }
       setDifferentName(collaborator.collaborator_profile ? !!collaborator.collaborator_profile.different_registered_name : false)
       setRegisteredName(collaborator.collaborator_profile ? collaborator.collaborator_profile.different_registered_name || null : null)
-      setAgreements(collaborator.access === "read")
+      setAgreements(collaborator.access === "read" || collaborator.access === "write")
       setAccess(collaborator.access === "write")
     }
     setShowPublisherModal(false);
@@ -174,7 +182,11 @@ function Partners() {
   const handelShowPublisherModal = (e, publisher = null) => {
     if(publisher) {
       setSelectedPartner(publisher);
-      setPro(publisher.pro ?? null);
+      if(publisher.pro && PRO_LIST.filter(item => item.value === publisher.pro).length === 0) {
+        setPro("other");
+      } else {
+        setPro(publisher.pro ?? null);
+      }
     }
     setShowCollaboratorModal(false);
     setShowPublisherModal(true);
@@ -422,14 +434,18 @@ function Partners() {
                   <Col xs={12}>
                     <div className="form-group">
                       <Form.Control
+                        required
                         name="collaborator_profile_attributes[ipi]"
                         type="text"
                         defaultValue={selectedPartner && selectedPartner.collaborator_profile ? selectedPartner.collaborator_profile.ipi : ''}
-                        placeholder="CAE/IPI # (optional)"
+                        placeholder="CAE/IPI #*"
                       />
+                      <Form.Control.Feedback type="invalid">
+                        CAE/IPI # is required!
+                      </Form.Control.Feedback>
                       <div>
                         <small className="text-muted">
-                          <strong>Note</strong>: An IPI # is not the same as a member number, its the  9 digit number that appears on the statements from your PRO
+                          <strong>Note</strong>: An CAE/IPI # is not the same as a member number, its the  9 digit number that appears on the statements from your PRO
                         </small>
                       </div>
                     </div>
@@ -443,7 +459,7 @@ function Partners() {
                         className="pro-select-container-header"
                         classNamePrefix="pro-select-header react-select-popup"
                         options={PRO_LIST}
-                        defaultValue={selectedPartner && selectedPartner.collaborator_profile ? PRO_LIST.filter(item => item.value === selectedPartner.collaborator_profile.pro) : {label: "Select PRO", value: null}}
+                        defaultValue={selectedPartner ? selectedPartner.collaborator_profile && PRO_LIST.filter(item => item.value === selectedPartner.collaborator_profile.pro).length === 0 ? {label: "Other", value: 'other'} : PRO_LIST.filter(item => item.value === selectedPartner.collaborator_profile.pro) : {label: "Select PRO", value: null}}
                         onChange={(target) => setPro(target.value)}
                         maxMenuHeight={160}
                         theme={theme => ({
@@ -454,13 +470,29 @@ function Partners() {
                           },
                         })}
                       />
+                      <small><strong>Note:</strong> if you're not registered with a PRO, please select NS from the dropdown (no society)</small>
                       <small className="text-muted">This field is optional</small>
                     </div>
                   </Col>
-
+                  {pro === "other" &&
+                    <Col xs={12}>
+                      <div className="form-group">
+                        <Form.Control
+                          required
+                          name="collaborator_profile_attributes[pro]"
+                          type="text"
+                          defaultValue={selectedPartner && selectedPartner.collaborator_profile && selectedPartner.collaborator_profile.pro}
+                          placeholder="Enter your PRO name"
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          PRO name is required!
+                        </Form.Control.Feedback>
+                      </div>
+                    </Col>
+                  }
                   <Col xs={12}>
                     <div className="form-group">
-                      <label htmlFor="collaborator_profile_attributes[different_registered_name]" className="checkbox my-3">
+                      <label htmlFor="collaborator_profile_attributes[different_registered_name]" className="partners checkbox my-3">
                         <input
                           name="collaborator_profile_attributes[different_registered_name]"
                           id="collaborator_profile_attributes[different_registered_name]"
@@ -469,7 +501,7 @@ function Partners() {
                           checked={differentName}
                           onChange={handleChangeDifferentName}
                         />
-                          My PRO knows me by a different registered name.
+                          My PRO knows me by a different registered name, please list full middle last name as registered with your PRO
                           <span className={differentName ? "checkmark checked" : "checkmark"}></span>
                     </label>
                     </div>
@@ -482,10 +514,10 @@ function Partners() {
                           name="different_registered_name"
                           type="text"
                           defaultValue={selectedPartner ? registeredName ?? '' : ''}
-                          placeholder="Please list your full name as registered with your PRO. Ex: First Middle Last*"
+                          placeholder="Full name registered with your PRO. Ex: First Middle Last*"
                         />
                         <Form.Control.Feedback type="invalid">
-                          Registered name is required!
+                          Registered full name is required!
                         </Form.Control.Feedback>
                       </div>
                     </Col>
@@ -578,7 +610,7 @@ function Partners() {
                         className="pro-select-container-header"
                         classNamePrefix={!proError ? "pro-select-header react-select-popup" : "pro-select-header react-select-popup invalid"}
                         options={PRO_LIST}
-                        defaultValue={selectedPartner ? selectedPartner.pro ? PRO_LIST.filter(item => item.value === selectedPartner.pro) : {label: "Select PRO", value: null} : {label: "Select PRO", value: null}}
+                        defaultValue={selectedPartner ? selectedPartner.pro && PRO_LIST.filter(item => item.value === selectedPartner.pro).length === 0 ? {label: "Other", value: 'other'} : PRO_LIST.filter(item => item.value === selectedPartner.pro) : {label: "Select PRO", value: null}}
                         onChange={(target) => setPro(target.value)}
                         maxMenuHeight={160}
                         theme={theme => ({
@@ -594,17 +626,37 @@ function Partners() {
                         PRO is required!
                       </small>
                       }
+                      <small><strong>Note:</strong> if you're not registered with a PRO, please select NS from the dropdown (no society)</small>
                     </div>
                   </Col>
+                  {pro === "other" &&
                   <Col xs={12}>
                     <div className="form-group">
                       <Form.Control
+                        required
+                        name="pro"
+                        type="text"
+                        defaultValue={selectedPartner && selectedPartner.pro}
+                        placeholder="Enter your PRO name"
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        PRO name is required!
+                      </Form.Control.Feedback>
+                    </div>
+                  </Col>
+                  }
+                  <Col xs={12}>
+                    <div className="form-group">
+                      <Form.Control
+                        required
                         name="ipi"
                         type="text"
                         defaultValue={selectedPartner ? selectedPartner.ipi : ''}
-                        placeholder="CAE/IPI #"
+                        placeholder="CAE/IPI #*"
                       />
-                      <small className="text-muted">This field is optional</small>
+                      <Form.Control.Feedback type="invalid">
+                        CAE/IPI # is required!
+                      </Form.Control.Feedback>
                     </div>
                   </Col>
                 </Row>
