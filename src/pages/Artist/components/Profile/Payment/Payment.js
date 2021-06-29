@@ -146,14 +146,14 @@ function Payment() {
             </Col>
           </Row>
           <div className="section-head">
-            <h2>Edit Payment</h2>
+            <h2>Edit Payment*</h2>
           </div>
           {Object.keys(artist).length === 0 && isLoading && <h5>Loading profile... <img className="loading" src={Loader} alt="loading-icon"/></h5>}
           {Object.keys(artist).length !== 0 &&
           <Form noValidate validated={validated} ref={form} onSubmit={handleSubmit}>
             <Row>
               <Col xl={2} md={4}>
-                <Form.Label>Payee Name</Form.Label>
+                <Form.Label>Payee Name*</Form.Label>
               </Col>
               <Col xl={4} md={8}>
                 <Form.Control
@@ -170,7 +170,7 @@ function Payment() {
             </Row>
             <Row>
               <Col xl={2} md={4}>
-                <Form.Label>Bank Name</Form.Label>
+                <Form.Label>Bank Name*</Form.Label>
               </Col>
               <Col xl={4} md={8}>
                 <Form.Control
@@ -187,7 +187,7 @@ function Payment() {
             </Row>
             <Row>
               <Col xl={2} md={4}>
-                <Form.Label>Routing</Form.Label>
+                <Form.Label>Routing*</Form.Label>
               </Col>
               <Col xl={4} md={8}>
                 <Form.Control
@@ -207,7 +207,7 @@ function Payment() {
             </Row>
             <Row>
               <Col xl={2} md={4}>
-                <Form.Label>Account Number</Form.Label>
+                <Form.Label>Account Number*</Form.Label>
               </Col>
               <Col xl={4} md={8}>
                 <Form.Control
@@ -229,7 +229,7 @@ function Payment() {
             {artist.contact_information && artist.contact_information.country.toLowerCase() !== 'united states' &&
               <Row>
                 <Col xl={2} md={4}>
-                  <Form.Label>Paypal Email</Form.Label>
+                  <Form.Label>Paypal Email*</Form.Label>
                 </Col>
                 <Col xl={4} md={8}>
                   <Form.Control

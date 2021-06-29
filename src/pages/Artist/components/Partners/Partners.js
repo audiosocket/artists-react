@@ -52,26 +52,28 @@ function Partners() {
 
   const handleSubmitCollaborator = async (e) => {
     e.preventDefault();
+    setProError(false);
+    if(!pro) {
+      setProError(true);
+    }
     const artistForm = e.currentTarget;
     if (artistForm.checkValidity() === false) {
       e.preventDefault();
       e.stopPropagation();
       setValidated(true);
     } else {
-      setIsLoading(true);
       const data = new FormData(form.current);
       if(pro) {
         if(pro !== "other")
           data.append('collaborator_profile_attributes[pro]', pro);
+      } else {
+        return false
       }
-      if(!pro && selectedPartner) {
-        data.append("collaborator_profile_attributes[pro]", selectedPartner.collaborator_profile ? selectedPartner.collaborator_profile.pro : '')
-      }
+      setIsLoading(true);
       if(data.get("collaborator_profile_attributes[different_registered_name]")) {
         data.set("collaborator_profile_attributes[different_registered_name]", data.get('different_registered_name'))
         data.delete("different_registered_name")
-      }
-      else
+      } else
         data.delete("collaborator_profile_attributes[different_registered_name]")
       if(data.get("agreements") && data.get("agreements") === "true" && !data.get("access")) {
         data.delete("agreements")
@@ -457,10 +459,10 @@ function Partners() {
                         isSearchable={false}
                         placeholder="Select PRO"
                         className="pro-select-container-header"
-                        classNamePrefix="pro-select-header react-select-popup"
+                        classNamePrefix={!proError ? "pro-select-header react-select-popup" : "pro-select-header react-select-popup invalid"}
                         options={PRO_LIST}
                         defaultValue={selectedPartner ? selectedPartner.collaborator_profile && PRO_LIST.filter(item => item.value === selectedPartner.collaborator_profile.pro).length === 0 ? {label: "Other", value: 'other'} : PRO_LIST.filter(item => item.value === selectedPartner.collaborator_profile.pro) : {label: "Select PRO", value: null}}
-                        onChange={(target) => setPro(target.value)}
+                        onChange={(target) => {setProError(false);setPro(target.value)}}
                         maxMenuHeight={160}
                         theme={theme => ({
                           ...theme,
@@ -470,6 +472,11 @@ function Partners() {
                           },
                         })}
                       />
+                      {proError &&
+                      <small className="error">
+                        PRO is required!
+                      </small>
+                      }
                       <small><strong>Note:</strong> if you're not registered with a PRO, please select NS from the dropdown (no society)</small>
                       <small className="text-muted">This field is optional</small>
                     </div>
@@ -611,7 +618,7 @@ function Partners() {
                         classNamePrefix={!proError ? "pro-select-header react-select-popup" : "pro-select-header react-select-popup invalid"}
                         options={PRO_LIST}
                         defaultValue={selectedPartner ? selectedPartner.pro && PRO_LIST.filter(item => item.value === selectedPartner.pro).length === 0 ? {label: "Other", value: 'other'} : PRO_LIST.filter(item => item.value === selectedPartner.pro) : {label: "Select PRO", value: null}}
-                        onChange={(target) => setPro(target.value)}
+                        onChange={(target) => {setProError(false);setPro(target.value)}}
                         maxMenuHeight={160}
                         theme={theme => ({
                           ...theme,

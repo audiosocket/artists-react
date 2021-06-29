@@ -273,7 +273,7 @@ function ContactEdit() {
             <Form noValidate validated={validated} ref={form} onSubmit={handleSubmit}>
               <Row>
                 <Col xl={2} md={4}>
-                  <Form.Label>Name</Form.Label>
+                  <Form.Label>Name*</Form.Label>
                 </Col>
                 <Col xl={4} md={8}>
                   <Form.Control
@@ -290,7 +290,7 @@ function ContactEdit() {
               </Row>
               <Row>
                 <Col xl={2} md={4}>
-                  <Form.Label>Address</Form.Label>
+                  <Form.Label>Address*</Form.Label>
                 </Col>
                 <Col xl={4} md={8}>
                   <Form.Control
@@ -307,7 +307,7 @@ function ContactEdit() {
               </Row>
               <Row>
                 <Col xl={2} md={4}>
-                  <Form.Label>Country</Form.Label>
+                  <Form.Label>Country*</Form.Label>
                 </Col>
                 <Col xl={4} md={8}>
                   <Select
@@ -336,7 +336,7 @@ function ContactEdit() {
               </Row>
               <Row>
                 <Col xl={2} md={4}>
-                  <Form.Label>State</Form.Label>
+                  <Form.Label>State*</Form.Label>
                 </Col>
                 <Col xl={4} md={8}>
                   <Select
@@ -365,7 +365,7 @@ function ContactEdit() {
               </Row>
               <Row>
                 <Col xl={2} md={4}>
-                  <Form.Label>City</Form.Label>
+                  <Form.Label>City*</Form.Label>
                 </Col>
                 <Col xl={4} md={8}>
                   <Select
@@ -394,7 +394,7 @@ function ContactEdit() {
               </Row>
               <Row>
                 <Col xl={2} md={4}>
-                  <Form.Label>Postal Code</Form.Label>
+                  <Form.Label>Postal Code*</Form.Label>
                 </Col>
                 <Col xl={4} md={8}>
                   <Form.Control
@@ -411,7 +411,7 @@ function ContactEdit() {
               </Row>
               <Row>
                 <Col xl={2} md={4}>
-                  <Form.Label>Phone</Form.Label>
+                  <Form.Label>Phone*</Form.Label>
                 </Col>
                 <Col xl={4} md={8}>
                   <Form.Control
@@ -428,7 +428,7 @@ function ContactEdit() {
               </Row>
               <Row>
                 <Col xl={2} md={4}>
-                  <Form.Label>Email</Form.Label>
+                  <Form.Label>Email*</Form.Label>
                 </Col>
                 <Col xl={4} md={8}>
                   <Form.Control

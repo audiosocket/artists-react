@@ -115,7 +115,7 @@ function Tax() {
           <Form noValidate validated={validated} ref={form} onSubmit={handleSubmit}>
             <Row>
               <Col xl={2} md={4}>
-                <Form.Label>Please add Tax ID/SSN</Form.Label>
+                <Form.Label>Please add Tax ID/SSN*</Form.Label>
               </Col>
               <Col xl={4} md={8}>
                 <Form.Control
