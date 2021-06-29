@@ -92,9 +92,9 @@ function Agreements({onChangeIsActiveProfile}) {
       <div className="agreementBody">
         <section>
           <div className="bg-content yellow bgSecondVersion mt-4">
-            <p>YouTube requires artists elect only one administrator when managing your recordings on their platform. To be made available for all Audiosocket opportunities, we need to be your administrator so our clients who are licensing your music are not being sent copyright Infringement claims from other companies.</p>
-            <p>If you already have an agent, you must opt out of our YouTube portion of the agreement. This will prevent your music from being made available for digital and web media opportunities since we are not able to contest claims that are made on the YouTube platform by other administrators. If
-            you are unsure, or would like more information, please email <a href="mailto:artists@audiosocket.com">artists@audiosocket.com</a>.</p>
+            <p>YouTube requires artists to elect only one administrator of any given track in their Content ID system</p>
+            <p>To be made available for all Audiosocket opportunities, we respectfully ask that we be your admin for the songs you would like us to license in Content ID. We ask this so our clients who are licensing your music do not receive YouTube claims from other companies. We have auto release claim technology that will ensure our clients who license your music don’t receive any claims.</p>
+            <p>If you already have a YouTube admin, please contact us and let us know. This may prevent your music from being made available for certain opportunities since we are not able to contest claims that are made on the YouTube platform by other administrators. If you are unsure, or would like more information, please email <a href="mailto:artists@audiosocket.com">artists@audiosocket.com</a>.</p>
           </div>
         </section>
         {!agreements.length && isLoading && <h5>Loading agreements... <img className="loading" src={Loader} alt="loading-icon"/></h5> }
@@ -103,11 +103,12 @@ function Agreements({onChangeIsActiveProfile}) {
             return (
               <section key={key} className="pt-4">
                 <h2 className="agreementType">{agreement.agreement.agreement_type.replace("_", " ")} Agreement</h2>
+                <small className="status-timestamp"><i><span>{agreement.status}</span> on {agreement.status_updated_at ? agreement.status_updated_at.split(' ')[0] : '**-**-****'} by {agreement.agreement_user ? artistState.agreement_user : 'NA'}</i></small>
                 <div className="agreementContent mt-3">
                   <p dangerouslySetInnerHTML={{__html: agreement.agreement.content}} />
                 </div>
                 <div className="agreementContentController">
-                  <button onClick={handleSubmitReviewAgreement} data-id={agreement.id} data-action={agreement.status === "accepted" ? "rejected" : "accepted"} className={agreement.status === "accepted" ? "btn primary-btn rejected" : "btn primary-btn accepted"}>I wish to {agreement.status === "rejected" ? "opt-in to" : "opt-out of"} this agreement</button>
+                  <button onClick={handleSubmitReviewAgreement} data-id={agreement.id} data-action={agreement.status === "accepted" ? "rejected" : "accepted"} className={agreement.status === "accepted" ? "btn primary-btn rejected" : "btn primary-btn accepted"}>{agreement.status === "rejected" ? "Accept" : "Opt-out"}</button>
                   <a href={agreement.agreement.file} target="_blank" rel="noopener noreferrer" download>Download PDF</a>
                 </div>
               </section>

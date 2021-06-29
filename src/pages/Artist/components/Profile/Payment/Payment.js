@@ -22,6 +22,8 @@ function Payment() {
   const history = useHistory();
   const form = useRef(null);
   const [validated, setValidated] = useState(false);
+  const [accountLimitFlag, setAccountLimitFlag] = useState(false);
+  const [routingLimitFlag, setRoutingLimitFlag] = useState(false);
 
   useEffect(() => {
     if(artistState.artist) {
@@ -46,8 +48,15 @@ function Payment() {
       e.stopPropagation();
       setValidated(true);
     } else {
-      setIsLoading(true);
       const data = new FormData(form.current);
+      let error = false;
+      if(!handleAccountCharacterLimit(data.get('account_number')))
+        error = true;
+      if(!handleRoutingCharacterLimit(data.get('routing')))
+        error = true;
+      if(error)
+        return false;
+      setIsLoading(true);
       const json = prepareJson(data);
       const userRole = artistState.userRole || JSON.parse(localStorage.getItem("userRole") ?? "");
       let artist_id =  userRole === "collaborator" && artistState.selectedArtist && artistState.selectedArtist.id;
@@ -90,6 +99,27 @@ function Payment() {
     return json;
   }
 
+  const handleAccountCharacterLimit = (value) => {
+    setAccountLimitFlag(false);
+    if(value.length === 10) {
+      setAccountLimitFlag(false);
+      return true;
+    } else {
+      setAccountLimitFlag(true);
+      return false;
+    }
+  }
+  const handleRoutingCharacterLimit = (value) => {
+    setRoutingLimitFlag(false);
+    if(value.length === 9) {
+      setRoutingLimitFlag(false);
+      return true;
+    } else {
+      setRoutingLimitFlag(true);
+      return false;
+    }
+  }
+
   return (
     <div className="artist-wrapper">
       <div className="asBreadcrumbs">
@@ -107,6 +137,14 @@ function Payment() {
       </div>
       <section className="artist-section-control">
         <div className="section-content">
+          <Row>
+            <Col xl={6} md={12}>
+              <div className="bg-content yellow bgSecondVersion mt-4">
+                <p>Please enter your US bank details if you're based in the USA, we offer payment via ACH/Direct Deposit.</p>
+                <p>If you're based internationally, please provide your PayPal address or your TransferWise bank details.</p>
+              </div>
+            </Col>
+          </Row>
           <div className="section-head">
             <h2>Edit Payment</h2>
           </div>
@@ -155,13 +193,16 @@ function Payment() {
                 <Form.Control
                   required
                   name="routing"
-                  type="text"
+                  type="number"
                   defaultValue={artist.payment_information ? artist.payment_information.routing : ""}
                   placeholder="Routing"
+                  className={routingLimitFlag ? "invalid" : ""}
+                  onChange={(e) => handleRoutingCharacterLimit(e.target.value)}
                 />
                 <Form.Control.Feedback type="invalid">
                   Routing is required!
                 </Form.Control.Feedback>
+                {routingLimitFlag && <div className="custom-invalid-feedback">Routing must be 9 digits</div>}
               </Col>
             </Row>
             <Row>
@@ -172,13 +213,17 @@ function Payment() {
                 <Form.Control
                   required
                   name="account_number"
-                  type="text"
+                  min={14}
+                  type="number"
                   defaultValue={artist.payment_information ? artist.payment_information.account_number : ""}
                   placeholder="Account number"
+                  className={accountLimitFlag ? "invalid" : ""}
+                  onChange={(e) => handleAccountCharacterLimit(e.target.value)}
                 />
                 <Form.Control.Feedback type="invalid">
                   Account number is required!
                 </Form.Control.Feedback>
+                {accountLimitFlag && <div className="custom-invalid-feedback">Account number must be 10 digits</div>}
               </Col>
             </Row>
             {artist.contact_information && artist.contact_information.country.toLowerCase() !== 'united states' &&

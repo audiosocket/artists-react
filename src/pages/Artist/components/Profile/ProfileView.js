@@ -73,9 +73,9 @@ function Profile() {
 
               <div className="parallel-info">
                 <label>
-                  cover image
+                  Profile image
                   {artist.cover_image &&
-                    <OverlayTrigger placement={"top"} overlay={<Tooltip id="tooltip-right">{artist.cover_image_status === "approved" ? "Your cover image has been approved" : artist.cover_image_status === "pending" ? "Your cover image is under review" : "Your cover image has been rejected"}</Tooltip>}>
+                    <OverlayTrigger placement={"top"} overlay={<Tooltip id="tooltip-right">{artist.cover_image_status === "approved" ? "Your profile image has been approved" : artist.cover_image_status === "pending" ? "Your profile image is under review" : "Your profile image has been rejected"}</Tooltip>}>
                       {artist.cover_image_status === "approved"
                         ? <img src={Check} alt="approved"/>
                         : artist.cover_image_status === "pending" ? <img src={Waiting} alt="pending"/> : <img src={Cancel} alt="cancel"/>
@@ -85,9 +85,9 @@ function Profile() {
                 </label>
                 <div className="info-ans image">
                   {artist.cover_image
-                    ? <img className="preview" src={artist.cover_image} alt="Cover Image"/>
+                    ? <img className="preview" src={artist.cover_image} alt="Profile Image"/>
                     : <div className="bg-content yellow w-custom-bg-content">
-                      Looks like no cover image? Click <i className="medium-text">Edit</i> button to get started.
+                      Looks like no profile image? Click <i className="medium-text">Edit</i> button to get started.
                     </div>
                   }
                 </div>
@@ -232,7 +232,7 @@ function Profile() {
                     <span><small className="medium-text">Payee: </small>{artist.payment_information.payee_name}</span>
                     <span><small className="medium-text">Bank: </small>{artist.payment_information.bank_name}</span>
                     <span><small className="medium-text">Routing: </small>{artist.payment_information.routing}</span>
-                    <span><small className="medium-text">Account#: </small>{artist.payment_information.account_number}</span>
+                    <span><small className="medium-text">Account#: </small>xxxxxx{artist.payment_information.account_number.substr(-4)}</span>
                     {artist.contact_information && artist.contact_information.country.toLowerCase() !== 'united states' &&
                       <span><small className="medium-text">Paypal Email: </small>{artist.payment_information.paypal_email}</span>
                     }
@@ -255,10 +255,10 @@ function Profile() {
           {Object.keys(artist).length === 0 && isLoading && <h5>Loading tax... <img className="loading" src={Loader} alt="loading-icon"/></h5>}
           <div className="section-body">
             <div className="parallel-info">
-              <label>ID/Social Security Number</label>
+              <label>Tax ID/SSN</label>
               <div className="info-ans">
                 {artist.tax_information
-                  ? <span>{artist.tax_information.ssn}</span>
+                  ? <span>xxxxxx{artist.tax_information.ssn.substr(-4)}</span>
                   : '-'
                 }
               </div>

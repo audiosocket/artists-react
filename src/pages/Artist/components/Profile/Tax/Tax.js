@@ -115,7 +115,7 @@ function Tax() {
           <Form noValidate validated={validated} ref={form} onSubmit={handleSubmit}>
             <Row>
               <Col xl={2} md={4}>
-                <Form.Label>ID/Social Security Number</Form.Label>
+                <Form.Label>Please add Tax ID/SSN</Form.Label>
               </Col>
               <Col xl={4} md={8}>
                 <Form.Control
@@ -123,8 +123,9 @@ function Tax() {
                   name="ssn"
                   type="text"
                   defaultValue={artist.tax_information ? artist.tax_information.ssn : ""}
-                  placeholder="ID/Social Security Number"
+                  placeholder="Please add Tax ID/SSN"
                 />
+                <small><i>For US artists only</i></small>
                 <Form.Control.Feedback type="invalid">
                   ID/Social Security Number is required!
                 </Form.Control.Feedback>

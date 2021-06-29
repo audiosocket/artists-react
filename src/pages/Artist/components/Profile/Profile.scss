@@ -27,6 +27,9 @@ section {
     .loading {
       width: 50px;
     }
+    .bgSecondVersion {
+      margin-top: 0px !important;
+    }
     .section-body {
       .parallel-info {
         @include flexbox;
@@ -115,6 +118,11 @@ section {
       .form-label {
         font-weight: 600;
         margin-bottom: 10px;
+        img {
+          width: 25px;
+          margin-left: 10px;
+          vertical-align: top;
+        }
       }
       .custom-invalid-feedback {
         width: 100%;
@@ -139,6 +147,7 @@ section {
         }
         &:valid {
           background-image: none;
+          padding-right:  0.75rem;
         }
       }
     }

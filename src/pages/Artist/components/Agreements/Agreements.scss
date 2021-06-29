@@ -30,6 +30,13 @@
     .agreementType {
       text-transform: capitalize;
       font-weight: 700;
+      margin-bottom: 0;
+    }
+    .status-timestamp {
+      span {
+        text-transform: capitalize;
+        font-weight: 600;
+      }
     }
   }
   a:not(.btn) {
@@ -67,7 +74,7 @@
       padding: 12px 10px;
     }
     .agreementContentController {
-      flex-direction: column;
+      flex-direction: inherit;
       & > * {
         margin: 7px 0;
       }

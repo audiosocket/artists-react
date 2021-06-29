@@ -28,7 +28,6 @@ function ProfileEdit() {
   const [coverImage, setCoverImage] = useState(null);
   const [bannerImage, setBannerImage] = useState(null);
   const [image, setImage] = useState([]);
-  const [profileSubmit, setProfileSubmit] = useState(false);
 
   useEffect(() => {
     if(artistState.artist) {
@@ -45,8 +44,6 @@ function ProfileEdit() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if(!profileSubmit)
-      return false;
     const artistForm = e.currentTarget;
     if (artistForm.checkValidity() === false) {
       e.preventDefault();
@@ -88,9 +85,7 @@ function ProfileEdit() {
       const artist = await response.json();
       if(!response.ok) {
         Notiflix.Notify.Failure('Something went wrong, try later!');
-        setProfileSubmit(false);
       } else {
-        setProfileSubmit(false);
         setArtist(artist);
         artistActions.artistStateChanged(artist);
         Notiflix.Notify.Success('Profile updated!');
@@ -128,7 +123,7 @@ function ProfileEdit() {
         let height = this.height;
         let width = this.width;
         if (width < 353 || height < 353) {
-          Notiflix.Report.Warning( 'Upload failed', `Cover Image must be min 353px x 353px\nUploaded image is ${width}px x ${height}!`, 'Ok' );
+          Notiflix.Report.Warning( 'Upload failed', `Profile Image must be min 353px x 353px\nUploaded image is ${width}px x ${height}!`, 'Ok' );
           return false;
         } else {
           setCoverImage(img)
@@ -163,10 +158,6 @@ function ProfileEdit() {
     };
   }
 
-  const handleProfileSubmit = () => {
-    setProfileSubmit(true);
-  }
-
   return (
     <div className="artist-wrapper">
       <div className="asBreadcrumbs">
@@ -191,7 +182,7 @@ function ProfileEdit() {
             <div className="w-custom-percent">
               {Object.keys(artist).length === 0 && isLoading && <h5>Loading profile... <img className="loading" src={Loader} alt="loading-icon"/></h5>}
               {Object.keys(artist).length !== 0 &&
-                <Form noValidate validated={validated} ref={form} onSubmit={handleSubmit}>
+                <Form noValidate validated={validated} ref={form}>
                   <Row>
                     <Col xl={2} md={4}>
                       <Form.Label>Artist Name</Form.Label>
@@ -229,6 +220,7 @@ function ProfileEdit() {
                         lang="en"
                         custom
                       />
+                      <small><i>Minimum required size for profile image is 353px x 353px</i></small>
                       <img className="preview" src={coverImage ? URL.createObjectURL(coverImage) : artist.cover_image}></img>
                     </Col>
                   </Row>
@@ -245,6 +237,7 @@ function ProfileEdit() {
                         lang="en"
                         custom
                       />
+                      <small><i>Minimum required size for banner image is 1440px x 448px</i></small>
                       <img className="preview" src={bannerImage ? URL.createObjectURL(bannerImage) : artist.banner_image}></img>
                     </Col>
                   </Row>
@@ -308,7 +301,8 @@ function ProfileEdit() {
                       <Form.Control
                         name="key_facts"
                         defaultValue={artist.key_facts}
-                        type="text"
+                        rows={4}
+                        as="textarea"
                         placeholder="Key Facts"
                       />
                     </Col>
@@ -345,7 +339,7 @@ function ProfileEdit() {
                     <Col xl={2} md={4}></Col>
                     <Col xl={4} md={8} className="text-center">
                       <NavLink to="/profile" className="btn primary-btn btn-outline-light mr-5 cancel">Cancel</NavLink>
-                      <Button type="submit" onClick={handleProfileSubmit} className="btn primary-btn submit">{isLoading ? <>Saving...<img className="" src={Loader} alt="icon"/></> : "Save" }</Button>
+                      <Button onClick={handleSubmit} className="btn primary-btn submit">{isLoading ? <>Saving...<img className="" src={Loader} alt="icon"/></> : "Save" }</Button>
                     </Col>
                   </Row>
                 </Form>

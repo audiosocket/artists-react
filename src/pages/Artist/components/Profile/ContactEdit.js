@@ -415,11 +415,32 @@ function ContactEdit() {
                 </Col>
                 <Col xl={4} md={8}>
                   <Form.Control
+                    required
                     name="phone"
                     type="text"
                     defaultValue={artist.contact_information ? artist.contact_information.phone : ""}
                     placeholder="Phone"
                   />
+                  <Form.Control.Feedback type="invalid">
+                    Phone is required!
+                  </Form.Control.Feedback>
+                </Col>
+              </Row>
+              <Row>
+                <Col xl={2} md={4}>
+                  <Form.Label>Email</Form.Label>
+                </Col>
+                <Col xl={4} md={8}>
+                  <Form.Control
+                    required
+                    name="email"
+                    type="email"
+                    defaultValue={artist.contact_information ? artist.contact_information.email : ""}
+                    placeholder="Email"
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    A valid email address is required!
+                  </Form.Control.Feedback>
                 </Col>
               </Row>
               <Row className="mt-5">

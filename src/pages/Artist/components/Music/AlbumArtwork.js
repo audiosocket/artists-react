@@ -144,11 +144,12 @@ function AlbumArtwrok({id = null}) {
                   accept=".png, .jpg, .svg"
                   onChange={(e) => { handleUploadArtwork(e)}}
                   name="artwork"
-                  label={artwork ? artwork.name : album && album.artwork ? album.artwork.split('/')[album.artwork.split("/").length-1] : ""}
+                  label={artwork ? artwork.name : album && album.artwork ? album.artwork.split('/')[album.artwork.split("/").length-1] : "No file chosen"}
                   lang="en"
                   data-browse="Select artwork"
                   custom
                 />
+                <small><i>Minimum required size for artwork is 353px x 353px</i></small>
                 {album &&
                   <img className="preview" src={artwork ? URL.createObjectURL(artwork) : album.artwork}></img>
                 }

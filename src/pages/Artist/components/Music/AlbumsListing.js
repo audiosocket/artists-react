@@ -323,12 +323,13 @@ function AlbumsListing() {
                         accept=".png, .jpg, .svg"
                         onChange={handleUploadArtwork}
                         name="artwork"
-                        label={artwork ? artwork.name : selectedAlbum && selectedAlbum.artwork ? selectedAlbum.artwork.split('/')[selectedAlbum.artwork.split("/").length-1] : ""}
+                        label={artwork ? artwork.name : selectedAlbum && selectedAlbum.artwork ? selectedAlbum.artwork.split('/')[selectedAlbum.artwork.split("/").length-1] : "No file chosen"}
                         lang="en"
                         data-browse="Select artwork"
                         custom
                       />
                       <small className="text-muted">Artwork is optional</small>
+                      <small><i><br/>*Minimum required size for artwork is 353px x 353px</i></small>
                     </div>
                   </Col>
                 </Row>
