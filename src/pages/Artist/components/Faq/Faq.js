@@ -75,13 +75,10 @@ function Faq () {
 					</ContextAwareToggle>
 					<Accordion.Collapse eventKey="1.1">
 						<Card.Body>
-							Please include a cover photo and a banner image. Keep in mind with the banner there will be text overlaid so a textural or simple color background image is ideal. Image specs are x for cover photo, x for banner. These images will appear on the front end so choose wisely. Color images are best.
+							Please include a cover photo and a banner image. Keep in mind with the banner there will be text overlaid so a textural or simple color background image is ideal. Image specs are 353px x 353 px for profile/cover photo, 1440px x 448 px for banner, High Resolution. These images will appear on the front end so choose wisely. Color images are best.
 							<br/>
 							<br/>
-							Please include a short bio (think elevator pitch!) Please include your social media handles. Keep us posted for any great artist bits we can use to promote you! Land a Spotify playlist add? Playing a really cool well known venue? Have a new music video? Let us know!
-							<br/>
-							<br/>
-							[Info needed on functionality]
+							Please include a short one paragraph bio (think elevator pitch!) Please include your social media handles and website (if you have one). Keep us posted for any great artist bits we can use to promote you! Land a Spotify playlist add? Playing a really cool well known venue? Have a new music video? Let us know!
 						</Card.Body>
 					</Accordion.Collapse>
 				</Card>
@@ -92,7 +89,7 @@ function Faq () {
 					</ContextAwareToggle>
 					<Accordion.Collapse eventKey="2">
 						<Card.Body>
-							Artist pages are locked once info is submitted, our team will review photos and bios before approving. Need it unlocked? Hit us up.
+							Artist pages are locked once info is submitted, our team will review photos and bios before approving. Need it unlocked? Let us know.
 						</Card.Body>
 					</Accordion.Collapse>
 				</Card>
@@ -103,7 +100,18 @@ function Faq () {
 					</ContextAwareToggle>
 					<Accordion.Collapse eventKey="3">
 						<Card.Body>
-							Under the Collaborators section, please invite ALL rights-holders. Enter their name and email. It will invite them to your artist portal where they can review and accept the agreement. All parties must sign off before we can start working with your music. Please make sure they enter their Performing Rights information as they have it registered in ASCAP or BMI, etc.
+							Under the Collaborators section, please invite ALL RIGHTS HOLDERS. Enter their name and email. It will invite them to your artist portal where they can review and accept the agreement. All parties must sign off before we can start working with your music. Please make sure they enter their Performing Rights information as they have it registered in ASCAP or BMI, etc.
+						</Card.Body>
+					</Accordion.Collapse>
+				</Card>
+
+				<Card>
+					<ContextAwareToggle eventKey="3b">
+						I’m not registered with a PRO, do I need to? Will you register my tracks?
+					</ContextAwareToggle>
+					<Accordion.Collapse eventKey="3b">
+						<Card.Body>
+							We do recommend signing up for a PRO (Performing Rights Organization) like ASCAP, BMI or SESAC if you're going to be licensing your music. If your music lands in something royalty bearing, it will receive writer and publishing royalties for it airing and you'll potentially be losing out on a good bit of revenue! We always recommend registering your music but you can do so in tandem with us ingesting your music and assets.
 						</Card.Body>
 					</Accordion.Collapse>
 				</Card>
@@ -111,8 +119,6 @@ function Faq () {
 				<Card>
 					<ContextAwareToggle eventKey="4">
 						What’s a CAE/IPI and do I really need it?
-						<br/>
-						Will I be accepted?
 					</ContextAwareToggle>
 					<Accordion.Collapse eventKey="4">
 						<Card.Body>
@@ -138,7 +144,7 @@ function Faq () {
 					</ContextAwareToggle>
 					<Accordion.Collapse eventKey="6">
 						<Card.Body>
-							On the Music tab, please create a new Album. Albums can be collections of tracks, a single track, EP or an actual album. Upload the tracks and assign your collaborators. Please note, all collaborators must sign off on the agreement before you can submit the tracks.
+							On the Music tab, please create a new Album. Albums can be collections of tracks, a single track, EP or LP. Upload the tracks and assign your collaborators. Please note, all collaborators must sign off on the agreement before you can submit the tracks.
 							<br/>
 							<br/>
 							We invite you to also submit album artwork. If you don’t have album art, check out apps like Canva for easy drag and drop graphic design templates. Otherwise, color images work.
@@ -174,7 +180,21 @@ function Faq () {
 					</ContextAwareToggle>
 					<Accordion.Collapse eventKey="9">
 						<Card.Body>
-							We look for high quality, high production value, relevant sounds, universal lyrics and music written with sync in mind. Watch our newsletters for tips and tricks on how to increase your chances for sync! [If there’s a blog post on this topic we can link it here]
+							We look for high quality, high production value, relevant sounds, universal lyrics and music written with sync in mind. Watch our newsletters for tips and tricks on how to increase your chances for sync and check out our blog post on the topic <a href="https://www.audiosocket.com/music-licensing-copyright/what-makes-great-music-for-sync-top-tips-for-songwriters" target="_blank">here</a>.
+						</Card.Body>
+					</Accordion.Collapse>
+				</Card>
+
+				<Card>
+					<ContextAwareToggle eventKey="9b">
+						Can I work with other music licensing companies?
+					</ContextAwareToggle>
+					<Accordion.Collapse eventKey="9b">
+						<Card.Body>
+							If you have a non-exclusive agreement with us, yes. While we are non-exclusive we do suggest you review other licensing companies pricing models as we have seen some recent companies offering all you can eat subscriptions at very low prices and that does not offer artists a sustainable career. We encourage you to do this research so that you're not competing with yourself. Clients do price shop and may find it cheaper somewhere else.
+							<br/>
+							<br/>
+							Please note that we no longer accept or represent non-exclusive tracks that are also represented by Artlist, Soundstripe and any library/stock music platforms.
 						</Card.Body>
 					</Accordion.Collapse>
 				</Card>
@@ -218,7 +238,7 @@ function Faq () {
 					</ContextAwareToggle>
 					<Accordion.Collapse eventKey="13">
 						<Card.Body>
-							We send payments biannually in February and August for non exclusive tracks, monthly for exclusive tracks. If you’re interested in hearing more about our exclusive program, please let us know.
+							We send payments biannually in February and August for non exclusive tracks, monthly for exclusive tracks. If you’re interested in hearing more about our exclusive catalog, please let us know.
 						</Card.Body>
 					</Accordion.Collapse>
 				</Card>
@@ -229,7 +249,7 @@ function Faq () {
 					</ContextAwareToggle>
 					<Accordion.Collapse eventKey="14">
 						<Card.Body>
-							We offer payment to one payee per artist entity. That payee is responsible for paying splits.
+							We offer payment to one payee per artist entity. That payee is responsible for paying splits. Apps like <a href="https://songsplits.com" target="_blank">Songsplits</a>, <a href="https://www.jammber.com" target="_blank">Jammber</a> and <a href="https://goodsplits.app" target="_blank">Goodsplits</a> are good tools to manage royalty splits.
 						</Card.Body>
 					</Accordion.Collapse>
 				</Card>
@@ -244,19 +264,8 @@ function Faq () {
 						</Card.Body>
 					</Accordion.Collapse>
 				</Card>
-
-				<Card>
-					<ContextAwareToggle eventKey="16">
-						How do I download my artist statements?
-					</ContextAwareToggle>
-					<Accordion.Collapse eventKey="16">
-						<Card.Body>
-							[Info needed on functionality]
-						</Card.Body>
-					</Accordion.Collapse>
-				</Card>
 			</Accordion>
-			<h5 className="end-note">Any other questions? Please feel free to contact us at <a href="mailto:artists@audiosocket.com">artists@audiosocket.com</a></h5>
+			<h5 className="end-note"><strong>Have additional questions?</strong> Please email us at <a href="mailto:artists@audiosocket.com">artists@audiosocket.com</a> anytime!</h5>
 		</div>
 	);
 }
