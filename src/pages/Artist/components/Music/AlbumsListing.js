@@ -326,7 +326,7 @@ function AlbumsListing() {
                         custom
                       />
                       <small className="text-muted">Artwork is optional</small>
-                      <small><i><br/>*Minimum required size for artwork is 353px x 353px</i></small>
+                      <small className="info-text"><i><br/>*Minimum required size for artwork is 353px x 353px</i></small>
                     </div>
                   </Col>
                 </Row>

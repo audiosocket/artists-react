@@ -1,13 +1,12 @@
 import React, { useRef, useState, useEffect } from 'react';
 import './DropzoneComponent.scss';
-import close from "../../images/close-circle-2.svg";
+import Delete from "../../images/close-circle-2.svg";
+import close from "../../images/close-modal.svg";
 
 const DropzoneComponent = ({onUploadImages = null}) => {
   const fileInputRef = useRef();
   const modalImageRef = useRef();
   const modalRef = useRef();
-  const progressRef = useRef();
-  const uploadRef = useRef();
   const uploadModalRef = useRef();
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [validFiles, setValidFiles] = useState([]);
@@ -65,11 +64,6 @@ const DropzoneComponent = ({onUploadImages = null}) => {
     for(let i = 0; i < files.length; i++) {
       if (validateFile(files[i])) {
         setSelectedFiles(prevArray => [...prevArray, files[i]]);
-      } else {
-        /*files[i]['invalid'] = true;
-        setSelectedFiles(prevArray => [...prevArray, files[i]]);
-        setErrorMessage('File type not permitted');
-        setUnsupportedFiles(prevArray => [...prevArray, files[i]]);*/
       }
     }
   }
@@ -163,7 +157,7 @@ const DropzoneComponent = ({onUploadImages = null}) => {
                   <span className={`file-name ${data.invalid ? 'file-error' : ''}`}>{data.name}</span>
                   <span className="file-size">({fileSize(data.size)})</span> {data.invalid && <span className='file-error-message'>({errorMessage})</span>}
                 </div>
-                <div className="file-remove" onClick={() => removeFile(data.name)}><img className="close-icon" src={close} /></div>
+                <div className="file-remove" onClick={() => removeFile(data.name)}><img className="close-icon" src={Delete} /></div>
               </div>
             )
           }
@@ -173,17 +167,6 @@ const DropzoneComponent = ({onUploadImages = null}) => {
         <div className="overlay"></div>
         <span className="close" onClick={(() => closeModal())}><img className="close-icon" src={close} /></span>
         <div className="modal-image" ref={modalImageRef}></div>
-      </div>
-
-      <div className="upload-modal" ref={uploadModalRef}>
-        <div className="overlay"></div>
-        <div className="close" onClick={(() => closeUploadModal())}>X</div>
-        <div className="progress-container">
-          <span ref={uploadRef}></span>
-          <div className="progress">
-            <div className="progress-bar" ref={progressRef}></div>
-          </div>
-        </div>
       </div>
     </>
   );

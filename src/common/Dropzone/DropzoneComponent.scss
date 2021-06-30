@@ -210,8 +210,8 @@
 
 .close {
   position: absolute;
-  top: 30px;
-  right: 35px;
+  top: 10rem;
+  right: 5rem;
   color: #f1f1f1;
   font-size: 40px;
   font-weight: bold;
@@ -222,8 +222,8 @@
     color: #f1f1f1 !important;
   }
   img {
-    width: 40px;
-    background-color: white;
+    width: 25px;
+    background-color: transparent;
     border-radius: 20px;
   }
 }
@@ -284,4 +284,10 @@
 
 .error {
   color: red;
+}
+@media only screen and (max-width : 767px) {
+  .close {
+    top: 5rem;
+    right: 1rem;
+  }
 }

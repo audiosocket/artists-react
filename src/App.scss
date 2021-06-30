@@ -512,7 +512,9 @@ select:-webkit-autofill:focus {
     margin: 0;
   }
 }
-
+.info-text {
+	display: block;
+}
 .mobile-view {
   display: none !important;
 }

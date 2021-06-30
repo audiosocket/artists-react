@@ -220,7 +220,7 @@ function ProfileEdit() {
                         lang="en"
                         custom
                       />
-                      <small><i>Minimum required size for profile image is 353px x 353px</i></small>
+                      <small className="info-text"><i>Minimum required size for profile image is 353px x 353px</i></small>
                       <img className="preview" src={profileImage ? URL.createObjectURL(profileImage) : artist.profile_image}></img>
                     </Col>
                   </Row>
@@ -237,15 +237,22 @@ function ProfileEdit() {
                         lang="en"
                         custom
                       />
-                      <small><i>Minimum required size for banner image is 1440px x 448px</i></small>
+                      <small className="info-text"><i>Minimum required size for banner image is 1440px x 448px</i></small>
                       <img className="preview" src={bannerImage ? URL.createObjectURL(bannerImage) : artist.banner_image}></img>
                     </Col>
                   </Row>
-                  <div className="parallel-info row">
-                    <Col xl={2} md={6}>
+                  <Row>
+                    <Col xl={2} md={4}>
                       <Form.Label>Additional Images</Form.Label>
                     </Col>
-                    <Col xl={10} md={12}>
+                    <Col xl={4} md={8}>
+                      <DropzoneComponent uploadedFiles={artist.additional_images ?? []} onUploadImages={handleUploadImages} />
+                    </Col>
+                  </Row>
+                  <div className="parallel-info row">
+                    <Col xl={2} md={4}>
+                    </Col>
+                    <Col xl={10} md={8}>
                       <div className="info-ans additional-elements image">
                         {artist.additional_images &&
                           artist.additional_images.map((image, key) => {
@@ -257,12 +264,6 @@ function ProfileEdit() {
                       </div>
                     </Col>
                   </div>
-                  <Row>
-                    <Col xl={2} md={4}></Col>
-                    <Col xl={4} md={8}>
-                      <DropzoneComponent uploadedFiles={artist.additional_images ?? []} onUploadImages={handleUploadImages} />
-                    </Col>
-                  </Row>
                   <Row>
                     <Col xl={2} md={4}>
                       <Form.Label>Sounds Like</Form.Label>
