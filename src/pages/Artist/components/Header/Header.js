@@ -307,7 +307,7 @@ function Header({onToggleSidebar, onChangeIsActiveProfile, onChangeIsProfileComp
               <img src={signout} alt="Signout"  className="mobile-view" />
             </Nav.Link>
             <NavLink to={"/profile"} className="nav-link profile-pic">
-              <img src={artistState.artist ? artistState.artist.cover_image ? artistState.artist.cover_image : user : user} alt="Profile Picture"  className="desktop-view" />
+              <img src={artistState.artist ? artistState.artist.profile_image ? artistState.artist.profile_image : user : user} alt="Profile Picture"  className="desktop-view" />
               <img src={profile} alt="Profile"  className="mobile-view profile-img" />
             </NavLink>
           </Nav>

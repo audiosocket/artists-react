@@ -25,7 +25,7 @@ function ProfileEdit() {
   const form = useRef(null);
   const [validated, setValidated] = useState(false);
   const [bioLimitFlag, setBioLimitFlag] = useState(false);
-  const [coverImage, setCoverImage] = useState(null);
+  const [profileImage, setProfileImage] = useState(null);
   const [bannerImage, setBannerImage] = useState(null);
   const [image, setImage] = useState([]);
 
@@ -56,8 +56,8 @@ function ProfileEdit() {
         return false;
 
       setIsLoading(true);
-      if(!coverImage)
-        data.delete('cover_image')
+      if(!profileImage)
+        data.delete('profile_image')
       if(!bannerImage)
         data.delete('banner_image')
       if(image.length) {
@@ -108,7 +108,7 @@ function ProfileEdit() {
     setImage(images);
   }
 
-  const handleUploadCover = (e) => {
+  const handleUploadProfileImage = (e) => {
     let img = e.target.files[0];
     let reader = new FileReader();
     //Read the contents of Image File.
@@ -126,14 +126,14 @@ function ProfileEdit() {
           Notiflix.Report.Warning( 'Upload failed', `Profile Image must be min 353px x 353px\nUploaded image is ${width}px x ${height}!`, 'Ok' );
           return false;
         } else {
-          setCoverImage(img)
+          setProfileImage(img)
           return false;
         }
       };
     };
   }
 
-  const handleUploadBanner = (e) => {
+  const handleUploadBannerImage = (e) => {
     let img = e.target.files[0];
     let reader = new FileReader();
     //Read the contents of Image File.
@@ -209,19 +209,19 @@ function ProfileEdit() {
                   </Row>
                   <Row>
                     <Col xl={2} md={4}>
-                      <Form.Label>Cover Image</Form.Label>
+                      <Form.Label>Profile Image</Form.Label>
                     </Col>
                     <Col xl={4} md={8}>
                       <Form.File
                         accept=".png, .jpg, .svg"
-                        onChange={(e) => {handleUploadCover(e)}}
-                        name="cover_image"
-                        label={coverImage ? coverImage.name : artist.cover_image ? artist.cover_image.split('/')[artist.cover_image.split("/").length-1] : ""}
+                        onChange={(e) => {handleUploadProfileImage(e)}}
+                        name="profile_image"
+                        label={profileImage ? profileImage.name : artist.profile_image ? artist.profile_image.split('/')[artist.profile_image.split("/").length-1] : ""}
                         lang="en"
                         custom
                       />
                       <small><i>Minimum required size for profile image is 353px x 353px</i></small>
-                      <img className="preview" src={coverImage ? URL.createObjectURL(coverImage) : artist.cover_image}></img>
+                      <img className="preview" src={profileImage ? URL.createObjectURL(profileImage) : artist.profile_image}></img>
                     </Col>
                   </Row>
                   <Row>
@@ -231,7 +231,7 @@ function ProfileEdit() {
                     <Col xl={4} md={8}>
                       <Form.File
                         accept=".png, .jpg, .svg"
-                        onChange={(e) => {handleUploadBanner(e)}}
+                        onChange={(e) => {handleUploadBannerImage(e)}}
                         name="banner_image"
                         label={bannerImage ? bannerImage.name : artist.banner_image ? artist.banner_image.split('/')[artist.banner_image.split("/").length-1] : ""}
                         lang="en"

@@ -74,18 +74,18 @@ function Profile() {
               <div className="parallel-info">
                 <label>
                   Profile image
-                  {artist.cover_image &&
-                    <OverlayTrigger placement={"top"} overlay={<Tooltip id="tooltip-right">{artist.cover_image_status === "approved" ? "Your profile image has been approved" : artist.cover_image_status === "pending" ? "Your profile image is under review" : "Your profile image has been rejected"}</Tooltip>}>
-                      {artist.cover_image_status === "approved"
+                  {artist.profile_image &&
+                    <OverlayTrigger placement={"top"} overlay={<Tooltip id="tooltip-right">{artist.profile_image_status === "approved" ? "Your profile image has been approved" : artist.profile_image_status === "pending" ? "Your profile image is under review" : "Your profile image has been rejected"}</Tooltip>}>
+                      {artist.profile_image_status === "approved"
                         ? <img src={Check} alt="approved"/>
-                        : artist.cover_image_status === "pending" ? <img src={Waiting} alt="pending"/> : <img src={Cancel} alt="cancel"/>
+                        : artist.profile_image_status === "pending" ? <img src={Waiting} alt="pending"/> : <img src={Cancel} alt="cancel"/>
                       }
                     </OverlayTrigger>
                   }
                 </label>
                 <div className="info-ans image">
-                  {artist.cover_image
-                    ? <img className="preview" src={artist.cover_image} alt="Profile Image"/>
+                  {artist.profile_image
+                    ? <img className="preview" src={artist.profile_image} alt="Profile Image"/>
                     : <div className="bg-content yellow w-custom-bg-content">
                       Looks like no profile image? Click <i className="medium-text">Edit</i> button to get started.
                     </div>
