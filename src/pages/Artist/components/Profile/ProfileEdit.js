@@ -127,7 +127,7 @@ function ProfileEdit() {
           return false;
         } else {
           setProfileImage(img)
-          return false;
+          return true;
         }
       };
     };

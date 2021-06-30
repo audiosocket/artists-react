@@ -98,7 +98,7 @@ function AlbumArtwrok({id = null}) {
           return false;
         } else {
           setArtwork(img)
-          return false;
+          return true;
         }
       };
     };

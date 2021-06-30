@@ -182,7 +182,7 @@ function AlbumsListing() {
           return false;
         } else {
           setArtwork(img)
-          return false;
+          return true;
         }
       };
     };
