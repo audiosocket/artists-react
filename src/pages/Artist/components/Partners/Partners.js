@@ -42,6 +42,7 @@ function Partners() {
   const [access, setAccess] = useState(false);
   const [selectedPartner, setSelectedPartner] = useState(null);
   const [registeredName, setRegisteredName] = useState(null);
+  const [ipiFlag, setIpiFlag] = useState(false);
 
   useEffect(() => {
     if (artistState.collaborators)
@@ -66,6 +67,9 @@ function Partners() {
       if(pro) {
         if(pro !== "other")
           data.append('collaborator_profile_attributes[pro]', pro);
+        if(data.get('collaborator_profile_attributes[ipi]'))
+          if(!handleIPICharacterLimit(data.get('collaborator_profile_attributes[ipi]')))
+            return false
       } else {
         return false
       }
@@ -130,6 +134,9 @@ function Partners() {
       if(pro) {
         if(pro !== "other")
           data.append('pro', pro);
+        if(data.get('ipi'))
+          if(!handleIPICharacterLimit(data.get('ipi')))
+            return false
       } else {
         return false;
       }
@@ -206,6 +213,7 @@ function Partners() {
     setIsLoading(false);
     setDifferentName(false);
     setRegisteredName(null);
+    setIpiFlag(false);
   }
 
   const handleChangeAgreements = (e) => {
@@ -298,6 +306,17 @@ function Partners() {
 
   const handleChangeDifferentName = (e) => {
     setDifferentName(!differentName);
+  }
+
+  const handleIPICharacterLimit = (value) => {
+    setIpiFlag(false);
+    if(value.length === 9) {
+      setIpiFlag(false);
+      return true;
+    } else {
+      setIpiFlag(true);
+      return false;
+    }
   }
 
   return (
@@ -461,7 +480,6 @@ function Partners() {
                       </small>
                       }
                       <small><strong>Note:</strong> if you're not registered with a PRO, please select NS from the dropdown (no society)</small>
-                      <small className="text-muted">This field is optional</small>
                     </div>
                   </Col>
                   {pro === "other" &&
@@ -486,13 +504,16 @@ function Partners() {
                         <Form.Control
                           required
                           name="collaborator_profile_attributes[ipi]"
-                          type="text"
+                          type="number"
                           defaultValue={selectedPartner && selectedPartner.collaborator_profile ? selectedPartner.collaborator_profile.ipi : ''}
                           placeholder="CAE/IPI #*"
+                          onChange={(e) => handleIPICharacterLimit(e.target.value)}
+                          className={ipiFlag ? "invalid" : ""}
                         />
                         <Form.Control.Feedback type="invalid">
                           CAE/IPI # is required!
                         </Form.Control.Feedback>
+                        {ipiFlag && <div className="custom-invalid-feedback">CAE/IPI # must be 9 digits</div>}
                         <div>
                           <small className="text-muted">
                             <strong>Note</strong>: An CAE/IPI # is not the same as a member number, its the 9 digit number
@@ -663,13 +684,22 @@ function Partners() {
                         <Form.Control
                           required
                           name="ipi"
-                          type="text"
+                          type="number"
                           defaultValue={selectedPartner ? selectedPartner.ipi : ''}
                           placeholder="CAE/IPI #*"
+                          onChange={(e) => handleIPICharacterLimit(e.target.value)}
+                          className={ipiFlag ? "invalid" : ""}
                         />
                         <Form.Control.Feedback type="invalid">
                           CAE/IPI # is required!
                         </Form.Control.Feedback>
+                        {ipiFlag && <div className="custom-invalid-feedback">CAE/IPI # must be 9 digits</div>}
+                        <div>
+                          <small className="text-muted">
+                            <strong>Note</strong>: An CAE/IPI # is not the same as a member number, its the 9 digit number
+                            that appears on the statements from your PRO
+                          </small>
+                        </div>
                       </div>
                     </Col>
                   }

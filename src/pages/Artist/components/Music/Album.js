@@ -125,8 +125,8 @@ function Album({id = null}) {
       } else {
         data.delete('file');
       }
-      data.append('artists_collaborator_id', collaborator)
-      data.append('publisher_id', publisher)
+      data.append('artists_collaborator_id', collaborator || '')
+      data.append('publisher_id', publisher || '')
       if(data.get("explicit"))
         data.set("explicit", true);
       else

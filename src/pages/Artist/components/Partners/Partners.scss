@@ -105,3 +105,23 @@ small {
     display: block;
   }
 }
+form {
+  .form-control {
+    &.invalid {
+      background-image: none !important;
+      border-color: $clr-red !important;
+      padding-right: .75rem !important;
+      &:focus, &:hover {
+        box-shadow: none !important;
+        border: 1px solid $clr-red !important;
+        background-color: transparent !important;
+      }
+    }
+  }
+}
+.custom-invalid-feedback {
+  width: 100%;
+  margin-top: .25rem;
+  font-size: 80%;
+  color: $clr-red;
+}
