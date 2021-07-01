@@ -209,9 +209,8 @@ function AlbumsListing() {
             <h4 className="mb-3"><strong>Create new albums and upload tracks to your portal</strong></h4>
             <p>Please choose your album titles wisely, as they will now appear on the front end. Please do not include dates or other extensions in album titles.</p>
             <p>You and your collaborators must own <strong><i>100% of the master and publishing rights</i></strong> to the music you're submitting. No covers or samples please.</p>
-            <p>When uploading tracks, please review your track names. Tracks should be edited to include what you would like them displayed as <br/>Ex: <strong><i>"Track Name master WAV"</i></strong> should be edited to <strong><i>"Track Name"</i></strong>.</p>
-            <p className="mb-0">Our clients love Instrumental and alternative versions, stems, SFX & SF. If you have any of these, please upload them as well. Stems can be uploaded within the same album as the main versions live.</p>
-            <p className="mb-0">If you're also uploading stems, please make sure to describe it under the track name. Ex: <strong><i>"Track Name (Strings Only)"</i></strong></p>
+            <p>When uploading tracks, please review your track names. Tracks should be edited to include what you would like them displayed as Ex: <strong><i>"Track Name master WAV"</i></strong> should be edited to <strong><i>"Track Name"</i></strong>.</p>
+            <p className="mb-0">Our clients love Instrumental and alternative versions, stems, SFX & SF. If you have any of these, please upload them as well. Stems can be uploaded within the same album as the main versions live. If you're also uploading stems, please make sure to describe it under the track name. Ex: <strong><i>"Track Name (Strings Only)"</i></strong></p>
           </div>
         </section>
         <section className="pt-4">

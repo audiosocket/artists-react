@@ -5,7 +5,6 @@ import {ACCESS_TOKEN, AGREEMENTS, BASE_URL} from "../../../../common/api";
 import Loader from "./../../../../images/loader.svg"
 import Breadcrumb from "react-bootstrap/Breadcrumb";
 import {NavLink} from "react-router-dom";
-import fetchAgreements from "../../../../common/utlis/fetchAgreements";
 import ArrowRight from "../../../../images/right-arrow.svg";
 import Notiflix from "notiflix-react";
 
@@ -20,17 +19,7 @@ function Agreements({onChangeIsActiveProfile}) {
       setAgreements(artistState.agreements);
       setIsActiveProfile(artistState.isActiveProfile);
     }
-    else
-      getAgreements();
   }, [artistState.agreements])
-
-  const getAgreements = async () => {
-    setIsLoading(true);
-    const agreements = await fetchAgreements(artistState.userRole ?? "artist");
-    artistActions.artistStateChanged(agreements);
-    setAgreements(agreements);
-    setIsLoading(false);
-  }
 
   const handleSubmitReviewAgreement = async (e) => {
     e.preventDefault();

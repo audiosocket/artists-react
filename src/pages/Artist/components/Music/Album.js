@@ -565,7 +565,7 @@ function Album({id = null}) {
                       <Form.Control
                         name="lyrics"
                         defaultValue={selectedTrack ? selectedTrack.lyrics : ""}
-                        placeholder="Enter track lyrics here... (optional)"
+                        placeholder="Add track lyrics here... (optional)"
                         as="textarea"
                         rows={4}
                       />
@@ -583,7 +583,7 @@ function Album({id = null}) {
                         value={isExplicit}
                         checked={isExplicit}
                       />
-                      Explicit track
+                      Explicit Track
                       <span className={isExplicit ? "checkmark checked" : "checkmark"}></span>
                     </label>
                   </Col>

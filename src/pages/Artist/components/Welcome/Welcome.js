@@ -56,24 +56,6 @@ function Welcome() {
       <section>
         <h3><strong>Question?</strong></h3>
         <h5><strong>If you have any questions or suggestions, please send us an email at <a href="mailto:artists@audiosocket.com">artists@audiosocket.com</a>.</strong></h5>
-        <div className="bg-content yellow">
-          <div className='sub-section'>
-            <h4><strong>Getting Paid</strong></h4>
-            <p>We love giving artists money, but there are some important documonts we need before we can make that happen. </p>
-            <p>First, make sure that you have completely and correctly filled in your payment information.</p>
-          </div>
-
-          <div className='sub-section'>
-            <h4><strong>US citizens</strong></h4>
-            <p>We need one W9 form on file per artist entity for whomever the payee will be. If you are an existing artist and have already sent us one, you do not need to send another. Please download one here, fill it out and sign it.</p>
-            <p>Please return the W9 to <a href="mailto:artists@audiosocket.com">artists@audiosocket.com</a>.Please include your artist name. The payee on the W9 must match the bank information payee.</p>
-          </div>
-
-          <div className='sub-section'>
-            <h4><strong>International artists</strong></h4>
-            <p>Please complete a W8 form and return a copy to <a href="mailto:artists@audiosocket.com">artists@audiosocket.com</a>.</p>
-          </div>
-        </div>
       </section>
     </div>
   )
