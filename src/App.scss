@@ -205,6 +205,14 @@ a, .btn {
 	input~.checkmark {
 		border: 2px solid $clr-green;
 	}
+  &.round-version {
+    .checkmark {
+      width: 22px;
+      height: 22px;
+      border-radius: 22px;
+      overflow: hidden;
+    }
+  }
 }
 
 .close-btn {
