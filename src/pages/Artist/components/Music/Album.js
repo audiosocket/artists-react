@@ -125,11 +125,8 @@ function Album({id = null}) {
       } else {
         data.delete('file');
       }
-      if(collaborator ?? (selectedTrack ? selectedTrack.collaborator : false))
-        data.append('artists_collaborator_id', collaborator ?? (selectedTrack.collaborator ? selectedTrack.collaborator.id : null))
-      if(publisher ?? (selectedTrack ? selectedTrack.publisher : false))
-        data.append('publisher_id', publisher ?? (selectedTrack.publisher ? selectedTrack.publisher.id : null))
-
+      data.append('artists_collaborator_id', collaborator)
+      data.append('publisher_id', publisher)
       if(data.get("explicit"))
         data.set("explicit", true);
       else
@@ -274,9 +271,11 @@ function Album({id = null}) {
 
   const handleEditMusicModal = (track) => {
     setSelectedTrack(track);
-    setShowAddMusicModal(true);
+    setCollaborator(track.collaborator ? track.collaborator.id : null);
+    setPublisher(track.publisher ? track.publisher.id : null);
     setIsPublicDomain(track.public_domain === true || track.public_domain === "true" ? true : false);
     setIsExplicit(track.explicit === true || track.explicit === "true" ? true : false);
+    setShowAddMusicModal(true);
   }
 
   const handleClose = () => {
@@ -522,7 +521,7 @@ function Album({id = null}) {
                         className="collaborator-select-container-header"
                         classNamePrefix="collaborator-select-header react-select-popup"
                         options={collaboratorsDropdown}
-                        defaultValue={selectedTrack ? selectedTrack.collaborator ? collaboratorsDropdown.filter(item => parseInt(item.value) === parseInt(selectedTrack.collaborator.id)) : {label: "Select writer/collaborator", value: null} : {label: "Select writer/collaborator", value: null}}
+                        defaultValue={collaborator ? collaboratorsDropdown.filter(item => parseInt(item.value) === parseInt(collaborator)) : {label: "Select writer/collaborator", value: null}}
                         onChange={(target) => setCollaborator(target.value)}
                         maxMenuHeight={120}
                         theme={theme => ({
@@ -545,7 +544,7 @@ function Album({id = null}) {
                         className="publisher-select-container-header"
                         classNamePrefix="publisher-select-header react-select-popup"
                         options={publishersDropdown}
-                        defaultValue={selectedTrack ? selectedTrack.publisher ? publishersDropdown.filter(item => parseInt(item.value) === parseInt(selectedTrack.publisher.id)) : {label: "Select publisher", value: null} : {label: "Select publisher", value: null}}
+                        defaultValue={publisher ? publishersDropdown.filter(item => parseInt(item.value) === parseInt(publisher)) : {label: "Select publisher", value: null}}
                         onChange={(target) => setPublisher(target.value)}
                         maxMenuHeight={120}
                         theme={theme => ({

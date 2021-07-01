@@ -239,8 +239,9 @@ function Partners() {
             },
             method: "DELETE"
           });
+        const results = await response.json();
         if (!response.ok) {
-          Notiflix.Notify.Failure('Something went wrong, try later!');
+          Notiflix.Notify.Failure(results.message);
         } else {
           Notiflix.Notify.Success(`Collaborator "${collaborator.first_name} ${collaborator.last_name ?? ''}" deleted successfully!`);
           const collaborators = await fetchCollaborators(userRole === "collaborator" && artist_id);
@@ -267,7 +268,7 @@ function Partners() {
       'No',
       async function(){
         let artist_id = null;
-        let url = `${BASE_URL}${COLLABORATOR_PUBLISHERS}/${publisher.id}`;
+        let url = `${BASE_URL}${PUBLISHERS}/${publisher.id}`;
         const userRole = artistState.userRole || JSON.parse(localStorage.getItem("userRole") ?? "");
         if(userRole === "collaborator") {
            artist_id =  artistState.selectedArtist && artistState.selectedArtist.id;
@@ -282,8 +283,9 @@ function Partners() {
             },
             method: "DELETE"
           });
+        const results = await response.json();
         if (!response.ok) {
-          Notiflix.Notify.Failure('Something went wrong, try later!');
+          Notiflix.Notify.Failure(results.message);
         } else {
           Notiflix.Notify.Success(`Publisher "${publisher.name}" deleted successfully!`);
           const publishers = await fetchPublishers(userRole === "collaborator" && artist_id);
@@ -435,25 +437,6 @@ function Partners() {
                   </Col>
                   <Col xs={12}>
                     <div className="form-group">
-                      <Form.Control
-                        required
-                        name="collaborator_profile_attributes[ipi]"
-                        type="text"
-                        defaultValue={selectedPartner && selectedPartner.collaborator_profile ? selectedPartner.collaborator_profile.ipi : ''}
-                        placeholder="CAE/IPI #*"
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        CAE/IPI # is required!
-                      </Form.Control.Feedback>
-                      <div>
-                        <small className="text-muted">
-                          <strong>Note</strong>: An CAE/IPI # is not the same as a member number, its the  9 digit number that appears on the statements from your PRO
-                        </small>
-                      </div>
-                    </div>
-                  </Col>
-                  <Col xs={12}>
-                    <div className="form-group">
                       <Select
                         ref={proRef}
                         isSearchable={false}
@@ -494,6 +477,28 @@ function Partners() {
                         <Form.Control.Feedback type="invalid">
                           PRO name is required!
                         </Form.Control.Feedback>
+                      </div>
+                    </Col>
+                  }
+                  {pro && pro.toLowerCase() !== 'ns' &&
+                    <Col xs={12}>
+                      <div className="form-group">
+                        <Form.Control
+                          required
+                          name="collaborator_profile_attributes[ipi]"
+                          type="text"
+                          defaultValue={selectedPartner && selectedPartner.collaborator_profile ? selectedPartner.collaborator_profile.ipi : ''}
+                          placeholder="CAE/IPI #*"
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          CAE/IPI # is required!
+                        </Form.Control.Feedback>
+                        <div>
+                          <small className="text-muted">
+                            <strong>Note</strong>: An CAE/IPI # is not the same as a member number, its the 9 digit number
+                            that appears on the statements from your PRO
+                          </small>
+                        </div>
                       </div>
                     </Col>
                   }
@@ -619,7 +624,7 @@ function Partners() {
                         options={PRO_LIST}
                         defaultValue={selectedPartner ? selectedPartner.pro && PRO_LIST.filter(item => item.value === selectedPartner.pro).length === 0 ? {label: "Other", value: 'other'} : PRO_LIST.filter(item => item.value === selectedPartner.pro) : {label: "Select PRO", value: null}}
                         onChange={(target) => {setProError(false);setPro(target.value)}}
-                        maxMenuHeight={160}
+                        maxMenuHeight={140}
                         theme={theme => ({
                           ...theme,
                           colors: {
@@ -652,20 +657,22 @@ function Partners() {
                     </div>
                   </Col>
                   }
-                  <Col xs={12}>
-                    <div className="form-group">
-                      <Form.Control
-                        required
-                        name="ipi"
-                        type="text"
-                        defaultValue={selectedPartner ? selectedPartner.ipi : ''}
-                        placeholder="CAE/IPI #*"
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        CAE/IPI # is required!
-                      </Form.Control.Feedback>
-                    </div>
-                  </Col>
+                  {pro && pro.toLowerCase() !== 'ns' &&
+                    <Col xs={12}>
+                      <div className="form-group">
+                        <Form.Control
+                          required
+                          name="ipi"
+                          type="text"
+                          defaultValue={selectedPartner ? selectedPartner.ipi : ''}
+                          placeholder="CAE/IPI #*"
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          CAE/IPI # is required!
+                        </Form.Control.Feedback>
+                      </div>
+                    </Col>
+                  }
                 </Row>
               </div>
             </div>
