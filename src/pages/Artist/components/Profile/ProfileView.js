@@ -213,6 +213,24 @@ function Profile() {
         </div>
       </section>
       <section className="artist-section-control contact">
+        <div className="bg-content yellow">
+          <div className='sub-section'>
+            <h4><strong>Getting Paid</strong></h4>
+            <p>We love giving artists money, but there are some important documonts we need before we can make that happen. </p>
+            <p>First, make sure that you have completely and correctly filled in your payment information.</p>
+          </div>
+
+          <div className='sub-section'>
+            <h4><strong>US citizens</strong></h4>
+            <p>We need one W9 form on file per artist entity for whomever the payee will be. If you are an existing artist and have already sent us one, you do not need to send another. Please download one here, fill it out and sign it.</p>
+            <p>Please return the W9 to <a href="mailto:artists@audiosocket.com">artists@audiosocket.com</a>.Please include your artist name. The payee on the W9 must match the bank information payee.</p>
+          </div>
+
+          <div className='sub-section'>
+            <h4><strong>International artists</strong></h4>
+            <p>Please complete a W8 form and return a copy to <a href="mailto:artists@audiosocket.com">artists@audiosocket.com</a>.</p>
+          </div>
+        </div>
         <div className="section-content">
           <div className="section-head">
             <h2>Payment</h2>

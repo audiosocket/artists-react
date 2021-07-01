@@ -105,7 +105,9 @@
         width: 95%;
         margin: 0 auto;
         .form-control {
-          height: 48px;
+          &:not(textarea) {
+            height: 48px;
+          }
           border-radius: 8px;
           &:focus {
             transition: all 0.3s ease-in-out;

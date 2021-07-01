@@ -28,6 +28,7 @@ function ProfileEdit() {
   const [profileImage, setProfileImage] = useState(null);
   const [bannerImage, setBannerImage] = useState(null);
   const [image, setImage] = useState([]);
+  const [isUSBased, setIsUSBased] = useState(false);
 
   useEffect(() => {
     if(artistState.artist) {
@@ -54,8 +55,11 @@ function ProfileEdit() {
 
       if(!handleBioCharacterChange(data.get('bio')))
         return false;
-
       setIsLoading(true);
+      if(isUSBased)
+        data.set('us_based', true)
+      else
+        data.set('us_based', false)
       if(!profileImage)
         data.delete('profile_image')
       if(!bannerImage)
@@ -334,6 +338,17 @@ function ProfileEdit() {
                         placeholder="Social link 3"
                         className="mb-1"
                       />
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col xl={2} md={4}>
+                      <Form.Label></Form.Label>
+                    </Col>
+                    <Col xl={4} md={8}>
+                      <div key={`inline-radio`}>
+                        <Form.Check onClick={() => setIsUSBased(true)} checked={isUSBased} class="form-check-input" inline label="US based artist" name="us_based" type="radio" id={`inline-radio}-1`} />
+                        <Form.Check onClick={() => setIsUSBased(false)} checked={!isUSBased} class="form-check-input" inline label="International artist" name="us_based" type="radio" id={`inline-radio-2`} />
+                      </div>
                     </Col>
                   </Row>
                   <Row className="mt-5">

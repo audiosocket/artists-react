@@ -34,6 +34,7 @@ function Album({id = null}) {
   const [selectedTrack, setSelectedTrack] = useState(null);
   const [showAddMusicModal, setShowAddMusicModal] = useState(false);
   const [isPublicDomain, setIsPublicDomain] = useState(false);
+  const [isExplicit, setIsExplicit] = useState(false);
   const [file, setFile] = useState(null);
   const [inValidFile, setInvalidFile] = useState(false);
   const history = useHistory();
@@ -128,6 +129,11 @@ function Album({id = null}) {
         data.append('artists_collaborator_id', collaborator ?? (selectedTrack.collaborator ? selectedTrack.collaborator.id : null))
       if(publisher ?? (selectedTrack ? selectedTrack.publisher : false))
         data.append('publisher_id', publisher ?? (selectedTrack.publisher ? selectedTrack.publisher.id : null))
+
+      if(data.get("explicit"))
+        data.set("explicit", true);
+      else
+        data.set("explicit", false);
 
       if(data.get("public_domain"))
         data.set("public_domain", true);
@@ -270,6 +276,7 @@ function Album({id = null}) {
     setSelectedTrack(track);
     setShowAddMusicModal(true);
     setIsPublicDomain(track.public_domain === true || track.public_domain === "true" ? true : false);
+    setIsExplicit(track.explicit === true || track.explicit === "true" ? true : false);
   }
 
   const handleClose = () => {
@@ -282,6 +289,7 @@ function Album({id = null}) {
     setCollaborator(null);
     setPublisher(null);
     setIsSubmitting(false);
+    setIsExplicit(false);
   }
 
   const handleChangeMusicUpload = (file) => {
@@ -297,6 +305,10 @@ function Album({id = null}) {
 
   const handleChangePublicDomain = (e) => {
     setIsPublicDomain(!isPublicDomain)
+  }
+
+  const handleChangeExplicit = (e) => {
+    setIsExplicit(!isExplicit)
   }
 
   const handleClassification = () => {
@@ -549,7 +561,36 @@ function Album({id = null}) {
                 </Row>
                 <Row>
                   <Col xs={12}>
-                  <label htmlFor="public_domain" className="checkbox">
+                    <div className="form-group">
+                      <Form.Control
+                        name="lyrics"
+                        defaultValue={selectedTrack ? selectedTrack.lyrics : ""}
+                        placeholder="Enter track lyrics here... (optional)"
+                        as="textarea"
+                        rows={4}
+                      />
+                    </div>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col xs={12}>
+                    <label htmlFor="explicit" className="form-group checkbox">
+                      <input
+                        name="explicit"
+                        id="explicit"
+                        type="checkbox"
+                        onChange={handleChangeExplicit}
+                        value={isExplicit}
+                        checked={isExplicit}
+                      />
+                      Explicit track
+                      <span className={isExplicit ? "checkmark checked" : "checkmark"}></span>
+                    </label>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col xs={12}>
+                  <label htmlFor="public_domain" className="form-group checkbox">
                     <input
                       name="public_domain"
                       id="public_domain"
