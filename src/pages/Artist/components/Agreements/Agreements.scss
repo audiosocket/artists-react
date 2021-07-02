@@ -54,6 +54,22 @@
     padding: 20px;
     max-height: 200px;
     overflow-y: auto;
+    ol {
+      margin-left: 15px;
+      font-weight: 600;
+    }
+    ul {
+      li {
+        margin-left: 20px;
+        ol {
+          padding-top: 10px;
+          font-weight: normal;
+          li {
+            margin-top: 10px;
+          }
+        }
+      }
+    }
   }
   .agreementContentController {
     @include flexbox;

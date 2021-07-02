@@ -27,6 +27,11 @@ function Payment() {
 
   useEffect(() => {
     if(artistState.artist) {
+      if(!artistState.artist.contact_information) {
+        Notiflix.Report.Warning('Action required', 'Please complete your contact information first!', 'Update Contact', () => {
+          history.push('/profile/contact/edit')
+        });
+      }
       setIsLoading(false);
       if(Object.keys(artistState.artist).length <= 1) {
         Notiflix.Report.Failure( 'Not accessible', `You don't have access to profile!`, 'Ok', () => {

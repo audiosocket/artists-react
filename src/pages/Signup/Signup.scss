@@ -45,6 +45,22 @@
         padding: 1rem;
         max-height: 50vh;
         overflow-x: scroll;
+        ol {
+          margin-left: 15px;
+          font-weight: 600;
+        }
+        ul {
+          li {
+            margin-left: 20px;
+            ol {
+              padding-top: 10px;
+              font-weight: normal;
+              li {
+                margin-top: 10px;
+              }
+            }
+          }
+        }
       }
       button {
         &.reject {
