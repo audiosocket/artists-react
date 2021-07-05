@@ -55,8 +55,6 @@ function Payment() {
     } else {
       const data = new FormData(form.current);
       let error = false;
-      if(!handleAccountCharacterLimit(data.get('account_number')))
-        error = true;
       if(!handleRoutingCharacterLimit(data.get('routing')))
         error = true;
       if(error)
@@ -104,16 +102,6 @@ function Payment() {
     return json;
   }
 
-  const handleAccountCharacterLimit = (value) => {
-    setAccountLimitFlag(false);
-    if(value.length === 10) {
-      setAccountLimitFlag(false);
-      return true;
-    } else {
-      setAccountLimitFlag(true);
-      return false;
-    }
-  }
   const handleRoutingCharacterLimit = (value) => {
     setRoutingLimitFlag(false);
     if(value.length === 9) {
@@ -151,7 +139,7 @@ function Payment() {
             </Col>
           </Row>
           <div className="section-head">
-            <h2>Edit Payment*</h2>
+            <h2>Edit Payment</h2>
           </div>
           {Object.keys(artist).length === 0 && isLoading && <h5>Loading profile... <img className="loading" src={Loader} alt="loading-icon"/></h5>}
           {Object.keys(artist).length !== 0 &&
@@ -219,11 +207,9 @@ function Payment() {
                   required
                   name="account_number"
                   min={14}
-                  type="number"
+                  type="text"
                   defaultValue={artist.payment_information ? artist.payment_information.account_number : ""}
                   placeholder="Account number"
-                  className={accountLimitFlag ? "invalid" : ""}
-                  onChange={(e) => handleAccountCharacterLimit(e.target.value)}
                 />
                 <Form.Control.Feedback type="invalid">
                   Account number is required!
