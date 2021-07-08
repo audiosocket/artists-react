@@ -30,6 +30,7 @@ export const COLLABORATOR_ARTIST_COLLABORATORS = "api/v1/collaborator/artists_co
 export const PRO_LIST = [
   {label: "Select PRO", value: null},
   {label: "NS (no society)", value: "NS"},
+  {label: "USA - ASCAP", value: "USA - ASCAP"},
   {label: "USA - BMI", value: "USA - BMI"},
   {label: "USA - SESAC", value: "USA - SESAC"},
   {label: "United Kingdom - PRS", value: "United Kingdom - PRS"},

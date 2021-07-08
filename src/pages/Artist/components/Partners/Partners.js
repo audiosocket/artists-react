@@ -458,7 +458,6 @@ function Partners() {
                     <div className="form-group">
                       <Select
                         ref={proRef}
-                        isSearchable={false}
                         placeholder="Select PRO"
                         className="pro-select-container-header"
                         classNamePrefix={!proError ? "pro-select-header react-select-popup" : "pro-select-header react-select-popup invalid"}
