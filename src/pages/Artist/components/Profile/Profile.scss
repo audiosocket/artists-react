@@ -139,6 +139,16 @@ section {
         border-radius: 7px;
         margin-top: 10px;
       }
+      .country-select-container-header {
+        z-index: 3;
+        .invalid__control {
+          height: calc(1.5em + .75rem + 2px);
+          border-radius: .25rem !important;
+        }
+        .country-select-header__control {
+          border-radius: .25rem;
+        }
+      }
     }
     .form-control {
       &.invalid {

@@ -78,7 +78,10 @@ function Profile() {
                 <label>name</label>
                 <div className="info-ans">{artist.name}</div>
               </div>
-
+              <div className="parallel-info">
+                <label>country</label>
+                <div className="info-ans">{artist.country || '-'}</div>
+              </div>
               <div className="parallel-info">
                 <label>
                   Profile image

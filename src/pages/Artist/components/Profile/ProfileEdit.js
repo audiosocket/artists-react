@@ -16,6 +16,8 @@ import DropzoneComponent from "../../../../common/Dropzone/DropzoneComponent";
 import Breadcrumb from "react-bootstrap/Breadcrumb";
 import Notes from "../../../../common/Notes/Notes";
 import Notiflix from "notiflix-react";
+import csc from "country-state-city";
+import Select from "react-select";
 
 function ProfileEdit() {
   const {artistState, artistActions} = React.useContext(ArtistContext);
@@ -28,8 +30,13 @@ function ProfileEdit() {
   const [profileImage, setProfileImage] = useState(null);
   const [bannerImage, setBannerImage] = useState(null);
   const [image, setImage] = useState([]);
+  const countryRef = useRef(null);
+  const [selectedCountry, setSelectedCountry] = useState(null);
+  const [countryError, setCountryError] = useState(null);
+  const [countriesList, setCountriesList] = useState([]);
 
   useEffect(() => {
+    prepareCountriesList();
     if(artistState.artist) {
       setIsLoading(false);
       if(Object.keys(artistState.artist).length <= 1) {
@@ -38,6 +45,7 @@ function ProfileEdit() {
         } );
       }
       setArtist(artistState.artist);
+      setSelectedCountry(artistState.artist.country || null);
     } else
       setIsLoading(true);
   }, [artistState.artist])
@@ -50,11 +58,16 @@ function ProfileEdit() {
       e.stopPropagation();
       setValidated(true);
     } else {
+      if(!selectedCountry) {
+        Notiflix.Notify.Failure('Country is required!');
+        setCountryError(true);
+        return false;
+      }
       const data = new FormData(form.current);
-
       if(!handleBioCharacterChange(data.get('bio')))
         return false;
       setIsLoading(true);
+      data.append('country', selectedCountry);
       if(!profileImage)
         data.delete('profile_image')
       if(!bannerImage)
@@ -157,6 +170,25 @@ function ProfileEdit() {
     };
   }
 
+  const prepareCountriesList = () => {
+    const countries = csc.getAllCountries();
+    const list = [];
+    list.push({label: "Select Country", value: null, countryCode: null});
+    list.push({label: "United States", value: "United States", countryCode: "US"});
+    countries.forEach((country, key) => {
+      if(country.isoCode !== 'US')
+        list.push({label: country.name, value: country.name, countryCode: country.isoCode})
+    });
+    setCountriesList(list);
+    artistActions.countriesStateChanged(list);
+  }
+
+  const handleCountrySelection = (target) => {
+    if(target.value)
+      setCountryError(false);
+    setSelectedCountry(target.value);
+  }
+
   return (
     <div className="artist-wrapper">
       <div className="asBreadcrumbs">
@@ -204,6 +236,35 @@ function ProfileEdit() {
                         tooltipText="Add a note here to request changes"
                       />
                     }
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col xl={2} md={4}>
+                      <Form.Label>Country*</Form.Label>
+                    </Col>
+                    <Col xl={4} md={8}>
+                      <Select
+                        ref={countryRef}
+                        placeholder="Select Country"
+                        className="country-select-container-header"
+                        classNamePrefix={!countryError ? "country-select-header" : "country-select-header invalid"}
+                        options={countriesList}
+                        defaultValue={selectedCountry ? countriesList.filter(option => option.value === selectedCountry) : {label: "Select Country", value: null}}
+                        onChange={handleCountrySelection}
+                        noOptionsMessage={() => {return "No country found"}}
+                        theme={theme => ({
+                          ...theme,
+                          colors: {
+                            ...theme.colors,
+                            primary: '#c0d72d',
+                          },
+                        })}
+                      />
+                      {countryError &&
+                      <small className="error">
+                        Country is required!
+                      </small>
+                      }
                     </Col>
                   </Row>
                   <Row>
