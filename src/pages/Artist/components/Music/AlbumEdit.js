@@ -31,10 +31,7 @@ function AlbumEdit({id = null}) {
       if(filteredAlbum.length > 0) {
         setAlbum(filteredAlbum[0] ?? null)
         if(filteredAlbum[0].release_date) {
-          const day = filteredAlbum[0].release_date.substr(0,2);
-          const month = filteredAlbum[0].release_date.substr(3,2);
-          const year = filteredAlbum[0].release_date.substr(6,4);
-          setSelectedAlbumDate(`${year}-${month}-${day}`);
+          setSelectedAlbumDate(filteredAlbum[0].release_date);
         }
         if(filteredAlbum[0].tracks.length) {
           const isDeletable = filteredAlbum[0].tracks.filter(track => (track.status === "unclassified" || track.status === "accepeted"));

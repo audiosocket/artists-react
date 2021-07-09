@@ -402,7 +402,7 @@ function Album({id = null}) {
                       <div className="track-title">
                         <div className="titleName">
                           <p>{track.title}</p>
-                          <em>Uploaded {track.created_at ? track.created_at.split(' ')[0] : ""}</em>
+                          <em>Uploaded {track.created_at || ""}</em>
                         </div>
                       </div>
                       <div className="track-writter">

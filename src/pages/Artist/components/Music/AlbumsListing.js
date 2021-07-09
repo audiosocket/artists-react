@@ -121,10 +121,7 @@ function AlbumsListing() {
     setSelectedAlbum(album);
     setShowAlbumModal(true);
     if(album.release_date) {
-      const day = album.release_date.substr(0,2);
-      const month = album.release_date.substr(3,2);
-      const year = album.release_date.substr(6,4);
-      setSelectedAlbumDate(`${year}-${month}-${day}`);
+      setSelectedAlbumDate(album.release_date);
     }
   }
 
@@ -228,7 +225,7 @@ function AlbumsListing() {
                   return (
                     <li key={key}>
                       <NavLink
-                        to={`/music/album/${album.id}`}>{album.name} <small><i>{album.release_date ? "(Release date: " + album.release_date.split(" ")[0] + ")" : ""}</i></small>
+                        to={`/music/album/${album.id}`}>{album.name} <small><i>{album.release_date ? "(Release date: " + album.release_date + ")" : ""}</i></small>
                       </NavLink>
                       {(!artistState.selectedArtist || artistState.selectedArtist.access === 'write') &&
                         <div className="album-actions">

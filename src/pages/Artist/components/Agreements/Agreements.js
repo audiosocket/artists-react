@@ -92,7 +92,7 @@ function Agreements({onChangeIsActiveProfile}) {
             return (
               <section key={key} className="pt-4">
                 <h2 className="agreementType">{agreement.agreement.agreement_type.replace("_", " ")} Agreement</h2>
-                <small className="status-timestamp"><i><span>{agreement.status}</span> on {agreement.status_updated_at ? agreement.status_updated_at.split(' ')[0] : '**-**-****'} by {agreement.agreement_user ? agreement.agreement_user : 'NA'}</i></small>
+                <small className="status-timestamp"><i><span>{agreement.status}</span> on {agreement.status_updated_at || '**-**-****'} by {agreement.agreement_user ? agreement.agreement_user : 'NA'}</i></small>
                 <div className="agreementContent mt-3">
                   <p dangerouslySetInnerHTML={{__html: agreement.agreement.content}} />
                 </div>
