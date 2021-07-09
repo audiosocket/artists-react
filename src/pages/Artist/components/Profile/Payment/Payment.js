@@ -217,7 +217,7 @@ function Payment() {
                 {accountLimitFlag && <div className="custom-invalid-feedback">Account number must be 10 digits</div>}
               </Col>
             </Row>
-            {artist.contact_information && artist.contact_information.country.toLowerCase() !== 'united states' &&
+            {artist.country && artist.country.toLowerCase() !== 'united states' &&
               <Row>
                 <Col xl={2} md={4}>
                   <Form.Label>Paypal Email*</Form.Label>

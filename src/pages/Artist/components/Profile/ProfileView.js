@@ -250,7 +250,7 @@ function Profile() {
           <div className="section-head">
             <h2>Payment</h2>
             {(!artistState.selectedArtist || artistState.selectedArtist.access === 'write') &&
-              <NavLink onClick={handleCheckContact} to={artist.contact_information ? "/profile/payment/edit" : "/profile"} className="btn primary-btn">Edit</NavLink>
+              <NavLink onClick={handleCheckContact} to={artist.country ? "/profile/payment/edit" : "/profile"} className="btn primary-btn">Edit</NavLink>
             }
           </div>
           {Object.keys(artist).length === 0 && isLoading && <h5>Loading payment... <img className="loading" src={Loader} alt="loading-icon"/></h5>}
@@ -265,7 +265,7 @@ function Profile() {
                     <span><small className="medium-text">Bank: </small>{artist.payment_information.bank_name}</span>
                     <span><small className="medium-text">Routing: </small>{artist.payment_information.routing}</span>
                     <span><small className="medium-text">Account#: </small>xxxxxx{artist.payment_information.account_number.substr(-4)}</span>
-                    {artist.contact_information && artist.contact_information.country.toLowerCase() !== 'united states' &&
+                    {artist.country && artist.country.toLowerCase() !== 'united states' &&
                       <span><small className="medium-text">Paypal Email: </small><a href={"mailto:"+artist.payment_information.paypal_email}>{artist.payment_information.paypal_email}</a></span>
                     }
                   </>
@@ -281,7 +281,7 @@ function Profile() {
           <div className="section-head">
             <h2>Tax</h2>
             {(!artistState.selectedArtist || artistState.selectedArtist.access === 'write') &&
-              <NavLink onClick={handleCheckContact} to={artist.contact_information ? "/profile/tax/edit" : "/profile"} className="btn primary-btn">Edit</NavLink>
+              <NavLink onClick={handleCheckContact} to={artist.country ? "/profile/tax/edit" : "/profile"} className="btn primary-btn">Edit</NavLink>
             }
           </div>
           {Object.keys(artist).length === 0 && isLoading && <h5>Loading tax... <img className="loading" src={Loader} alt="loading-icon"/></h5>}
