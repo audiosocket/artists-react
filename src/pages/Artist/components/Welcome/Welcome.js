@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import "./Welcome.scss";
 import {NavLink} from "react-router-dom";
 import ArrowRight from "../../../../images/right-arrow.svg";
-import {ACCESS_TOKEN, WELCOME_METADATA, BASE_URL} from "../../../../common/api";
+import {ACCESS_TOKEN, WELCOME_CONTENT, BASE_URL} from "../../../../common/api";
 import Notiflix from "notiflix-react";
 import Loader from "../../../../images/loader.svg";
 import {ArtistContext} from "../../../../Store/artistContext";
@@ -24,7 +24,7 @@ function Welcome() {
   const fetchWelcomeMetadata = async () => {
     setIsLoading(true);
     const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
-    const response = await fetch(`${BASE_URL}${WELCOME_METADATA}`,
+    const response = await fetch(`${BASE_URL}${WELCOME_CONTENT}`,
       {
         headers: {
           "authorization": ACCESS_TOKEN,
