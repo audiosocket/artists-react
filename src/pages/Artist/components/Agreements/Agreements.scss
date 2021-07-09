@@ -36,6 +36,15 @@
       span {
         text-transform: capitalize;
         font-weight: 600;
+        padding: 4px 10px;
+        color: white;
+        border-radius: 4px;
+        &.accepted {
+          background-color: $clr-green-dark;
+        }
+        &.rejected {
+          background-color: $clr-red;
+        }
       }
     }
   }
