@@ -27,9 +27,9 @@ function Payment() {
 
   useEffect(() => {
     if(artistState.artist) {
-      if(!artistState.artist.contact_information) {
-        Notiflix.Report.Warning('Action required', 'Please complete your contact information first!', 'Update Contact', () => {
-          history.push('/profile/contact/edit')
+      if(!artistState.artist.country) {
+        Notiflix.Report.Warning('Action required', 'Please complete your profile first!', 'Update Profile', () => {
+          history.push('/profile/edit')
         });
       }
       setIsLoading(false);

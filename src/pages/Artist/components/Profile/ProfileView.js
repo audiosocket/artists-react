@@ -40,9 +40,9 @@ function Profile() {
   }
 
   const handleCheckContact = () => {
-    if(!artist.contact_information) {
-      Notiflix.Report.Warning('Action required', 'Please complete your contact information first!', 'Update Contact', () => {
-        history.push('/profile/contact/edit')
+    if(!artist.country) {
+      Notiflix.Report.Warning('Action required', 'Please complete your profile first!', 'Update Profile', () => {
+        history.push('/profile/edit')
       });
     }
   }
@@ -77,6 +77,10 @@ function Profile() {
               <div className="parallel-info">
                 <label>name</label>
                 <div className="info-ans">{artist.name}</div>
+              </div>
+              <div className="parallel-info">
+                <label>Email</label>
+                <div className="info-ans">{artist.email || '-'}</div>
               </div>
               <div className="parallel-info">
                 <label>country</label>

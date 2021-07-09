@@ -32,6 +32,7 @@ function ProfileEdit() {
   const [image, setImage] = useState([]);
   const countryRef = useRef(null);
   const [selectedCountry, setSelectedCountry] = useState(null);
+  const [emailError, setEmailError] = useState(null);
   const [countryError, setCountryError] = useState(null);
   const [countriesList, setCountriesList] = useState([]);
 
@@ -58,12 +59,24 @@ function ProfileEdit() {
       e.stopPropagation();
       setValidated(true);
     } else {
+      const data = new FormData(form.current);
+      let errors = false;
+      setEmailError(false);
       if(!selectedCountry) {
         Notiflix.Notify.Failure('Country is required!');
         setCountryError(true);
-        return false;
+        errors = true;
       }
-      const data = new FormData(form.current);
+      if(data.get('email')) {
+        if(!handleEmailValidate(data.get('email')))
+          Notiflix.Notify.Failure('A valid email address is required!');
+      } else {
+        Notiflix.Notify.Failure('A valid email address is required!');
+        setEmailError(true);
+        errors = true;
+      }
+      if(errors)
+        return false;
       if(!handleBioCharacterChange(data.get('bio')))
         return false;
       setIsLoading(true);
@@ -189,6 +202,17 @@ function ProfileEdit() {
     setSelectedCountry(target.value);
   }
 
+  const handleEmailValidate = (email) => {
+    let pattern = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i);
+    if (!pattern.test(email)) {
+      setEmailError(true);
+      return false;
+    } else {
+      setEmailError(false);
+      return true
+    }
+  }
+
   return (
     <div className="artist-wrapper">
       <div className="asBreadcrumbs">
@@ -236,6 +260,26 @@ function ProfileEdit() {
                         tooltipText="Add a note here to request changes"
                       />
                     }
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col xl={2} md={4}>
+                      <Form.Label>Email*</Form.Label>
+                    </Col>
+                    <Col xl={4} md={8}>
+                      <Form.Control
+                        name="email"
+                        defaultValue={artist.email || ""}
+                        type="email"
+                        placeholder="Your band's email address"
+                        className={emailError ? "invalid" : ""}
+                        onChange={(e) => handleEmailValidate(e.target.value)}
+                      />
+                      {emailError &&
+                      <small className="error">
+                        A valid email address is required!
+                      </small>
+                      }
                     </Col>
                   </Row>
                   <Row>
