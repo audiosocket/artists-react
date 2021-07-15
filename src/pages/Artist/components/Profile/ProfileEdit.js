@@ -35,6 +35,8 @@ function ProfileEdit() {
   const [emailError, setEmailError] = useState(null);
   const [countryError, setCountryError] = useState(null);
   const [countriesList, setCountriesList] = useState([]);
+  const [profileImageError, setProfileImageError] = useState(false);
+  const [bannerImageError, setBannerImageError] = useState(false);
 
   useEffect(() => {
     prepareCountriesList();
@@ -62,6 +64,8 @@ function ProfileEdit() {
       const data = new FormData(form.current);
       let errors = false;
       setEmailError(false);
+      setProfileImageError(false);
+      setBannerImageError(false);
       if(!selectedCountry) {
         Notiflix.Notify.Failure('Country is required!');
         setCountryError(true);
@@ -73,6 +77,16 @@ function ProfileEdit() {
       } else {
         Notiflix.Notify.Failure('A valid email address is required!');
         setEmailError(true);
+        errors = true;
+      }
+      if(!profileImage && !artist.profile_image ) {
+        Notiflix.Notify.Failure('Profile image is required!');
+        setProfileImageError(true);
+        errors = true;
+      }
+      if(!bannerImage && !artist.banner_image) {
+        Notiflix.Notify.Failure('Banner image is required!');
+        setBannerImageError(true);
         errors = true;
       }
       if(errors)
@@ -107,12 +121,12 @@ function ProfileEdit() {
           method: 'PATCH',
           body: data
         });
-      const artist = await response.json();
+      const artistData = await response.json();
       if(!response.ok) {
         Notiflix.Notify.Failure('Something went wrong, try later!');
       } else {
-        setArtist(artist);
-        artistActions.artistStateChanged(artist);
+        setArtist(artistData);
+        artistActions.artistStateChanged(artistData);
         Notiflix.Notify.Success('Profile updated!');
         history.push('/profile');
       }
@@ -152,6 +166,7 @@ function ProfileEdit() {
           return false;
         } else {
           setProfileImage(img)
+          setProfileImageError(false);
           return true;
         }
       };
@@ -177,6 +192,7 @@ function ProfileEdit() {
           return false;
         } else {
           setBannerImage(img)
+          setBannerImageError(false);
           return true;
         }
       };
@@ -202,14 +218,14 @@ function ProfileEdit() {
     setSelectedCountry(target.value);
   }
 
-  const handleEmailValidate = (email) => {
-    let pattern = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i);
-    if (!pattern.test(email)) {
-      setEmailError(true);
-      return false;
-    } else {
+  function handleEmailValidate(email) {
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if(re.test(String(email).toLowerCase())) {
       setEmailError(false);
       return true
+    } else {
+      setEmailError(true);
+      return false;
     }
   }
 
@@ -313,7 +329,7 @@ function ProfileEdit() {
                   </Row>
                   <Row>
                     <Col xl={2} md={4}>
-                      <Form.Label>Profile Image</Form.Label>
+                      <Form.Label>Profile Image*</Form.Label>
                     </Col>
                     <Col xl={4} md={8}>
                       <Form.File
@@ -325,12 +341,17 @@ function ProfileEdit() {
                         custom
                       />
                       <small className="info-text"><i>Minimum required size for profile image is 353px x 353px</i></small>
+                      {profileImageError &&
+                      <small className="error">
+                        Profile image is required!
+                      </small>
+                      }
                       <img className="preview" src={profileImage ? URL.createObjectURL(profileImage) : artist.profile_image}></img>
                     </Col>
                   </Row>
                   <Row>
                     <Col xl={2} md={4}>
-                      <Form.Label>Banner Image</Form.Label>
+                      <Form.Label>Banner Image*</Form.Label>
                     </Col>
                     <Col xl={4} md={8}>
                       <Form.File
@@ -342,6 +363,11 @@ function ProfileEdit() {
                         custom
                       />
                       <small className="info-text"><i>Minimum required size for banner image is 1440px x 448px</i></small>
+                      {bannerImageError &&
+                      <small className="error">
+                        Banner image is required!
+                      </small>
+                      }
                       <img className="preview" src={bannerImage ? URL.createObjectURL(bannerImage) : artist.banner_image}></img>
                     </Col>
                   </Row>

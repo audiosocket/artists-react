@@ -16,6 +16,17 @@
     }
     .primary-btn {
       text-transform: none;
+      &.accepted {
+        background-color: $clr-green-dark !important;
+        border-color: $clr-green-dark !important;
+        color: white !important;
+        &:hover, &:active {
+          background-color: $clr-green-dark !important;
+          border-color: $clr-green-dark !important;
+          color: white !important;
+          opacity: .8;
+        }
+      }
       &.rejected {
         background-color: $clr-red-light !important;
         border-color: $clr-red-light !important;
