@@ -136,7 +136,7 @@ function Header({onToggleSidebar, onChangeIsActiveProfile, onChangeIsProfileComp
   const initializeArtist = async (artist_id = null) => {
     setIsLoading(true);
     const artist = await fetchArtist(artist_id);
-    if(artist.message) {
+    if(artist && artist.message) {
       if (artist.message.toLowerCase() === 'signature has expired') {
         Notiflix.Report.Failure( 'Session expired', `Your session is timed out, please login again to continue.`, 'Login', () => {
           localStorage.removeItem("user");

@@ -33,7 +33,7 @@ function Profile() {
 
   const handleNext = () => {
     if(artist) {
-      if(!artistState.artist.banner_image || !artistState.artist.profile_image || !artist.contact_information || !artist.payment_information || !artist.tax_information) {
+      if(!artist.banner_image || !artist.profile_image || !artist.contact_information || !artist.payment_information || !artist.tax_information) {
         Notiflix.Notify.Failure('You must complete artist profile to unlock Partners page');
       }
     }
@@ -50,7 +50,7 @@ function Profile() {
   return (
     <div className="artist-wrapper">
       <div className="next-btn">
-        <NavLink onClick={handleNext} to={(!artistState.artist.banner_image || !artistState.artist.profile_image || !artist.contact_information || !artist.payment_information || !artist.tax_information) ? "/profile" : "partners"} className="btn primary-btn next">Next <img className="" src={ArrowRight} alt="proceed-icon"/></NavLink>
+        <NavLink onClick={handleNext} to={(!artist.banner_image || !artist.profile_image || !artist.contact_information || !artist.payment_information || !artist.tax_information) ? "/profile" : "partners"} className="btn primary-btn next">Next <img className="" src={ArrowRight} alt="proceed-icon"/></NavLink>
       </div>
       <div className="asBreadcrumbs">
         <Breadcrumb>
