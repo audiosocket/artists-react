@@ -85,6 +85,16 @@ section {
               margin: 0 15px 15px 0;
             }
           }
+          .loading {
+            &.tax-form {
+              width: 22px;
+            }
+          }
+          .tax-form-link {
+            &:hover {
+              cursor: pointer;
+            }
+          }
         }
         &.social {
           .info-ans {

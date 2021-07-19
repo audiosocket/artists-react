@@ -11,12 +11,15 @@ import Check from "../../../../images/check-solid.svg";
 import Cancel from "../../../../images/close-circle-2.svg";
 import Tooltip from "react-bootstrap/Tooltip";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import {ACCESS_TOKEN, BASE_URL, CREATE_TAX_FORM} from "../../../../common/api";
 
 function Profile() {
   const {artistState} = React.useContext(ArtistContext);
   const [isLoading, setIsLoading] = useState(false);
   const [artist, setArtist] = useState({});
   const history = useHistory();
+  const [taxForm, setTaxForm] = useState(null);
+  const [taxFormLoading, setTaxFormLoading] = useState(false);
 
   useEffect(() => {
     if(artistState.artist) {
@@ -45,6 +48,28 @@ function Profile() {
         history.push('/profile/edit')
       });
     }
+  }
+
+  const fetchTaxForm = async () => {
+    setTaxFormLoading(true);
+    const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
+    const response = await fetch(`${BASE_URL}${CREATE_TAX_FORM}`,
+      {
+        headers: {
+          "authorization": ACCESS_TOKEN,
+          "auth-token": userAuthToken
+        },
+        method: "POST"
+      });
+    const resultSet = await response.json();
+    if (!response.ok) {
+      Notiflix.Notify.Failure('System has encountered an error while fetching tax form, try later!');
+    } else {
+      setTaxForm(resultSet.url || null);
+      if(resultSet.url)
+        window.open(resultSet.url, '_self');
+    }
+    setTaxFormLoading(false);
   }
 
   return (
@@ -280,18 +305,25 @@ function Profile() {
         <div className="section-content">
           <div className="section-head">
             <h2>Tax</h2>
-            {(!artistState.selectedArtist || artistState.selectedArtist.access === 'write') &&
-              <NavLink onClick={handleCheckContact} to={artist.country ? "/profile/tax/edit" : "/profile"} className="btn primary-btn">Edit</NavLink>
-            }
           </div>
           {Object.keys(artist).length === 0 && isLoading && <h5>Loading tax... <img className="loading" src={Loader} alt="loading-icon"/></h5>}
           <div className="section-body">
+            {artist.tax_information &&
+              artist.tax_information.tax_forms.map((form, key) => {
+                <div key={key} className="parallel-info">
+                  <label>Submission</label>
+                  <div className="info-ans">
+                    <a className="tax-form-link" href={form} target="_blank">Preview</a>
+                  </div>
+                </div>
+              })
+            }
             <div className="parallel-info">
-              <label>Tax ID/SSN</label>
+              <label></label>
               <div className="info-ans">
-                {artist.tax_information
-                  ? <span>xxxxxx{artist.tax_information.ssn.substr(-4)}</span>
-                  : '-'
+                {!taxForm && taxFormLoading
+                  ? <span>Fetching tax form... <img className="loading tax-form" src={Loader} alt="loading-icon"/></span>
+                  : <a className="tax-form-link" onClick={fetchTaxForm}>{'Fill W8/W9 form here'}</a>
                 }
               </div>
             </div>
