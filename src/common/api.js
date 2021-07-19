@@ -27,6 +27,7 @@ export const COLLABORATOR_PUBLISHERS = "api/v1/collaborator/publishers";
 export const COLLABORATOR_LIST_COLLABORATORS = "api/v1/collaborator/artists/collaborators";
 export const COLLABORATOR_INVITE_COLLABORATORS = "api/v1/collaborator/artists/invite_collaborator";
 export const COLLABORATOR_ARTIST_COLLABORATORS = "api/v1/collaborator/artists_collaborators";
+export const COLLABORATOR_CREATE_TAX_FORM = "api/v1/collaborator/tax_forms/create_tax_form";
 
 export const PRO_LIST = [
   {label: "Select PRO", value: null},

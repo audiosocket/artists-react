@@ -11,7 +11,7 @@ import Check from "../../../../images/check-solid.svg";
 import Cancel from "../../../../images/close-circle-2.svg";
 import Tooltip from "react-bootstrap/Tooltip";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
-import {ACCESS_TOKEN, BASE_URL, CREATE_TAX_FORM} from "../../../../common/api";
+import {ACCESS_TOKEN, BASE_URL, COLLABORATOR_CREATE_TAX_FORM, CREATE_TAX_FORM} from "../../../../common/api";
 
 function Profile() {
   const {artistState} = React.useContext(ArtistContext);
@@ -52,8 +52,11 @@ function Profile() {
 
   const fetchTaxForm = async () => {
     setTaxFormLoading(true);
+    const userRole = JSON.parse(localStorage.getItem("userRole") ?? "");
+    const artist_id = artistState.selectedArtist ? artistState.selectedArtist.id : null;
+    const url = userRole === 'collaborator' ? `${BASE_URL}${COLLABORATOR_CREATE_TAX_FORM}?artist_id=${artist_id}` : `${BASE_URL}${CREATE_TAX_FORM}`
     const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
-    const response = await fetch(`${BASE_URL}${CREATE_TAX_FORM}`,
+    const response = await fetch(url,
       {
         headers: {
           "authorization": ACCESS_TOKEN,
