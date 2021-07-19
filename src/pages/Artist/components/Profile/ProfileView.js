@@ -313,12 +313,14 @@ function Profile() {
           <div className="section-body">
             {artist.tax_information &&
               artist.tax_information.tax_forms.map((form, key) => {
-                <div key={key} className="parallel-info">
-                  <label>Submission</label>
-                  <div className="info-ans">
-                    <a className="tax-form-link" href={form} target="_blank">Preview</a>
+                return (
+                  <div key={key} className="parallel-info">
+                    <label>Submission</label>
+                    <div className="info-ans">
+                      <a className="tax-form-link" href={form} target="_blank">Preview</a>
+                    </div>
                   </div>
-                </div>
+                )
               })
             }
             <div className="parallel-info">
