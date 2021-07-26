@@ -51,6 +51,12 @@ function Profile() {
   }
 
   const fetchTaxForm = async () => {
+    if(artistState.artist && !artistState.artist.country) {
+      Notiflix.Report.Warning('Action required', 'Please complete your profile first!', 'Update Profile', () => {
+        history.push('/profile/edit')
+      });
+      return false;
+    }
     setTaxFormLoading(true);
     const userRole = JSON.parse(localStorage.getItem("userRole") ?? "");
     const artist_id = artistState.selectedArtist ? artistState.selectedArtist.id : null;
