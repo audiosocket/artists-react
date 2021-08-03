@@ -294,7 +294,7 @@ function Header({onToggleSidebar, onChangeIsActiveProfile, onChangeIsProfileComp
                 }
               </NavDropdown>
             }
-            <Nav.Link href="mailto:info@audiosocket.com">
+            <Nav.Link href="mailto:artists@audiosocket.com">
               <span className="desktop-view">Help</span>
               <img src={help} alt="Help"  className="mobile-view" />
             </Nav.Link>

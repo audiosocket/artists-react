@@ -81,9 +81,9 @@ function Agreements({onChangeIsActiveProfile}) {
       <div className="agreementBody">
         <section>
           <div className="bg-content yellow bgSecondVersion mt-4">
-            <p>YouTube requires artists to elect only one administrator of any given track in their Content ID system</p>
-            <p>To be made available for all Audiosocket opportunities, we respectfully ask that we be your admin for the songs you would like us to license in Content ID. We ask this so our clients who are licensing your music do not receive YouTube claims from other companies. We have auto release claim technology that will ensure our clients who license your music don’t receive any claims.</p>
-            <p>If you already have a YouTube admin, please contact us and let us know. This may prevent your music from being made available for certain opportunities since we are not able to contest claims that are made on the YouTube platform by other administrators. If you are unsure, or would like more information, please email <a href="mailto:artists@audiosocket.com">artists@audiosocket.com</a>.</p>
+            <p>YouTube requires artists to elect only one administrator of any given track in their Content ID system.</p>
+            <p>We prefer to administer your tracks because we have auto whitelisting tech in place for the tracks we admin in <a rel="noreferrer" target="_blank" href="https://blog.audiosocket.com/demystifying-youtube-content-id-why-it-is-good-for-creators/">YouTube Content ID</a>. It's disruptive to our business when clients license music and receive claims from other companies. Unfortunately we are not currently accepting music with CID managed by 3rd parties. We can offer the same service and a 75/25 split your favor for CID, while keeping our clients happy.</p>
+            <p>If you already have a YouTube admin, please contact us and let us know, we can assist with transferring your administration to us.</p>
           </div>
         </section>
         {!agreements.length && isLoading && <h5>Loading agreements... <img className="loading" src={Loader} alt="loading-icon"/></h5> }
@@ -97,7 +97,10 @@ function Agreements({onChangeIsActiveProfile}) {
                   <p dangerouslySetInnerHTML={{__html: agreement.agreement.content}} />
                 </div>
                 <div className="agreementContentController">
-                  <button onClick={handleSubmitReviewAgreement} data-id={agreement.id} data-action={agreement.status === "accepted" ? "rejected" : "accepted"} className={agreement.status === "accepted" ? "btn primary-btn rejected" : "btn primary-btn accepted"}>{agreement.status === "rejected" ? "Accept" : "Opt-out"}</button>
+                  {agreement.status === "rejected"
+                    ? <button onClick={handleSubmitReviewAgreement} data-id={agreement.id} data-action={agreement.status === "accepted" ? "rejected" : "accepted"} className={agreement.status === "accepted" ? "btn primary-btn rejected" : "btn primary-btn accepted"}>{agreement.status === "rejected" ? "Accept" : "Opt-out"}</button>
+                    : <div></div>
+                  }
                   <a href={agreement.agreement.file} target="_blank" rel="noopener noreferrer" download>Download PDF</a>
                 </div>
               </section>
