@@ -10,7 +10,7 @@ import {
   ACCESS_TOKEN,
   ARTIST_PROFILE_UPDATE,
   BASE_URL,
-  COLLABORATOR_ARTIST_PROFILE_UPDATE
+  COLLABORATOR_ARTIST_PROFILE_UPDATE, LIST_GENRES
 } from "../../../../common/api";
 import DropzoneComponent from "../../../../common/Dropzone/DropzoneComponent";
 import Breadcrumb from "react-bootstrap/Breadcrumb";
@@ -37,9 +37,12 @@ function ProfileEdit() {
   const [countriesList, setCountriesList] = useState([]);
   const [profileImageError, setProfileImageError] = useState(false);
   const [bannerImageError, setBannerImageError] = useState(false);
+  const [genres, setGenres] = useState([]);
+  const [selectedGenres, setSelectedGenres] = useState([]);
 
   useEffect(() => {
     prepareCountriesList();
+    fetchGenres();
     if(artistState.artist) {
       setIsLoading(false);
       if(Object.keys(artistState.artist).length <= 1) {
@@ -102,6 +105,9 @@ function ProfileEdit() {
       if(image.length) {
         for(let i = 0; i < image.length; i++)
           data.append('additional_images[]', image[i]);
+      }
+      if(selectedGenres.length > 0) {
+        data.append('genres', selectedGenres)
       }
       data.delete('name');
       const userRole = artistState.userRole || JSON.parse(localStorage.getItem("userRole") ?? "");
@@ -227,6 +233,29 @@ function ProfileEdit() {
       setEmailError(true);
       return false;
     }
+  }
+
+  const fetchGenres = async () => {
+    const response = await fetch(`${BASE_URL}${LIST_GENRES}`,
+      {
+        headers: {
+          "authorization": ACCESS_TOKEN
+        }
+      });
+    const resultSet = await response.json();
+    if(response.status !== 200) {
+      setGenres([]);
+    } else {
+      let tmp = [];
+      for (let i = 0; i < resultSet.length; i++) {
+        tmp.push({label: resultSet[i].name, value: resultSet[i].id});
+      }
+      setGenres(tmp);
+    }
+  }
+
+  const handleGenreSelection = (target) => {
+    setSelectedGenres(target.map((item) => item.value));
   }
 
   return (
@@ -362,7 +391,7 @@ function ProfileEdit() {
                         lang="en"
                         custom
                       />
-                      <small className="info-text"><i>Minimum required size for banner image is 1440px x 448px</i></small>
+                      <small className="info-text"><i>Minimum required size for banner image is 1440px x 448px - please do not include images with any text. Images with text will be rejected.</i></small>
                       {bannerImageError &&
                       <small className="error">
                         Banner image is required!
@@ -405,6 +434,31 @@ function ProfileEdit() {
                         type="text"
                         placeholder="Fats Domino, Trombone Shorty, Irina thomas"
                       />
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col xl={2} md={4}>
+                      <Form.Label>Genres</Form.Label>
+                    </Col>
+                    <Col xl={4} md={8}>
+                      <Form.Group className="form-group-inline">
+                        <Select
+                          isMulti
+                          placeholder="Select Genre"
+                          className="genre-select-container-header"
+                          classNamePrefix={"genre-select-header"}
+                          options={genres}
+                          onChange={handleGenreSelection}
+                          noOptionsMessage={() => {return "No genre found"}}
+                          theme={theme => ({
+                            ...theme,
+                            colors: {
+                              ...theme.colors,
+                              primary: '#c0d72d',
+                            },
+                          })}
+                        />
+                      </Form.Group>
                     </Col>
                   </Row>
                   <Row>
@@ -462,6 +516,13 @@ function ProfileEdit() {
                         defaultValue={artist.social ? artist.social[2] || "" : ""}
                         type="text"
                         placeholder="Social link 3"
+                        className="mb-1"
+                      />
+                      <Form.Control
+                        name="social[]"
+                        defaultValue={artist.social ? artist.social[3] || "" : ""}
+                        type="text"
+                        placeholder="Website link"
                         className="mb-1"
                       />
                     </Col>

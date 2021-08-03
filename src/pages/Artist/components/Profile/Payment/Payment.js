@@ -55,7 +55,7 @@ function Payment() {
     } else {
       const data = new FormData(form.current);
       let error = false;
-      if(!handleRoutingCharacterLimit(data.get('routing')))
+      if(data.get('routing') && !handleRoutingCharacterLimit(data.get('routing')))
         error = true;
       if(error)
         return false;
@@ -144,79 +144,83 @@ function Payment() {
           {Object.keys(artist).length === 0 && isLoading && <h5>Loading profile... <img className="loading" src={Loader} alt="loading-icon"/></h5>}
           {Object.keys(artist).length !== 0 &&
           <Form noValidate validated={validated} ref={form} onSubmit={handleSubmit}>
-            <Row>
-              <Col xl={2} md={4}>
-                <Form.Label>Payee Name*</Form.Label>
-              </Col>
-              <Col xl={4} md={8}>
-                <Form.Control
-                  required
-                  name="payee_name"
-                  type="text"
-                  defaultValue={artist.payment_information ? artist.payment_information.payee_name : ""}
-                  placeholder="Payee name"
-                />
-                <Form.Control.Feedback type="invalid">
-                  Payee Name is required!
-                </Form.Control.Feedback>
-              </Col>
-            </Row>
-            <Row>
-              <Col xl={2} md={4}>
-                <Form.Label>Bank Name*</Form.Label>
-              </Col>
-              <Col xl={4} md={8}>
-                <Form.Control
-                  required
-                  name="bank_name"
-                  type="text"
-                  defaultValue={artist.payment_information ? artist.payment_information.bank_name : ""}
-                  placeholder="Bank name"
-                />
-                <Form.Control.Feedback type="invalid">
-                  Bank name is required!
-                </Form.Control.Feedback>
-              </Col>
-            </Row>
-            <Row>
-              <Col xl={2} md={4}>
-                <Form.Label>Routing*</Form.Label>
-              </Col>
-              <Col xl={4} md={8}>
-                <Form.Control
-                  required
-                  name="routing"
-                  type="number"
-                  defaultValue={artist.payment_information ? artist.payment_information.routing : ""}
-                  placeholder="Routing"
-                  className={routingLimitFlag ? "invalid" : ""}
-                  onChange={(e) => handleRoutingCharacterLimit(e.target.value)}
-                />
-                <Form.Control.Feedback type="invalid">
-                  Routing is required!
-                </Form.Control.Feedback>
-                {routingLimitFlag && <div className="custom-invalid-feedback">Routing must be 9 digits</div>}
-              </Col>
-            </Row>
-            <Row>
-              <Col xl={2} md={4}>
-                <Form.Label>Account Number*</Form.Label>
-              </Col>
-              <Col xl={4} md={8}>
-                <Form.Control
-                  required
-                  name="account_number"
-                  min={14}
-                  type="text"
-                  defaultValue={artist.payment_information ? artist.payment_information.account_number : ""}
-                  placeholder="Account number"
-                />
-                <Form.Control.Feedback type="invalid">
-                  Account number is required!
-                </Form.Control.Feedback>
-                {accountLimitFlag && <div className="custom-invalid-feedback">Account number must be 10 digits</div>}
-              </Col>
-            </Row>
+            {artist.country && artist.country.toLowerCase() === 'united states' &&
+              <>
+              <Row>
+                <Col xl={2} md={4}>
+                  <Form.Label>Payee Name*</Form.Label>
+                </Col>
+                <Col xl={4} md={8}>
+                  <Form.Control
+                    required
+                    name="payee_name"
+                    type="text"
+                    defaultValue={artist.payment_information ? artist.payment_information.payee_name : ""}
+                    placeholder="Payee name"
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    Payee Name is required!
+                  </Form.Control.Feedback>
+                </Col>
+              </Row>
+              <Row>
+                <Col xl={2} md={4}>
+                  <Form.Label>Bank Name*</Form.Label>
+                </Col>
+                <Col xl={4} md={8}>
+                  <Form.Control
+                    required
+                    name="bank_name"
+                    type="text"
+                    defaultValue={artist.payment_information ? artist.payment_information.bank_name : ""}
+                    placeholder="Bank name"
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    Bank name is required!
+                  </Form.Control.Feedback>
+                </Col>
+              </Row>
+              <Row>
+                <Col xl={2} md={4}>
+                  <Form.Label>Routing*</Form.Label>
+                </Col>
+                <Col xl={4} md={8}>
+                  <Form.Control
+                    required
+                    name="routing"
+                    type="number"
+                    defaultValue={artist.payment_information ? artist.payment_information.routing : ""}
+                    placeholder="Routing"
+                    className={routingLimitFlag ? "invalid" : ""}
+                    onChange={(e) => handleRoutingCharacterLimit(e.target.value)}
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    Routing is required!
+                  </Form.Control.Feedback>
+                  {routingLimitFlag && <div className="custom-invalid-feedback">Routing must be 9 digits</div>}
+                </Col>
+              </Row>
+              <Row>
+                <Col xl={2} md={4}>
+                  <Form.Label>Account Number*</Form.Label>
+                </Col>
+                <Col xl={4} md={8}>
+                  <Form.Control
+                    required
+                    name="account_number"
+                    min={14}
+                    type="text"
+                    defaultValue={artist.payment_information ? artist.payment_information.account_number : ""}
+                    placeholder="Account number"
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    Account number is required!
+                  </Form.Control.Feedback>
+                  {accountLimitFlag && <div className="custom-invalid-feedback">Account number must be 10 digits</div>}
+                </Col>
+              </Row>
+              </>
+            }
             {artist.country && artist.country.toLowerCase() !== 'united states' &&
               <Row>
                 <Col xl={2} md={4}>

@@ -76,7 +76,7 @@ function Profile() {
     } else {
       setTaxForm(resultSet.url || null);
       if(resultSet.url)
-        window.open(resultSet.url, '_self');
+        window.open(resultSet.url, '_blank');
     }
     setTaxFormLoading(false);
   }
@@ -190,6 +190,15 @@ function Profile() {
                 </div>
               </div>
               <div className="parallel-info">
+                <label>Genres</label>
+                <div className="info-ans">
+                  {artist.genres
+                    ? artist.genres
+                    : '-'
+                  }
+                </div>
+              </div>
+              <div className="parallel-info">
                 <label>bio</label>
                 <div className="info-ans">
                   {artist.bio
@@ -220,7 +229,7 @@ function Profile() {
                     return (
                       link
                         ?
-                        <p key={key}>{link.replace("https://","").split('/')[0].replace("https://","")+"/"}<a href={link.includes("https://") ? link : "https://"+link} target="_blank">{link.split("/")[link.split("/").length-1]}</a></p>
+                        <p key={key}><a href={link} target="_blank">{link}</a></p>
                         : ''
                     )
                   })}
@@ -265,19 +274,17 @@ function Profile() {
         <div className="bg-content yellow">
           <div className='sub-section'>
             <h4><strong>Getting Paid</strong></h4>
-            <p>We love giving artists money, but there are some important documonts we need before we can make that happen. </p>
-            <p>First, make sure that you have completely and correctly filled in your payment information.</p>
+            <p>Please make sure that you have completely and correctly filled in your payment information.We offer one payee per artist entity.</p>
           </div>
 
           <div className='sub-section'>
             <h4><strong>US citizens</strong></h4>
-            <p>We need one W9 form on file per artist entity for whomever the payee will be. If you are an existing artist and have already sent us one, you do not need to send another. Please download one here, fill it out and sign it.</p>
-            <p>Please return the W9 to <a href="mailto:artists@audiosocket.com">artists@audiosocket.com</a>.Please include your artist name. The payee on the W9 must match the bank information payee.</p>
+            <p>Please complete a W9 for your artist entity using the link below. The payee on the W9 must match the bank information payee.</p>
           </div>
 
           <div className='sub-section'>
             <h4><strong>International artists</strong></h4>
-            <p>Please complete a W8 form and return a copy to <a href="mailto:artists@audiosocket.com">artists@audiosocket.com</a>.</p>
+            <p>Please complete a W8 form using the link below.</p>
           </div>
         </div>
         <div className="section-content">
@@ -295,10 +302,14 @@ function Profile() {
                 {artist.payment_information
                   ?
                   <>
-                    <span><small className="medium-text">Payee: </small>{artist.payment_information.payee_name}</span>
-                    <span><small className="medium-text">Bank: </small>{artist.payment_information.bank_name}</span>
-                    <span><small className="medium-text">Routing: </small>{artist.payment_information.routing}</span>
-                    <span><small className="medium-text">Account#: </small>xxxxxx{artist.payment_information.account_number.substr(-4)}</span>
+                    {artist.country && artist.country.toLowerCase() === 'united states' &&
+                      <>
+                        <span><small className="medium-text">Payee: </small>{artist.payment_information.payee_name}</span>
+                        <span><small className="medium-text">Bank: </small>{artist.payment_information.bank_name}</span>
+                        <span><small className="medium-text">Routing: </small>{artist.payment_information.routing}</span>
+                        <span><small className="medium-text">Account#: </small>xxxxxx{artist.payment_information.account_number.substr(-4)}</span>
+                      </>
+                    }
                     {artist.country && artist.country.toLowerCase() !== 'united states' &&
                       <span><small className="medium-text">Paypal Email: </small><a href={"mailto:"+artist.payment_information.paypal_email}>{artist.payment_information.paypal_email}</a></span>
                     }

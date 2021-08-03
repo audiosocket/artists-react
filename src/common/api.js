@@ -18,6 +18,7 @@ export const ARTISTS_COLLABORATORS = "api/v1/artists_collaborators";
 export const LIST_ARTISTS = "api/v1/artists";
 export const NOTES = "api/v1/notes";
 export const CREATE_TAX_FORM = "api/v1/tax_forms/create_tax_form";
+export const LIST_GENRES = "api/v1/genres"
 
 export const COLLABORATOR_NOTES = "api/v1/collaborator/notes";
 export const COLLABORATOR_ARTIST_PROFILE_SHOW = "api/v1/collaborator/artists/show_profile";
