@@ -191,9 +191,9 @@ function Profile() {
               </div>
               <div className="parallel-info">
                 <label>Genres</label>
-                <div className="info-ans">
-                  {artist.genres
-                    ? artist.genres
+                <div className="info-ans genres">
+                  {artist.genres.length > 0
+                    ? artist.genres.map((genre) => { return <span className="genre">{genre.name}</span>})
                     : '-'
                   }
                 </div>
@@ -229,10 +229,19 @@ function Profile() {
                     return (
                       link
                         ?
-                        <p key={key}><a href={link} target="_blank">{link}</a></p>
+                        <p key={key}><a rel="noreferrer" href={link} target="_blank">{link}</a></p>
                         : ''
                     )
                   })}
+                </div>
+              </div>
+              <div className="parallel-info">
+                <label>Website link</label>
+                <div className="info-ans">
+                  {artist.website_link
+                    ? <p><a rel="noreferrer" href={artist.website_link} target="_blank">{artist.website_link}</a></p>
+                    : '-'
+                  }
                 </div>
               </div>
             </div>

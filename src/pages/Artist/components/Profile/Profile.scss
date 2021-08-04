@@ -95,6 +95,16 @@ section {
               cursor: pointer;
             }
           }
+          &.genres {
+            .genre {
+              background-color: #eee;
+              border-radius: 2rem;
+              padding: .3rem .7rem;
+              font-size: 80%;
+              margin-bottom: .5rem;
+              margin-right: .3rem;
+            }
+          }
         }
         &.social {
           .info-ans {

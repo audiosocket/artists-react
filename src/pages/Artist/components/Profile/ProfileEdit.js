@@ -42,7 +42,6 @@ function ProfileEdit() {
 
   useEffect(() => {
     prepareCountriesList();
-    fetchGenres();
     if(artistState.artist) {
       setIsLoading(false);
       if(Object.keys(artistState.artist).length <= 1) {
@@ -52,6 +51,7 @@ function ProfileEdit() {
       }
       setArtist(artistState.artist);
       setSelectedCountry(artistState.artist.country || null);
+      fetchGenres();
     } else
       setIsLoading(true);
   }, [artistState.artist])
@@ -107,7 +107,8 @@ function ProfileEdit() {
           data.append('additional_images[]', image[i]);
       }
       if(selectedGenres.length > 0) {
-        data.append('genres', selectedGenres)
+        for(let i = 0; i < selectedGenres.length; i++)
+          data.append('genre_ids[]', selectedGenres[i].value);
       }
       data.delete('name');
       const userRole = artistState.userRole || JSON.parse(localStorage.getItem("userRole") ?? "");
@@ -247,15 +248,18 @@ function ProfileEdit() {
       setGenres([]);
     } else {
       let tmp = [];
+      let selectedTmp = [];
       for (let i = 0; i < resultSet.length; i++) {
         tmp.push({label: resultSet[i].name, value: resultSet[i].id});
+        selectedTmp[resultSet[i].id] = {label: resultSet[i].name, value: resultSet[i].id};
       }
       setGenres(tmp);
+      setSelectedGenres(artistState.artist.genres.map((genre) => {return selectedTmp[genre.id]}))
     }
   }
 
   const handleGenreSelection = (target) => {
-    setSelectedGenres(target.map((item) => item.value));
+    setSelectedGenres(target);
   }
 
   return (
@@ -449,6 +453,7 @@ function ProfileEdit() {
                           classNamePrefix={"genre-select-header"}
                           options={genres}
                           onChange={handleGenreSelection}
+                          value={selectedGenres}
                           noOptionsMessage={() => {return "No genre found"}}
                           theme={theme => ({
                             ...theme,
@@ -518,12 +523,18 @@ function ProfileEdit() {
                         placeholder="Social link 3"
                         className="mb-1"
                       />
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col xl={2} md={4}>
+                      <Form.Label>Website link</Form.Label>
+                    </Col>
+                    <Col xl={4} md={8}>
                       <Form.Control
-                        name="social[]"
-                        defaultValue={artist.social ? artist.social[3] || "" : ""}
+                        name="website_link"
+                        defaultValue={artist.website_link ? artist.website_link || "" : ""}
                         type="text"
                         placeholder="Website link"
-                        className="mb-1"
                       />
                     </Col>
                   </Row>
