@@ -138,6 +138,11 @@ function Album({id = null}) {
         data.set("public_domain", false);
 
       if(isSubmitting) {
+        if(!collaborator) {
+          Notiflix.Report.Failure( 'Request failed', `Track without writer/collaborator can't be submitted for classification.`, 'Ok' );
+          setIsSubmitting(false);
+          return false;
+        }
         const tmpCollaboratorId = collaborator ?? (selectedTrack ? (selectedTrack.collaborator ? selectedTrack.collaborator.id : null) : null);
         const tmp = collaboratorsDropdown.filter(item => item.value === tmpCollaboratorId);
         if(tmp.length > 0) {
@@ -387,6 +392,7 @@ function Album({id = null}) {
             <div className="track-wrapper">
               {album && album.tracks.length !== 0 &&
                 <div className="trackrow head-row">
+                  <div className="track-title">Track</div>
                   <div className="track-title">Title</div>
                   <div className="track-writter">Writers</div>
                   <div className="track-publisher">Publisher</div>

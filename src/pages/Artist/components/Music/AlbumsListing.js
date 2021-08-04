@@ -314,6 +314,7 @@ function AlbumsListing() {
                   <Col xs={12}>
                     <div className="form-group">
                       <Form.File
+                        required
                         accept=".png, .jpg, .svg"
                         onChange={handleUploadArtwork}
                         name="artwork"
