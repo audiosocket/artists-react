@@ -136,7 +136,7 @@ function AlbumArtwrok({id = null}) {
           <div className="section">
             <Row>
               <Col xl={2} md={4}>
-                <Form.Label className="mb-2">Artwork</Form.Label>
+                <Form.Label className="mb-2">Artwork*</Form.Label>
               </Col>
               <Col xl={4} md={8}>
                 <Form.File

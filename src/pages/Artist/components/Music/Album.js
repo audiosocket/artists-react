@@ -292,7 +292,7 @@ function Album({id = null}) {
   }
 
   const handleChangeMusicUpload = (file) => {
-    var reg = /(.*?)\.(mp3|wav|aiff|aif)$/;
+    var reg = /(.*?)\.(wav|aiff|aif)$/;
     if(!file.toLowerCase().match(reg)) {
       setInvalidFile(true)
       return false;
@@ -485,17 +485,18 @@ function Album({id = null}) {
                   <Col xs={12}>
                     <div className="form-group">
                       <Form.File
-                        accept=".mp3, .wav, .aiff"
+                        accept=".wav, .aiff"
                         name="file"
                         type="file"
                         required={!selectedTrack}
                         className={inValidFile && "invalid"}
-                        label={file ? file.name : selectedTrack ? selectedTrack.file.split("/")[selectedTrack.file.split("/").length-1] : "Select file (MP3, WAV or AIFF)*"}
+                        label={file ? file.name : selectedTrack ? selectedTrack.file.split("/")[selectedTrack.file.split("/").length-1] : "Select file (WAV or AIFF)*"}
                         data-browse="Select music"
                         onChange={(e) => { if(e.target.files[0]) {setFile(e.target.files[0]); handleChangeMusicUpload(e.target.value)}}}
                         custom
                       />
-                      {inValidFile && <small className="error">Valid MP3, WAV or AIFF file is required!</small> }
+                      <small>Please submit music files (WAV or AIFF) at 16bit or 24bit, at 48K.</small>
+                      {inValidFile && <small className="error">Valid WAV or AIFF file is required!</small> }
                     </div>
                   </Col>
                 </Row>

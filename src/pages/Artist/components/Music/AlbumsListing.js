@@ -205,9 +205,10 @@ function AlbumsListing() {
           <div className="bg-content yellow bgSecondVersion mt-4">
             <h4 className="mb-3"><strong>Create new albums and upload tracks to your portal</strong></h4>
             <p>Please choose your album titles wisely, as they will now appear on the front end. Please do not include dates or other extensions in album titles.</p>
-            <p>You and your collaborators must own <strong><i>100% of the master and publishing rights</i></strong> to the music you're submitting. No covers or samples please.</p>
+            <p>You and your collaborators must own 100% of the master and publishing rights to the music you're submitting. <strong className="text-danger">No covers or samples please</strong>.</p>
             <p>When uploading tracks, please review your track names. Tracks should be edited to include what you would like them displayed as Ex: <strong><i>"Track Name master WAV"</i></strong> should be edited to <strong><i>"Track Name"</i></strong>.</p>
-            <p className="mb-0">Our clients love Instrumental and alternative versions, stems, SFX & SF. If you have any of these, please upload them as well. Stems can be uploaded within the same album as the main versions live. If you're also uploading stems, please make sure to describe it under the track name. Ex: <strong><i>"Track Name (Strings Only)"</i></strong></p>
+            <p>Our clients love Instrumental and alternative versions, stems, SFX & SF. If you have any of these, please upload them as well. Stems can be uploaded within the same album as the main versions live. If you're also uploading stems, please make sure to describe it under the track name. Ex: <strong><i>"Track Name (STEM-Strings Only)"</i></strong></p>
+            <p className="mb-0">If tracks are explicit, please mark as such in the title. Please include a clean version.</p>
           </div>
         </section>
         <section className="pt-4">
@@ -316,13 +317,12 @@ function AlbumsListing() {
                         accept=".png, .jpg, .svg"
                         onChange={handleUploadArtwork}
                         name="artwork"
-                        label={artwork ? artwork.name : selectedAlbum && selectedAlbum.artwork ? selectedAlbum.artwork.split('/')[selectedAlbum.artwork.split("/").length-1] : "No file chosen"}
+                        label={artwork ? artwork.name : selectedAlbum && selectedAlbum.artwork ? selectedAlbum.artwork.split('/')[selectedAlbum.artwork.split("/").length-1] : "No file chosen*"}
                         lang="en"
                         data-browse="Select artwork"
                         custom
                       />
-                      <small className="text-muted">Artwork is optional</small>
-                      <small className="info-text"><i><br/>*Minimum required size for artwork is 353px x 353px</i></small>
+                      <small className="info-text"><i>*Minimum required size for artwork is 353px x 353px</i></small>
                     </div>
                   </Col>
                 </Row>
