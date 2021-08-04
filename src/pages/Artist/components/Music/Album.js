@@ -392,8 +392,8 @@ function Album({id = null}) {
             <div className="track-wrapper">
               {album && album.tracks.length !== 0 &&
                 <div className="trackrow head-row">
-                  <div className="track-title">Track</div>
                   <div className="track-title">Title</div>
+                  <div className="track-player">Track</div>
                   <div className="track-writter">Writers</div>
                   <div className="track-publisher">Publisher</div>
                   <div className="track-status">Status</div>
@@ -410,6 +410,9 @@ function Album({id = null}) {
                           <p>{track.title}</p>
                           <em>Uploaded {track.created_at || ""}</em>
                         </div>
+                      </div>
+                      <div className="track-player">
+                        <audio src={track.file} controls ></audio>
                       </div>
                       <div className="track-writter">
                         {track.collaborator
