@@ -1,4 +1,4 @@
-import React, {useContext} from "react";
+import React, {useContext, useEffect, useRef} from "react";
 import "./faq.scss";
 import {ReactComponent as ArrowUp } from '../../../../images/arrow-up.svg';
 import {ReactComponent as ArrowDown } from '../../../../images/arrow-down.svg';
@@ -36,8 +36,15 @@ function ContextAwareToggle({ children, eventKey, callback }) {
 }
 
 function Faq () {
+	const faqRef = useRef(null);
+	const executeScroll = () => faqRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
+
+	useEffect(() => {
+		executeScroll();
+	})
+
 	return(
-		<div className="faq-block">
+		<div ref={faqRef} className="faq-block">
 			<div className="asBreadcrumbs">
 				<Breadcrumb>
 					<li className="breadcrumb-item">
