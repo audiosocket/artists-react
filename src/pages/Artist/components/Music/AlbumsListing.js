@@ -234,7 +234,7 @@ function AlbumsListing() {
                           {album.tracks.length > 0 && album.tracks.filter(track => (track.status === "unclassified" || track.status === "accepted")).length > 0
                             ?
                               <>
-                                <OverlayTrigger overlay={<Tooltip>Album whose track is under review or accepted can't be deleted.</Tooltip>}><img className="disable-delete" src={DeleteDisable} alt="Disable Delete"/></OverlayTrigger>
+                                <OverlayTrigger overlay={<Tooltip>Album whose track is under review or accepted can't be deleted</Tooltip>}><img className="disable-delete" src={DeleteDisable} alt="Disable Delete"/></OverlayTrigger>
                                 <Notes
                                   role={artistState.userRole || JSON.parse(localStorage.getItem("userRole") ?? "")}
                                   artist_id={artistState.selectedArtist ? artistState.selectedArtist.id : null}

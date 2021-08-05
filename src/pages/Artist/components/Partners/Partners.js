@@ -14,16 +14,19 @@ import {
   BASE_URL, COLLABORATOR_ARTIST_COLLABORATORS, COLLABORATOR_INVITE_COLLABORATORS, COLLABORATOR_PUBLISHERS,
   INVITE_COLLABORATORS,
   PRO_LIST,
-  PUBLISHERS
+  PUBLISHERS, RESEND_COLLABORATOR_INVITE_COLLABORATORS, RESEND_INVITE_COLLABORATORS
 } from "../../../../common/api";
 import {ArtistContext} from "../../../../Store/artistContext";
 import fetchCollaborators from "../../../../common/utlis/fetchCollaborators";
 import fetchPublishers from "../../../../common/utlis/fetchPublishers";
 import Edit from "../../../../images/pencil.svg";
 import Delete from "../../../../images/delete.svg";
+import Resend from "../../../../images/invitation.svg";
 import Notiflix from "notiflix-react";
 import ArrowRight from "../../../../images/right-arrow.svg";
 import fetchArtistsList from "../../../../common/utlis/fetchArtistsList";
+import Tooltip from "react-bootstrap/Tooltip";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 
 function Partners() {
   const {artistState, artistActions} = React.useContext(ArtistContext);
@@ -319,6 +322,38 @@ function Partners() {
     }
   }
 
+  const handleFollowUpEmail = async (e, collaborator) => {
+    Notiflix.Confirm.Show(
+      'Please confirm',
+      `Are you sure to send a follow up to "${collaborator.first_name} ${collaborator.last_name ?? ''}"?`,
+      'Yes',
+      'No',
+      async function(){
+        let artist_id = null;
+        let url = `${BASE_URL}${RESEND_INVITE_COLLABORATORS}?artists_collaborator_id=${collaborator.id}`;
+        const userRole = artistState.userRole || JSON.parse(localStorage.getItem("userRole") ?? "");
+        if(userRole === "collaborator") {
+          artist_id =  artistState.selectedArtist && artistState.selectedArtist.id;
+          url = `${BASE_URL}${RESEND_COLLABORATOR_INVITE_COLLABORATORS}?artist_id=${artist_id}&artists_collaborator_id=${collaborator.id}`;
+        }
+        const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
+        const response = await fetch(url,
+          {
+            headers: {
+              "authorization": ACCESS_TOKEN,
+              "auth-token": userAuthToken
+            },
+            method: "PATCH"
+          });
+        if (!response.ok) {
+          Notiflix.Notify.Failure("Something went wrong, try later!");
+        } else {
+          Notiflix.Notify.Success(`Follow up email sent successfully!`);
+        }
+      }
+    );
+  }
+
   return (
     <div className="partnerWrapper">
       <div className="next-btn">
@@ -363,6 +398,11 @@ function Partners() {
                           <a>{collaborator.first_name} {collaborator.last_name ?? ''} <small><i>Permissions: {collaborator.access}</i></small><small><i>{collaborator.collaborator_profile && collaborator.collaborator_profile.pro ? ", PRO: "+collaborator.collaborator_profile.pro : ""}</i></small><small><i>{collaborator.collaborator_profile && collaborator.collaborator_profile.ipi ? ", IPI: "+collaborator.collaborator_profile.ipi : ""}</i></small> - <strong className={"status "+collaborator.status}>{collaborator.status ?? ''}</strong></a>
                           {(!artistState.selectedArtist || artistState.selectedArtist.access === 'write') &&
                             <div className="partner-actions">
+                              {collaborator.status !== 'accepted' &&
+                                <OverlayTrigger overlay={<Tooltip>Send a follow up to collaborator</Tooltip>}>
+                                  <img className="resend" onClick={(e) => handleFollowUpEmail(e, collaborator)} src={Resend} alt="resend-icon"/>
+                                </OverlayTrigger>
+                              }
                               <img onClick={(e) => handleShowCollaboratorModal(e, collaborator)} src={Edit} alt="edit-icon"/>
                               <img onClick={(e) => handleDeleteCollaborator(e, collaborator)} src={Delete} alt="delete-icon"/>
                             </div>

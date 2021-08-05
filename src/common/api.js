@@ -19,6 +19,7 @@ export const LIST_ARTISTS = "api/v1/artists";
 export const NOTES = "api/v1/notes";
 export const CREATE_TAX_FORM = "api/v1/tax_forms/create_tax_form";
 export const LIST_GENRES = "api/v1/genres"
+export const RESEND_INVITE_COLLABORATORS = "api/v1/artists/resend_collaborator_invitation";
 
 export const COLLABORATOR_NOTES = "api/v1/collaborator/notes";
 export const COLLABORATOR_ARTIST_PROFILE_SHOW = "api/v1/collaborator/artists/show_profile";
@@ -29,6 +30,7 @@ export const COLLABORATOR_LIST_COLLABORATORS = "api/v1/collaborator/artists/coll
 export const COLLABORATOR_INVITE_COLLABORATORS = "api/v1/collaborator/artists/invite_collaborator";
 export const COLLABORATOR_ARTIST_COLLABORATORS = "api/v1/collaborator/artists_collaborators";
 export const COLLABORATOR_CREATE_TAX_FORM = "api/v1/collaborator/tax_forms/create_tax_form";
+export const RESEND_COLLABORATOR_INVITE_COLLABORATORS = "api/v1/collaborator/artists/resend_collaborator_invitation";
 
 export const PRO_LIST = [
   {label: "Select PRO", value: null},
