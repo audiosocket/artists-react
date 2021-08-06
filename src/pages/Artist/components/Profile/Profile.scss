@@ -96,6 +96,9 @@ section {
             }
           }
           &.genres {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
             .genre {
               background-color: #eee;
               border-radius: 2rem;
