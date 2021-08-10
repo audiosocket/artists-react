@@ -10,7 +10,7 @@ import {
   ACCESS_TOKEN,
   ARTIST_PROFILE_UPDATE,
   BASE_URL,
-  COLLABORATOR_ARTIST_PROFILE_UPDATE, LIST_GENRES
+  COLLABORATOR_ARTIST_PROFILE_UPDATE, LIST_GENRES, PRO_LIST
 } from "../../../../common/api";
 import DropzoneComponent from "../../../../common/Dropzone/DropzoneComponent";
 import Breadcrumb from "react-bootstrap/Breadcrumb";
@@ -39,6 +39,10 @@ function ProfileEdit() {
   const [bannerImageError, setBannerImageError] = useState(false);
   const [genres, setGenres] = useState([]);
   const [selectedGenres, setSelectedGenres] = useState([]);
+  const [pro, setPro] = useState(null);
+  const [proError, setProError] = useState(false);
+  const [otherError, setOtherError] = useState(false);
+  const [ipiFlag, setIpiFlag] = useState(false);
 
   useEffect(() => {
     prepareCountriesList();
@@ -50,6 +54,7 @@ function ProfileEdit() {
         } );
       }
       setArtist(artistState.artist);
+      setPro(artistState.artist.pro);
       setSelectedCountry(artistState.artist.country || null);
       fetchGenres();
     } else
@@ -69,6 +74,7 @@ function ProfileEdit() {
       setEmailError(false);
       setProfileImageError(false);
       setBannerImageError(false);
+      setOtherError(false);
       if(!selectedCountry) {
         Notiflix.Notify.Failure('Country is required!');
         setCountryError(true);
@@ -82,6 +88,27 @@ function ProfileEdit() {
         setEmailError(true);
         errors = true;
       }
+      if(pro) {
+        if(pro === 'other') {
+          if(!data.get('pro')) {
+            setOtherError(true);
+            Notiflix.Notify.Failure('PRO is required!');
+            errors = true;
+          }
+        } else {
+          data.append('pro', pro);
+        }
+        if(pro.toLowerCase() !== 'ns' && !handleIPICharacterLimit(data.get('ipi'))) {
+          Notiflix.Notify.Failure('A valid CAE/IPI # is required!');
+          errors = true;
+        }
+      }
+      else {
+        setProError(true);
+        Notiflix.Notify.Failure('PRO is required!');
+        errors = true;
+      }
+
       if(!profileImage && !artist.profile_image ) {
         Notiflix.Notify.Failure('Profile image is required!');
         setProfileImageError(true);
@@ -264,6 +291,17 @@ function ProfileEdit() {
     setSelectedGenres(target);
   }
 
+  const handleIPICharacterLimit = (value) => {
+    setIpiFlag(false);
+    if(value.length === 9) {
+      setIpiFlag(false);
+      return true;
+    } else {
+      setIpiFlag(true);
+      return false;
+    }
+  }
+
   return (
     <div className="artist-wrapper">
       <div className="asBreadcrumbs">
@@ -362,6 +400,84 @@ function ProfileEdit() {
                       }
                     </Col>
                   </Row>
+                  <Row>
+                    <Col xl={2} md={4}>
+                      <Form.Label>PRO*</Form.Label>
+                    </Col>
+                    <Col xl={4} md={8}>
+                      <Select
+                        placeholder="Select PRO"
+                        className="pro-select-container-header"
+                        classNamePrefix={!proError ? "pro-select-header react-select-popup" : "pro-select-header react-select-popup invalid"}
+                        options={PRO_LIST}
+                        defaultValue={artist.pro ? PRO_LIST.filter(item => item.value === artist.pro).length === 0 ? {label: "Other", value: 'other'} : PRO_LIST.filter(item => item.value === artist.pro) : {label: "Select PRO", value: null}}
+                        onChange={(target) => {setProError(false);setPro(target.value)}}
+                        theme={theme => ({
+                          ...theme,
+                          colors: {
+                            ...theme.colors,
+                            primary: '#c0d72d',
+                          },
+                        })}
+                      />
+                      {proError &&
+                      <small className="error">
+                        PRO is required!
+                      </small>
+                      }
+                      <small><strong>Note:</strong> if you're not registered with a PRO, please select NS from the dropdown (no society)</small>
+                    </Col>
+                  </Row>
+                  {pro && (pro === 'other' || PRO_LIST.filter(item => item.value === pro).length === 0) &&
+                    <Row>
+                      <Col xl={2} md={4}>
+                        <Form.Label></Form.Label>
+                      </Col>
+                      <Col xl={4} md={8}>
+                        <Form.Control
+                          required
+                          name="pro"
+                          defaultValue={artist.pro || ""}
+                          type="text"
+                          className={otherError ? "invalid" : ""}
+                          placeholder="Enter your PRO name"
+                        />
+                        {otherError &&
+                        <small className="error">
+                          PRO name is required!
+                        </small>
+                        }
+                      </Col>
+                    </Row>
+                  }
+                  {pro && pro.toLowerCase() !== 'ns' &&
+                    <Row>
+                      <Col xl={2} md={4}>
+                        <Form.Label>CAE/IPI #*</Form.Label>
+                      </Col>
+                      <Col xl={4} md={8}>
+                        <Form.Control
+                          required
+                          name="ipi"
+                          type="number"
+                          defaultValue={artist.ipi || ''}
+                          placeholder="CAE/IPI #*"
+                          onChange={(e) => handleIPICharacterLimit(e.target.value)}
+                          className={ipiFlag ? "invalid" : ""}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          CAE/IPI # is required!
+                        </Form.Control.Feedback>
+                        {ipiFlag && <div className="custom-invalid-feedback">CAE/IPI # must be 9 digits</div>}
+                        <div>
+                          <small className="text-muted">
+                            <strong>Note</strong>: An CAE/IPI # is not the same as a member number, its the 9 digit number
+                            that appears on the statements from your PRO
+                          </small>
+                        </div>
+                      </Col>
+                    </Row>
+                  }
                   <Row>
                     <Col xl={2} md={4}>
                       <Form.Label>Profile Image*</Form.Label>

@@ -121,6 +121,16 @@ function Profile() {
                 <div className="info-ans">{artist.country || '-'}</div>
               </div>
               <div className="parallel-info">
+                <label>PRO</label>
+                <div className="info-ans">{artist.pro || '-'}</div>
+              </div>
+              {artist.pro && artist.pro.toLowerCase() !== 'ns' &&
+                <div className="parallel-info">
+                  <label>CAE/IPI #</label>
+                  <div className="info-ans">{artist.ipi || '-'}</div>
+                </div>
+              }
+              <div className="parallel-info">
                 <label>
                   Profile image
                   {artist.profile_image &&
