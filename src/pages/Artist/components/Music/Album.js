@@ -22,6 +22,7 @@ import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Tooltip from 'react-bootstrap/Tooltip'
 import Notiflix from "notiflix-react";
 import Notes from "../../../../common/Notes/Notes";
+import BulkUpload from "./BulkUpload";
 
 function Album({id = null}) {
   const {artistState, artistActions} = React.useContext(ArtistContext);
@@ -178,8 +179,13 @@ function Album({id = null}) {
           method: selectedTrack ? "PATCH" : "POST",
           body: data
         });
+      const results = await response.json();
       if (!response.ok) {
-        Notiflix.Notify.Failure('Something went wrong, try later!');
+        if(results.message) {
+          Notiflix.Notify.Failure(results.message + ' Please make sure to upload music files (WAV or AIFF) at 16bit or 24bit, at 48K.');
+        } else {
+          Notiflix.Notify.Failure('Something went wrong, try later!');
+        }
       } else {
         const albums = await fetchAlbums(userRole === "collaborator" && artist_id);
         artistActions.albumsStateChanged(albums);
@@ -237,7 +243,7 @@ function Album({id = null}) {
   const handleDeleteMusic = async (track) => {
     Notiflix.Confirm.Show(
       'Please confirm',
-      `Are you sure to delete track "${track.title}"?`,
+      `Are you sure to delete track${track.title ? " "+track.title : ""}?`,
       'Yes',
       'No',
       async function(){
@@ -264,7 +270,7 @@ function Album({id = null}) {
           artistActions.albumsStateChanged(albums);
           const filteredAlbum = albums.filter(album => parseInt(album.id) === parseInt(id));
           setAlbum(filteredAlbum[0] ?? null)
-          Notiflix.Report.Success( 'Request fulfilled', `Track "${track.title}" deleted successfully!`, 'Ok' );
+          Notiflix.Report.Success( 'Request fulfilled', `Track${track.title ? " "+track.title : ""} deleted successfully!`, 'Ok' );
         }
       }
     );
@@ -318,6 +324,7 @@ function Album({id = null}) {
   const handleClassification = () => {
     setIsSubmitting(true);
   }
+
   return (
     <div className="albumsWrapper">
       <div className="asBreadcrumbs">
@@ -385,7 +392,10 @@ function Album({id = null}) {
           <div className="section-head">
             <h2>Tracks</h2>
             {(!artistState.selectedArtist || artistState.selectedArtist.access === 'write') &&
-              <a onClick={handleAddMusicModal} className="btn primary-btn mr-2">Add music</a>
+              <div>
+                <BulkUpload album={album} />
+                <a onClick={handleAddMusicModal} className="btn primary-btn mr-2">Add music</a>
+              </div>
             }
           </div>
           <div className="section-body">
