@@ -115,7 +115,7 @@ const DropzoneComponent = ({onUploadFiles = null}) => {
              onClick={fileInputClicked}
         >
           <div className="drop-message">
-            <div className="upload-icon"></div>
+            <div className="upload-icon-music"></div>
             Drag & Drop or click to upload track(s)
           </div>
           <input
