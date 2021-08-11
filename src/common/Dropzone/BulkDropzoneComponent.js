@@ -133,7 +133,7 @@ const DropzoneComponent = ({onUploadFiles = null}) => {
             validFiles.map((data, i) =>
               <div className="file-status-bar" key={i}>
                 <div>
-                  <div className="file-type-logo"></div>
+                  <div className="music-file-type-logo"></div>
                   <div className="file-type">{fileType(data.name)}</div>
                   <span className={`file-name ${data.invalid ? 'file-error' : ''}`}>{data.name}</span>
                   <span className="file-size">({fileSize(data.size)})</span> {data.invalid && <span className='file-error-message'>({errorMessage})</span>}
