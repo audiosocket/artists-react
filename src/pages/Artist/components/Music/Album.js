@@ -422,7 +422,10 @@ function Album({id = null}) {
                         </div>
                       </div>
                       <div className="track-player">
-                        <audio src={track.file} controls ></audio>
+                        {track.file.toLowerCase().indexOf(".aiff") !== -1
+                          ? <div className="track"><a href={track.file} target="_blank">Download & Play</a><em>(AIFF track file not supported by browser)</em></div>
+                          : <audio src={track.file} controls></audio>
+                        }
                       </div>
                       <div className="track-writter">
                         {track.collaborator

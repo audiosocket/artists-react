@@ -326,6 +326,16 @@
     }
     .track-player {
       @include flex(1 1 25%);
+      .track {
+        padding: 0 10px 0;
+        display: grid;
+        a {
+          &:hover {
+            color: $clr-black;
+            font-weight: 600;
+          }
+        }
+      }
     }
     .track-writter{
       @include flex(1 1 15%);
