@@ -43,9 +43,9 @@ function Album({id = null}) {
   const publisherRef = useRef(false);
   const [collaboratorsDropdown, setCollaboratorsDropdown] = useState([]);
   const [publishersDropdown, setPublishersDropdown] = useState([]);
-  const [collaborator, setCollaborator] = useState(null);
-  const [publisher, setPublisher] = useState(null);
   const [isDeletable, setIsDeletable] = useState(true);
+  const [selectedCollaborators, setSelectedCollaborators] = useState(null);
+  const [selectedPublishers, setSelectedPublishers] = useState(null);
 
   useEffect(() => {
     if(artistState.albums) {
@@ -89,17 +89,15 @@ function Album({id = null}) {
     }
     if(collaborators) {
       let tmp = [];
-      tmp.push({label: "Select writer/collaborator", value: null})
       for (let i = 0; i < collaborators.length; i++) {
         if(collaborators[i].first_name) {
-          tmp.push({label: collaborators[i].first_name +(collaborators[i].last_name ? ' '+collaborators[i].last_name : '') + ' - ' + collaborators[i].status ?? '', value: collaborators[i].id, status: collaborators[i].status});
+          tmp.push({label: collaborators[i].first_name +(collaborators[i].last_name ? ' '+collaborators[i].last_name : '') + ' - ' + collaborators[i].status ?? '', value: collaborators[i].id, status: collaborators[i].status, isDisabled: collaborators[i].status === 'accepted' ? false : true});
         }
       }
       setCollaboratorsDropdown(tmp);
     }
     if(publishers) {
       let tmp = [];
-      tmp.push({label: "Select publisher", value: null})
       for (let i = 0; i < publishers.length; i++) {
         if(publishers[i].name)
           tmp.push({label: publishers[i].name, value: publishers[i].id});
@@ -126,8 +124,23 @@ function Album({id = null}) {
       } else {
         data.delete('file');
       }
-      data.append('artists_collaborator_id', collaborator || '')
-      data.append('publisher_id', publisher || '')
+      if(selectedCollaborators?.length > 0) {
+        for(let i = 0; i < selectedCollaborators.length; i++)
+          data.append('artists_collaborator_ids[]', selectedCollaborators[i].value);
+      } else {
+        Notiflix.Report.Failure( 'Request failed', `Track without writer/collaborator can't be ${isSubmitting ? 'submitted for classification' : 'added'}.`, 'Ok' );
+        setIsSubmitting(false);
+        return false;
+      }
+      if(selectedPublishers.length > 0) {
+        for(let i = 0; i < selectedPublishers.length; i++)
+          data.append('publisher_ids[]', selectedPublishers[i].value);
+      } else {
+        data.append('publisher_ids[]', []);
+      }
+
+      /*data.append('artists_collaborator_id', collaborator || '')
+      data.append('publisher_id', publisher || '')*/
       if(data.get("explicit"))
         data.set("explicit", true);
       else
@@ -139,24 +152,7 @@ function Album({id = null}) {
         data.set("public_domain", false);
 
       if(isSubmitting) {
-        if(!collaborator) {
-          Notiflix.Report.Failure( 'Request failed', `Track without writer/collaborator can't be submitted for classification.`, 'Ok' );
-          setIsSubmitting(false);
-          return false;
-        }
-        const tmpCollaboratorId = collaborator ?? (selectedTrack ? (selectedTrack.collaborator ? selectedTrack.collaborator.id : null) : null);
-        const tmp = collaboratorsDropdown.filter(item => item.value === tmpCollaboratorId);
-        if(tmp.length > 0) {
-          if(tmp[0].status !== 'accepted' && tmp[0].value !== null) {
-            Notiflix.Report.Failure( 'Request failed', `Track whose writer/collaborator haven't accepted invite can't be submitted for classification.`, 'Ok' );
-            setIsSubmitting(false);
-            return false;
-          } else {
-            data.append('status', 'unclassified');
-          }
-        } else {
-          data.append('status', 'unclassified');
-        }
+        data.append('status', 'unclassified');
       } else {
         setIsLoading(true);
       }
@@ -282,8 +278,8 @@ function Album({id = null}) {
 
   const handleEditMusicModal = (track) => {
     setSelectedTrack(track);
-    setCollaborator(track.collaborator ? track.collaborator.id : null);
-    setPublisher(track.publisher ? track.publisher.id : null);
+    setSelectedCollaborators(track.artists_collaborators ? track.artists_collaborators.map(collaborator => {return {label: collaborator.first_name +(collaborator.last_name ? ' '+collaborator.last_name : '') + ' - ' + collaborator.status ?? '', value: collaborator.id}}) : null);
+    setSelectedPublishers(track.publishers ? track.publishers.map(publisher => {return {label: publisher.name, value: publisher.id}}) : null);
     setIsPublicDomain(track.public_domain === true || track.public_domain === "true" ? true : false);
     setIsExplicit(track.explicit === true || track.explicit === "true" ? true : false);
     setShowAddMusicModal(true);
@@ -296,8 +292,8 @@ function Album({id = null}) {
     setValidated(false);
     setFile(null);
     setInvalidFile(false);
-    setCollaborator(null);
-    setPublisher(null);
+    setSelectedCollaborators(null);
+    setSelectedPublishers(null);
     setIsSubmitting(false);
     setIsExplicit(false);
   }
@@ -428,12 +424,17 @@ function Album({id = null}) {
                         }
                       </div>
                       <div className="track-writter">
-                        {track.collaborator
-                          ? <>{track.collaborator.first_name} {track.collaborator.last_name} <small className={track.collaborator.status}><i>({track.collaborator.status})</i></small></>
+                        {track.artists_collaborators
+                          ? <>{track.artists_collaborators.map((collaborator, key) => {return (key >=1 ? ', ' : '')+ collaborator.first_name + (collaborator.last_name ? ' '+collaborator.last_name : '')})}</>
                           : "-"
                         }
                       </div>
-                      <div className="track-publisher">{track.publisher ? track.publisher.name : "-"}</div>
+                      <div className="track-publisher">
+                        {track.publishers
+                          ? track.publishers.map((publisher, key) => {return (key >=1 ? ', ' : '')+ publisher.name})
+                          : "-"
+                        }
+                      </div>
                       <div className="track-status">{track.status ? track.status.toLowerCase() === "unclassified" ? "Submitted for classification" : track.status : ""}</div>
                       {(!artistState.selectedArtist || artistState.selectedArtist.access === 'write')
                         ?
@@ -539,13 +540,14 @@ function Album({id = null}) {
                   <Col xs={12}>
                     <div className="form-group">
                       <Select
+                        isMulti
                         ref={collaboratorRef}
                         placeholder="Select writer/collaborator"
                         className="collaborator-select-container-header"
                         classNamePrefix="collaborator-select-header react-select-popup"
                         options={collaboratorsDropdown}
-                        defaultValue={collaborator ? collaboratorsDropdown.filter(item => parseInt(item.value) === parseInt(collaborator)) : {label: "Select writer/collaborator", value: null}}
-                        onChange={(target) => setCollaborator(target.value)}
+                        defaultValue={selectedCollaborators}
+                        onChange={(target) => setSelectedCollaborators(target)}
                         maxMenuHeight={120}
                         theme={theme => ({
                           ...theme,
@@ -555,6 +557,7 @@ function Album({id = null}) {
                           },
                         })}
                       />
+                      <small class="text-muted">Writers/Collaborators who accepted their invites can only be selected.</small>
                     </div>
                   </Col>
                 </Row>
@@ -562,13 +565,14 @@ function Album({id = null}) {
                   <Col xs={12}>
                     <div className="form-group">
                       <Select
+                        isMulti
                         ref={publisherRef}
                         placeholder="Select publisher"
                         className="publisher-select-container-header"
                         classNamePrefix="publisher-select-header react-select-popup"
                         options={publishersDropdown}
-                        defaultValue={publisher ? publishersDropdown.filter(item => parseInt(item.value) === parseInt(publisher)) : {label: "Select publisher", value: null}}
-                        onChange={(target) => setPublisher(target.value)}
+                        defaultValue={selectedPublishers}
+                        onChange={(target) => setSelectedPublishers(target)}
                         maxMenuHeight={120}
                         theme={theme => ({
                           ...theme,
