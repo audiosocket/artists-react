@@ -110,7 +110,11 @@ function Partners() {
         });
       const collaborators = await response.json();
       if(!response.ok) {
-        Notiflix.Notify.Failure('Something went wrong, try later!');
+        if(collaborators.message) {
+          Notiflix.Notify.Failure(collaborators.message);
+        } else {
+          Notiflix.Notify.Failure('Something went wrong, try later!');
+        }
       } else {
         Notiflix.Notify.Success(`Collaborator ${selectedPartner ? 'updated' : 'created'} successfully!`);
         setCollaborators(collaborators.length ? collaborators : []);
@@ -177,7 +181,7 @@ function Partners() {
   const handleShowCollaboratorModal = (e, collaborator = null) => {
     if(collaborator) {
       setSelectedPartner(collaborator);
-      if(collaborator.collaborator_profile.pro && PRO_LIST.filter(item => item.value === collaborator.collaborator_profile.pro).length === 0) {
+      if(collaborator.collaborator_profile?.pro && PRO_LIST.filter(item => item.value === collaborator.collaborator_profile.pro).length === 0) {
         setPro("other");
       } else {
         setPro(collaborator.collaborator_profile ? collaborator.collaborator_profile.pro : null);
@@ -502,7 +506,7 @@ function Partners() {
                         className="pro-select-container-header"
                         classNamePrefix={!proError ? "pro-select-header react-select-popup" : "pro-select-header react-select-popup invalid"}
                         options={PRO_LIST}
-                        defaultValue={selectedPartner ? selectedPartner.collaborator_profile && PRO_LIST.filter(item => item.value === selectedPartner.collaborator_profile.pro).length === 0 ? {label: "Other", value: 'other'} : PRO_LIST.filter(item => item.value === selectedPartner.collaborator_profile.pro) : {label: "Select PRO", value: null}}
+                        defaultValue={selectedPartner ? selectedPartner.collaborator_profile && PRO_LIST.filter(item => item.value === selectedPartner.collaborator_profile?.pro).length === 0 ? {label: "Other", value: 'other'} : PRO_LIST.filter(item => item.value === selectedPartner.collaborator_profile?.pro) : {label: "Select PRO", value: null}}
                         onChange={(target) => {setProError(false);setPro(target.value)}}
                         maxMenuHeight={160}
                         theme={theme => ({
