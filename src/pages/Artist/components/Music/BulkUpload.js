@@ -9,6 +9,8 @@ import {ACCESS_TOKEN, ALBUMS, BASE_URL, COLLABORATOR_ALBUMS} from "../../../../c
 import Notiflix from "notiflix-react";
 import {ArtistContext} from "../../../../Store/artistContext";
 import fetchAlbums from "../../../../common/utlis/fetchAlbums";
+import axios from "axios";
+import {ProgressBar} from "react-bootstrap";
 
 function BulkUpload({album}) {
   const {artistState, artistActions} = React.useContext(ArtistContext);
@@ -16,6 +18,7 @@ function BulkUpload({album}) {
   const formBulkUpload = useRef(null);
   const [showBulkUploadModal, setShowBulkUploadModal] = useState(false);
   const [tracks, setTracks] = useState([]);
+  const [progressNow, setprogressNow] = useState(0);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -39,37 +42,42 @@ function BulkUpload({album}) {
     }
     const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
     const URL = url;
-    const response = await fetch(`${URL}`,
-      {
-        headers: {
-          "authorization": ACCESS_TOKEN,
-          "auth-token": userAuthToken
-        },
-        method: "POST",
-        body: data
-      });
-    const results = await response.json();
-    if (!response.ok) {
-      Notiflix.Notify.Failure('Something went wrong, try later!');
-    } else {
-      const albums = await fetchAlbums(userRole === "collaborator" && artist_id);
-      artistActions.albumsStateChanged(albums);
-      handleClose();
-      if(results.meta.total === results.meta.uploaded) {
-        Notiflix.Report.Success( 'Uploaded', `${results.meta ? results.meta.uploaded : ""} Track(s) uploaded successfully out of ${results.meta.total} track(s) you selected.`, 'Ok' );
-      } else if(!results.meta.uploaded) {
-        Notiflix.Report.Failure( 'Upload Failed', `None of your selected files matches our criteria. Please make sure to upload music files (WAV or AIFF) at 16bit or 24bit, at 48K.`, 'Ok' );
-      } else {
-        var invalidTracks = '';
-        for(let i = 0; i < results.meta.messages.length; i++) {
-          if(i === results.meta.messages.length)
-            invalidTracks += '"'+results.meta.messages[0].file+'"';
-          else
-            invalidTracks += '"'+results.meta.messages[0].file+'", ';
-        }
-        Notiflix.Report.Warning( 'Partially Uploaded', `${results.meta ? results.meta.uploaded : ""} Track(s) uploaded successfully out of ${results.meta.total} track(s) you selected. Track(s) ${invalidTracks} failed to upload.`, 'Ok' );
+    await axios.request({
+      headers: {
+        "authorization": ACCESS_TOKEN,
+        "auth-token": userAuthToken
+      },
+      method: "post",
+      url: URL,
+      data: data,
+      onUploadProgress: (progress) => {
+        let now = (progress.loaded / progress.total) * 100;
+        setprogressNow(now.toFixed(0));
       }
-    }
+    }).then (response => {
+      console.log(progressNow, isLoading);
+      if (!response.status === 200) {
+        Notiflix.Notify.Failure('Something went wrong, try later!');
+      } else {
+        if(response.data.meta.total === response.data.meta.uploaded) {
+          Notiflix.Report.Success( 'Uploaded', `${response.data.meta ? response.data.meta.uploaded : ""} Track(s) uploaded successfully out of ${response.data.meta.total} track(s) you selected.`, 'Ok' );
+        } else if(!response.data.meta.uploaded) {
+          Notiflix.Report.Failure( 'Upload Failed', `None of your selected files matches our criteria. Please make sure to upload music files (WAV or AIFF) at 16bit or 24bit, at 48K.`, 'Ok' );
+        } else {
+          var invalidTracks = '';
+          for(let i = 0; i < response.data.meta.messages.length; i++) {
+            if(i === response.data.meta.messages.length)
+              invalidTracks += '"'+response.data.meta.messages[0].file+'"';
+            else
+              invalidTracks += '"'+response.data.meta.messages[0].file+'", ';
+          }
+          Notiflix.Report.Warning( 'Partially Uploaded', `${response.data.meta ? response.data.meta.uploaded : ""} Track(s) uploaded successfully out of ${response.data.meta.total} track(s) you selected. Track(s) ${invalidTracks} failed to upload.`, 'Ok' );
+        }
+      }
+    })
+    const albums = await fetchAlbums(userRole === "collaborator" && artist_id);
+    artistActions.albumsStateChanged(albums);
+    handleClose();
     setIsLoading(false);
   }
 
@@ -79,6 +87,7 @@ function BulkUpload({album}) {
 
   const handleClose = () => {
     setTracks([]);
+    setprogressNow(0);
     setShowBulkUploadModal(false);
   }
 
@@ -96,6 +105,8 @@ function BulkUpload({album}) {
         aria-labelledby="contained-modal-title-vcenter"
         centered
         className="bulk-upload-modal customArtistModal"
+        backdrop="static"
+        keyboard={false}
       >
         <Form noValidate ref={formBulkUpload} onSubmit={handleSubmit}>
           <Modal.Header closeButton>
@@ -106,11 +117,21 @@ function BulkUpload({album}) {
           <Modal.Body>
             <div className="modal-container music-modal-container">
               <BulkDropzoneComponent onUploadFiles={handleUploads} />
+              {isLoading && progressNow > 0 &&
+                <div className="progress-bar-container">
+                  <ProgressBar striped variant="success" now={progressNow} label={`${progressNow}%`}/>
+                  {isLoading && progressNow >= 100 &&
+                    <div className="response-note">
+                      Completed, fetching results now...<img src={Loader} alt="icon"/>
+                    </div>
+                  }
+                </div>
+              }
             </div>
           </Modal.Body>
           <Modal.Footer>
-            <Button onClick={handleClose} className="btn btn-outline-light">Cancel</Button>
-            <Button type="submit" className="btn primary-btn submit">{isLoading ? <>Uploading...<img src={Loader} alt="icon"/></> : "Upload"}</Button>
+            <Button disabled={isLoading} onClick={handleClose} className="btn btn-outline-light">Cancel</Button>
+            <Button type="submit" className="btn primary-btn submit">{isLoading ? progressNow >= 100 ? "Completed" : <>Uploading...<img src={Loader} alt="icon"/></> : "Upload"}</Button>
           </Modal.Footer>
         </Form>
       </Modal>
