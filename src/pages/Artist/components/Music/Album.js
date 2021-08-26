@@ -561,28 +561,22 @@ function Album({id = null}) {
                     </div>
                   </Col>
                 </Row>
-                <Row className="flexibleRow">
-                  <Col>
-                    <Form.Group>
-                      <Form.Label className="mb-2">Label</Form.Label>
-                      <Form.Control type="number" placeholder="Percent" />
-                    </Form.Group>
-                  </Col>
-
-                  <Col>
-                    <Form.Group>
-                      <Form.Label className="mb-2">Label</Form.Label>
-                      <Form.Control type="number" placeholder="Percent" />
-                    </Form.Group>
-                  </Col>
-
-                  <Col>
-                    <Form.Group>
-                      <Form.Label className="mb-2">Label</Form.Label>
-                      <Form.Control type="number" placeholder="Percent" />
-                    </Form.Group>
-                  </Col>
-                </Row>
+                {selectedCollaborators?.length > 0 &&
+                  <div className="flexibleRowContain">
+                    <Row className="flexibleRow">
+                      {selectedCollaborators.map(collaborator => { return (
+                        <Col>
+                          <Form.Group style={{marginBottom: '5px'}}>
+                            <Form.Label className="mb-2">{collaborator.label.split(' - ')[0]}</Form.Label>
+                            <Form.Control type="number" placeholder={`Enter percentage share`}/>
+                          </Form.Group>
+                        </Col>
+                      )})
+                      }
+                    </Row>
+                    <small className="text-muted"><strong>Note:</strong> Collective share of all writers must be 100%</small>
+                  </div>
+                }
                 <Row>
                   <Col xs={12}>
                     <div className="form-group">
@@ -607,6 +601,22 @@ function Album({id = null}) {
                     </div>
                   </Col>
                 </Row>
+                {selectedPublishers?.length > 0 &&
+                  <div className="flexibleRowContain">
+                    <Row className="flexibleRow">
+                      {selectedPublishers.map(publisher => { return (
+                        <Col>
+                          <Form.Group style={{marginBottom: '5px'}}>
+                            <Form.Label className="mb-2">{publisher.label.split(' - ')[0]}</Form.Label>
+                            <Form.Control type="number" placeholder={`Enter percentage share`}/>
+                          </Form.Group>
+                        </Col>
+                      )})
+                      }
+                    </Row>
+                    <small className="text-muted"><strong>Note:</strong> Collective share of all publishers must be 100%</small>
+                  </div>
+                }
                 <Row>
                   <Col xs={12}>
                     <div className="form-group">

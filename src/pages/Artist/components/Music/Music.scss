@@ -437,11 +437,16 @@
     }
   }
 }
-
-.flexibleRow {
-  .col {
-    min-width: 50%;
-    max-width: 100%;
+.flexibleRowContain {
+  padding-bottom: 35px;
+  .flexibleRow {
+    .col {
+      min-width: 50%;
+      max-width: 100%;
+    }
+  }
+  .form-group {
+    margin-bottom: 0px;
   }
 }
 
