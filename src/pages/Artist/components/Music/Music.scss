@@ -438,6 +438,13 @@
   }
 }
 
+.flexibleRow {
+  .col {
+    min-width: 50%;
+    max-width: 100%;
+  }
+}
+
 @media #{$phone-landscape} {
   .track-wrapper {
     width: 100%;

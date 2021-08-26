@@ -561,6 +561,28 @@ function Album({id = null}) {
                     </div>
                   </Col>
                 </Row>
+                <Row className="flexibleRow">
+                  <Col>
+                    <Form.Group>
+                      <Form.Label className="mb-2">Label</Form.Label>
+                      <Form.Control type="number" placeholder="Percent" />
+                    </Form.Group>
+                  </Col>
+
+                  <Col>
+                    <Form.Group>
+                      <Form.Label className="mb-2">Label</Form.Label>
+                      <Form.Control type="number" placeholder="Percent" />
+                    </Form.Group>
+                  </Col>
+
+                  <Col>
+                    <Form.Group>
+                      <Form.Label className="mb-2">Label</Form.Label>
+                      <Form.Control type="number" placeholder="Percent" />
+                    </Form.Group>
+                  </Col>
+                </Row>
                 <Row>
                   <Col xs={12}>
                     <div className="form-group">
