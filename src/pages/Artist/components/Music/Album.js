@@ -563,17 +563,17 @@ function Album({id = null}) {
                 </Row>
                 {selectedCollaborators?.length > 0 &&
                   <div className="flexibleRowContain">
-                    <Row className="flexibleRow">
+                    <div className="flexibleRow">
                       {selectedCollaborators.map(collaborator => { return (
                         <Col>
-                          <Form.Group style={{marginBottom: '5px'}}>
-                            <Form.Label className="mb-2">{collaborator.label.split(' - ')[0]}</Form.Label>
-                            <Form.Control type="number" placeholder={`Enter percentage share`}/>
+                          <Form.Group className="paraElements">
+                            <Form.Label>{collaborator.label.split(' - ')[0]}</Form.Label>
+                            <Form.Control type="number" placeholder={`Percentage`}/>
                           </Form.Group>
                         </Col>
                       )})
                       }
-                    </Row>
+                    </div>
                     <small className="text-muted"><strong>Note:</strong> Collective share of all writers must be 100%</small>
                   </div>
                 }
@@ -603,17 +603,17 @@ function Album({id = null}) {
                 </Row>
                 {selectedPublishers?.length > 0 &&
                   <div className="flexibleRowContain">
-                    <Row className="flexibleRow">
+                    <div className="flexibleRow">
                       {selectedPublishers.map(publisher => { return (
                         <Col>
-                          <Form.Group style={{marginBottom: '5px'}}>
-                            <Form.Label className="mb-2">{publisher.label.split(' - ')[0]}</Form.Label>
-                            <Form.Control type="number" placeholder={`Enter percentage share`}/>
+                          <Form.Group className="paraElements">
+                            <Form.Label>{publisher.label.split(' - ')[0]}</Form.Label>
+                            <Form.Control type="number" placeholder={`Percentage`}/>
                           </Form.Group>
                         </Col>
                       )})
                       }
-                    </Row>
+                    </div>
                     <small className="text-muted"><strong>Note:</strong> Collective share of all publishers must be 100%</small>
                   </div>
                 }

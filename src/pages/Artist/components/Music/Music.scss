@@ -438,11 +438,29 @@
   }
 }
 .flexibleRowContain {
-  padding-bottom: 35px;
+  padding-bottom: 20px;
   .flexibleRow {
     .col {
-      min-width: 50%;
+      min-width: 100%;
       max-width: 100%;
+      background-color: #f3f4f5;
+      padding: 7px 12px;
+      border-radius: 7px;
+      margin-bottom: 7px;
+      .paraElements {
+        @include flexbox();
+        @include align-items(center);
+        label {
+          margin-bottom: 0;
+          flex: 1;
+        }
+        input[type="number"] {
+          flex: 0 1 28%;
+          height: 38px;
+          line-height: 38px;
+        }
+
+      }
     }
   }
   .form-group {
