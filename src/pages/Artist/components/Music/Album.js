@@ -125,16 +125,30 @@ function Album({id = null}) {
         data.delete('file');
       }
       if(selectedCollaborators?.length > 0) {
-        for(let i = 0; i < selectedCollaborators.length; i++)
+        let total_share = 0;
+        for(let i = 0; i < selectedCollaborators.length; i++) {
           data.append('artists_collaborator_ids[]', selectedCollaborators[i].value);
+          total_share += parseFloat(data.get(`collaborator_share_${selectedCollaborators[i].value}`));
+        }
+        if(total_share !== 100) {
+          Notiflix.Report.Warning( 'Invalid Collaborators Share', `Your collective share of all writers / collaborators is ${total_share}%, it must be 100% to proceed. Please update and try again!`, 'Ok' );
+          return false;
+        }
       } else {
         Notiflix.Report.Failure( 'Request failed', `Track without writer/collaborator can't be ${isSubmitting ? 'submitted for classification' : 'added'}.`, 'Ok' );
         setIsSubmitting(false);
         return false;
       }
       if(selectedPublishers.length > 0) {
-        for(let i = 0; i < selectedPublishers.length; i++)
+        let total_share = 0;
+        for(let i = 0; i < selectedPublishers.length; i++) {
           data.append('publisher_ids[]', selectedPublishers[i].value);
+          total_share += parseFloat(data.get(`publisher_share_${selectedPublishers[i].value}`));
+        }
+        if(total_share !== 100) {
+          Notiflix.Report.Warning( 'Invalid Publishers Share', `Your collective share of all publishers is ${total_share}%, it must be 100% to proceed. Please update and try again!`, 'Ok' );
+          return false;
+        }
       } else {
         data.append('publisher_ids[]', []);
       }
@@ -568,7 +582,7 @@ function Album({id = null}) {
                         <Col>
                           <Form.Group className="paraElements">
                             <Form.Label>{collaborator.label.split(' - ')[0]}</Form.Label>
-                            <Form.Control type="number" placeholder={`Percentage`}/>
+                            <Form.Control required name={`collaborator_share_${collaborator.value}`} type="number" step="0.01" placeholder={`Percentage`}/>
                           </Form.Group>
                         </Col>
                       )})
@@ -608,7 +622,7 @@ function Album({id = null}) {
                         <Col>
                           <Form.Group className="paraElements">
                             <Form.Label>{publisher.label.split(' - ')[0]}</Form.Label>
-                            <Form.Control type="number" placeholder={`Percentage`}/>
+                            <Form.Control required name={`publisher_share_${publisher.value}`} type="number" step="0.01" placeholder={`Percentage`}/>
                           </Form.Group>
                         </Col>
                       )})
