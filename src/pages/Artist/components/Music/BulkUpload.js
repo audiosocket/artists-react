@@ -25,6 +25,10 @@ function BulkUpload({album}) {
     const bulkUploadForm = e.currentTarget;
     const data = new FormData(bulkUploadForm.current);
     if(tracks.length) {
+      if(tracks.length > 20) {
+        Notiflix.Report.Warning( 'Upload Limit Exceeded', `You can bulk upload upto 20 tracks. ${tracks.length} tracks selected at the moment.`, 'Ok' );
+        return false;
+      }
       for(let i = 0; i < tracks.length; i++)
         data.append('files[]', tracks[i]);
     } else {
