@@ -127,7 +127,8 @@ function Album({id = null}) {
       if(selectedCollaborators?.length > 0) {
         let total_share = 0;
         for(let i = 0; i < selectedCollaborators.length; i++) {
-          data.append('artists_collaborator_ids[]', selectedCollaborators[i].value);
+          data.append('track_writers[][artists_collaborator_id]', selectedCollaborators[i].value);
+          data.append('track_writers[][percentage]', data.get(`collaborator_share_${selectedCollaborators[i].value}`));
           total_share += parseFloat(data.get(`collaborator_share_${selectedCollaborators[i].value}`));
         }
         if(total_share !== 100) {
@@ -139,10 +140,11 @@ function Album({id = null}) {
         setIsSubmitting(false);
         return false;
       }
-      if(selectedPublishers.length > 0) {
+      if(selectedPublishers?.length > 0) {
         let total_share = 0;
         for(let i = 0; i < selectedPublishers.length; i++) {
-          data.append('publisher_ids[]', selectedPublishers[i].value);
+          data.append('track_publishers[][publisher_id]', selectedPublishers[i].value);
+          data.append('track_publishers[][percentage]', data.get(`publisher_share_${selectedPublishers[i].value}`));
           total_share += parseFloat(data.get(`publisher_share_${selectedPublishers[i].value}`));
         }
         if(total_share !== 100) {
@@ -150,11 +152,8 @@ function Album({id = null}) {
           return false;
         }
       } else {
-        data.append('publisher_ids[]', []);
+        data.append('track_publishers[]', []);
       }
-
-      /*data.append('artists_collaborator_id', collaborator || '')
-      data.append('publisher_id', publisher || '')*/
       if(data.get("explicit"))
         data.set("explicit", true);
       else
@@ -180,31 +179,37 @@ function Album({id = null}) {
       }
       const userAuthToken = JSON.parse(localStorage.getItem("user") ?? "");
       const URL = url;
-      const response = await fetch(`${URL}`,
-        {
-          headers: {
-            "authorization": ACCESS_TOKEN,
-            "auth-token": userAuthToken
-          },
-          method: selectedTrack ? "PATCH" : "POST",
-          body: data
-        });
-      const results = await response.json();
-      if (!response.ok) {
-        if(results.message) {
-          Notiflix.Notify.Failure(results.message + ' Please make sure to upload music files (WAV or AIFF) at 16bit or 24bit, at 48K.');
+      try {
+        const response = await fetch(`${URL}`,
+          {
+            headers: {
+              "authorization": ACCESS_TOKEN,
+              "auth-token": userAuthToken
+            },
+            method: selectedTrack ? "PATCH" : "POST",
+            body: data
+          });
+        const results = await response.json();
+        if (!response.ok) {
+          if(results.message) {
+            Notiflix.Notify.Failure(results.message + ' Please make sure to upload music files (WAV or AIFF) at 16bit or 24bit, at 48K.');
+          } else {
+            Notiflix.Notify.Failure('Something went wrong, try later!');
+          }
         } else {
-          Notiflix.Notify.Failure('Something went wrong, try later!');
+          const albums = await fetchAlbums(userRole === "collaborator" && artist_id);
+          artistActions.albumsStateChanged(albums);
+          const filteredAlbum = albums.filter(album => parseInt(album.id) === parseInt(id));
+          setAlbum(filteredAlbum[0] ?? null)
+          handleClose();
+          e.target.reset();
+          let message = isSubmitting ? "Track submitted for classification successfully" : `${selectedTrack ? "Track updated successfully" : "Track added to your album successfully"}`
+          Notiflix.Report.Success( 'Request fulfilled', message, 'Ok' );
         }
-      } else {
-        const albums = await fetchAlbums(userRole === "collaborator" && artist_id);
-        artistActions.albumsStateChanged(albums);
-        const filteredAlbum = albums.filter(album => parseInt(album.id) === parseInt(id));
-        setAlbum(filteredAlbum[0] ?? null)
-        handleClose();
-        e.target.reset();
-        let message = isSubmitting ? "Track submitted for classification successfully" : `${selectedTrack ? "Track updated successfully" : "Track added to your album successfully"}`
-        Notiflix.Report.Success( 'Request fulfilled', message, 'Ok' );
+      } catch (e) {
+        setIsSubmitting(false);
+        setIsLoading(false);
+        Notiflix.Notify.Failure('Something went wrong, try later!');
       }
       setIsSubmitting(false);
       setIsLoading(false);
@@ -292,8 +297,8 @@ function Album({id = null}) {
 
   const handleEditMusicModal = (track) => {
     setSelectedTrack(track);
-    setSelectedCollaborators(track.artists_collaborators ? track.artists_collaborators.map(collaborator => {return {label: collaborator.first_name +(collaborator.last_name ? ' '+collaborator.last_name : '') + ' - ' + collaborator.status ?? '', value: collaborator.id}}) : null);
-    setSelectedPublishers(track.publishers ? track.publishers.map(publisher => {return {label: publisher.name, value: publisher.id}}) : null);
+    setSelectedCollaborators(track.artists_collaborators ? track.artists_collaborators.map(collaborator => {return {label: collaborator.first_name +(collaborator.last_name ? ' '+collaborator.last_name : '') + ' - ' + collaborator.status ?? '', value: collaborator.id, percentage: collaborator.percentage ?? ''}}) : null);
+    setSelectedPublishers(track.publishers ? track.publishers.map(publisher => {return {label: publisher.name, value: publisher.id, percentage: publisher.percentage ?? ''}}) : null);
     setIsPublicDomain(track.public_domain === true || track.public_domain === "true" ? true : false);
     setIsExplicit(track.explicit === true || track.explicit === "true" ? true : false);
     setShowAddMusicModal(true);
@@ -439,13 +444,13 @@ function Album({id = null}) {
                       </div>
                       <div className="track-writter">
                         {track.artists_collaborators
-                          ? <>{track.artists_collaborators.map((collaborator, key) => {return (key >=1 ? ', ' : '')+ collaborator.first_name + (collaborator.last_name ? ' '+collaborator.last_name : '')})}</>
+                          ? <>{track.artists_collaborators.map((collaborator, key) => {return (key >=1 ? ', ' : '')+collaborator.first_name + (collaborator.last_name ? ' '+collaborator.last_name : '') + (collaborator.percentage ? ' ('+collaborator.percentage+'%)' : '')})}</>
                           : "-"
                         }
                       </div>
                       <div className="track-publisher">
                         {track.publishers
-                          ? track.publishers.map((publisher, key) => {return (key >=1 ? ', ' : '')+ publisher.name})
+                          ? track.publishers.map((publisher, key) => {return (key >=1 ? ', ' : '')+`${publisher.name}${publisher.percentage ? ' ('+publisher.percentage+'%)' : ''}`})
                           : "-"
                         }
                       </div>
@@ -582,7 +587,7 @@ function Album({id = null}) {
                         <Col>
                           <Form.Group className="paraElements">
                             <Form.Label>{collaborator.label.split(' - ')[0]}</Form.Label>
-                            <Form.Control required name={`collaborator_share_${collaborator.value}`} type="number" step="0.01" placeholder={`Percentage`}/>
+                            <Form.Control required name={`collaborator_share_${collaborator.value}`} defaultValue={collaborator.percentage} type="number" step="0.01" placeholder={`Percentage`}/>
                           </Form.Group>
                         </Col>
                       )})
@@ -622,7 +627,7 @@ function Album({id = null}) {
                         <Col>
                           <Form.Group className="paraElements">
                             <Form.Label>{publisher.label.split(' - ')[0]}</Form.Label>
-                            <Form.Control required name={`publisher_share_${publisher.value}`} type="number" step="0.01" placeholder={`Percentage`}/>
+                            <Form.Control required name={`publisher_share_${publisher.value}`} defaultValue={publisher.percentage} type="number" step="0.01" placeholder={`Percentage`}/>
                           </Form.Group>
                         </Col>
                       )})

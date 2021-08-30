@@ -59,7 +59,6 @@ function BulkUpload({album}) {
         setprogressNow(now.toFixed(0));
       }
     }).then (response => {
-      console.log(progressNow, isLoading);
       if (!response.status === 200) {
         Notiflix.Notify.Failure('Something went wrong, try later!');
       } else {
