@@ -66,10 +66,10 @@ function Notes(props) {
           body: data
         });
       if(response.ok) {
-        Notiflix.Notify.Success('Note added, your request will be proceed soon!');
+        Notiflix.Notify.success('Note added, your request will be proceed soon!');
         handleClose();
       } else {
-        Notiflix.Notify.Failure('Something went wrong, try again!');
+        Notiflix.Notify.failure('Something went wrong, try again!');
       }
       setIsAdding(false);
     }

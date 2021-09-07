@@ -41,7 +41,7 @@ function AlbumEdit({id = null}) {
         }
       } else {
         history.push('/music');
-        Notiflix.Report.Failure( 'Invalid album', `Album doesn't exist`, 'Ok');
+        Notiflix.Report.failure( 'Invalid album', `Album doesn't exist`, 'Ok');
       }
     }
   }, [artistState.albums])
@@ -75,11 +75,11 @@ function AlbumEdit({id = null}) {
           body: data
         });
       if (!response.ok) {
-        Notiflix.Notify.Failure('Something went wrong, try later!');
+        Notiflix.Notify.failure('Something went wrong, try later!');
       } else {
         const albums = await fetchAlbums(userRole === "collaborator" && artist_id);
         artistActions.albumsStateChanged(albums);
-        Notiflix.Notify.Success('Album updated successfully!');
+        Notiflix.Notify.success('Album updated successfully!');
         history.push(`/music/album/${id}`);
       }
       setIsLoading(false);
@@ -88,7 +88,7 @@ function AlbumEdit({id = null}) {
 
   const handleAlbumDelete = async (e) => {
     e.preventDefault();
-    Notiflix.Confirm.Show(
+    Notiflix.Confirm.show(
       'Please confirm',
       `Are you sure to delete album "${album.name}"?`,
       'Yes',
@@ -112,14 +112,14 @@ function AlbumEdit({id = null}) {
             method: "DELETE"
           });
         if (!response.ok) {
-          Notiflix.Notify.Failure('Something went wrong, try later!');
+          Notiflix.Notify.failure('Something went wrong, try later!');
           setIsDeleting(false);
         } else {
           const albums = await fetchAlbums(userRole === "collaborator" && artist_id);
           history.push(`/music`);
           artistActions.albumsStateChanged(albums);
           setIsDeleting(false);
-          Notiflix.Notify.Success('Album deleted successfully!');
+          Notiflix.Notify.success('Album deleted successfully!');
         }
       }
     );

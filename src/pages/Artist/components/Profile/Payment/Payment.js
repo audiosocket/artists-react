@@ -28,13 +28,13 @@ function Payment() {
   useEffect(() => {
     if(artistState.artist) {
       if(!artistState.artist.country) {
-        Notiflix.Report.Warning('Action required', 'Please complete your profile first!', 'Update Profile', () => {
+        Notiflix.Report.warning('Action required', 'Please complete your profile first!', 'Update Profile', () => {
           history.push('/profile/edit')
         });
       }
       setIsLoading(false);
       if(Object.keys(artistState.artist).length <= 1) {
-        Notiflix.Report.Failure( 'Not accessible', `You don't have access to profile!`, 'Ok', () => {
+        Notiflix.Report.failure( 'Not accessible', `You don't have access to profile!`, 'Ok', () => {
           history.push("/");
         } );
       }
@@ -81,11 +81,11 @@ function Payment() {
         });
       const artist = await response.json();
       if(!response.ok) {
-        Notiflix.Notify.Failure('Something went wrong, try later!');
+        Notiflix.Notify.failure('Something went wrong, try later!');
       } else {
         setArtist(artist);
         artistActions.artistStateChanged(artist);
-        Notiflix.Notify.Success('Payment information updated!');
+        Notiflix.Notify.success('Payment information updated!');
         history.push('/profile');
       }
       setIsLoading(false);

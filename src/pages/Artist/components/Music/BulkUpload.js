@@ -26,13 +26,13 @@ function BulkUpload({album}) {
     const data = new FormData(bulkUploadForm.current);
     if(tracks.length) {
       if(tracks.length > 20) {
-        Notiflix.Report.Warning( 'Upload Limit Exceeded', `You can bulk upload upto 20 tracks. ${tracks.length} tracks selected at the moment.`, 'Ok' );
+        Notiflix.Report.warning( 'Upload Limit Exceeded', `You can bulk upload upto 20 tracks. ${tracks.length} tracks selected at the moment.`, 'Ok' );
         return false;
       }
       for(let i = 0; i < tracks.length; i++)
         data.append('files[]', tracks[i]);
     } else {
-      Notiflix.Notify.Warning('Please upload tracks!');
+      Notiflix.Notify.warning('Please upload tracks!');
       return false;
     }
     setIsLoading(true);
@@ -60,12 +60,12 @@ function BulkUpload({album}) {
       }
     }).then (response => {
       if (!response.status === 200) {
-        Notiflix.Notify.Failure('Something went wrong, try later!');
+        Notiflix.Notify.failure('Something went wrong, try later!');
       } else {
         if(response.data.meta.total === response.data.meta.uploaded) {
-          Notiflix.Report.Success( 'Uploaded', `${response.data.meta ? response.data.meta.uploaded : ""} Track(s) uploaded successfully out of ${response.data.meta.total} track(s) you selected.`, 'Ok' );
+          Notiflix.Report.success( 'Uploaded', `${response.data.meta ? response.data.meta.uploaded : ""} Track(s) uploaded successfully out of ${response.data.meta.total} track(s) you selected.`, 'Ok' );
         } else if(!response.data.meta.uploaded) {
-          Notiflix.Report.Failure( 'Upload Failed', `None of your selected files matches our criteria. Please make sure to upload music files (WAV or AIFF) at 16bit or 24bit, at 48K.`, 'Ok' );
+          Notiflix.Report.failure( 'Upload Failed', `None of your selected files matches our criteria. Please make sure to upload music files (WAV or AIFF) at 16bit or 24bit, at 48K.`, 'Ok' );
         } else {
           var invalidTracks = '';
           for(let i = 0; i < response.data.meta.messages.length; i++) {
@@ -74,7 +74,7 @@ function BulkUpload({album}) {
             else
               invalidTracks += '"'+response.data.meta.messages[0].file+'", ';
           }
-          Notiflix.Report.Warning( 'Partially Uploaded', `${response.data.meta ? response.data.meta.uploaded : ""} Track(s) uploaded successfully out of ${response.data.meta.total} track(s) you selected. Track(s) ${invalidTracks} failed to upload.`, 'Ok' );
+          Notiflix.Report.warning( 'Partially Uploaded', `${response.data.meta ? response.data.meta.uploaded : ""} Track(s) uploaded successfully out of ${response.data.meta.total} track(s) you selected. Track(s) ${invalidTracks} failed to upload.`, 'Ok' );
         }
       }
     })

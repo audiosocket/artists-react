@@ -33,7 +33,7 @@ function Welcome() {
       });
     if (!response.ok) {
       setMetadata(null);
-      Notiflix.Notify.Failure("Can't connect to server, try later!");
+      Notiflix.Notify.failure("Can't connect to server, try later!");
     } else {
       const resultSet = await response.json();
       if(resultSet['content']) {
