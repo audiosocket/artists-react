@@ -8,7 +8,7 @@ import Button from 'react-bootstrap/Button';
 import {ACCESS_TOKEN, BASE_URL, RESET_PASSWORD} from "../../common/api";
 import Loader from "./../../images/loader.svg"
 import Back from "../../images/back.svg";
-import Notiflix from "notiflix-react";
+import Notiflix from "notiflix";
 
 function ResetPassword({userHash = ''}) {
   const history = useHistory();

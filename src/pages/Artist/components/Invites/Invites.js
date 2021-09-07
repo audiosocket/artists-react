@@ -8,7 +8,7 @@ import {NavLink} from "react-router-dom";
 import fetchArtistsList from "../../../../common/utlis/fetchArtistsList";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import ArrowRight from "../../../../images/right-arrow.svg";
-import Notiflix from "notiflix-react";
+import Notiflix from "notiflix";
 
 function Invites() {
   const {artistState, artistActions} = React.useContext(ArtistContext);

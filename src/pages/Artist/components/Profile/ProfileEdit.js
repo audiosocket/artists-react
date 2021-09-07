@@ -15,7 +15,7 @@ import {
 import DropzoneComponent from "../../../../common/Dropzone/DropzoneComponent";
 import Breadcrumb from "react-bootstrap/Breadcrumb";
 import Notes from "../../../../common/Notes/Notes";
-import Notiflix from "notiflix-react";
+import Notiflix from "notiflix";
 import csc from "country-state-city";
 import Select from "react-select";
 

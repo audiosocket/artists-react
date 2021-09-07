@@ -4,7 +4,7 @@ import {ArtistContext} from "../../../../Store/artistContext";
 import Loader from "../../../../images/loader.svg";
 import {NavLink, useHistory} from "react-router-dom";
 import Breadcrumb from "react-bootstrap/Breadcrumb";
-import Notiflix from "notiflix-react";
+import Notiflix from "notiflix";
 import ArrowRight from "../../../../images/right-arrow.svg";
 import Waiting from "../../../../images/waiting.svg";
 import Check from "../../../../images/check-solid.svg";

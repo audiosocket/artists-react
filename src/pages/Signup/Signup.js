@@ -19,7 +19,7 @@ import Download from "../../images/file.svg";
 import Check from "../../images/check.svg";
 import Cancel from "../../images/cancel.svg";
 import fetchAgreements from "../../common/utlis/fetchAgreements";
-import Notiflix from "notiflix-react";
+import Notiflix from "notiflix";
 
 function Signup({userHash = ''}) {
   const pathname = useLocation().pathname;

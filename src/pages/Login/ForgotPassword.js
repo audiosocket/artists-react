@@ -8,7 +8,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import {ACCESS_TOKEN, BASE_URL, FORGOT_PASSWORD} from "../../common/api";
 import Loader from "./../../images/loader.svg"
-import Notiflix from "notiflix-react";
+import Notiflix from "notiflix";
 
 function ForgotPassword() {
   const history = useHistory();

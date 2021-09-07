@@ -2,7 +2,7 @@ import React from "react";
 import './Sidebar.scss';
 import {NavLink, useHistory} from "react-router-dom";
 import {ArtistContext} from "../../../../Store/artistContext";
-import Notiflix from "notiflix-react";
+import Notiflix from "notiflix";
 
 function Sidebar() {
   const {artistState} = React.useContext(ArtistContext);

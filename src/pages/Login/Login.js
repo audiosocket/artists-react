@@ -9,7 +9,7 @@ import { AuthContext } from "../../Store/authContext";
 import {ACCESS_TOKEN, BASE_URL, SESSION} from "../../common/api";
 import Loader from "./../../images/loader.svg"
 import fetchAgreements from "../../common/utlis/fetchAgreements";
-import Notiflix from "notiflix-react";
+import Notiflix from "notiflix";
 
 function Login() {
   const { authActions } = React.useContext(AuthContext);
