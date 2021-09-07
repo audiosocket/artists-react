@@ -79,7 +79,7 @@ function Signup({userHash = ''}) {
             setIsAgreementStep(true);
             setIsPasswordUpdated(res.password);
           } else {
-            Notiflix.Report.Failure( 'Error', `Link broken or not valid, contact support or login to proceed!`, 'Ok', () => {
+            Notiflix.Report.failure( 'Error', `Link broken or not valid, contact support or login to proceed!`, 'Ok', () => {
               history.push('/login')
             } );
           }
@@ -93,7 +93,7 @@ function Signup({userHash = ''}) {
               setIsAgreementStep(true);
               setIsPasswordUpdated(res.meta.password);
             } else {
-              Notiflix.Report.Success( 'Success', `Password already set, login to proceed!`, 'Login', () => {
+              Notiflix.Report.success( 'Success', `Password already set, login to proceed!`, 'Login', () => {
                 history.push('/login')
               } );
             }
@@ -118,7 +118,7 @@ function Signup({userHash = ''}) {
           history.push('/');
         }
       } else {
-        Notiflix.Report.Failure( 'Error', `Link broken or not valid, contact support or login to proceed!`, 'Ok', () => {
+        Notiflix.Report.failure( 'Error', `Link broken or not valid, contact support or login to proceed!`, 'Ok', () => {
           history.push('/login')
         } );
       }
@@ -157,7 +157,7 @@ function Signup({userHash = ''}) {
           body: data
         });
       if(response.ok) {
-        Notiflix.Notify.Success('Password updated successfully!');
+        Notiflix.Notify.success('Password updated successfully!');
         const resultSet = await response.json();
         authActions.userDataStateChanged(resultSet["auth_token"]);
         localStorage.setItem("userRole", JSON.stringify(isCollaborator ? 'collaborator' : 'artist'));
@@ -167,18 +167,18 @@ function Signup({userHash = ''}) {
         const pending = res.filter(agreement => agreement.status === "pending");
         setAgreements(pending);
         if(pending.length === 0) {
-          Notiflix.Report.Success( 'Success', `Invitation process completed`, 'Ok', () => {
+          Notiflix.Report.success( 'Success', `Invitation process completed`, 'Ok', () => {
             history.push('/')
           } );
         }
         e.target.reset();
       } else {
         if(response.status === 401) {
-          Notiflix.Report.Failure( 'Error', `Link expired, contact support or login to proceed.`, 'Ok', () => {
+          Notiflix.Report.failure( 'Error', `Link expired, contact support or login to proceed.`, 'Ok', () => {
             history.push('/login')
           } );
         } else
-          Notiflix.Notify.Failure('Something went wrong, try again!');
+          Notiflix.Notify.failure('Something went wrong, try again!');
       }
       setIsLoading(false);
     }
@@ -210,14 +210,14 @@ function Signup({userHash = ''}) {
         method: 'PATCH',
       });
     if(!response.ok) {
-      Notiflix.Notify.Failure('Something went wrong, try later!');
+      Notiflix.Notify.failure('Something went wrong, try later!');
     } else {
-      Notiflix.Notify.Success('Agreements updated successfully!');
+      Notiflix.Notify.success('Agreements updated successfully!');
       const resultSet = await response.json();
       const pending = resultSet.filter(agreement => agreement.status === "pending");
       setAgreements(pending);
       if(!pending.length) {
-        Notiflix.Report.Success( 'Success', `Invitation process completed`, 'Ok', () => {
+        Notiflix.Report.success( 'Success', `Invitation process completed`, 'Ok', () => {
           history.push('/')
         } );
       }

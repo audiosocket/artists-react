@@ -74,7 +74,7 @@ function AlbumsListing() {
           body: data
         });
       if (!response.ok) {
-        Notiflix.Notify.Failure('Something went wrong, try later!');
+        Notiflix.Notify.failure('Something went wrong, try later!');
       } else {
         if(artwork) {
           const result = await response.json();
@@ -92,7 +92,7 @@ function AlbumsListing() {
               body: data
             });
           if (!responseArtwork.ok) {
-            Notiflix.Notify.Failure('Something went wrong, try later!');
+            Notiflix.Notify.failure('Something went wrong, try later!');
           }
         }
         const albums = await fetchAlbums(userRole === "collaborator" && artist_id);
@@ -100,7 +100,7 @@ function AlbumsListing() {
         artistActions.albumsStateChanged(albums);
         handleClose();
         e.target.reset();
-        Notiflix.Notify.Success(`Album ${selectedAlbum ? "updated" : "created"} successfully!`);
+        Notiflix.Notify.success(`Album ${selectedAlbum ? "updated" : "created"} successfully!`);
       }
       setIsLoading(false);
     }
@@ -126,7 +126,7 @@ function AlbumsListing() {
   }
 
   const handleAlbumDelete = async (album) => {
-    Notiflix.Confirm.Show(
+    Notiflix.Confirm.show(
       'Please confirm',
       `Are you sure to delete album "${album.name}"?`,
       'Yes',
@@ -149,9 +149,9 @@ function AlbumsListing() {
             method: "DELETE"
           });
         if (!response.ok) {
-          Notiflix.Notify.Failure('Something went wrong, try later!');
+          Notiflix.Notify.failure('Something went wrong, try later!');
         } else {
-          Notiflix.Report.Success( 'Request fulfilled', `Album "${album.name}" deleted successfully!`, 'Ok' );
+          Notiflix.Report.success( 'Request fulfilled', `Album "${album.name}" deleted successfully!`, 'Ok' );
           const albums = await fetchAlbums(userRole === "collaborator" && artist_id);
           artistActions.albumsStateChanged(albums);
           setAlbums(albums);
@@ -175,7 +175,7 @@ function AlbumsListing() {
         let height = this.height;
         let width = this.width;
         if (width < 353 || height < 353) {
-          Notiflix.Report.Warning( 'Upload failed', `Artwork Image must be min 353px x 353px\nUploaded image is ${width}px x ${height}!`, 'Ok' );
+          Notiflix.Report.warning( 'Upload failed', `Artwork Image must be min 353px x 353px\nUploaded image is ${width}px x ${height}!`, 'Ok' );
           return false;
         } else {
           setArtwork(img)

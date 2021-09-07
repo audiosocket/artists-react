@@ -49,7 +49,7 @@ function ProfileEdit() {
     if(artistState.artist) {
       setIsLoading(false);
       if(Object.keys(artistState.artist).length <= 1) {
-        Notiflix.Report.Failure( 'Not accessible', `You don't have access to profile!`, 'Ok', () => {
+        Notiflix.Report.failure( 'Not accessible', `You don't have access to profile!`, 'Ok', () => {
           history.push("/");
         } );
       }
@@ -76,15 +76,15 @@ function ProfileEdit() {
       setBannerImageError(false);
       setOtherError(false);
       if(!selectedCountry) {
-        Notiflix.Notify.Failure('Country is required!');
+        Notiflix.Notify.failure('Country is required!');
         setCountryError(true);
         errors = true;
       }
       if(data.get('email')) {
         if(!handleEmailValidate(data.get('email')))
-          Notiflix.Notify.Failure('A valid email address is required!');
+          Notiflix.Notify.failure('A valid email address is required!');
       } else {
-        Notiflix.Notify.Failure('A valid email address is required!');
+        Notiflix.Notify.failure('A valid email address is required!');
         setEmailError(true);
         errors = true;
       }
@@ -92,30 +92,30 @@ function ProfileEdit() {
         if(pro === 'other') {
           if(!data.get('pro')) {
             setOtherError(true);
-            Notiflix.Notify.Failure('PRO is required!');
+            Notiflix.Notify.failure('PRO is required!');
             errors = true;
           }
         } else {
           data.append('pro', pro);
         }
         if(pro.toLowerCase() !== 'ns' && !handleIPICharacterLimit(data.get('ipi'))) {
-          Notiflix.Notify.Failure('A valid CAE/IPI # is required!');
+          Notiflix.Notify.failure('A valid CAE/IPI # is required!');
           errors = true;
         }
       }
       else {
         setProError(true);
-        Notiflix.Notify.Failure('PRO is required!');
+        Notiflix.Notify.failure('PRO is required!');
         errors = true;
       }
 
       if(!profileImage && !artist.profile_image ) {
-        Notiflix.Notify.Failure('Profile image is required!');
+        Notiflix.Notify.failure('Profile image is required!');
         setProfileImageError(true);
         errors = true;
       }
       if(!bannerImage && !artist.banner_image) {
-        Notiflix.Notify.Failure('Banner image is required!');
+        Notiflix.Notify.failure('Banner image is required!');
         setBannerImageError(true);
         errors = true;
       }
@@ -159,11 +159,11 @@ function ProfileEdit() {
         });
       const artistData = await response.json();
       if(!response.ok) {
-        Notiflix.Notify.Failure('Something went wrong, try later!');
+        Notiflix.Notify.failure('Something went wrong, try later!');
       } else {
         setArtist(artistData);
         artistActions.artistStateChanged(artistData);
-        Notiflix.Notify.Success('Profile updated!');
+        Notiflix.Notify.success('Profile updated!');
         history.push('/profile');
       }
       setIsLoading(false);
@@ -198,7 +198,7 @@ function ProfileEdit() {
         let height = this.height;
         let width = this.width;
         if (width < 353 || height < 353) {
-          Notiflix.Report.Warning( 'Upload failed', `Profile Image must be min 353px x 353px\nUploaded image is ${width}px x ${height}!`, 'Ok' );
+          Notiflix.Report.warning( 'Upload failed', `Profile Image must be min 353px x 353px\nUploaded image is ${width}px x ${height}!`, 'Ok' );
           return false;
         } else {
           setProfileImage(img)
@@ -224,7 +224,7 @@ function ProfileEdit() {
         let height = this.height;
         let width = this.width;
         if (width < 1440 || height < 448) {
-          Notiflix.Report.Warning( 'Upload failed', `Banner Image must be min 1440px x 448px\nUploaded image is ${width}px x ${height}!`, 'Ok' );
+          Notiflix.Report.warning( 'Upload failed', `Banner Image must be min 1440px x 448px\nUploaded image is ${width}px x ${height}!`, 'Ok' );
           return false;
         } else {
           setBannerImage(img)

@@ -10,12 +10,12 @@ function Sidebar() {
 
   const handleClickIsActive = (page) => {
     if(artistState.isActiveProfile === false) {
-      Notiflix.Report.Warning( 'Not authorized', `You must accept agreements to unlock ${page} page`, 'Go to agreements', () => {
+      Notiflix.Report.warning( 'Not authorized', `You must accept agreements to unlock ${page} page`, 'Go to agreements', () => {
         history.push('/agreements');
       } );
     }
     else if(artistState.isProfileCompleted === false && (page === 'Partners' || page === 'Music')) {
-      Notiflix.Report.Warning( 'Not authorized', `You must complete artist profile to unlock ${page} page`, 'Go to profile', () => {
+      Notiflix.Report.warning( 'Not authorized', `You must complete artist profile to unlock ${page} page`, 'Go to profile', () => {
         history.push('/profile');
       } );
     }
