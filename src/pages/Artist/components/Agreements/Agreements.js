@@ -6,7 +6,7 @@ import Loader from "./../../../../images/loader.svg"
 import Breadcrumb from "react-bootstrap/Breadcrumb";
 import {NavLink} from "react-router-dom";
 import ArrowRight from "../../../../images/right-arrow.svg";
-import Notiflix from "notiflix-react";
+import Notiflix from "notiflix";
 
 function Agreements({onChangeIsActiveProfile}) {
   const {artistState, artistActions} = React.useContext(ArtistContext);

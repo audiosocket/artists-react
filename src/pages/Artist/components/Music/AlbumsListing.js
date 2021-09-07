@@ -23,7 +23,7 @@ import Delete from "../../../../images/delete.svg";
 import DeleteDisable from "../../../../images/delete-slash.png";
 import Tooltip from "react-bootstrap/Tooltip";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
-import Notiflix from "notiflix-react";
+import Notiflix from "notiflix";
 import Notes from "../../../../common/Notes/Notes";
 
 function AlbumsListing() {

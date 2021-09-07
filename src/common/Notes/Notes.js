@@ -6,7 +6,7 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Loader from "../../images/loader.svg";
 import {ACCESS_TOKEN, BASE_URL, COLLABORATOR_NOTES, NOTES} from "../api";
-import Notiflix from "notiflix-react";
+import Notiflix from "notiflix";
 import Tooltip from "react-bootstrap/Tooltip";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import fetchNotes from "../utlis/fetchNotes";

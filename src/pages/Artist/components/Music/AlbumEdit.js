@@ -12,7 +12,7 @@ import Loader from "../../../../images/loader.svg";
 import Button from "react-bootstrap/Button";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
-import Notiflix from "notiflix-react";
+import Notiflix from "notiflix";
 
 function AlbumEdit({id = null}) {
   const {artistState, artistActions} = React.useContext(ArtistContext);

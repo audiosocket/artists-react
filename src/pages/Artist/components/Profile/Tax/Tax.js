@@ -13,7 +13,7 @@ import {
   COLLABORATOR_ARTIST_PROFILE_UPDATE
 } from "../../../../../common/api";
 import Breadcrumb from "react-bootstrap/Breadcrumb";
-import Notiflix from "notiflix-react";
+import Notiflix from "notiflix";
 
 function Tax() {
   const {artistState, artistActions} = React.useContext(ArtistContext);

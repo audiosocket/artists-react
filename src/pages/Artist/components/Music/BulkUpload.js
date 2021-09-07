@@ -6,7 +6,7 @@ import Loader from "../../../../images/loader.svg";
 import Button from "react-bootstrap/Button";
 import BulkDropzoneComponent from "../../../../common/Dropzone/BulkDropzoneComponent";
 import {ACCESS_TOKEN, ALBUMS, BASE_URL, COLLABORATOR_ALBUMS} from "../../../../common/api";
-import Notiflix from "notiflix-react";
+import Notiflix from "notiflix";
 import {ArtistContext} from "../../../../Store/artistContext";
 import fetchAlbums from "../../../../common/utlis/fetchAlbums";
 import axios from "axios";

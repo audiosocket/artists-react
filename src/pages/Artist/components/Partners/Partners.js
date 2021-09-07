@@ -22,7 +22,7 @@ import fetchPublishers from "../../../../common/utlis/fetchPublishers";
 import Edit from "../../../../images/pencil.svg";
 import Delete from "../../../../images/delete.svg";
 import Resend from "../../../../images/invitation.svg";
-import Notiflix from "notiflix-react";
+import Notiflix from "notiflix";
 import ArrowRight from "../../../../images/right-arrow.svg";
 import fetchArtistsList from "../../../../common/utlis/fetchArtistsList";
 import Tooltip from "react-bootstrap/Tooltip";

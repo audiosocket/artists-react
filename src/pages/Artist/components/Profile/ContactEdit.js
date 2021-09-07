@@ -15,7 +15,7 @@ import {
 import csc from 'country-state-city'
 import Select from 'react-select'
 import Breadcrumb from "react-bootstrap/Breadcrumb";
-import Notiflix from "notiflix-react";
+import Notiflix from "notiflix";
 
 function ContactEdit() {
   const {artistState, artistActions} = React.useContext(ArtistContext);

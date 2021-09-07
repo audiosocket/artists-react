@@ -21,7 +21,7 @@ import help from '../../../../images/as-help.svg';
 import signout from '../../../../images/as-signout.svg';
 import artist from '../../../../images/as-artist.svg';
 import fetchArtistsList from "../../../../common/utlis/fetchArtistsList";
-import Notiflix from "notiflix-react";
+import Notiflix from "notiflix";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";

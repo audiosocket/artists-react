@@ -20,7 +20,7 @@ import fetchCollaborators from "../../../../common/utlis/fetchCollaborators";
 import fetchPublishers from "../../../../common/utlis/fetchPublishers";
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Tooltip from 'react-bootstrap/Tooltip'
-import Notiflix from "notiflix-react";
+import Notiflix from "notiflix";
 import Notes from "../../../../common/Notes/Notes";
 import BulkUpload from "./BulkUpload";
 
