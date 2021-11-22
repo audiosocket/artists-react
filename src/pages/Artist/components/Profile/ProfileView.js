@@ -43,17 +43,17 @@ function Profile() {
   }
 
   const handleCheckContact = () => {
-    if(!artist.country) {
-      Notiflix.Report.warning('Action required', 'Please complete your profile first!', 'Update Profile', () => {
-        history.push('/profile/edit')
+    if(!artist.contact_information) {
+      Notiflix.Report.warning('Action required', 'Please complete your contact information first!', 'Update Profile', () => {
+        history.push('/profile/contact/edit')
       });
     }
   }
 
   const fetchTaxForm = async () => {
-    if(artistState.artist && !artistState.artist.country) {
-      Notiflix.Report.warning('Action required', 'Please complete your profile first!', 'Update Profile', () => {
-        history.push('/profile/edit')
+    if(artistState.artist && !artistState.artist.contact_information.country) {
+      Notiflix.Report.warning('Action required', 'Please complete your contact information first!', 'Update Profile', () => {
+        history.push('/profile/contact/edit')
       });
       return false;
     }
