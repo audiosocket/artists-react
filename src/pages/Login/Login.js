@@ -9,7 +9,7 @@ import { AuthContext } from "../../Store/authContext";
 import {ACCESS_TOKEN, BASE_URL, SESSION} from "../../common/api";
 import Loader from "./../../images/loader.svg"
 import fetchAgreements from "../../common/utlis/fetchAgreements";
-import Notiflix from "notiflix-react";
+import Notiflix from "notiflix";
 
 function Login() {
   const { authActions } = React.useContext(AuthContext);
@@ -21,8 +21,7 @@ function Login() {
 
   useEffect(() => {
     if(localStorage.getItem('user')) {
-      //Notiflix.Report.Success('Already Logged In','Log out first to switch account.','Proceed', () => {history.push('/')});
-      Notiflix.Confirm.Show(
+      Notiflix.Confirm.show(
         'Already Logged In',
         'Do you want to log out?',
         'Yes',
@@ -85,7 +84,7 @@ function Login() {
         }
         e.target.reset();
       } else {
-        Notiflix.Notify.Failure('Invalid email/password, try again!');
+        Notiflix.Notify.failure('Invalid email/password, try again!');
       }
       setIsLoading(false);
     }

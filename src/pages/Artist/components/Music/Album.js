@@ -20,7 +20,7 @@ import fetchCollaborators from "../../../../common/utlis/fetchCollaborators";
 import fetchPublishers from "../../../../common/utlis/fetchPublishers";
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Tooltip from 'react-bootstrap/Tooltip'
-import Notiflix from "notiflix-react";
+import Notiflix from "notiflix";
 import Notes from "../../../../common/Notes/Notes";
 import BulkUpload from "./BulkUpload";
 
@@ -54,7 +54,7 @@ function Album({id = null}) {
         setAlbum(filteredAlbum[0]);
       else {
         history.push('/music');
-        Notiflix.Report.Failure( 'Invalid album', `Album doesn't exist`, 'Ok');
+        Notiflix.Report.failure( 'Invalid album', `Album doesn't exist`, 'Ok');
       }
       if(filteredAlbum.length > 0 && filteredAlbum[0].tracks.length) {
         const isDeletable = filteredAlbum[0].tracks.filter(track => (track.status === "unclassified" || track.status === "accepted"));
@@ -132,11 +132,11 @@ function Album({id = null}) {
           total_share += parseFloat(data.get(`collaborator_share_${selectedCollaborators[i].value}`));
         }
         if(total_share !== 100) {
-          Notiflix.Report.Warning( 'Invalid Collaborators Share', `Your collective share of all writers / collaborators is ${total_share}%, it must be 100% to proceed. Please update and try again!`, 'Ok' );
+          Notiflix.Report.warning( 'Invalid Collaborators Share', `Your collective share of all writers / collaborators is ${total_share}%, it must be 100% to proceed. Please update and try again!`, 'Ok' );
           return false;
         }
       } else {
-        Notiflix.Report.Failure( 'Request failed', `Track without writer/collaborator can't be ${isSubmitting ? 'submitted for classification' : 'added'}.`, 'Ok' );
+        Notiflix.Report.failure( 'Request failed', `Track without writer/collaborator can't be ${isSubmitting ? 'submitted for classification' : 'added'}.`, 'Ok' );
         setIsSubmitting(false);
         return false;
       }
@@ -148,7 +148,7 @@ function Album({id = null}) {
           total_share += parseFloat(data.get(`publisher_share_${selectedPublishers[i].value}`));
         }
         if(total_share !== 100) {
-          Notiflix.Report.Warning( 'Invalid Publishers Share', `Your collective share of all publishers is ${total_share}%, it must be 100% to proceed. Please update and try again!`, 'Ok' );
+          Notiflix.Report.warning( 'Invalid Publishers Share', `Your collective share of all publishers is ${total_share}%, it must be 100% to proceed. Please update and try again!`, 'Ok' );
           return false;
         }
       } else {
@@ -192,9 +192,9 @@ function Album({id = null}) {
         const results = await response.json();
         if (!response.ok) {
           if(results.message) {
-            Notiflix.Notify.Failure(results.message + ' Please make sure to upload music files (WAV or AIFF) at 16bit or 24bit, at 48K.');
+            Notiflix.Notify.failure(results.message + ' Please make sure to upload music files (WAV or AIFF) at 16bit or 24bit, at 48K.');
           } else {
-            Notiflix.Notify.Failure('Something went wrong, try later!');
+            Notiflix.Notify.failure('Something went wrong, try later!');
           }
         } else {
           const albums = await fetchAlbums(userRole === "collaborator" && artist_id);
@@ -204,12 +204,12 @@ function Album({id = null}) {
           handleClose();
           e.target.reset();
           let message = isSubmitting ? "Track submitted for classification successfully" : `${selectedTrack ? "Track updated successfully" : "Track added to your album successfully"}`
-          Notiflix.Report.Success( 'Request fulfilled', message, 'Ok' );
+          Notiflix.Report.success( 'Request fulfilled', message, 'Ok' );
         }
       } catch (e) {
         setIsSubmitting(false);
         setIsLoading(false);
-        Notiflix.Notify.Failure('Something went wrong, try later!');
+        Notiflix.Notify.failure('Something went wrong, try later!');
       }
       setIsSubmitting(false);
       setIsLoading(false);
@@ -218,7 +218,7 @@ function Album({id = null}) {
 
   const handleAlbumDelete = async (e) => {
     e.preventDefault();
-    Notiflix.Confirm.Show(
+    Notiflix.Confirm.show(
       'Please confirm',
       `Are you sure to delete album "${album.name}"?`,
       'Yes',
@@ -242,21 +242,21 @@ function Album({id = null}) {
             method: "DELETE"
           });
         if (!response.ok) {
-          Notiflix.Notify.Failure('Something went wrong, try later!');
+          Notiflix.Notify.failure('Something went wrong, try later!');
           setIsDeleting(false);
         } else {
           const albums = await fetchAlbums(userRole === "collaborator" && artist_id);
           history.push(`/music`);
           artistActions.albumsStateChanged(albums);
           setIsDeleting(false);
-          Notiflix.Notify.Success('Album deleted successfully!');
+          Notiflix.Notify.success('Album deleted successfully!');
         }
       }
     );
   }
 
   const handleDeleteMusic = async (track) => {
-    Notiflix.Confirm.Show(
+    Notiflix.Confirm.show(
       'Please confirm',
       `Are you sure to delete track${track.title ? " "+track.title : ""}?`,
       'Yes',
@@ -279,13 +279,13 @@ function Album({id = null}) {
             method: "DELETE"
           });
         if (!response.ok) {
-          Notiflix.Notify.Failure('Something went wrong, try later!');
+          Notiflix.Notify.failure('Something went wrong, try later!');
         } else {
           const albums = await fetchAlbums(userRole === "collaborator" && artist_id);
           artistActions.albumsStateChanged(albums);
           const filteredAlbum = albums.filter(album => parseInt(album.id) === parseInt(id));
           setAlbum(filteredAlbum[0] ?? null)
-          Notiflix.Report.Success( 'Request fulfilled', `Track${track.title ? " "+track.title : ""} deleted successfully!`, 'Ok' );
+          Notiflix.Report.success( 'Request fulfilled', `Track${track.title ? " "+track.title : ""} deleted successfully!`, 'Ok' );
         }
       }
     );

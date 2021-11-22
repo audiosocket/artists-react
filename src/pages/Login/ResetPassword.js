@@ -8,7 +8,7 @@ import Button from 'react-bootstrap/Button';
 import {ACCESS_TOKEN, BASE_URL, RESET_PASSWORD} from "../../common/api";
 import Loader from "./../../images/loader.svg"
 import Back from "../../images/back.svg";
-import Notiflix from "notiflix-react";
+import Notiflix from "notiflix";
 
 function ResetPassword({userHash = ''}) {
   const history = useHistory();
@@ -19,7 +19,7 @@ function ResetPassword({userHash = ''}) {
 
   useEffect(() => {
     if(localStorage.getItem('user')) {
-      Notiflix.Confirm.Show(
+      Notiflix.Confirm.show(
         'Already Logged In',
         'Do you want to log out?',
         'Yes',
@@ -34,7 +34,7 @@ function ResetPassword({userHash = ''}) {
       );
     }
     if(!userHash) {
-      Notiflix.Report.Failure( 'Error', `Link expired, contact support or login to proceed.`, 'Ok', () => {
+      Notiflix.Report.failure( 'Error', `Link expired, contact support or login to proceed.`, 'Ok', () => {
         history.push('/login')
       } );
     }
@@ -61,11 +61,11 @@ function ResetPassword({userHash = ''}) {
         });
       if(response.ok) {
         e.target.reset();
-        Notiflix.Report.Success( 'Success', `Password updated, login to proceed!`, 'Login', () => {
+        Notiflix.Report.success( 'Success', `Password updated, login to proceed!`, 'Login', () => {
           history.push('/login')
         } );
       } else {
-        Notiflix.Report.Failure( 'Error', `Link broken or not valid!`, 'Ok', () => {
+        Notiflix.Report.failure( 'Error', `Link broken or not valid!`, 'Ok', () => {
           history.push('/login')
         } );
       }

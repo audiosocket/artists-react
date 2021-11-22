@@ -10,7 +10,7 @@ import {NavLink, useHistory} from "react-router-dom";
 import {Breadcrumb} from "react-bootstrap";
 import Loader from "../../../../images/loader.svg";
 import Button from "react-bootstrap/Button";
-import Notiflix from "notiflix-react";
+import Notiflix from "notiflix";
 
 function AlbumArtwrok({id = null}) {
   const {artistState, artistActions} = React.useContext(ArtistContext);
@@ -28,7 +28,7 @@ function AlbumArtwrok({id = null}) {
         setAlbum(filteredAlbum[0]);
       else {
         history.push('/music');
-        Notiflix.Report.Failure( 'Invalid album', `Album doesn't exist`, 'Ok');
+        Notiflix.Report.failure( 'Invalid album', `Album doesn't exist`, 'Ok');
       }
     }
   }, [artistState.albums])
@@ -37,7 +37,7 @@ function AlbumArtwrok({id = null}) {
     e.preventDefault();
     const albumForm = e.currentTarget;
     if(!artwork) {
-      Notiflix.Report.Info( 'Select artwork', `Please select artwork image for your album before saving!`, 'Ok' );
+      Notiflix.Report.info( 'Select artwork', `Please select artwork image for your album before saving!`, 'Ok' );
     }
     if (albumForm.checkValidity() === false) {
       e.preventDefault();
@@ -68,11 +68,11 @@ function AlbumArtwrok({id = null}) {
           body: data
         });
       if (!response.ok) {
-        Notiflix.Notify.Failure('Something went wrong, try later!');
+        Notiflix.Notify.failure('Something went wrong, try later!');
       } else {
         const albums = await fetchAlbums(userRole === "collaborator" && artist_id);
         artistActions.albumsStateChanged(albums);
-        Notiflix.Notify.Success('Arwork updated successfully!');
+        Notiflix.Notify.success('Arwork updated successfully!');
         history.push(`/music/album/${id}`);
       }
       setIsLoading(false);
@@ -94,7 +94,7 @@ function AlbumArtwrok({id = null}) {
         let height = this.height;
         let width = this.width;
         if (width < 353 || height < 353) {
-          Notiflix.Report.Warning( 'Upload failed', `Artwork Image must be min 353px x 353px\nUploaded image is ${width}px x ${height}!`, 'Ok' );
+          Notiflix.Report.warning( 'Upload failed', `Artwork Image must be min 353px x 353px\nUploaded image is ${width}px x ${height}!`, 'Ok' );
           return false;
         } else {
           setArtwork(img)

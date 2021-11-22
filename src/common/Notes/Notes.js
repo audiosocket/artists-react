@@ -6,7 +6,7 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Loader from "../../images/loader.svg";
 import {ACCESS_TOKEN, BASE_URL, COLLABORATOR_NOTES, NOTES} from "../api";
-import Notiflix from "notiflix-react";
+import Notiflix from "notiflix";
 import Tooltip from "react-bootstrap/Tooltip";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import fetchNotes from "../utlis/fetchNotes";
@@ -66,10 +66,10 @@ function Notes(props) {
           body: data
         });
       if(response.ok) {
-        Notiflix.Notify.Success('Note added, your request will be proceed soon!');
+        Notiflix.Notify.success('Note added, your request will be proceed soon!');
         handleClose();
       } else {
-        Notiflix.Notify.Failure('Something went wrong, try again!');
+        Notiflix.Notify.failure('Something went wrong, try again!');
       }
       setIsAdding(false);
     }

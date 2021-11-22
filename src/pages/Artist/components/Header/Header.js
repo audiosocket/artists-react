@@ -21,7 +21,7 @@ import help from '../../../../images/as-help.svg';
 import signout from '../../../../images/as-signout.svg';
 import artist from '../../../../images/as-artist.svg';
 import fetchArtistsList from "../../../../common/utlis/fetchArtistsList";
-import Notiflix from "notiflix-react";
+import Notiflix from "notiflix";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
@@ -99,7 +99,7 @@ function Header({onToggleSidebar, onChangeIsActiveProfile, onChangeIsProfileComp
       if(!response.ok) {
         const resultSet = await response.json();
         if (resultSet.message.toLowerCase() === 'signature has expired') {
-          Notiflix.Report.Failure( 'Session expired', `Your session is timed out, please login again to continue.`, 'Login', () => {
+          Notiflix.Report.failure( 'Session expired', `Your session is timed out, please login again to continue.`, 'Login', () => {
             localStorage.removeItem("user");
             localStorage.removeItem("userRole");
             history.push('/login');
@@ -138,7 +138,7 @@ function Header({onToggleSidebar, onChangeIsActiveProfile, onChangeIsProfileComp
     const artist = await fetchArtist(artist_id);
     if(artist && artist.message) {
       if (artist.message.toLowerCase() === 'signature has expired') {
-        Notiflix.Report.Failure( 'Session expired', `Your session is timed out, please login again to continue.`, 'Login', () => {
+        Notiflix.Report.failure( 'Session expired', `Your session is timed out, please login again to continue.`, 'Login', () => {
           localStorage.removeItem("user");
           localStorage.removeItem("userRole");
           history.push('/login');
@@ -203,7 +203,7 @@ function Header({onToggleSidebar, onChangeIsActiveProfile, onChangeIsProfileComp
       artistActions.selectedArtistStateChanged(selectedArtist);
       setSelectedArtist(selectedArtist);
     } else {
-      Notiflix.Report.Warning( 'Not authorized', `You can't access ${selectedArtist.name}'s portal without accepting their invite!`, 'Go to invites', () => {
+      Notiflix.Report.warning( 'Not authorized', `You can't access ${selectedArtist.name}'s portal without accepting their invite!`, 'Go to invites', () => {
         history.push('/invites');
       } );
       return false;
@@ -221,10 +221,10 @@ function Header({onToggleSidebar, onChangeIsActiveProfile, onChangeIsProfileComp
 
   const handleChooseArtist = () => {
     if(!selectedArtist) {
-      Notiflix.Report.Warning('No artist selected', 'Please choose artist first before confirming!', 'Ok');
+      Notiflix.Report.warning('No artist selected', 'Please choose artist first before confirming!', 'Ok');
     } else {
       if(selectedArtist.status !== 'accepted') {
-        Notiflix.Report.Failure('Not authorized', `You can't access ${selectedArtist.name}'s portal without accepting their invite!. You may choose another artist (if any).`, 'Ok');
+        Notiflix.Report.failure('Not authorized', `You can't access ${selectedArtist.name}'s portal without accepting their invite!. You may choose another artist (if any).`, 'Ok');
       } else
         handleClose();
     }
@@ -247,7 +247,7 @@ function Header({onToggleSidebar, onChangeIsActiveProfile, onChangeIsProfileComp
         body: data
       });
     if(!response.ok) {
-      Notiflix.Notify.Failure('Something went wrong, try later!');
+      Notiflix.Notify.failure('Something went wrong, try later!');
     } else {
       const artistsList = await fetchArtistsList();
       artistActions.artistsListStateChanged(artistsList);
@@ -255,7 +255,7 @@ function Header({onToggleSidebar, onChangeIsActiveProfile, onChangeIsProfileComp
       const tmpSelected = artistsList.filter((artist) => artist.id === selectedArtist.id);
       setSelectedArtist(tmpSelected[0] || null);
       artistActions.selectedArtistStateChanged(tmpSelected[0] || null)
-      Notiflix.Notify.Success('Your invite status updated successfully!');
+      Notiflix.Notify.success('Your invite status updated successfully!');
     }
     setIsLoading(false);
   }

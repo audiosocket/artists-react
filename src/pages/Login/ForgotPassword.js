@@ -8,7 +8,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import {ACCESS_TOKEN, BASE_URL, FORGOT_PASSWORD} from "../../common/api";
 import Loader from "./../../images/loader.svg"
-import Notiflix from "notiflix-react";
+import Notiflix from "notiflix";
 
 function ForgotPassword() {
   const history = useHistory();
@@ -18,7 +18,7 @@ function ForgotPassword() {
 
   useEffect(() => {
     if(localStorage.getItem('user')) {
-      Notiflix.Confirm.Show(
+      Notiflix.Confirm.show(
         'Already Logged In',
         'Do you want to log out?',
         'Yes',
@@ -54,12 +54,12 @@ function ForgotPassword() {
           body: data
         });
       if(response.ok) {
-        Notiflix.Report.Success( 'Success', `Password reset link sent to ${data.get('email')}!`, 'Ok', () => {
+        Notiflix.Report.success( 'Success', `Password reset link sent to ${data.get('email')}!`, 'Ok', () => {
           history.push('/login')
         } );
         e.target.reset();
       } else {
-        Notiflix.Report.Failure( 'Invalid user', `User "${data.get('email')}" doesn't exist, please enter a valid email address.`, 'Ok' );
+        Notiflix.Report.failure( 'Invalid user', `User "${data.get('email')}" doesn't exist, please enter a valid email address.`, 'Ok' );
       }
       setIsLoading(false);
     }

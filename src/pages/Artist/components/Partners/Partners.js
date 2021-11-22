@@ -22,7 +22,7 @@ import fetchPublishers from "../../../../common/utlis/fetchPublishers";
 import Edit from "../../../../images/pencil.svg";
 import Delete from "../../../../images/delete.svg";
 import Resend from "../../../../images/invitation.svg";
-import Notiflix from "notiflix-react";
+import Notiflix from "notiflix";
 import ArrowRight from "../../../../images/right-arrow.svg";
 import fetchArtistsList from "../../../../common/utlis/fetchArtistsList";
 import Tooltip from "react-bootstrap/Tooltip";
@@ -111,12 +111,12 @@ function Partners() {
       const collaborators = await response.json();
       if(!response.ok) {
         if(collaborators.message) {
-          Notiflix.Notify.Failure(collaborators.message);
+          Notiflix.Notify.failure(collaborators.message);
         } else {
-          Notiflix.Notify.Failure('Something went wrong, try later!');
+          Notiflix.Notify.failure('Something went wrong, try later!');
         }
       } else {
-        Notiflix.Notify.Success(`Collaborator ${selectedPartner ? 'updated' : 'created'} successfully!`);
+        Notiflix.Notify.success(`Collaborator ${selectedPartner ? 'updated' : 'created'} successfully!`);
         setCollaborators(collaborators.length ? collaborators : []);
         artistActions.collaboratorsStateChanged(collaborators.length ? collaborators : null);
         handleClose();
@@ -167,9 +167,9 @@ function Partners() {
         });
       const publishers = await response.json();
       if(!response.ok) {
-        Notiflix.Notify.Failure('Something went wrong, try later!');
+        Notiflix.Notify.failure('Something went wrong, try later!');
       } else {
-        Notiflix.Notify.Success(`Publisher ${selectedPartner ? 'updated' : 'created'} successfully!`);
+        Notiflix.Notify.success(`Publisher ${selectedPartner ? 'updated' : 'created'} successfully!`);
         setPublishers(publishers.length ? publishers : []);
         artistActions.publishersStateChanged(publishers.length ? publishers : null);
         handleClose();
@@ -232,7 +232,7 @@ function Partners() {
   }
 
   const handleDeleteCollaborator = async (e, collaborator) => {
-    Notiflix.Confirm.Show(
+    Notiflix.Confirm.show(
       'Please confirm',
       `Are you sure to delete collaborator "${collaborator.first_name} ${collaborator.last_name ?? ''}"?`,
       'Yes',
@@ -256,9 +256,9 @@ function Partners() {
           });
         const results = await response.json();
         if (!response.ok) {
-          Notiflix.Notify.Failure(results.message);
+          Notiflix.Notify.failure(results.message);
         } else {
-          Notiflix.Notify.Success(`Collaborator "${collaborator.first_name} ${collaborator.last_name ?? ''}" deleted successfully!`);
+          Notiflix.Notify.success(`Collaborator "${collaborator.first_name} ${collaborator.last_name ?? ''}" deleted successfully!`);
           const collaborators = await fetchCollaborators(userRole === "collaborator" && artist_id);
           if(userRole === "collaborator" && collaborators === "Not accessible") {
             artistActions.selectedArtistStateChanged(null);
@@ -276,7 +276,7 @@ function Partners() {
   }
 
   const handleDeletePublisher = async (e, publisher) => {
-    Notiflix.Confirm.Show(
+    Notiflix.Confirm.show(
       'Please confirm',
       `Are you sure to delete publisher "${publisher.name}"?`,
       'Yes',
@@ -300,9 +300,9 @@ function Partners() {
           });
         const results = await response.json();
         if (!response.ok) {
-          Notiflix.Notify.Failure(results.message);
+          Notiflix.Notify.failure(results.message);
         } else {
-          Notiflix.Notify.Success(`Publisher "${publisher.name}" deleted successfully!`);
+          Notiflix.Notify.success(`Publisher "${publisher.name}" deleted successfully!`);
           const publishers = await fetchPublishers(userRole === "collaborator" && artist_id);
           artistActions.publishersStateChanged(publishers);
           setPublishers(publishers);
@@ -327,7 +327,7 @@ function Partners() {
   }
 
   const handleFollowUpEmail = async (e, collaborator) => {
-    Notiflix.Confirm.Show(
+    Notiflix.Confirm.show(
       'Please confirm',
       `Are you sure to send a follow up to "${collaborator.first_name} ${collaborator.last_name ?? ''}"?`,
       'Yes',
@@ -350,9 +350,9 @@ function Partners() {
             method: "PATCH"
           });
         if (!response.ok) {
-          Notiflix.Notify.Failure("Something went wrong, try later!");
+          Notiflix.Notify.failure("Something went wrong, try later!");
         } else {
-          Notiflix.Notify.Success(`Follow up email sent successfully!`);
+          Notiflix.Notify.success(`Follow up email sent successfully!`);
         }
       }
     );

@@ -3,7 +3,7 @@ import "./Welcome.scss";
 import {NavLink} from "react-router-dom";
 import ArrowRight from "../../../../images/right-arrow.svg";
 import {ACCESS_TOKEN, WELCOME_CONTENT, BASE_URL} from "../../../../common/api";
-import Notiflix from "notiflix-react";
+import Notiflix from "notiflix";
 import Loader from "../../../../images/loader.svg";
 import {ArtistContext} from "../../../../Store/artistContext";
 
@@ -33,7 +33,7 @@ function Welcome() {
       });
     if (!response.ok) {
       setMetadata(null);
-      Notiflix.Notify.Failure("Can't connect to server, try later!");
+      Notiflix.Notify.failure("Can't connect to server, try later!");
     } else {
       const resultSet = await response.json();
       if(resultSet['content']) {

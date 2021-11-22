@@ -15,7 +15,7 @@ import {
 import csc from 'country-state-city'
 import Select from 'react-select'
 import Breadcrumb from "react-bootstrap/Breadcrumb";
-import Notiflix from "notiflix-react";
+import Notiflix from "notiflix";
 
 function ContactEdit() {
   const {artistState, artistActions} = React.useContext(ArtistContext);
@@ -44,7 +44,7 @@ function ContactEdit() {
     if(artistState.artist) {
       setIsLoading(false);
       if(Object.keys(artistState.artist).length <= 1) {
-        Notiflix.Report.Failure( 'Not accessible', `You don't have access to profile!`, 'Ok', () => {
+        Notiflix.Report.failure( 'Not accessible', `You don't have access to profile!`, 'Ok', () => {
           history.push("/");
         } );
       }
@@ -121,11 +121,11 @@ function ContactEdit() {
         });
       const artist = await response.json();
       if(!response.ok) {
-        Notiflix.Notify.Failure('Something went wrong, try later!');
+        Notiflix.Notify.failure('Something went wrong, try later!');
       } else {
         setArtist(artist);
         artistActions.artistStateChanged(artist);
-        Notiflix.Notify.Success('Contact information updated!');
+        Notiflix.Notify.success('Contact information updated!');
         history.push('/profile');
       }
       setIsLoading(false);

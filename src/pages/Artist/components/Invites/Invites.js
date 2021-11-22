@@ -8,7 +8,7 @@ import {NavLink} from "react-router-dom";
 import fetchArtistsList from "../../../../common/utlis/fetchArtistsList";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import ArrowRight from "../../../../images/right-arrow.svg";
-import Notiflix from "notiflix-react";
+import Notiflix from "notiflix";
 
 function Invites() {
   const {artistState, artistActions} = React.useContext(ArtistContext);
@@ -43,7 +43,7 @@ function Invites() {
         body: data
       });
     if(!response.ok) {
-      Notiflix.Notify.Failure('Something went wrong, try later!');
+      Notiflix.Notify.failure('Something went wrong, try later!');
     } else {
       const artistsList = await fetchArtistsList();
       artistActions.artistsListStateChanged(artistsList);
@@ -53,7 +53,7 @@ function Invites() {
         artistActions.selectedArtistStateChanged(tmpSelectedArtist);
       }
       setArtistsList(artistsList);
-      Notiflix.Report.Success( 'Request fulfilled', `Your invite status updated successfully!`, 'Ok' );
+      Notiflix.Report.success( 'Request fulfilled', `Your invite status updated successfully!`, 'Ok' );
     }
     setIsLoading(false);
   }

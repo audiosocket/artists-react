@@ -4,7 +4,7 @@ import {ArtistContext} from "../../../../Store/artistContext";
 import Loader from "../../../../images/loader.svg";
 import {NavLink, useHistory} from "react-router-dom";
 import Breadcrumb from "react-bootstrap/Breadcrumb";
-import Notiflix from "notiflix-react";
+import Notiflix from "notiflix";
 import ArrowRight from "../../../../images/right-arrow.svg";
 import Waiting from "../../../../images/waiting.svg";
 import Check from "../../../../images/check-solid.svg";
@@ -25,7 +25,7 @@ function Profile() {
     if(artistState.artist) {
       setIsLoading(false);
       if(Object.keys(artistState.artist).length <= 1) {
-        Notiflix.Report.Failure( 'Not accessible', `You don't have access to profile!`, 'Ok', () => {
+        Notiflix.Report.failure( 'Not accessible', `You don't have access to profile!`, 'Ok', () => {
           history.push("/");
         } );
       }
@@ -37,14 +37,14 @@ function Profile() {
   const handleNext = () => {
     if(artist) {
       if(!artist.banner_image || !artist.profile_image || !artist.contact_information || !artist.payment_information || !artist.tax_information) {
-        Notiflix.Notify.Failure('You must complete artist profile to unlock Partners page');
+        Notiflix.Notify.failure('You must complete artist profile to unlock Partners page');
       }
     }
   }
 
   const handleCheckContact = () => {
     if(!artist.country) {
-      Notiflix.Report.Warning('Action required', 'Please complete your profile first!', 'Update Profile', () => {
+      Notiflix.Report.warning('Action required', 'Please complete your profile first!', 'Update Profile', () => {
         history.push('/profile/edit')
       });
     }
@@ -52,7 +52,7 @@ function Profile() {
 
   const fetchTaxForm = async () => {
     if(artistState.artist && !artistState.artist.country) {
-      Notiflix.Report.Warning('Action required', 'Please complete your profile first!', 'Update Profile', () => {
+      Notiflix.Report.warning('Action required', 'Please complete your profile first!', 'Update Profile', () => {
         history.push('/profile/edit')
       });
       return false;
@@ -72,7 +72,7 @@ function Profile() {
       });
     const resultSet = await response.json();
     if (!response.ok) {
-      Notiflix.Notify.Failure('System has encountered an error while fetching tax form, try later!');
+      Notiflix.Notify.failure('System has encountered an error while fetching tax form, try later!');
     } else {
       setTaxForm(resultSet.url || null);
       if(resultSet.url)
