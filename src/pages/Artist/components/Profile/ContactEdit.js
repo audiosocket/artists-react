@@ -211,7 +211,10 @@ function ContactEdit() {
     const list = []
     list.push({label: "Select State", value: null, countryCode: null});
     states.forEach((state, key) => {
-      list.push({label: state.name, value: state.name, countryCode: state.countryCode, stateCode: state.isoCode})
+      const availableCities = csc.getCitiesOfState(state.countryCode, state.isoCode)
+      if (availableCities.length > 0) {
+        list.push({label: state.name, value: state.name, countryCode: state.countryCode, stateCode: state.isoCode})
+      }
     });
     setStatesList(list);
   }
@@ -312,6 +315,7 @@ function ContactEdit() {
                   <Form.Label>Country*</Form.Label>
                 </Col>
                 <Col xl={4} md={8}>
+                  
                   <Select
                     ref={countryRef}
                     placeholder="Select Country"
@@ -337,6 +341,7 @@ function ContactEdit() {
                 </Col>
               </Row>
               <Row>
+                
                 <Col xl={2} md={4}>
                   <Form.Label>State*</Form.Label>
                 </Col>
@@ -366,6 +371,7 @@ function ContactEdit() {
                 </Col>
               </Row>
               <Row>
+                
                 <Col xl={2} md={4}>
                   <Form.Label>City*</Form.Label>
                 </Col>
