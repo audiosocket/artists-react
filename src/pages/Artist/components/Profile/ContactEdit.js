@@ -156,7 +156,7 @@ function ContactEdit() {
 
     countries.forEach((country, key) => {
       const availableStates = csc.getStatesOfCountry(country.isoCode)
-      if (availableStates.length > 0 && country.isoCode !== 'US') {
+      if (availableStates.length > 0 && country.isoCode !== 'US' && country.isoCode !== 'XK') {
         list.push({label: country.name, value: country.name, countryCode: country.isoCode})
       }
     });
