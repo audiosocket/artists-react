@@ -51,7 +51,7 @@ function Profile() {
   }
 
   const fetchTaxForm = async () => {
-    if(artistState.artist && !artistState.artist.contact_information.country) {
+    if(artistState.artist && !artistState.artist.contact_information) {
       Notiflix.Report.warning('Action required', 'Please complete your contact information first!', 'Update Profile', () => {
         history.push('/profile/contact/edit')
       });
