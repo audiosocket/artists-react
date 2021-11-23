@@ -153,9 +153,12 @@ function ContactEdit() {
     const list = [];
     list.push({label: "Select Country", value: null, countryCode: null});
     list.push({label: "United States", value: "United States", countryCode: "US"});
+
     countries.forEach((country, key) => {
-      if(country.isoCode !== 'US')
+      const availableStates = csc.getStatesOfCountry(country.isoCode)
+      if (availableStates.length > 0 && country.isoCode !== 'US') {
         list.push({label: country.name, value: country.name, countryCode: country.isoCode})
+      }
     });
     setCountriesList(list);
     artistActions.countriesStateChanged(list);

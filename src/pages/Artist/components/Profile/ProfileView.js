@@ -321,7 +321,7 @@ function Profile() {
                 {artist.payment_information
                   ?
                   <>
-                    {artist.contact_information.country && artist.contact_information.country.toLowerCase() === 'united states' &&
+                    {artist.contact_information.country && artist.payment_information.account_number && artist.contact_information.country.toLowerCase() === 'united states' &&
                       <>
                         <span><small className="medium-text">Payee: </small>{artist.payment_information.payee_name}</span>
                         <span><small className="medium-text">Bank: </small>{artist.payment_information.bank_name}</span>
