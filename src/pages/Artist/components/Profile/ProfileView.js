@@ -43,17 +43,17 @@ function Profile() {
   }
 
   const handleCheckContact = () => {
-    if(!artist.country) {
-      Notiflix.Report.warning('Action required', 'Please complete your profile first!', 'Update Profile', () => {
-        history.push('/profile/edit')
+    if(!artist.contact_information) {
+      Notiflix.Report.warning('Action required', 'Please complete your contact information first!', 'Update Profile', () => {
+        history.push('/profile/contact/edit')
       });
     }
   }
 
   const fetchTaxForm = async () => {
-    if(artistState.artist && !artistState.artist.country) {
-      Notiflix.Report.warning('Action required', 'Please complete your profile first!', 'Update Profile', () => {
-        history.push('/profile/edit')
+    if(artistState.artist && !artistState.artist.contact_information) {
+      Notiflix.Report.warning('Action required', 'Please complete your contact information first!', 'Update Profile', () => {
+        history.push('/profile/contact/edit')
       });
       return false;
     }
@@ -310,7 +310,7 @@ function Profile() {
           <div className="section-head">
             <h2>Payment</h2>
             {(!artistState.selectedArtist || artistState.selectedArtist.access === 'write') &&
-              <NavLink onClick={handleCheckContact} to={artist.country ? "/profile/payment/edit" : "/profile"} className="btn primary-btn">Edit</NavLink>
+              <NavLink onClick={handleCheckContact} to={artist.contact_information ? "/profile/payment/edit" : "/profile"} className="btn primary-btn">Edit</NavLink>
             }
           </div>
           {Object.keys(artist).length === 0 && isLoading && <h5>Loading payment... <img className="loading" src={Loader} alt="loading-icon"/></h5>}
@@ -321,7 +321,7 @@ function Profile() {
                 {artist.payment_information
                   ?
                   <>
-                    {artist.country && artist.country.toLowerCase() === 'united states' &&
+                    {artist.contact_information.country && artist.payment_information.account_number && artist.contact_information.country.toLowerCase() === 'united states' &&
                       <>
                         <span><small className="medium-text">Payee: </small>{artist.payment_information.payee_name}</span>
                         <span><small className="medium-text">Bank: </small>{artist.payment_information.bank_name}</span>
@@ -329,7 +329,7 @@ function Profile() {
                         <span><small className="medium-text">Account#: </small>xxxxxx{artist.payment_information.account_number.substr(-4)}</span>
                       </>
                     }
-                    {artist.country && artist.country.toLowerCase() !== 'united states' &&
+                    {artist.contact_information.country && artist.contact_information.country.toLowerCase() !== 'united states' &&
                       <span><small className="medium-text">Paypal Email: </small><a href={"mailto:"+artist.payment_information.paypal_email}>{artist.payment_information.paypal_email}</a></span>
                     }
                   </>

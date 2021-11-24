@@ -144,7 +144,7 @@ function Payment() {
           {Object.keys(artist).length === 0 && isLoading && <h5>Loading profile... <img className="loading" src={Loader} alt="loading-icon"/></h5>}
           {Object.keys(artist).length !== 0 &&
           <Form noValidate validated={validated} ref={form} onSubmit={handleSubmit}>
-            {artist.country && artist.country.toLowerCase() === 'united states' &&
+            {artist.contact_information.country && artist.contact_information.country.toLowerCase() === 'united states' &&
               <>
               <Row>
                 <Col xl={2} md={4}>
@@ -221,7 +221,7 @@ function Payment() {
               </Row>
               </>
             }
-            {artist.country && artist.country.toLowerCase() !== 'united states' &&
+            {artist.contact_information.country && artist.contact_information.country.toLowerCase() !== 'united states' &&
               <Row>
                 <Col xl={2} md={4}>
                   <Form.Label>Paypal Email*</Form.Label>
