@@ -52,12 +52,14 @@ function ContactEdit() {
     } else
       setIsLoading(true);
 
-    if(!artistState.countries) {
-      prepareCountriesList();
-    }
-    else {
-      setCountriesList(artistState.countries)
-    }
+    prepareCountriesList();
+
+    // if(!artistState.countries) {
+    //   prepareCountriesList();
+    // }
+    // else {
+    //   setCountriesList(artistState.countries)
+    // }
     if(artistState.countries && artistState.artist.contact_information) {
       let states = prepareStatesDropdown();
       let cities = prepareCitiesDropdown();

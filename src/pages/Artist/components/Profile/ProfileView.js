@@ -318,7 +318,7 @@ function Profile() {
             <div className="parallel-info">
               <label>Payment Details</label>
               <div className="info-ans">
-                {artist.payment_information
+                {artist.payment_information && artist.contact_information
                   ?
                   <>
                     {artist.contact_information.country && artist.payment_information.account_number && artist.contact_information.country.toLowerCase() === 'united states' &&
