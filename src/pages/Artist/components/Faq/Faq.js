@@ -271,6 +271,16 @@ function Faq () {
 						</Card.Body>
 					</Accordion.Collapse>
 				</Card>
+				<Card>
+					<ContextAwareToggle eventKey="16">
+						Why have some tracks been rejected?
+					</ContextAwareToggle>
+					<Accordion.Collapse eventKey="16">
+						<Card.Body>
+							We're going to hold off on the tracks that have been rejected. We've become more selective with what we take on, adding music in sounds our clients are asking for. You can check out some of our recent work if it's helpful to see the types of songs we're placing. We still have access to these tracks and they'll be available for our consultation if a client is specifically looking for this sound, however this won't be available in our public player. We appreciate you thinking of us!
+						</Card.Body>
+					</Accordion.Collapse>
+				</Card>
 			</Accordion>
 			<h5 className="end-note"><strong>Have additional questions?</strong> Please email us at <a href="mailto:artists@audiosocket.com">artists@audiosocket.com</a> anytime!</h5>
 		</div>
