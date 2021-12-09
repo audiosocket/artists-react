@@ -640,9 +640,10 @@ function Album({id = null}) {
                   <Col xs={12}>
                     <div className="form-group">
                       <Form.Control
+                        required
                         name="lyrics"
                         defaultValue={selectedTrack ? selectedTrack.lyrics : ""}
-                        placeholder="Add track lyrics here... (optional)"
+                        placeholder="Write N/A if there is no lyrical content*"
                         as="textarea"
                         rows={4}
                       />
