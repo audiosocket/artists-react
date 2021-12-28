@@ -91,14 +91,12 @@ function ContactEdit() {
       setCountryError(true);
     if(!selectedState)
       setStateError(true);
-    if (!selectedCity)
-      setCityError(true);
     if (artistForm.checkValidity() === false) {
       e.preventDefault();
       e.stopPropagation();
       setValidated(true);
     } else {
-      if(!selectedCountry || !selectedState || !selectedCity)
+      if(!selectedCountry || !selectedState)
         return false;
       setIsLoading(true);
       const data = new FormData(form.current);
@@ -251,8 +249,6 @@ function ContactEdit() {
   const handleCitySelection = (target) => {
     if(target) {
       setSelectedCity(target.value)
-      if(target.value)
-        setCityError(false);
     }
     else
       setSelectedCity(null);
@@ -348,7 +344,7 @@ function ContactEdit() {
               <Row>
                 
                 <Col xl={2} md={4}>
-                  <Form.Label>State*</Form.Label>
+                  <Form.Label>State/County*</Form.Label>
                 </Col>
                 <Col xl={4} md={8}>
                   <Select
@@ -378,14 +374,13 @@ function ContactEdit() {
               <Row>
                 
                 <Col xl={2} md={4}>
-                  <Form.Label>City*</Form.Label>
+                  <Form.Label>City</Form.Label>
                 </Col>
                 <Col xl={4} md={8}>
                   <Select
                     ref={cityRef}
                     placeholder="Select City"
-                    className="city-select-container-header"
-                    classNamePrefix={!cityError ? "city-select-header" : "city-select-header invalid"}
+                    className="city-select-container-header city-select-header"
                     options={citiesList}
                     defaultValue={artist.contact_information && citiesList.filter(option => option.value === artist.contact_information.city)}
                     onChange={handleCitySelection}
@@ -398,11 +393,6 @@ function ContactEdit() {
                       },
                     })}
                   />
-                  {cityError &&
-                    <small className="error">
-                      City is required!
-                    </small>
-                  }
                 </Col>
               </Row>
               <Row>
