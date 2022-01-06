@@ -91,7 +91,7 @@ function Album({id = null}) {
       let tmp = [];
       for (let i = 0; i < collaborators.length; i++) {
         if(collaborators[i].first_name) {
-          tmp.push({label: collaborators[i].first_name +(collaborators[i].last_name ? ' '+collaborators[i].last_name : '') + ' - ' + collaborators[i].status ?? '', value: collaborators[i].id, status: collaborators[i].status, isDisabled: collaborators[i].status === 'accepted' ? false : true});
+          tmp.push({label: collaborators[i].first_name +(collaborators[i].last_name ? ' '+collaborators[i].last_name : '') + ' - ' + collaborators[i].status ?? '', value: collaborators[i].id, status: collaborators[i].status});
         }
       }
       setCollaboratorsDropdown(tmp);
@@ -102,6 +102,14 @@ function Album({id = null}) {
         if(publishers[i].name)
           tmp.push({label: publishers[i].name, value: publishers[i].id});
       }
+      console.log(tmp);
+      // tmp.push({label: "Leopona (Audiosocket)", value: 102, default: true});
+      tmp.forEach((ele) => {
+        if(ele.default) {
+          setSelectedPublishers([ele]);
+          // selectedPublishers.push(ele);
+        }
+      })
       setPublishersDropdown(tmp);
     }
   }
@@ -124,36 +132,6 @@ function Album({id = null}) {
       } else {
         data.delete('file');
       }
-      if(selectedCollaborators?.length > 0) {
-        let total_share = 0;
-        for(let i = 0; i < selectedCollaborators.length; i++) {
-          data.append('track_writers[][artists_collaborator_id]', selectedCollaborators[i].value);
-          data.append('track_writers[][percentage]', data.get(`collaborator_share_${selectedCollaborators[i].value}`));
-          total_share += parseFloat(data.get(`collaborator_share_${selectedCollaborators[i].value}`));
-        }
-        if(total_share !== 100) {
-          Notiflix.Report.warning( 'Invalid Collaborators Share', `Your collective share of all writers / collaborators is ${total_share}%, it must be 100% to proceed. Please update and try again!`, 'Ok' );
-          return false;
-        }
-      } else {
-        Notiflix.Report.failure( 'Request failed', `Track without writer/collaborator can't be ${isSubmitting ? 'submitted for classification' : 'added'}.`, 'Ok' );
-        setIsSubmitting(false);
-        return false;
-      }
-      if(selectedPublishers?.length > 0) {
-        let total_share = 0;
-        for(let i = 0; i < selectedPublishers.length; i++) {
-          data.append('track_publishers[][publisher_id]', selectedPublishers[i].value);
-          data.append('track_publishers[][percentage]', data.get(`publisher_share_${selectedPublishers[i].value}`));
-          total_share += parseFloat(data.get(`publisher_share_${selectedPublishers[i].value}`));
-        }
-        if(total_share !== 100) {
-          Notiflix.Report.warning( 'Invalid Publishers Share', `Your collective share of all publishers is ${total_share}%, it must be 100% to proceed. Please update and try again!`, 'Ok' );
-          return false;
-        }
-      } else {
-        data.append('track_publishers[]', []);
-      }
       if(data.get("explicit"))
         data.set("explicit", true);
       else
@@ -165,6 +143,40 @@ function Album({id = null}) {
         data.set("public_domain", false);
 
       if(isSubmitting) {
+        if(selectedCollaborators?.length > 0) {
+          let total_share = 0;
+          for(let i = 0; i < selectedCollaborators.length; i++) {
+            data.append('track_writers[][artists_collaborator_id]', selectedCollaborators[i].value);
+            data.append('track_writers[][percentage]', data.get(`collaborator_share_${selectedCollaborators[i].value}`));
+            total_share += parseFloat(data.get(`collaborator_share_${selectedCollaborators[i].value}`));
+          }
+          if(total_share !== 100) {
+            Notiflix.Report.warning( 'Invalid Collaborators Share', `Your collective share of all writers / collaborators is ${total_share}%, it must be 100% to proceed. Please update and try again!`, 'Ok' );
+            return false;
+          }
+          if(selectedCollaborators?.findIndex((e) => e.status == 'pending') > -1) {
+            Notiflix.Report.warning( 'Invalid Collaborators', 'Cannot submit for classification unless all Track Writers have accepted their invitation', 'Ok' );
+            return false;
+          }
+        } else {
+          Notiflix.Report.failure( 'Request failed', `Track without writer/collaborator can't be ${isSubmitting ? 'submitted for classification' : 'added'}.`, 'Ok' );
+          setIsSubmitting(false);
+          return false;
+        }
+        if(selectedPublishers?.length > 0) {
+          let total_share = 0;
+          for(let i = 0; i < selectedPublishers.length; i++) {
+            data.append('track_publishers[][publisher_id]', selectedPublishers[i].value);
+            data.append('track_publishers[][percentage]', data.get(`publisher_share_${selectedPublishers[i].value}`));
+            total_share += parseFloat(data.get(`publisher_share_${selectedPublishers[i].value}`));
+          }
+          if(total_share !== 100) {
+            Notiflix.Report.warning( 'Invalid Publishers Share', `Your collective share of all publishers is ${total_share}%, it must be 100% to proceed. Please update and try again!`, 'Ok' );
+            return false;
+          }
+        } else {
+          data.append('track_publishers[]', []);
+        }
         data.append('status', 'unclassified');
       } else {
         setIsLoading(true);
@@ -510,6 +522,7 @@ function Album({id = null}) {
         aria-labelledby="contained-modal-title-vcenter"
         centered
         className="customArtistModal closeOn"
+        backdrop="static"
       >
         <Form noValidate validated={validated} ref={form} onSubmit={handleSubmitMusic}>
           <Modal.Header closeButton>
@@ -607,7 +620,7 @@ function Album({id = null}) {
                         classNamePrefix="publisher-select-header react-select-popup"
                         options={publishersDropdown}
                         defaultValue={selectedPublishers}
-                        onChange={(target) => setSelectedPublishers(target)}
+                        onChange={(target) => {setSelectedPublishers(target)}}
                         maxMenuHeight={120}
                         theme={theme => ({
                           ...theme,
@@ -627,7 +640,7 @@ function Album({id = null}) {
                         <Col>
                           <Form.Group className="paraElements">
                             <Form.Label>{publisher.label.split(' - ')[0]}</Form.Label>
-                            <Form.Control required name={`publisher_share_${publisher.value}`} defaultValue={publisher.percentage} type="number" step="0.01" placeholder={`Percentage`}/>
+                            <Form.Control required name={`publisher_share_${publisher.value}`} defaultValue={ publisher.default ? '100' : publisher.percentage} type="number" step="0.01" placeholder={`Percentage`} min={publisher.default ? '50' : '0'}/>
                           </Form.Group>
                         </Col>
                       )})
@@ -640,7 +653,7 @@ function Album({id = null}) {
                   <Col xs={12}>
                     <div className="form-group">
                       <Form.Control
-                        required
+                        // required
                         name="lyrics"
                         defaultValue={selectedTrack ? selectedTrack.lyrics : ""}
                         placeholder="Write N/A if there is no lyrical content*"
@@ -687,10 +700,10 @@ function Album({id = null}) {
           </Modal.Body>
           <Modal.Footer>
             {!selectedTrack
-              ? <Button type="submit" className="btn primary-btn submit">{isLoading ? <>Adding...<img src={Loader} alt="icon"/></> : "Add Music"}</Button>
+              ? <Button type="submit" className="btn primary-btn submit">{isLoading ? <>Adding...<img src={Loader} alt="icon"/></> : "Save as Draft"}</Button>
               : <Button type="submit" className="btn primary-btn submit">{isLoading ? <>Saving...<img src={Loader} alt="icon"/></> : "Save"}</Button>
             }
-            <Button type="submit" onClick={handleClassification} className="as-tertiary-modal-btn submit">{isSubmitting ? <>Submitting...<img src={Loader} alt="icon"/></> : "Submit for Classification"}</Button>
+            <Button type="submit" onClick={handleClassification} className="as-tertiary-modal-btn submit" >{isSubmitting ? <>Submitting...<img src={Loader} alt="icon"/></> : "Submit for Classification"}</Button>
           </Modal.Footer>
         </Form>
       </Modal>
