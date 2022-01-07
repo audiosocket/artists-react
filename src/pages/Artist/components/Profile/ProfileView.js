@@ -306,7 +306,7 @@ function Profile() {
             <p>Please complete a W8 form using the link below.</p>
           </div>
         </div>
-        <div className="section-content">
+        {JSON.parse(localStorage.getItem("userRole")) !== "collaborator" && <div className="section-content">
           <div className="section-head">
             <h2>Payment</h2>
             {(!artistState.selectedArtist || artistState.selectedArtist.access === 'write') &&
@@ -339,8 +339,9 @@ function Profile() {
             </div>
           </div>
         </div>
+        }
       </section>
-      <section className="artist-section-control contact">
+      { JSON.parse(localStorage.getItem("userRole")) !== "collaborator" && <section className="artist-section-control contact">
         <div className="section-content">
           <div className="section-head">
             <h2>Tax</h2>
@@ -371,6 +372,7 @@ function Profile() {
           </div>
         </div>
       </section>
+      }
     </div>
   )
 }
