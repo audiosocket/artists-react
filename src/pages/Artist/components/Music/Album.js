@@ -143,6 +143,12 @@ function Album({id = null}) {
         data.set("public_domain", false);
 
       if(isSubmitting) {
+        if(data.get("lyrics") == "") {
+          document.getElementById("lyrical-content").style.background = 'none';
+          document.getElementById("lyrical-content").style.borderColor = 'none';
+          Notiflix.Report.warning( 'Lyrical Content', `Lyrical content can't be empty!`, 'Ok' );
+          return false;
+        }
         if(selectedCollaborators?.length > 0) {
           let total_share = 0;
           for(let i = 0; i < selectedCollaborators.length; i++) {
@@ -653,7 +659,7 @@ function Album({id = null}) {
                   <Col xs={12}>
                     <div className="form-group">
                       <Form.Control
-                        // required
+                        id="lyrical-content"
                         name="lyrics"
                         defaultValue={selectedTrack ? selectedTrack.lyrics : ""}
                         placeholder="Write N/A if there is no lyrical content*"
