@@ -522,7 +522,8 @@ function Partners() {
                         PRO is required!
                       </small>
                       }
-                      <small><strong>Note:</strong> if you're not registered with a PRO, please select NS from the dropdown (no society)</small>
+                      <small><strong>Note:</strong> if you're not registered with a PRO, please select NS from the dropdown (no society)</small><br />
+                      <small>All co-writers, publishers, labels and other right-holders must sign the agreement too</small>
                     </div>
                   </Col>
                   {pro === "other" &&
@@ -702,7 +703,8 @@ function Partners() {
                         PRO is required!
                       </small>
                       }
-                      <small><strong>Note:</strong> if you're not registered with a PRO, please select NS from the dropdown (no society)</small>
+                      <small><strong>Note:</strong> if you're not registered with a PRO, please select NS from the dropdown (no society)</small><br />
+                      <small>All co-writers, publishers, labels and other right-holders must sign the agreement too</small>
                     </div>
                   </Col>
                   {pro === "other" &&
