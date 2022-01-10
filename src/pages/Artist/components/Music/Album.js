@@ -147,6 +147,7 @@ function Album({id = null}) {
           document.getElementById("lyrical-content").style.background = 'none';
           document.getElementById("lyrical-content").style.borderColor = 'none';
           Notiflix.Report.warning( 'Lyrical Content', `Lyrical content can't be empty!`, 'Ok' );
+          setIsSubmitting(false);
           return false;
         }
         if(selectedCollaborators?.length > 0) {
@@ -158,10 +159,12 @@ function Album({id = null}) {
           }
           if(total_share !== 100) {
             Notiflix.Report.warning( 'Invalid Collaborators Share', `Your collective share of all writers / collaborators is ${total_share}%, it must be 100% to proceed. Please update and try again!`, 'Ok' );
+            setIsSubmitting(false);
             return false;
           }
           if(selectedCollaborators?.findIndex((e) => e.status == 'pending') > -1) {
             Notiflix.Report.warning( 'Invalid Collaborators', 'Cannot submit for classification unless all Track Writers have accepted their invitation', 'Ok' );
+            setIsSubmitting(false);
             return false;
           }
         } else {
