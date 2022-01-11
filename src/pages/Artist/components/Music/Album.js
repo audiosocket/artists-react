@@ -145,7 +145,7 @@ function Album({id = null}) {
       if(isSubmitting) {
         if(data.get("lyrics") == "") {
           document.getElementById("lyrical-content").style.background = 'none';
-          document.getElementById("lyrical-content").style.borderColor = 'none';
+          document.getElementById("lyrical-content").style.borderColor = '#dc3545';
           Notiflix.Report.warning( 'Lyrical Content', `Lyrical content can't be empty!`, 'Ok' );
           setIsSubmitting(false);
           return false;
