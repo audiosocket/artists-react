@@ -100,14 +100,11 @@ function Album({id = null}) {
       let tmp = [];
       for (let i = 0; i < publishers.length; i++) {
         if(publishers[i].name)
-          tmp.push({label: publishers[i].name, value: publishers[i].id});
+          tmp.push({label: publishers[i].name, value: publishers[i].id, default: publishers[i].default_publisher});
       }
-      console.log(tmp);
-      // tmp.push({label: "Leopona (Audiosocket)", value: 102, default: true});
       tmp.forEach((ele) => {
         if(ele.default) {
           setSelectedPublishers([ele]);
-          // selectedPublishers.push(ele);
         }
       })
       setPublishersDropdown(tmp);

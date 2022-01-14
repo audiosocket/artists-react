@@ -139,11 +139,14 @@ function Partners() {
     } else {
       const data = new FormData(form.current);
       if(pro) {
-        if(pro !== "other")
-          data.append('pro', pro);
+        let publisher_users_attributes = [];
         if(data.get('ipi'))
           if(!handleIPICharacterLimit(data.get('ipi')))
             return false
+        if(pro !== 'other') {
+          publisher_users_attributes.push({'pro': pro, 'ipi': data.get('ipi')});
+          data.append('publisher_users_attributes', JSON.stringify(publisher_users_attributes));
+        }
       } else {
         return false;
       }
