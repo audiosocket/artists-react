@@ -647,7 +647,7 @@ function Album({id = null}) {
                           <Form.Group className="paraElements">
                             <Form.Label>{publisher.label.split(' - ')[0]}</Form.Label>
                             <Form.Control required name={`publisher_share_${publisher.value}`} defaultValue={ publisher.default ? '100' : publisher.percentage} type="number" step="0.01" placeholder={`Percentage`} min={publisher.default ? '50' : '0'} onChange={(event) => {
-                              if(event.target.value < 50 && publisher.default) {
+                              if(event.target.value < 50 && event.target.value.length == 2 && publisher.default) {
                                 event.target.value = 50;
                               }
                             }}/>
