@@ -674,6 +674,7 @@ function Partners() {
                         required
                         name="name"
                         type="text"
+                        disabled={selectedPartner.default_publisher}
                         defaultValue={selectedPartner ? selectedPartner.name : ''}
                         placeholder="Publisher Name*"
                       />
