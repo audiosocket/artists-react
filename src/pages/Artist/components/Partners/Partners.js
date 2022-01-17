@@ -144,7 +144,10 @@ function Partners() {
           if(!handleIPICharacterLimit(data.get('ipi')))
             return false
         if(pro !== 'other') {
-          publisher_users_attributes.push({'pro': pro, 'ipi': data.get('ipi')});
+          if(selectedPartner)
+            publisher_users_attributes.push({'pro': pro, 'ipi': data.get('ipi'), id: selectedPartner.id});
+          else
+            publisher_users_attributes.push({'pro': pro, 'ipi': data.get('ipi')});
           data.append('publisher_users_attributes', JSON.stringify(publisher_users_attributes));
         }
       } else {
@@ -441,7 +444,7 @@ function Partners() {
                           {(!artistState.selectedArtist || artistState.selectedArtist.access === 'write') &&
                             <div className="partner-actions">
                               <img onClick={(e) => handelShowPublisherModal(e, publisher)} src={Edit} alt="edit-icon"/>
-                              <img onClick={(e) => handleDeletePublisher(e, publisher)} src={Delete} alt="delete-icon"/>
+                              {!publisher?.default_publisher && <img onClick={(e) => handleDeletePublisher(e, publisher)} src={Delete} alt="delete-icon"/>}
                             </div>
                           }
                         </li>
@@ -674,7 +677,7 @@ function Partners() {
                         required
                         name="name"
                         type="text"
-                        disabled={selectedPartner.default_publisher}
+                        disabled={selectedPartner?.default_publisher}
                         defaultValue={selectedPartner ? selectedPartner.name : ''}
                         placeholder="Publisher Name*"
                       />
