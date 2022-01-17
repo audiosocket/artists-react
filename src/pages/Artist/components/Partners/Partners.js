@@ -145,7 +145,7 @@ function Partners() {
             return false
         if(pro !== 'other') {
           if(selectedPartner)
-            publisher_users_attributes.push({'pro': pro, 'ipi': data.get('ipi'), id: selectedPartner.id});
+            publisher_users_attributes.push({'pro': pro, 'ipi': data.get('ipi'), id: selectedPartner.publisher_users[0].id});
           else
             publisher_users_attributes.push({'pro': pro, 'ipi': data.get('ipi')});
           data.append('publisher_users_attributes', JSON.stringify(publisher_users_attributes));
@@ -207,7 +207,7 @@ function Partners() {
       if(publisher.pro && PRO_LIST.filter(item => item.value === publisher.pro).length === 0) {
         setPro("other");
       } else {
-        setPro(publisher.pro ?? null);
+        setPro(publisher.publisher_users[0].pro ?? null);
       }
     }
     setShowCollaboratorModal(false);
@@ -694,7 +694,7 @@ function Partners() {
                         className="pro-select-container-header"
                         classNamePrefix={!proError ? "pro-select-header react-select-popup" : "pro-select-header react-select-popup invalid"}
                         options={PRO_LIST}
-                        defaultValue={selectedPartner ? selectedPartner.pro && PRO_LIST.filter(item => item.value === selectedPartner.pro).length === 0 ? {label: "Other", value: 'other'} : PRO_LIST.filter(item => item.value === selectedPartner.pro) : {label: "Select PRO", value: null}}
+                        defaultValue={selectedPartner ? selectedPartner.publisher_users[0].pro && PRO_LIST.filter(item => item.value === selectedPartner.publisher_users[0].pro).length === 0 ? {label: "Other", value: 'other'} : PRO_LIST.filter(item => item.value === selectedPartner.publisher_users[0].pro) : {label: "Select PRO", value: null}}
                         onChange={(target) => {setProError(false);setPro(target.value)}}
                         maxMenuHeight={140}
                         theme={theme => ({
@@ -721,7 +721,7 @@ function Partners() {
                         required
                         name="pro"
                         type="text"
-                        defaultValue={selectedPartner && selectedPartner.pro}
+                        defaultValue={selectedPartner && selectedPartner.publisher_users[0].pro}
                         placeholder="Enter your PRO name"
                       />
                       <Form.Control.Feedback type="invalid">
@@ -737,7 +737,7 @@ function Partners() {
                           required
                           name="ipi"
                           type="number"
-                          defaultValue={selectedPartner ? selectedPartner.ipi : ''}
+                          defaultValue={selectedPartner ? selectedPartner.publisher_users[0].ipi : ''}
                           placeholder="CAE/IPI #*"
                           onChange={(e) => handleIPICharacterLimit(e.target.value)}
                           className={ipiFlag ? "invalid" : ""}
