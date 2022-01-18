@@ -148,7 +148,7 @@ function Header({onToggleSidebar, onChangeIsActiveProfile, onChangeIsProfileComp
     }
     artistActions.artistStateChanged(artist);
     if(artist) {
-      if(!artist.banner_image || !artist.profile_image || !artist.contact_information || !artist.payment_information || !artist.tax_information) {
+      if(!artist.banner_image || !artist.profile_image || !artist.contact_information || !artist.payment_information) {
         artistActions.isProfileCompletedStateChanged(false);
         onChangeIsProfileCompleted(false);
       } else {

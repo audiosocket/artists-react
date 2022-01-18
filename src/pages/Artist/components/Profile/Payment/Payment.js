@@ -232,7 +232,7 @@ function Payment() {
                     name="paypal_email"
                     type="email"
                     defaultValue={artist.payment_information ? artist.payment_information.paypal_email : ""}
-                    placeholder="Paypam email"
+                    placeholder="Paypal email"
                   />
                   <Form.Control.Feedback type="invalid">
                     Paypal email is required!
