@@ -75,8 +75,8 @@ function ContactEdit() {
     if(artistState.artist && !artistState.artist.contact_information && form.current) {
       form.current.reset();
       countryRef.current.select.setValue({label: "Select Country", value: null, key: null});
-      stateRef.current.select.setValue({label: "Select State", value: null, countryCode: null});
-      cityRef.current.select.setValue({label: "Select State", value: null, countryCode: null});
+      stateRef.current.select.setValue({label: "Select State/County", value: null, countryCode: null});
+      cityRef.current.select.setValue({label: "Select State/County", value: null, countryCode: null});
       setSelectedCountry(null);
       setSelectedState(null);
       setSelectedCity(null);
@@ -91,14 +91,12 @@ function ContactEdit() {
       setCountryError(true);
     if(!selectedState)
       setStateError(true);
-    if (!selectedCity)
-      setCityError(true);
     if (artistForm.checkValidity() === false) {
       e.preventDefault();
       e.stopPropagation();
       setValidated(true);
     } else {
-      if(!selectedCountry || !selectedState || !selectedCity)
+      if(!selectedCountry || !selectedState)
         return false;
       setIsLoading(true);
       const data = new FormData(form.current);
@@ -170,7 +168,7 @@ function ContactEdit() {
     const filteredCountry = artistState.countries.filter(option => option.value === artistState.artist.contact_information.country);
     const states = csc.getStatesOfCountry(filteredCountry[0].countryCode)
     const list = []
-    list.push({label: "Select State", value: null, countryCode: null});
+    list.push({label: "Select State/County", value: null, countryCode: null});
     states.forEach((state, key) => {
       list.push({label: state.name, value: state.name, countryCode: state.countryCode, stateCode: state.isoCode})
     });
@@ -182,7 +180,7 @@ function ContactEdit() {
     const filteredCountry = artistState.countries.filter(option => option.value === artistState.artist.contact_information.country);
     const states = csc.getStatesOfCountry(filteredCountry[0].countryCode)
     const tempStateList = []
-    tempStateList.push({label: "Select State", value: null, countryCode: null});
+    tempStateList.push({label: "Select State/County", value: null, countryCode: null});
     states.forEach((state, key) => {
       tempStateList.push({label: state.name, value: state.name, countryCode: state.countryCode, stateCode: state.isoCode})
     });
@@ -214,7 +212,7 @@ function ContactEdit() {
     // prepare state select
     const states = csc.getStatesOfCountry(target.countryCode)
     const list = []
-    list.push({label: "Select State", value: null, countryCode: null});
+    list.push({label: "Select State/County", value: null, countryCode: null});
     states.forEach((state, key) => {
       const availableCities = csc.getCitiesOfState(state.countryCode, state.isoCode)
       if (availableCities.length > 0) {
@@ -251,8 +249,6 @@ function ContactEdit() {
   const handleCitySelection = (target) => {
     if(target) {
       setSelectedCity(target.value)
-      if(target.value)
-        setCityError(false);
     }
     else
       setSelectedCity(null);
@@ -348,12 +344,12 @@ function ContactEdit() {
               <Row>
                 
                 <Col xl={2} md={4}>
-                  <Form.Label>State*</Form.Label>
+                  <Form.Label>State/County*</Form.Label>
                 </Col>
                 <Col xl={4} md={8}>
                   <Select
                     ref={stateRef}
-                    placeholder="Select State"
+                    placeholder="Select State/County"
                     className="state-select-container-header"
                     classNamePrefix={!stateError ? "state-select-header" : "state-select-header invalid"}
                     options={statesList}
@@ -378,14 +374,13 @@ function ContactEdit() {
               <Row>
                 
                 <Col xl={2} md={4}>
-                  <Form.Label>City*</Form.Label>
+                  <Form.Label>City</Form.Label>
                 </Col>
                 <Col xl={4} md={8}>
                   <Select
                     ref={cityRef}
                     placeholder="Select City"
-                    className="city-select-container-header"
-                    classNamePrefix={!cityError ? "city-select-header" : "city-select-header invalid"}
+                    className="city-select-container-header city-select-header"
                     options={citiesList}
                     defaultValue={artist.contact_information && citiesList.filter(option => option.value === artist.contact_information.city)}
                     onChange={handleCitySelection}
@@ -398,11 +393,6 @@ function ContactEdit() {
                       },
                     })}
                   />
-                  {cityError &&
-                    <small className="error">
-                      City is required!
-                    </small>
-                  }
                 </Col>
               </Row>
               <Row>

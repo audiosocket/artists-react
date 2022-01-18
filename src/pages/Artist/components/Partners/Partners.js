@@ -139,11 +139,17 @@ function Partners() {
     } else {
       const data = new FormData(form.current);
       if(pro) {
-        if(pro !== "other")
-          data.append('pro', pro);
+        let publisher_users_attributes = [];
         if(data.get('ipi'))
           if(!handleIPICharacterLimit(data.get('ipi')))
             return false
+        if(pro !== 'other') {
+          if(selectedPartner)
+            publisher_users_attributes.push({'pro': pro, 'ipi': data.get('ipi'), id: selectedPartner.publisher_users[0].id});
+          else
+            publisher_users_attributes.push({'pro': pro, 'ipi': data.get('ipi')});
+          data.append('publisher_users_attributes', JSON.stringify(publisher_users_attributes));
+        }
       } else {
         return false;
       }
@@ -201,7 +207,7 @@ function Partners() {
       if(publisher.pro && PRO_LIST.filter(item => item.value === publisher.pro).length === 0) {
         setPro("other");
       } else {
-        setPro(publisher.pro ?? null);
+        setPro(publisher.publisher_users[0].pro ?? null);
       }
     }
     setShowCollaboratorModal(false);
@@ -438,7 +444,7 @@ function Partners() {
                           {(!artistState.selectedArtist || artistState.selectedArtist.access === 'write') &&
                             <div className="partner-actions">
                               <img onClick={(e) => handelShowPublisherModal(e, publisher)} src={Edit} alt="edit-icon"/>
-                              <img onClick={(e) => handleDeletePublisher(e, publisher)} src={Delete} alt="delete-icon"/>
+                              {!publisher?.default_publisher && <img onClick={(e) => handleDeletePublisher(e, publisher)} src={Delete} alt="delete-icon"/>}
                             </div>
                           }
                         </li>
@@ -522,7 +528,8 @@ function Partners() {
                         PRO is required!
                       </small>
                       }
-                      <small><strong>Note:</strong> if you're not registered with a PRO, please select NS from the dropdown (no society)</small>
+                      <small><strong>Note:</strong> if you're not registered with a PRO, please select NS from the dropdown (no society)</small><br />
+                      <small>All co-writers, publishers, labels and other right-holders must sign the agreement too</small>
                     </div>
                   </Col>
                   {pro === "other" &&
@@ -670,6 +677,7 @@ function Partners() {
                         required
                         name="name"
                         type="text"
+                        disabled={selectedPartner?.default_publisher}
                         defaultValue={selectedPartner ? selectedPartner.name : ''}
                         placeholder="Publisher Name*"
                       />
@@ -686,7 +694,7 @@ function Partners() {
                         className="pro-select-container-header"
                         classNamePrefix={!proError ? "pro-select-header react-select-popup" : "pro-select-header react-select-popup invalid"}
                         options={PRO_LIST}
-                        defaultValue={selectedPartner ? selectedPartner.pro && PRO_LIST.filter(item => item.value === selectedPartner.pro).length === 0 ? {label: "Other", value: 'other'} : PRO_LIST.filter(item => item.value === selectedPartner.pro) : {label: "Select PRO", value: null}}
+                        defaultValue={selectedPartner ? selectedPartner.publisher_users[0].pro && PRO_LIST.filter(item => item.value === selectedPartner.publisher_users[0].pro).length === 0 ? {label: "Other", value: 'other'} : PRO_LIST.filter(item => item.value === selectedPartner.publisher_users[0].pro) : {label: "Select PRO", value: null}}
                         onChange={(target) => {setProError(false);setPro(target.value)}}
                         maxMenuHeight={140}
                         theme={theme => ({
@@ -702,7 +710,8 @@ function Partners() {
                         PRO is required!
                       </small>
                       }
-                      <small><strong>Note:</strong> if you're not registered with a PRO, please select NS from the dropdown (no society)</small>
+                      <small><strong>Note:</strong> if you're not registered with a PRO, please select NS from the dropdown (no society)</small><br />
+                      <small>All co-writers, publishers, labels and other right-holders must sign the agreement too</small>
                     </div>
                   </Col>
                   {pro === "other" &&
@@ -712,7 +721,7 @@ function Partners() {
                         required
                         name="pro"
                         type="text"
-                        defaultValue={selectedPartner && selectedPartner.pro}
+                        defaultValue={selectedPartner && selectedPartner.publisher_users[0].pro}
                         placeholder="Enter your PRO name"
                       />
                       <Form.Control.Feedback type="invalid">
@@ -728,7 +737,7 @@ function Partners() {
                           required
                           name="ipi"
                           type="number"
-                          defaultValue={selectedPartner ? selectedPartner.ipi : ''}
+                          defaultValue={selectedPartner ? selectedPartner.publisher_users[0].ipi : ''}
                           placeholder="CAE/IPI #*"
                           onChange={(e) => handleIPICharacterLimit(e.target.value)}
                           className={ipiFlag ? "invalid" : ""}
