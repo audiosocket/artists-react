@@ -100,7 +100,7 @@ function Album({id = null}) {
       let tmp = [];
       for (let i = 0; i < publishers.length; i++) {
         if(publishers[i].name)
-          tmp.push({label: publishers[i].name, value: publishers[i].id, default: publishers[i].default_publisher});
+          tmp.push({label: publishers[i].name, value: publishers[i].id, default: publishers[i].default_publisher, isFixed: publishers[i].default_publisher});
       }
       tmp.forEach((ele) => {
         if(ele.default) {
@@ -110,6 +110,20 @@ function Album({id = null}) {
       setPublishersDropdown(tmp);
     }
   }
+
+  const styles = {
+    multiValue: (base, state) => {
+      return state.data.isFixed ? { ...base, backgroundColor: "#e6e6e6" } : base;
+    },
+    multiValueLabel: (base, state) => {
+      return state.data.isFixed
+        ? { ...base, color: "#333333", paddingRight: 6 }
+        : base;
+    },
+    multiValueRemove: (base, state) => {
+      return state.data.isFixed ? { ...base, display: "none" } : base;
+    }
+  };
 
   const handleSubmitMusic = async (e) => {
     e.preventDefault();
@@ -178,6 +192,7 @@ function Album({id = null}) {
           }
           if(total_share !== 100) {
             Notiflix.Report.warning( 'Invalid Publishers Share', `Your collective share of all publishers is ${total_share}%, it must be 100% to proceed. Please update and try again!`, 'Ok' );
+            setIsSubmitting(false);
             return false;
           }
         } else {
@@ -231,6 +246,7 @@ function Album({id = null}) {
       }
       setIsSubmitting(false);
       setIsLoading(false);
+      preparePartnersDropdown();
     }
   }
 
@@ -355,6 +371,11 @@ function Album({id = null}) {
   }
 
   const handleClassification = () => {
+    if(document.getElementById("lyrical-content").value == "") {
+      document.getElementById("lyrical-content").style.background = 'none';
+      document.getElementById("lyrical-content").style.borderColor = '#dc3545';
+      setIsSubmitting(false);
+    }
     setIsSubmitting(true);
   }
 
@@ -626,6 +647,7 @@ function Album({id = null}) {
                         classNamePrefix="publisher-select-header react-select-popup"
                         options={publishersDropdown}
                         defaultValue={selectedPublishers}
+                        styles={styles}
                         onChange={(target) => {setSelectedPublishers(target)}}
                         maxMenuHeight={120}
                         theme={theme => ({
