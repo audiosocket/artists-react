@@ -75,8 +75,8 @@ function ContactEdit() {
     if(artistState.artist && !artistState.artist.contact_information && form.current) {
       form.current.reset();
       countryRef.current.select.setValue({label: "Select Country", value: null, key: null});
-      stateRef.current.select.setValue({label: "Select State", value: null, countryCode: null});
-      cityRef.current.select.setValue({label: "Select State", value: null, countryCode: null});
+      stateRef.current.select.setValue({label: "Select State/County", value: null, countryCode: null});
+      cityRef.current.select.setValue({label: "Select State/County", value: null, countryCode: null});
       setSelectedCountry(null);
       setSelectedState(null);
       setSelectedCity(null);
@@ -168,7 +168,7 @@ function ContactEdit() {
     const filteredCountry = artistState.countries.filter(option => option.value === artistState.artist.contact_information.country);
     const states = csc.getStatesOfCountry(filteredCountry[0].countryCode)
     const list = []
-    list.push({label: "Select State", value: null, countryCode: null});
+    list.push({label: "Select State/County", value: null, countryCode: null});
     states.forEach((state, key) => {
       list.push({label: state.name, value: state.name, countryCode: state.countryCode, stateCode: state.isoCode})
     });
@@ -180,7 +180,7 @@ function ContactEdit() {
     const filteredCountry = artistState.countries.filter(option => option.value === artistState.artist.contact_information.country);
     const states = csc.getStatesOfCountry(filteredCountry[0].countryCode)
     const tempStateList = []
-    tempStateList.push({label: "Select State", value: null, countryCode: null});
+    tempStateList.push({label: "Select State/County", value: null, countryCode: null});
     states.forEach((state, key) => {
       tempStateList.push({label: state.name, value: state.name, countryCode: state.countryCode, stateCode: state.isoCode})
     });
@@ -212,7 +212,7 @@ function ContactEdit() {
     // prepare state select
     const states = csc.getStatesOfCountry(target.countryCode)
     const list = []
-    list.push({label: "Select State", value: null, countryCode: null});
+    list.push({label: "Select State/County", value: null, countryCode: null});
     states.forEach((state, key) => {
       const availableCities = csc.getCitiesOfState(state.countryCode, state.isoCode)
       if (availableCities.length > 0) {
@@ -349,7 +349,7 @@ function ContactEdit() {
                 <Col xl={4} md={8}>
                   <Select
                     ref={stateRef}
-                    placeholder="Select State"
+                    placeholder="Select State/County"
                     className="state-select-container-header"
                     classNamePrefix={!stateError ? "state-select-header" : "state-select-header invalid"}
                     options={statesList}
