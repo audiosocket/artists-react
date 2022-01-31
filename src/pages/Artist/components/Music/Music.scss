@@ -246,6 +246,19 @@
   }
 }
 
+.music-modal-container {
+  .custom-file {
+    & > .custom-file-label {
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      display: inline-block !important;
+      line-height: 33px !important;
+      padding-right: 130px;
+    }
+  }
+}
+
 /**************** Album styling *****************/
 .albumsWrapper {
   .loading {
