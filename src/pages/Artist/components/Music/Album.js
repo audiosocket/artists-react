@@ -384,7 +384,6 @@ function Album({id = null}) {
   const handleLyricalContent = (action) => {
     if (action === "yes") {
       document.getElementById("lyrical-content").style.display = 'block';
-      
     }
     else if (action === "no"){
       document.getElementById("lyrical-content").style.display = 'none';
@@ -714,7 +713,7 @@ function Album({id = null}) {
                         placeholder="Write lyrics here*"
                         as="textarea"
                         rows={4}
-                        style={{display: 'none'}}
+                        style={{display: (selectedTrack && selectedTrack.lyrics) ? 'block': 'none'}}
                       />
                     </div>
                   </Col>
