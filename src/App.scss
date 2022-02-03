@@ -217,6 +217,13 @@ a, .btn {
 
 .close-btn {
 	box-shadow: rgba(130, 138, 145, 0.5) 0px 0px 0px 1px;
+  &:hover {
+    text-decoration: none;
+    color: #fff;
+    border-color: #dc3545;
+    background-color: #dc3545;
+    box-shadow: none;
+  }
 }
 
 .error {

@@ -154,12 +154,14 @@ function Album({id = null}) {
         data.set("public_domain", false);
 
       if(isSubmitting) {
-        if(data.get("lyrics") == "") {
-          document.getElementById("lyrical-content").style.background = 'none';
-          document.getElementById("lyrical-content").style.borderColor = '#dc3545';
-          Notiflix.Report.warning( 'Lyrical Content', `Lyrical content can't be empty!`, 'Ok' );
-          setIsSubmitting(false);
-          return false;
+        if (document.getElementById("lyrical-content").style.display === 'block') {
+          if(data.get("lyrics") == "") {
+            document.getElementById("lyrical-content").style.background = 'none';
+            document.getElementById("lyrical-content").style.borderColor = '#dc3545';
+            Notiflix.Report.warning( 'Lyrical Content', `Lyrical content can't be empty!`, 'Ok' );
+            setIsSubmitting(false);
+            return false;
+          }
         }
         if(selectedCollaborators?.length > 0) {
           let total_share = 0;
@@ -377,6 +379,17 @@ function Album({id = null}) {
       setIsSubmitting(false);
     }
     setIsSubmitting(true);
+  }
+
+  const handleLyricalContent = (action) => {
+    if (action === "yes") {
+      document.getElementById("lyrical-content").style.display = 'block';
+      
+    }
+    else if (action === "no"){
+      document.getElementById("lyrical-content").style.display = 'none';
+      document.getElementById("lyrical-content").value = '';
+    }
   }
 
   return (
@@ -683,14 +696,25 @@ function Album({id = null}) {
                 }
                 <Row>
                   <Col xs={12}>
+                    <div className="mb-2">
+                      <Button className="btn primary-btn" onClick={() => handleLyricalContent("yes")}>Yes</Button>&nbsp;
+                      <Button variant="link" className="btn close-btn" onClick={() => handleLyricalContent("no")}>No</Button>
+                    </div>
+                    <small>Please click yes if music has lyrical content.</small>
+                  </Col>
+                </Row>
+                
+                <Row>
+                  <Col xs={12}>
                     <div className="form-group">
                       <Form.Control
                         id="lyrical-content"
                         name="lyrics"
                         defaultValue={selectedTrack ? selectedTrack.lyrics : ""}
-                        placeholder="Write N/A if there is no lyrical content*"
+                        placeholder="Write lyrics here*"
                         as="textarea"
                         rows={4}
+                        style={{display: 'none'}}
                       />
                     </div>
                   </Col>
