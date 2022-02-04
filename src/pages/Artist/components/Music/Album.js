@@ -202,6 +202,41 @@ function Album({id = null}) {
         }
         data.append('status', 'unclassified');
       } else {
+        if(selectedCollaborators?.length > 0) {
+          let total_share = 0;
+          for(let i = 0; i < selectedCollaborators.length; i++) {
+            data.append('track_writers[][artists_collaborator_id]', selectedCollaborators[i].value);
+            data.append('track_writers[][percentage]', data.get(`collaborator_share_${selectedCollaborators[i].value}`));
+            total_share += parseFloat(data.get(`collaborator_share_${selectedCollaborators[i].value}`));
+          }
+          if(total_share !== 100) {
+            Notiflix.Report.warning( 'Invalid Collaborators Share', `Your collective share of all writers / collaborators is ${total_share}%, it must be 100% to proceed. Please update and try again!`, 'Ok' );
+            setIsSubmitting(false);
+            return false;
+          }
+          if(selectedCollaborators?.findIndex((e) => e.status == 'pending') > -1) {
+            Notiflix.Report.warning( 'Invalid Collaborators', 'Cannot submit for classification unless all Track Writers have accepted their invitation', 'Ok' );
+            setIsSubmitting(false);
+            return false;
+          }
+        } else {
+          data.append('track_writers[]', []);
+        }
+        if(selectedPublishers?.length > 0) {
+          let total_share = 0;
+          for(let i = 0; i < selectedPublishers.length; i++) {
+            data.append('track_publishers[][publisher_id]', selectedPublishers[i].value);
+            data.append('track_publishers[][percentage]', data.get(`publisher_share_${selectedPublishers[i].value}`));
+            total_share += parseFloat(data.get(`publisher_share_${selectedPublishers[i].value}`));
+          }
+          if(total_share !== 100) {
+            Notiflix.Report.warning( 'Invalid Publishers Share', `Your collective share of all publishers is ${total_share}%, it must be 100% to proceed. Please update and try again!`, 'Ok' );
+            setIsSubmitting(false);
+            return false;
+          }
+        } else {
+          data.append('track_publishers[]', []);
+        }
         setIsLoading(true);
       }
       let url = selectedTrack ? `${BASE_URL}${ALBUMS}/${id}/tracks/${selectedTrack.id}` : `${BASE_URL}${ALBUMS}/${id}/tracks`;
@@ -381,11 +416,19 @@ function Album({id = null}) {
     setIsSubmitting(true);
   }
 
-  const handleLyricalContent = (action) => {
+  const handleLyricalContent = (e, action) => {
     if (action === "yes") {
+      e.target.nextElementSibling.classList.remove("green-btn")
+      e.target.nextElementSibling.classList.add("white-btn")
+      e.target.classList.remove("white-btn")
+      e.target.classList.add("green-btn")
       document.getElementById("lyrical-content").style.display = 'block';
     }
     else if (action === "no"){
+      e.target.previousElementSibling.classList.remove("green-btn")
+      e.target.previousElementSibling.classList.add("white-btn")
+      e.target.classList.remove("white-btn")
+      e.target.classList.add("green-btn")
       document.getElementById("lyrical-content").style.display = 'none';
       document.getElementById("lyrical-content").value = '';
     }
@@ -696,10 +739,10 @@ function Album({id = null}) {
                 <Row>
                   <Col xs={12}>
                     <div className="mb-2">
-                      <Button className="btn primary-btn" onClick={() => handleLyricalContent("yes")}>Yes</Button>&nbsp;
-                      <Button variant="link" className="btn close-btn" onClick={() => handleLyricalContent("no")}>No</Button>
+                      <Button className={(selectedTrack && selectedTrack.lyrics) ? "green-btn" : "white-btn"} onClick={(e) => handleLyricalContent(e, "yes")}>Yes</Button>&nbsp;
+                      <Button className={selectedTrack ? ((selectedTrack && selectedTrack.lyrics) ? "white-btn" : "green-btn") : "green-btn"} onClick={(e) => handleLyricalContent(e, "no")}>No</Button>&nbsp;&nbsp;
+                      <medium>Please click yes if music has lyrical content.</medium>
                     </div>
-                    <small>Please click yes if music has lyrical content.</small>
                   </Col>
                 </Row>
                 

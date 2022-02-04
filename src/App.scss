@@ -226,6 +226,33 @@ a, .btn {
   }
 }
 
+%conditional-effect {
+  background-color: #c0d72d !important;
+  color: #1a1a1a !important;
+  border-color: #c0d72d !important;
+  border-top-color: rgb(192, 215, 45) !important;
+  border-right-color: rgb(192, 215, 45) !important;
+  border-bottom-color: rgb(192, 215, 45) !important;
+  border-left-color: rgb(192, 215, 45) !important;
+  box-shadow: none !important;
+}
+
+.green-btn {
+  background: #d0e830;
+  border-color: #d0e830;
+  &:hover, &:active, &:focus  {
+    @extend %conditional-effect;
+  }
+}
+
+.white-btn {
+  background: white;
+  border-color: #d0e830;
+  &:hover, &:active, &:focus {
+    @extend %conditional-effect;
+  }
+}
+
 .error {
 	color: $clr-red;
 }
