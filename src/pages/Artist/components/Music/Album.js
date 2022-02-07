@@ -739,9 +739,9 @@ function Album({id = null}) {
                 <Row>
                   <Col xs={12}>
                     <div className="mb-2">
+                      <medium>Please click yes if music has lyrical content.</medium>&nbsp;&nbsp;
                       <Button className={(selectedTrack && selectedTrack.lyrics) ? "green-btn" : "white-btn"} onClick={(e) => handleLyricalContent(e, "yes")}>Yes</Button>&nbsp;
-                      <Button className={selectedTrack ? ((selectedTrack && selectedTrack.lyrics) ? "white-btn" : "green-btn") : "green-btn"} onClick={(e) => handleLyricalContent(e, "no")}>No</Button>&nbsp;&nbsp;
-                      <medium>Please click yes if music has lyrical content.</medium>
+                      <Button className={selectedTrack ? ((selectedTrack && selectedTrack.lyrics) ? "white-btn" : "green-btn") : "green-btn"} onClick={(e) => handleLyricalContent(e, "no")}>No</Button>
                     </div>
                   </Col>
                 </Row>
