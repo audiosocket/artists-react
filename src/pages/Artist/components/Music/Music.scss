@@ -520,3 +520,9 @@
     }
   }
 }
+
+.pub-percentage::-webkit-inner-spin-button, 
+.pub-percentage::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
