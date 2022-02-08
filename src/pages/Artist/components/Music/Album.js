@@ -688,7 +688,7 @@ function Album({id = null}) {
                         <Col>
                           <Form.Group className="paraElements">
                             <Form.Label>{collaborator.label.split(' - ')[0]}</Form.Label>
-                            <Form.Control required name={`collaborator_share_${collaborator.value}`} defaultValue={collaborator.percentage} type="number" step="0.01" placeholder={`Percentage`}/>
+                            <Form.Control required className="pub-percentage" name={`collaborator_share_${collaborator.value}`} defaultValue={collaborator.percentage} type="number" onKeyDown={(e) => handleKeyDown(e)} placeholder={`Percentage`}/>
                           </Form.Group>
                         </Col>
                       )})
