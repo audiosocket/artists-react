@@ -175,11 +175,11 @@ function Album({id = null}) {
             setIsSubmitting(false);
             return false;
           }
-          if(selectedCollaborators?.findIndex((e) => e.status == 'pending') > -1) {
-            Notiflix.Report.warning( 'Invalid Collaborators', 'Cannot submit for classification unless all Track Writers have accepted their invitation', 'Ok' );
-            setIsSubmitting(false);
-            return false;
-          }
+          // if(selectedCollaborators?.findIndex((e) => e.status == 'pending') > -1) {
+          //   Notiflix.Report.warning( 'Invalid Collaborators', 'Cannot submit for classification unless all Track Writers have accepted their invitation', 'Ok' );
+          //   setIsSubmitting(false);
+          //   return false;
+          // }
         } else {
           Notiflix.Report.failure( 'Request failed', `Track without writer/collaborator can't be ${isSubmitting ? 'submitted for classification' : 'added'}.`, 'Ok' );
           setIsSubmitting(false);
