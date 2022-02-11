@@ -175,7 +175,7 @@ function Album({id = null}) {
             setIsSubmitting(false);
             return false;
           }
-          if(selectedCollaborators?.findIndex((e) => e.status == 'pending') > -1) {
+          if(selectedCollaborators?.findIndex((e) => e.status == 'pending') > -1 || selectedCollaborators?.findIndex((e) => e.label.substring(e.label.indexOf('-') + 2) == "pending") > -1) {
             Notiflix.Report.warning( 'Invalid Collaborators', 'Cannot submit for classification unless all Track Writers have accepted their invitation', 'Ok' );
             setIsSubmitting(false);
             return false;
