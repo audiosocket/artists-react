@@ -127,7 +127,7 @@ const DropzoneComponent = ({onUploadFiles = null}) => {
             onChange={filesSelected}
           />
         </div>
-        <small>Please submit music files (WAV or AIFF) at 16bit or 24bit, at 48K.</small>
+        <small>Please submit music files (WAV or AIFF) at 16bit or 24bit, at 44K, 44.1K or 48K.</small>
         <div className="file-display-container">
           {
             validFiles.map((data, i) =>

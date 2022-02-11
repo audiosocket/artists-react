@@ -638,7 +638,7 @@ function Album({id = null}) {
                         onChange={(e) => { if(e.target.files[0]) {setFile(e.target.files[0]); handleChangeMusicUpload(e.target.value)}}}
                         custom
                       />
-                      <small>Please submit music files (WAV or AIFF) at 16bit or 24bit, at 48K.</small>
+                      <small>Please submit music files (WAV or AIFF) at 16bit or 24bit, at 44K, 44.1K or 48K.</small>
                       {inValidFile && <small className="error">Valid WAV or AIFF file is required!</small> }
                     </div>
                   </Col>
