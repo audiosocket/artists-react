@@ -53,10 +53,10 @@ function Welcome() {
       {metaData &&
         <section dangerouslySetInnerHTML={{__html: metaData}}/>
       }
-      <section>
+      {/* <section>
         <h3><strong>Question?</strong></h3>
         <h5><strong>If you have any questions or suggestions, please send us an email at <a href="mailto:artists@audiosocket.com">artists@audiosocket.com</a>.</strong></h5>
-      </section>
+      </section> */}
     </div>
   )
 }

@@ -323,7 +323,7 @@ function AlbumsListing() {
                         data-browse="Select artwork"
                         custom
                       />
-                      <small className="info-text"><i>*Minimum required size for artwork is 353px x 353px</i></small>
+                      <small className="info-text"><i>*Minimum required size for artwork is 1080px x 1080px and required shape is square</i></small>
                     </div>
                   </Col>
                 </Row>

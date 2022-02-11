@@ -149,7 +149,7 @@ function AlbumArtwrok({id = null}) {
                   data-browse="Select artwork"
                   custom
                 />
-                <small className="info-text"><i>Minimum required size for artwork is 1080px x 1080px and required shape is square</i></small>
+                <small className="info-text"><i>*Minimum required size for artwork is 1080px x 1080px and required shape is square</i></small>
                 {album &&
                   <img className="preview" src={artwork ? URL.createObjectURL(artwork) : album.artwork}></img>
                 }
