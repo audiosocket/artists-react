@@ -94,7 +94,7 @@ function AlbumArtwrok({id = null}) {
         let height = this.height;
         let width = this.width;
         if (width < 353 || height < 353) {
-          Notiflix.Report.warning( 'Upload failed', `Artwork Image must be min 353px x 353px\nUploaded image is ${width}px x ${height}!`, 'Ok' );
+          Notiflix.Report.warning( 'Upload failed', `Artwork Image must be min 1080px x 1080px\nUploaded image is ${width}px x ${height}!`, 'Ok' );
           return false;
         } else {
           setArtwork(img)
