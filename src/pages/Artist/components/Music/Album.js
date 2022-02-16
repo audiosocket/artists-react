@@ -104,7 +104,7 @@ function Album({id = null}) {
       }
       tmp.forEach((ele) => {
         if(ele.default) {
-          setSelectedPublishers([ele]);
+          // setSelectedPublishers([ele]);
         }
       })
       setPublishersDropdown(tmp);
