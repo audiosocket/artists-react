@@ -237,7 +237,7 @@ function Profile() {
                   return (
                     link
                       ?
-                      <div className="parallel-info social"><label>{link.includes("facebook") ? "Facebook" : link.includes("twitter") ? "Twitter" : link.includes("tiktok") ? "Tiktok" : link.includes("instagram") ? "Instagram" : ""} Link</label>
+                      <div className="parallel-info social"><label>{key == 0 ? "Facebook" : key == 1 ? "Twitter" : key == 2 ? "Tiktok" : key == 3 ? "Instagram" : ""} Link</label>
                       <p key={key}><a rel="noreferrer" href={link.includes("https://") ? link : "https://"+link} target="_blank">{link}</a></p></div>
                       : ''
                   )
