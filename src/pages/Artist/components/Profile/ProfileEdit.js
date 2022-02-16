@@ -617,28 +617,56 @@ function ProfileEdit() {
                   </Row>
                   <Row>
                     <Col xl={2} md={4}>
-                      <Form.Label>Social Links</Form.Label>
+                      <Form.Label>Facebook Link</Form.Label>
                     </Col>
                     <Col xl={4} md={8}>
                       <Form.Control
                         name="social[]"
                         defaultValue={artist.social ? artist.social[0] || "" : ""}
                         type="text"
-                        placeholder="Social link 1"
+                        placeholder="Facebook Link"
                         className="mb-1"
                       />
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col xl={2} md={4}>
+                      <Form.Label>Twitter Link</Form.Label>
+                    </Col>
+                    <Col xl={4} md={8}>
                       <Form.Control
                         name="social[]"
                         defaultValue={artist.social ? artist.social[1] || "" : ""}
                         type="text"
-                        placeholder="Social link 2"
+                        placeholder="Twitter Link"
                         className="mb-1"
                       />
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col xl={2} md={4}>
+                      <Form.Label>TikTok Link</Form.Label>
+                    </Col>
+                    <Col xl={4} md={8}>
                       <Form.Control
                         name="social[]"
                         defaultValue={artist.social ? artist.social[2] || "" : ""}
                         type="text"
-                        placeholder="Social link 3"
+                        placeholder="TikTok Link"
+                        className="mb-1"
+                      />
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col xl={2} md={4}>
+                      <Form.Label>Instagram Link</Form.Label>
+                    </Col>
+                    <Col xl={4} md={8}>
+                      <Form.Control
+                        name="social[]"
+                        defaultValue={artist.social ? artist.social[3] || "" : ""}
+                        type="text"
+                        placeholder="Instagram Link"
                         className="mb-1"
                       />
                     </Col>

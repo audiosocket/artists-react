@@ -231,19 +231,17 @@ function Profile() {
                   }
                 </div>
               </div>
-              <div className="parallel-info social">
-                <label>Social Links</label>
-                <div className="info-ans">
-                  {!artist.social && '-'}
-                  {artist.social && artist.social.map((link, key) => {
-                    return (
-                      link
-                        ?
-                        <p key={key}><a rel="noreferrer" href={link.includes("https://") ? link : "https://"+link} target="_blank">{link}</a></p>
-                        : ''
-                    )
-                  })}
-                </div>
+              <div className="info-ans">
+                {!artist.social && '-'}
+                {artist.social && artist.social.map((link, key) => {
+                  return (
+                    link
+                      ?
+                      <div className="parallel-info social"><label>{link.includes("facebook") ? "Facebook" : link.includes("twitter") ? "Twitter" : link.includes("tiktok") ? "Tiktok" : link.includes("instagram") ? "Instagram" : ""} Link</label>
+                      <p key={key}><a rel="noreferrer" href={link.includes("https://") ? link : "https://"+link} target="_blank">{link}</a></p></div>
+                      : ''
+                  )
+                })}
               </div>
               <div className="parallel-info">
                 <label>Website link</label>
