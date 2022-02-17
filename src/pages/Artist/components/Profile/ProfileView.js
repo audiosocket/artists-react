@@ -235,11 +235,11 @@ function Profile() {
                 {!artist.social && '-'}
                 {artist.social && artist.social.map((link, key) => {
                   return (
-                    link
+                    link && link.trim().length > 0
                       ?
                       <div className="parallel-info social"><label>{key == 0 ? "Facebook" : key == 1 ? "Twitter" : key == 2 ? "Tiktok" : key == 3 ? "Instagram" : ""} Link</label>
                       <p key={key}><a rel="noreferrer" href={link.includes("https://") ? link : "https://"+link} target="_blank">{link}</a></p></div>
-                      : ''
+                      : <div className="parallel-info social"><label>{key == 0 ? "Facebook" : key == 1 ? "Twitter" : key == 2 ? "Tiktok" : key == 3 ? "Instagram" : ""} Link</label>-</div>
                   )
                 })}
               </div>
