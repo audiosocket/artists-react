@@ -13,7 +13,7 @@ function Profile({onChangeIsProfileCompleted}) {
 
   useEffect(() => {
     if(artistState.artist) {
-      if(!artistState.artist.banner_image || !artistState.artist.profile_image || !artistState.artist.contact_information || !artistState.artist.payment_information) {
+      if(!artistState.artist.banner_image || !artistState.artist.profile_image || !artistState.artist.contact_information) {
         artistActions.isProfileCompletedStateChanged(false);
         onChangeIsProfileCompleted(false);
       } else {
