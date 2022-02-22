@@ -178,7 +178,9 @@ function Signup({userHash = ''}) {
             history.push('/login')
           } );
         } else
-          Notiflix.Notify.failure('Something went wrong, try again!');
+          Notiflix.Notify.failure('Something went wrong, try again!', {
+            timeout: 6000,
+          });
       }
       setIsLoading(false);
     }
@@ -210,7 +212,9 @@ function Signup({userHash = ''}) {
         method: 'PATCH',
       });
     if(!response.ok) {
-      Notiflix.Notify.failure('Something went wrong, try later!');
+      Notiflix.Notify.failure('Something went wrong, try later!', {
+        timeout: 6000,
+      });
     } else {
       Notiflix.Notify.success('Agreements updated successfully!');
       const resultSet = await response.json();

@@ -247,7 +247,9 @@ function Header({onToggleSidebar, onChangeIsActiveProfile, onChangeIsProfileComp
         body: data
       });
     if(!response.ok) {
-      Notiflix.Notify.failure('Something went wrong, try later!');
+      Notiflix.Notify.failure('Something went wrong, try later!', {
+        timeout: 6000,
+      });
     } else {
       const artistsList = await fetchArtistsList();
       artistActions.artistsListStateChanged(artistsList);

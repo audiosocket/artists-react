@@ -35,7 +35,9 @@ function Agreements({onChangeIsActiveProfile}) {
         method: 'PATCH',
       });
     if(!response.ok) {
-      Notiflix.Notify.failure('Something went wrong, try later!');
+      Notiflix.Notify.failure('Something went wrong, try later!', {
+        timeout: 6000,
+      });
     } else {
       const resultSet = await response.json();
       const rejected = resultSet.filter(agreement => agreement.status === "rejected");
@@ -59,7 +61,9 @@ function Agreements({onChangeIsActiveProfile}) {
 
   const handleNext = () => {
     if(isActiveProfile === false) {
-      Notiflix.Notify.failure('You must accept agreements to unlock Artist profile');
+      Notiflix.Notify.failure('You must accept agreements to unlock Artist profile', {
+        timeout: 6000,
+      });
     }
   }
 

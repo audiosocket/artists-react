@@ -84,7 +84,9 @@ function Login() {
         }
         e.target.reset();
       } else {
-        Notiflix.Notify.failure('Invalid email/password, try again!');
+        Notiflix.Notify.failure('Invalid email/password, try again!', {
+          timeout: 6000,
+        });
       }
       setIsLoading(false);
     }

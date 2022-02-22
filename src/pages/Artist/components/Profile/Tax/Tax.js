@@ -74,7 +74,9 @@ function Tax() {
         });
       const artist = await response.json();
       if(!response.ok) {
-        Notiflix.Notify.failure('Something went wrong, try later!');
+        Notiflix.Notify.failure('Something went wrong, try later!', {
+          timeout: 6000,
+        });
       } else {
         setArtist(artist);
         artistActions.artistStateChanged(artist);

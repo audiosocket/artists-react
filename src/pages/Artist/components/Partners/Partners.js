@@ -111,9 +111,13 @@ function Partners() {
       const collaborators = await response.json();
       if(!response.ok) {
         if(collaborators.message) {
-          Notiflix.Notify.failure(collaborators.message);
+          Notiflix.Notify.failure(collaborators.message, {
+            timeout: 6000,
+          });
         } else {
-          Notiflix.Notify.failure('Something went wrong, try later!');
+          Notiflix.Notify.failure('Something went wrong, try later!', {
+            timeout: 6000,
+          });
         }
       } else {
         Notiflix.Notify.success(`Collaborator ${selectedPartner ? 'updated' : 'created'} successfully!`);
@@ -173,7 +177,9 @@ function Partners() {
         });
       const publishers = await response.json();
       if(!response.ok) {
-        Notiflix.Notify.failure('Something went wrong, try later!');
+        Notiflix.Notify.failure('Something went wrong, try later!', {
+          timeout: 6000,
+        });
       } else {
         Notiflix.Notify.success(`Publisher ${selectedPartner ? 'updated' : 'created'} successfully!`);
         setPublishers(publishers.length ? publishers : []);
@@ -262,7 +268,9 @@ function Partners() {
           });
         const results = await response.json();
         if (!response.ok) {
-          Notiflix.Notify.failure(results.message);
+          Notiflix.Notify.failure(results.message, {
+            timeout: 6000,
+          });
         } else {
           Notiflix.Notify.success(`Collaborator "${collaborator.first_name} ${collaborator.last_name ?? ''}" deleted successfully!`);
           const collaborators = await fetchCollaborators(userRole === "collaborator" && artist_id);
@@ -306,7 +314,9 @@ function Partners() {
           });
         const results = await response.json();
         if (!response.ok) {
-          Notiflix.Notify.failure(results.message);
+          Notiflix.Notify.failure(results.message, {
+            timeout: 6000,
+          });
         } else {
           Notiflix.Notify.success(`Publisher "${publisher.name}" deleted successfully!`);
           const publishers = await fetchPublishers(userRole === "collaborator" && artist_id);
@@ -356,7 +366,9 @@ function Partners() {
             method: "PATCH"
           });
         if (!response.ok) {
-          Notiflix.Notify.failure("Something went wrong, try later!");
+          Notiflix.Notify.failure("Something went wrong, try later!", {
+            timeout: 6000,
+          });
         } else {
           Notiflix.Notify.success(`Follow up email sent successfully!`);
         }

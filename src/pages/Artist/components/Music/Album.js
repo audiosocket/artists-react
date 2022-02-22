@@ -262,9 +262,13 @@ function Album({id = null}) {
         const results = await response.json();
         if (!response.ok) {
           if(results.message) {
-            Notiflix.Notify.failure(results.message + ' Please make sure to upload music files (WAV or AIFF) at 16bit or 24bit, at 48K.');
+            Notiflix.Notify.failure(results.message + ' Please make sure to upload music files (WAV or AIFF) at 16bit or 24bit, at 48K.', {
+              timeout: 6000,
+            });
           } else {
-            Notiflix.Notify.failure('Something went wrong, try later!');
+            Notiflix.Notify.failure('Something went wrong, try later!', {
+              timeout: 6000,
+            });
           }
         } else {
           const albums = await fetchAlbums(userRole === "collaborator" && artist_id);
@@ -279,7 +283,9 @@ function Album({id = null}) {
       } catch (e) {
         setIsSubmitting(false);
         setIsLoading(false);
-        Notiflix.Notify.failure('Something went wrong, try later!');
+        Notiflix.Notify.failure('Something went wrong, try later!', {
+          timeout: 6000,
+        });
       }
       setIsSubmitting(false);
       setIsLoading(false);
@@ -313,7 +319,9 @@ function Album({id = null}) {
             method: "DELETE"
           });
         if (!response.ok) {
-          Notiflix.Notify.failure('Something went wrong, try later!');
+          Notiflix.Notify.failure('Something went wrong, try later!', {
+            timeout: 6000,
+          });
           setIsDeleting(false);
         } else {
           const albums = await fetchAlbums(userRole === "collaborator" && artist_id);
@@ -350,7 +358,9 @@ function Album({id = null}) {
             method: "DELETE"
           });
         if (!response.ok) {
-          Notiflix.Notify.failure('Something went wrong, try later!');
+          Notiflix.Notify.failure('Something went wrong, try later!', {
+            timeout: 6000,
+          });
         } else {
           const albums = await fetchAlbums(userRole === "collaborator" && artist_id);
           artistActions.albumsStateChanged(albums);

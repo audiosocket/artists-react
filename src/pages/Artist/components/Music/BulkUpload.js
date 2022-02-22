@@ -60,7 +60,9 @@ function BulkUpload({album}) {
       }
     }).then (response => {
       if (!response.status === 200) {
-        Notiflix.Notify.failure('Something went wrong, try later!');
+        Notiflix.Notify.failure('Something went wrong, try later!', {
+          timeout: 6000,
+        });
       } else {
         if(response.data.meta.total === response.data.meta.uploaded) {
           Notiflix.Report.success( 'Uploaded', `${response.data.meta ? response.data.meta.uploaded : ""} Track(s) uploaded successfully out of ${response.data.meta.total} track(s) you selected.`, 'Ok' );

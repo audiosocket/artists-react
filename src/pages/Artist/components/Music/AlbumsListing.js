@@ -74,7 +74,9 @@ function AlbumsListing() {
           body: data
         });
       if (!response.ok) {
-        Notiflix.Notify.failure('Something went wrong, try later!');
+        Notiflix.Notify.failure('Something went wrong, try later!', {
+          timeout: 6000,
+        });
       } else {
         if(artwork) {
           const result = await response.json();
@@ -92,7 +94,9 @@ function AlbumsListing() {
               body: data
             });
           if (!responseArtwork.ok) {
-            Notiflix.Notify.failure('Something went wrong, try later!');
+            Notiflix.Notify.failure('Something went wrong, try later!', {
+              timeout: 6000,
+            });
           }
         }
         const albums = await fetchAlbums(userRole === "collaborator" && artist_id);
@@ -149,7 +153,9 @@ function AlbumsListing() {
             method: "DELETE"
           });
         if (!response.ok) {
-          Notiflix.Notify.failure('Something went wrong, try later!');
+          Notiflix.Notify.failure('Something went wrong, try later!', {
+            timeout: 6000,
+          });
         } else {
           Notiflix.Report.success( 'Request fulfilled', `Album "${album.name}" deleted successfully!`, 'Ok' );
           const albums = await fetchAlbums(userRole === "collaborator" && artist_id);

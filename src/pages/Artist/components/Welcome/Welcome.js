@@ -33,7 +33,9 @@ function Welcome() {
       });
     if (!response.ok) {
       setMetadata(null);
-      Notiflix.Notify.failure("Can't connect to server, try later!");
+      Notiflix.Notify.failure("Can't connect to server, try later!", {
+        timeout: 6000,
+      });
     } else {
       const resultSet = await response.json();
       if(resultSet['content']) {

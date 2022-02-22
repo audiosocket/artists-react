@@ -68,7 +68,9 @@ function AlbumArtwrok({id = null}) {
           body: data
         });
       if (!response.ok) {
-        Notiflix.Notify.failure('Something went wrong, try later!');
+        Notiflix.Notify.failure('Something went wrong, try later!', {
+          timeout: 6000,
+        });
       } else {
         const albums = await fetchAlbums(userRole === "collaborator" && artist_id);
         artistActions.albumsStateChanged(albums);

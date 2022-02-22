@@ -37,7 +37,9 @@ function Profile() {
   const handleNext = () => {
     if(artist) {
       if(!artist.banner_image || !artist.profile_image || !artist.contact_information) {
-        Notiflix.Notify.failure('You must complete artist profile to unlock Partners page');
+        Notiflix.Notify.failure('You must complete artist profile to unlock Partners page', {
+          timeout: 6000,
+        });
       }
     }
   }
@@ -72,7 +74,9 @@ function Profile() {
       });
     const resultSet = await response.json();
     if (!response.ok) {
-      Notiflix.Notify.failure('System has encountered an error while fetching tax form, try later!');
+      Notiflix.Notify.failure('System has encountered an error while fetching tax form, try later!', {
+        timeout: 6000,
+      });
     } else {
       setTaxForm(resultSet.url || null);
       if(resultSet.url)

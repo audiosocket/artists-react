@@ -69,7 +69,9 @@ function Notes(props) {
         Notiflix.Notify.success('Note added, your request will be proceed soon!');
         handleClose();
       } else {
-        Notiflix.Notify.failure('Something went wrong, try again!');
+        Notiflix.Notify.failure('Something went wrong, try again!', {
+          timeout: 6000,
+        });
       }
       setIsAdding(false);
     }
