@@ -264,6 +264,7 @@ function Album({id = null}) {
           if(results.message) {
             Notiflix.Notify.failure(results.message + ' Please make sure to upload music files (WAV or AIFF) at 16bit or 24bit, at 44K, 44.1K or 48K.', {
               timeout: 6000,
+              messageMaxLength: 500
             });
           } else {
             Notiflix.Notify.failure('Something went wrong, try later!', {
