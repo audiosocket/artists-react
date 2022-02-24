@@ -67,7 +67,7 @@ function BulkUpload({album}) {
         if(response.data.meta.total === response.data.meta.uploaded) {
           Notiflix.Report.success( 'Uploaded', `${response.data.meta ? response.data.meta.uploaded : ""} Track(s) uploaded successfully out of ${response.data.meta.total} track(s) you selected.`, 'Ok' );
         } else if(!response.data.meta.uploaded) {
-          Notiflix.Report.failure( 'Upload Failed', `None of your selected files matches our criteria. Please make sure to upload music files (WAV or AIFF) at 16bit or 24bit, at 48K.`, 'Ok' );
+          Notiflix.Report.failure( 'Upload Failed', `None of your selected files matches our criteria. Please make sure to upload music files (WAV or AIFF) at 16bit or 24bit, at 44K, 44.1K or 48K.`, 'Ok' );
         } else {
           var invalidTracks = '';
           for(let i = 0; i < response.data.meta.messages.length; i++) {
