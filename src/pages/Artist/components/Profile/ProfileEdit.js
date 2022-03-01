@@ -151,7 +151,9 @@ function ProfileEdit() {
       }
       if(selectedGenres.length > 0) {
         for(let i = 0; i < selectedGenres.length; i++)
-          data.append('genre_ids[]', selectedGenres[i].value);
+           if (selectedGenres[i] !== undefined) {
+            data.append('genre_ids[]', selectedGenres[i].value);
+          }
       } else {
         data.append('genre_ids[]', []);
       }
@@ -635,14 +637,14 @@ function ProfileEdit() {
                   </Row>
                   <Row>
                     <Col xl={2} md={4}>
-                      <Form.Label>Facebook Link</Form.Label>
+                      <Form.Label>TikTok Link</Form.Label>
                     </Col>
                     <Col xl={4} md={8}>
                       <Form.Control
-                        name="social[]"
-                        defaultValue={artist.social ? artist.social[0] || "" : ""}
+                        name="tiktok"
+                        defaultValue={artist.social ? artist.social.tiktok || "" : ""}
                         type="text"
-                        placeholder="Facebook Link"
+                        placeholder="TikTok Link"
                         className="mb-1"
                       />
                     </Col>
@@ -653,8 +655,8 @@ function ProfileEdit() {
                     </Col>
                     <Col xl={4} md={8}>
                       <Form.Control
-                        name="social[]"
-                        defaultValue={artist.social ? artist.social[1] || "" : ""}
+                        name="twitter"
+                        defaultValue={artist.social ? artist.social.twitter || "" : ""}
                         type="text"
                         placeholder="Twitter Link"
                         className="mb-1"
@@ -663,14 +665,14 @@ function ProfileEdit() {
                   </Row>
                   <Row>
                     <Col xl={2} md={4}>
-                      <Form.Label>TikTok Link</Form.Label>
+                      <Form.Label>Facebook Link</Form.Label>
                     </Col>
                     <Col xl={4} md={8}>
                       <Form.Control
-                        name="social[]"
-                        defaultValue={artist.social ? artist.social[2] || "" : ""}
+                        name="facebook"
+                        defaultValue={artist.social ? artist.social.facebook || "" : ""}
                         type="text"
-                        placeholder="TikTok Link"
+                        placeholder="Facebook Link"
                         className="mb-1"
                       />
                     </Col>
@@ -681,8 +683,8 @@ function ProfileEdit() {
                     </Col>
                     <Col xl={4} md={8}>
                       <Form.Control
-                        name="social[]"
-                        defaultValue={artist.social ? artist.social[3] || "" : ""}
+                        name="instagram"
+                        defaultValue={artist.social ? artist.social.instagram || "" : ""}
                         type="text"
                         placeholder="Instagram Link"
                         className="mb-1"
