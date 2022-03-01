@@ -30,6 +30,7 @@ function Profile() {
         } );
       }
       setArtist(artistState.artist);
+      debugger
     } else
       setIsLoading(true);
   }, [artistState.artist])
@@ -237,11 +238,11 @@ function Profile() {
               </div>
               <div className="info-ans">
                 {!artist.social && '-'}
-                {artist.social && artist.social.map((link, key) => {
+                {artist.social && Object.values(artist.social).map((link, key) => {
                   return (
                     link && link.trim().length > 0
                       ?
-                      <div className="parallel-info social"><label>{key == 0 ? "Facebook" : key == 1 ? "Twitter" : key == 2 ? "Tiktok" : key == 3 ? "Instagram" : ""} Link</label>
+                      <div className="parallel-info social"><label>{key == 0 ? "Tiktok" : key == 1 ? "Twitter" : key == 2 ? "Facebook" : key == 3 ? "Instagram" : ""} Link</label>
                       <p key={key}><a rel="noreferrer" href={link.includes("https://") ? link : "https://"+link} target="_blank">{link}</a></p></div>
                       : <div className="parallel-info social"><label>{key == 0 ? "Facebook" : key == 1 ? "Twitter" : key == 2 ? "Tiktok" : key == 3 ? "Instagram" : ""} Link</label>-</div>
                   )
