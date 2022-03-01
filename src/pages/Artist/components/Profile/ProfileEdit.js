@@ -151,7 +151,9 @@ function ProfileEdit() {
       }
       if(selectedGenres.length > 0) {
         for(let i = 0; i < selectedGenres.length; i++)
-          data.append('genre_ids[]', selectedGenres[i].value);
+           if (selectedGenres[i] !== undefined) {
+            data.append('genre_ids[]', selectedGenres[i].value);
+          }
       } else {
         data.append('genre_ids[]', []);
       }
