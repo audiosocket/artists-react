@@ -96,7 +96,7 @@ function AlbumArtwrok({id = null}) {
         let height = this.height;
         let width = this.width;
         if (width < 353 || height < 353) {
-          Notiflix.Report.warning( 'Upload failed', `Artwork Image must be min 1080px x 1080px\nUploaded image is ${width}px x ${height}!`, 'Ok' );
+          Notiflix.Report.warning( 'Upload failed', `Artwork Image must be min 350px x 350px\nUploaded image is ${width}px x ${height}!`, 'Ok' );
           return false;
         } else {
           setArtwork(img)
@@ -151,7 +151,7 @@ function AlbumArtwrok({id = null}) {
                   custom
                 />
                 <small className="info-text"><i>You can add the album artwork later</i></small>
-                <small className="info-text"><i>Minimum required size for artwork is 1080px x 1080px and required shape is square</i></small>
+                <small className="info-text"><i>Minimum required size for artwork is 350px x 350px and required shape is square</i></small>
                 {album &&
                   <img className="preview" src={artwork ? URL.createObjectURL(artwork) : album.artwork}></img>
                 }
