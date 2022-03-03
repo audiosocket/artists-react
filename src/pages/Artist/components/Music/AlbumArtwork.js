@@ -142,16 +142,16 @@ function AlbumArtwrok({id = null}) {
               </Col>
               <Col xl={4} md={8}>
                 <Form.File
-                  required
                   accept=".png, .jpg, .svg"
                   onChange={(e) => { handleUploadArtwork(e)}}
                   name="artwork"
-                  label={artwork ? artwork.name : album && album.artwork ? album.artwork.split('/')[album.artwork.split("/").length-1] : "No file chosen"}
+                  label={artwork ? artwork.name : album && album.artwork ? album.artwork.split('/')[album.artwork.split("/").length-1] : "No file chosen (optional)"}
                   lang="en"
                   data-browse="Select artwork"
                   custom
                 />
-                <small className="info-text"><i>*Minimum required size for artwork is 1080px x 1080px and required shape is square</i></small>
+                <small className="info-text"><i>You can add the album artwork later</i></small>
+                <small className="info-text"><i>Minimum required size for artwork is 1080px x 1080px and required shape is square</i></small>
                 {album &&
                   <img className="preview" src={artwork ? URL.createObjectURL(artwork) : album.artwork}></img>
                 }
