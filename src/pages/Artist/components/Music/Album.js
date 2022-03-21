@@ -99,9 +99,11 @@ function Album({id = null}) {
     if(publishers) {
       let tmp = [];
       for (let i = 0; i < publishers.length; i++) {
-        if(publishers[i].name)
+        if(publishers[i].name && !publishers[i].default_publisher)
           tmp.push({label: publishers[i].name, value: publishers[i].id, default: publishers[i].default_publisher, isFixed: publishers[i].default_publisher});
       }
+      if (!publishers.length)
+        tmp.push({label: "No Publisher", value: "", default: false, isFixed: false});
       tmp.forEach((ele) => {
         if(ele.default) {
           // setSelectedPublishers([ele]);
@@ -187,13 +189,16 @@ function Album({id = null}) {
         }
         if(selectedPublishers?.length > 0) {
           let total_share = 0;
+          let no_pub = true
           for(let i = 0; i < selectedPublishers.length; i++) {
+            if (selectedPublishers[i].label === "No Publisher")
+              no_pub = false
             data.append('track_publishers[][publisher_id]', selectedPublishers[i].value);
             data.append('track_publishers[][percentage]', data.get(`publisher_share_${selectedPublishers[i].value}`));
             total_share += parseFloat(data.get(`publisher_share_${selectedPublishers[i].value}`));
           }
-          if(total_share !== 100) {
-            Notiflix.Report.warning( 'Invalid Publishers Share', `Your collective share of all publishers is ${total_share}%, it must be 100% to proceed. Please update and try again!`, 'Ok' );
+          if(total_share !== 50 && no_pub) {
+            Notiflix.Report.warning( 'Invalid Publishers Share', `Your collective share of all publishers is ${total_share}%, it must be 50% to proceed. Please update and try again!`, 'Ok' );
             setIsSubmitting(false);
             return false;
           }
@@ -229,8 +234,8 @@ function Album({id = null}) {
             data.append('track_publishers[][percentage]', data.get(`publisher_share_${selectedPublishers[i].value}`));
             total_share += parseFloat(data.get(`publisher_share_${selectedPublishers[i].value}`));
           }
-          if(total_share !== 100) {
-            Notiflix.Report.warning( 'Invalid Publishers Share', `Your collective share of all publishers is ${total_share}%, it must be 100% to proceed. Please update and try again!`, 'Ok' );
+          if(total_share !== 50) {
+            Notiflix.Report.warning( 'Invalid Publishers Share', `Your collective share of all publishers is ${total_share}%, it must be 50% to proceed. Please update and try again!`, 'Ok' );
             setIsSubmitting(false);
             return false;
           }
@@ -730,13 +735,17 @@ function Album({id = null}) {
                           },
                         })}
                       />
+                      <small className="text-muted"><strong>Note:</strong> If you do not have a Publisher, please select “No Publisher”</small>
                     </div>
+                    
                   </Col>
                 </Row>
+                
                 {selectedPublishers?.length > 0 &&
                   <div className="flexibleRowContain">
                     <div className="flexibleRow">
                       {selectedPublishers.map(publisher => { return (
+                        publisher.label !== "No Publisher" &&
                         <Col>
                           <Form.Group className="paraElements">
                             <Form.Label>{publisher.label.split(' - ')[0]}</Form.Label>
@@ -750,7 +759,7 @@ function Album({id = null}) {
                       )})
                       }
                     </div>
-                    <small className="text-muted"><strong>Note:</strong> Collective share of all publishers must be 100%</small>
+                    {selectedPublishers[selectedPublishers.length - 1].label !== "No Publisher" && <small className="text-muted"><strong>Note:</strong> Collective share of publishing cannot exceed 50%, as Audiosocket receives 50% of Publisher Share.</small>}
                   </div>
                 }
                 <Row>

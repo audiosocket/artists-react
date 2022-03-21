@@ -450,7 +450,7 @@ function Partners() {
               {publishers.length !== 0
                 ? publishers.map((publisher, key) => {
                     return (
-                      publisher.name &&
+                      publisher.name && !publisher?.default_publisher &&
                         <li key={key}>
                           <a>{publisher.name} <small><i>{publisher.pro ? "PRO: "+publisher.pro : ""}</i></small><small><i>{publisher.ipi ? ", IPI: "+publisher.ipi : ""}</i></small></a>
                           {(!artistState.selectedArtist || artistState.selectedArtist.access === 'write') &&
