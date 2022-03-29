@@ -268,12 +268,14 @@ function Album({id = null}) {
         if (!response.ok) {
           if(results.message) {
             Notiflix.Notify.failure(results.message + ' Please make sure to upload music files (WAV or AIFF) at 16bit or 24bit, at 44K, 44.1K or 48K.', {
-              timeout: 6000,
+              timeout: 6000000,
+              clickToClose: true,
               messageMaxLength: 500
             });
           } else {
             Notiflix.Notify.failure('Something went wrong, try later!', {
-              timeout: 6000,
+              timeout: 6000000,
+              clickToClose: true,
             });
           }
         } else {
@@ -290,7 +292,8 @@ function Album({id = null}) {
         setIsSubmitting(false);
         setIsLoading(false);
         Notiflix.Notify.failure('Something went wrong, try later!', {
-          timeout: 6000,
+          timeout: 6000000,
+          clickToClose: true,
         });
       }
       setIsSubmitting(false);
@@ -326,7 +329,8 @@ function Album({id = null}) {
           });
         if (!response.ok) {
           Notiflix.Notify.failure('Something went wrong, try later!', {
-            timeout: 6000,
+            timeout: 6000000,
+            clickToClose: true,
           });
           setIsDeleting(false);
         } else {
@@ -365,7 +369,8 @@ function Album({id = null}) {
           });
         if (!response.ok) {
           Notiflix.Notify.failure('Something went wrong, try later!', {
-            timeout: 6000,
+            timeout: 6000000,
+            clickToClose: true,
           });
         } else {
           const albums = await fetchAlbums(userRole === "collaborator" && artist_id);

@@ -75,7 +75,8 @@ function AlbumsListing() {
         });
       if (!response.ok) {
         Notiflix.Notify.failure('Something went wrong, try later!', {
-          timeout: 6000,
+          timeout: 6000000,
+          clickToClose: true,
         });
       } else {
         if(artwork) {
@@ -95,7 +96,8 @@ function AlbumsListing() {
             });
           if (!responseArtwork.ok) {
             Notiflix.Notify.failure('Something went wrong, try later!', {
-              timeout: 6000,
+              timeout: 6000000,
+              clickToClose: true,
             });
           }
         }
@@ -154,7 +156,8 @@ function AlbumsListing() {
           });
         if (!response.ok) {
           Notiflix.Notify.failure('Something went wrong, try later!', {
-            timeout: 6000,
+            timeout: 6000000,
+            clickToClose: true,
           });
         } else {
           Notiflix.Report.success( 'Request fulfilled', `Album "${album.name}" deleted successfully!`, 'Ok' );

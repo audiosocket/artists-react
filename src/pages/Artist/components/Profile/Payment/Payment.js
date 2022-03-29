@@ -82,7 +82,8 @@ function Payment() {
       const artist = await response.json();
       if(!response.ok) {
         Notiflix.Notify.failure('Something went wrong, try later!', {
-          timeout: 6000,
+          timeout: 6000000,
+          clickToClose: true,
         });
       } else {
         setArtist(artist);

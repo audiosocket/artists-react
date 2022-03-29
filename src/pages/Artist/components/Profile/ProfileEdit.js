@@ -77,7 +77,8 @@ function ProfileEdit() {
       setOtherError(false);
       if(!selectedCountry) {
         Notiflix.Notify.failure('Country is required!', {
-          timeout: 6000,
+          timeout: 6000000,
+          clickToClose: true,
         });
         setCountryError(true);
         errors = true;
@@ -85,11 +86,13 @@ function ProfileEdit() {
       if(data.get('email')) {
         if(!handleEmailValidate(data.get('email')))
           Notiflix.Notify.failure('A valid email address is required!', {
-            timeout: 6000,
+            timeout: 6000000,
+            clickToClose: true,
           });
       } else {
         Notiflix.Notify.failure('A valid email address is required!', {
-          timeout: 6000,
+          timeout: 6000000,
+          clickToClose: true,
         });
         setEmailError(true);
         errors = true;
@@ -99,7 +102,8 @@ function ProfileEdit() {
           if(!data.get('pro')) {
             setOtherError(true);
             Notiflix.Notify.failure('PRO is required!', {
-              timeout: 6000,
+              timeout: 6000000,
+              clickToClose: true,
             });
             errors = true;
           }
@@ -108,7 +112,8 @@ function ProfileEdit() {
         }
         if(pro.toLowerCase() !== 'ns' && !handleIPICharacterLimit(data.get('ipi'))) {
           Notiflix.Notify.failure('A valid CAE/IPI # is required!', {
-            timeout: 6000,
+            timeout: 6000000,
+            clickToClose: true,
           });
           errors = true;
         }
@@ -116,21 +121,24 @@ function ProfileEdit() {
       else {
         setProError(true);
         Notiflix.Notify.failure('PRO is required!', {
-          timeout: 6000,
+          timeout: 6000000,
+          clickToClose: true,
         });
         errors = true;
       }
 
       if(!profileImage && !artist.profile_image ) {
         Notiflix.Notify.failure('Profile image is required!', {
-          timeout: 6000,
+          timeout: 6000000,
+          clickToClose: true,
         });
         setProfileImageError(true);
         errors = true;
       }
       if(!bannerImage && !artist.banner_image) {
         Notiflix.Notify.failure('Banner image is required!', {
-          timeout: 6000,
+          timeout: 6000000,
+          clickToClose: true,
         });
         setBannerImageError(true);
         errors = true;
@@ -178,7 +186,8 @@ function ProfileEdit() {
       const artistData = await response.json();
       if(!response.ok) {
         Notiflix.Notify.failure('Something went wrong, try later!', {
-          timeout: 6000,
+          timeout: 6000000,
+          clickToClose: true,
         });
       } else {
         setArtist(artistData);

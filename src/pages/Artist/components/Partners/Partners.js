@@ -112,11 +112,13 @@ function Partners() {
       if(!response.ok) {
         if(collaborators.message) {
           Notiflix.Notify.failure(collaborators.message, {
-            timeout: 6000,
+            timeout: 6000000,
+            clickToClose: true,
           });
         } else {
           Notiflix.Notify.failure('Something went wrong, try later!', {
-            timeout: 6000,
+            timeout: 6000000,
+            clickToClose: true,
           });
         }
       } else {
@@ -178,7 +180,8 @@ function Partners() {
       const publishers = await response.json();
       if(!response.ok) {
         Notiflix.Notify.failure('Something went wrong, try later!', {
-          timeout: 6000,
+          timeout: 6000000,
+          clickToClose: true,
         });
       } else {
         Notiflix.Notify.success(`Publisher ${selectedPartner ? 'updated' : 'created'} successfully!`);
@@ -269,7 +272,8 @@ function Partners() {
         const results = await response.json();
         if (!response.ok) {
           Notiflix.Notify.failure(results.message, {
-            timeout: 6000,
+            timeout: 6000000,
+            clickToClose: true,
           });
         } else {
           Notiflix.Notify.success(`Collaborator "${collaborator.first_name} ${collaborator.last_name ?? ''}" deleted successfully!`);
@@ -315,7 +319,8 @@ function Partners() {
         const results = await response.json();
         if (!response.ok) {
           Notiflix.Notify.failure(results.message, {
-            timeout: 6000,
+            timeout: 6000000,
+            clickToClose: true,
           });
         } else {
           Notiflix.Notify.success(`Publisher "${publisher.name}" deleted successfully!`);
@@ -367,7 +372,8 @@ function Partners() {
           });
         if (!response.ok) {
           Notiflix.Notify.failure("Something went wrong, try later!", {
-            timeout: 6000,
+            timeout: 6000000,
+            clickToClose: true,
           });
         } else {
           Notiflix.Notify.success(`Follow up email sent successfully!`);

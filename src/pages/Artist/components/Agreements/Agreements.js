@@ -36,7 +36,8 @@ function Agreements({onChangeIsActiveProfile}) {
       });
     if(!response.ok) {
       Notiflix.Notify.failure('Something went wrong, try later!', {
-        timeout: 6000,
+        timeout: 6000000,
+        clickToClose: true,
       });
     } else {
       const resultSet = await response.json();
@@ -62,7 +63,8 @@ function Agreements({onChangeIsActiveProfile}) {
   const handleNext = () => {
     if(isActiveProfile === false) {
       Notiflix.Notify.failure('You must accept agreements to unlock Artist profile', {
-        timeout: 6000,
+        timeout: 6000000,
+        clickToClose: true,
       });
     }
   }
