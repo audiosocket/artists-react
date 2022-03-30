@@ -229,12 +229,15 @@ function Album({id = null}) {
         }
         if(selectedPublishers?.length > 0) {
           let total_share = 0;
+          let no_pub = true
           for(let i = 0; i < selectedPublishers.length; i++) {
+            if (selectedPublishers[i].label === "No Publisher")
+              no_pub = false
             data.append('track_publishers[][publisher_id]', selectedPublishers[i].value);
             data.append('track_publishers[][percentage]', data.get(`publisher_share_${selectedPublishers[i].value}`));
             total_share += parseFloat(data.get(`publisher_share_${selectedPublishers[i].value}`));
           }
-          if(total_share !== 50) {
+          if(total_share !== 50 && no_pub) {
             Notiflix.Report.warning( 'Invalid Publishers Share', `Your collective share of all publishers is ${total_share}%, it must be 50% to proceed. Please update and try again!`, 'Ok' );
             setIsSubmitting(false);
             return false;

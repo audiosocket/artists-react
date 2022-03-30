@@ -728,7 +728,7 @@ function Partners() {
                       <small>All co-writers, publishers, labels and other right-holders must sign the agreement too</small>
                     </div>
                   </Col>
-                  {(pro === "other" || selectedPartner && selectedPartner.publisher_users[0].pro && PRO_LIST.filter(item => item.value === selectedPartner.publisher_users[0].pro).length === 0 && {label: "Other", value: 'other'}) && pro.toLowerCase() !== 'ns' &&
+                  {(pro === "other" || selectedPartner && selectedPartner.publisher_users[0].pro && PRO_LIST.filter(item => item.value === selectedPartner.publisher_users[0].pro).length === 0 && PRO_LIST.filter(item => item.value === pro).length === 0 && {label: "Other", value: 'other'}) &&
                   <Col xs={12}>
                     <div className="form-group">
                       <Form.Control
