@@ -150,9 +150,9 @@ function Partners() {
           if(!handleIPICharacterLimit(data.get('ipi')))
             return false
         if(selectedPartner)
-          publisher_users_attributes.push({'pro': pro === "other" ? data.get('pro') : pro, 'ipi': data.get('ipi'), id: selectedPartner.publisher_users[0].id});
+          publisher_users_attributes.push({'pro': pro === "other" || selectedPartner && selectedPartner.publisher_users[0].pro && PRO_LIST.filter(item => item.value === selectedPartner.publisher_users[0].pro).length === 0 ? data.get('pro') : pro, 'ipi': data.get('ipi'), id: selectedPartner.publisher_users[0].id});
         else
-          publisher_users_attributes.push({'pro': pro === "other" ? data.get('pro') : pro, 'ipi': data.get('ipi')});
+          publisher_users_attributes.push({'pro': pro === "other" || selectedPartner && selectedPartner.publisher_users[0].pro && PRO_LIST.filter(item => item.value === selectedPartner.publisher_users[0].pro).length === 0 ? data.get('pro') : pro, 'ipi': data.get('ipi')});
         data.append('publisher_users_attributes', JSON.stringify(publisher_users_attributes)); 
       }
       setIsLoading(true);
