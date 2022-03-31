@@ -20,6 +20,7 @@ import Check from "../../images/check.svg";
 import Cancel from "../../images/cancel.svg";
 import fetchAgreements from "../../common/utlis/fetchAgreements";
 import Notiflix from "notiflix";
+import AgreementFAQS from "../../agreement-faqs.pdf"
 
 function Signup({userHash = ''}) {
   const pathname = useLocation().pathname;
@@ -291,11 +292,13 @@ function Signup({userHash = ''}) {
                   </Form.Group>
                   <Row>
                     <Col xs={6}>
-                      <Button onClick={handleSubmitReviewAgreement} data-id={agreement.id} data-action={"rejected"}
-                              variant="btn primary-btn reject btn-full-width">
-                        <img className="" src={Cancel} alt="download-btn"/>
-                        Reject
-                      </Button>
+                      <a href={AgreementFAQS} rel="noopener noreferrer" target="_blank">
+                        <Button data-id={agreement.id} data-action={"rejected"}
+                                variant="btn primary-btn reject btn-full-width">
+                          <img className="" src={Cancel} alt="download-btn"/>
+                          Reject
+                        </Button>
+                      </a>
                     </Col>
                     <Col xs={6}>
                       <Button onClick={handleSubmitReviewAgreement} data-id={agreement.id} data-action={"accepted"}
