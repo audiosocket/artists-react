@@ -18,6 +18,7 @@ import {Col, Row} from "react-bootstrap";
 import Download from "../../images/file.svg";
 import Check from "../../images/check.svg";
 import Cancel from "../../images/cancel.svg";
+import FAQs from "../../images/pdf.svg";
 import fetchAgreements from "../../common/utlis/fetchAgreements";
 import Notiflix from "notiflix";
 import AgreementFAQS from "../../agreement-faqs.pdf"
@@ -295,7 +296,7 @@ function Signup({userHash = ''}) {
                       <a href={AgreementFAQS} rel="noopener noreferrer" target="_blank">
                         <Button data-id={agreement.id} data-action={"rejected"}
                                 variant="btn primary-btn faqs btn-full-width">
-                          <img className="" src={Cancel} alt="download-btn"/>
+                          <img className="" src={FAQs} alt="download-btn"/>
                           FAQs
                         </Button>
                       </a>
