@@ -294,9 +294,9 @@ function Signup({userHash = ''}) {
                     <Col xs={6}>
                       <a href={AgreementFAQS} rel="noopener noreferrer" target="_blank">
                         <Button data-id={agreement.id} data-action={"rejected"}
-                                variant="btn primary-btn reject btn-full-width">
+                                variant="btn primary-btn faqs btn-full-width">
                           <img className="" src={Cancel} alt="download-btn"/>
-                          Reject
+                          FAQs
                         </Button>
                       </a>
                     </Col>

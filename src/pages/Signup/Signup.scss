@@ -71,6 +71,14 @@
             border-color: $clr-red-light-extra !important;
           }
         }
+        &.faqs {
+          background-color: $clr-grey !important;
+          border-color: $clr-grey !important;
+          &:hover, &:focus {
+            background-color: $clr-grey-border !important;
+            border-color: $clr-grey-border !important;
+          }
+        }
       }
     }
   }
