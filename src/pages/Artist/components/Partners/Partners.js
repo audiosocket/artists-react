@@ -155,6 +155,12 @@ function Partners() {
           else
             publisher_users_attributes.push({'pro': pro, 'ipi': data.get('ipi')});
           data.append('publisher_users_attributes', JSON.stringify(publisher_users_attributes));
+        } else {
+          if(selectedPartner)
+            publisher_users_attributes.push({'pro': pro, 'pro_name': data.get('pro_name'), 'ipi': data.get('ipi'), id: selectedPartner.publisher_users[0].id});
+          else
+            publisher_users_attributes.push({'pro': pro, 'pro_name': data.get('pro_name'), 'ipi': data.get('ipi')});
+          data.append('publisher_users_attributes', JSON.stringify(publisher_users_attributes));
         }
       } else {
         return false;
@@ -732,14 +738,14 @@ function Partners() {
                       <small>All co-writers, publishers, labels and other right-holders must sign the agreement too</small>
                     </div>
                   </Col>
-                  {(pro === "other" || selectedPartner && selectedPartner.publisher_users[0].pro && PRO_LIST.filter(item => item.value === selectedPartner.publisher_users[0].pro).length === 0 && PRO_LIST.filter(item => item.value === pro).length === 0 && {label: "Other", value: 'other'}) &&
+                  {pro === "other" &&
                   <Col xs={12}>
                     <div className="form-group">
                       <Form.Control
                         required
-                        name="pro"
+                        name="pro_name"
                         type="text"
-                        defaultValue={selectedPartner && selectedPartner.publisher_users[0].pro && (PRO_LIST.filter(item => item.value === selectedPartner.publisher_users[0].pro).length === 0 && pro.toLowerCase() !== "other") ? selectedPartner.publisher_users[0].pro : ''}
+                        defaultValue={selectedPartner && selectedPartner.publisher_users[0].pro_name}
                         placeholder="Enter your PRO name"
                       />
                       <Form.Control.Feedback type="invalid">
