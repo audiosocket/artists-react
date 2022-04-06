@@ -149,11 +149,15 @@ function Partners() {
         if(data.get('ipi'))
           if(!handleIPICharacterLimit(data.get('ipi')))
             return false
-        if(selectedPartner)
-          publisher_users_attributes.push({'pro': pro === "other" || selectedPartner && selectedPartner.publisher_users[0].pro && PRO_LIST.filter(item => item.value === selectedPartner.publisher_users[0].pro).length === 0 ? data.get('pro') : pro, 'ipi': data.get('ipi'), id: selectedPartner.publisher_users[0].id});
-        else
-          publisher_users_attributes.push({'pro': pro === "other" || selectedPartner && selectedPartner.publisher_users[0].pro && PRO_LIST.filter(item => item.value === selectedPartner.publisher_users[0].pro).length === 0 ? data.get('pro') : pro, 'ipi': data.get('ipi')});
-        data.append('publisher_users_attributes', JSON.stringify(publisher_users_attributes)); 
+        if(pro !== 'other') {
+          if(selectedPartner)
+            publisher_users_attributes.push({'pro': pro, 'ipi': data.get('ipi'), id: selectedPartner.publisher_users[0].id});
+          else
+            publisher_users_attributes.push({'pro': pro, 'ipi': data.get('ipi')});
+          data.append('publisher_users_attributes', JSON.stringify(publisher_users_attributes));
+        }
+      } else {
+        return false;
       }
       setIsLoading(true);
       let url = selectedPartner ? `${BASE_URL}${PUBLISHERS}/${selectedPartner.id}` : `${BASE_URL}${PUBLISHERS}`;
