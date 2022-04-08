@@ -68,8 +68,14 @@ function Partners() {
     } else {
       const data = new FormData(form.current);
       if(pro) {
-        if(pro !== "other")
+        if(pro !== "other") {
           data.append('collaborator_profile_attributes[pro]', pro);
+          data.append('collaborator_profile_attributes[pro_name]', "");
+        }
+        else {
+          data.append('collaborator_profile_attributes[pro]', pro);
+          data.append('collaborator_profile_attributes[pro_name]', data.get('pro_name'));
+        }
         if(data.get('collaborator_profile_attributes[ipi]'))
           if(!handleIPICharacterLimit(data.get('collaborator_profile_attributes[ipi]')))
             return false
@@ -561,9 +567,9 @@ function Partners() {
                       <div className="form-group">
                         <Form.Control
                           required
-                          name="collaborator_profile_attributes[pro]"
+                          name="pro_name"
                           type="text"
-                          defaultValue={selectedPartner && selectedPartner.collaborator_profile && selectedPartner.collaborator_profile.pro}
+                          defaultValue={selectedPartner && selectedPartner.collaborator_profile.pro_name}
                           placeholder="Enter your PRO name"
                         />
                         <Form.Control.Feedback type="invalid">

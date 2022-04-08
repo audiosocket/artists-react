@@ -99,9 +99,11 @@ function ProfileEdit() {
       }
       if(pro) {
         if(pro === 'other') {
-          if(!data.get('pro')) {
+          data.append('pro', pro);
+          data.append('pro_name', data.get('pro_name'));
+          if(!data.get('pro_name')) {
             setOtherError(true);
-            Notiflix.Notify.failure('PRO is required!', {
+            Notiflix.Notify.failure('PRO name is required!', {
               timeout: 6000000,
               clickToClose: true,
             });
@@ -109,6 +111,7 @@ function ProfileEdit() {
           }
         } else {
           data.append('pro', pro);
+          data.append('pro_name', "");
         }
         if(pro.toLowerCase() !== 'ns' && !handleIPICharacterLimit(data.get('ipi'))) {
           Notiflix.Notify.failure('A valid CAE/IPI # is required!', {
@@ -457,7 +460,7 @@ function ProfileEdit() {
                       <small><strong>Note:</strong> if you're not registered with a PRO, please select NS from the dropdown (no society)</small>
                     </Col>
                   </Row>
-                  {pro && (pro === 'other' || PRO_LIST.filter(item => item.value === pro).length === 0) &&
+                  {pro && pro === 'other' &&
                     <Row>
                       <Col xl={2} md={4}>
                         <Form.Label></Form.Label>
@@ -465,8 +468,8 @@ function ProfileEdit() {
                       <Col xl={4} md={8}>
                         <Form.Control
                           required
-                          name="pro"
-                          defaultValue={artist.pro || ""}
+                          name="pro_name"
+                          defaultValue={artist.pro_name}
                           type="text"
                           className={otherError ? "invalid" : ""}
                           placeholder="Enter your PRO name"
