@@ -393,7 +393,8 @@ function Album({id = null}) {
   const handleEditMusicModal = (track) => {
     setSelectedTrack(track);
     setSelectedCollaborators(track.artists_collaborators ? track.artists_collaborators.map(collaborator => {return {label: collaborator.first_name +(collaborator.last_name ? ' '+collaborator.last_name : '') + ' - ' + collaborator.status ?? '', value: collaborator.id, percentage: collaborator.percentage ?? ''}}) : null);
-    setSelectedPublishers(track.publishers ? track.publishers.map(publisher => {return {label: publisher.name, value: publisher.id, percentage: publisher.percentage ?? ''}}) : null);
+    let selectedPublishersArray = track.publishers && track.publishers.map(publisher => {if(publisher.name !== "LEOPONASSUB") return {label: publisher.name, value: publisher.id, percentage: publisher.percentage ?? ''}})
+    setSelectedPublishers(selectedPublishersArray ? selectedPublishersArray.filter(element => {return element !== undefined;}) : null);
     setIsPublicDomain(track.public_domain === true || track.public_domain === "true" ? true : false);
     setIsExplicit(track.explicit === true || track.explicit === "true" ? true : false);
     setShowAddMusicModal(true);
@@ -759,6 +760,7 @@ function Album({id = null}) {
                             <Form.Label>{publisher.label.split(' - ')[0]}</Form.Label>
                             <Form.Control required className="pub-percentage" name={`publisher_share_${publisher.value}`} defaultValue={ publisher.default ? '100' : publisher.percentage} type="number" onKeyDown={(e) => handleKeyDown(e)} onWheel={(e) => e.target.blur()} placeholder={`Percentage`} min={publisher.default ? '50' : '0'} onChange={(event) => {
                               if(event.target.value < 50 && event.target.value.length == 2 && publisher.default) {
+                                
                                 event.target.value = 50;
                               }
                             }}/>
