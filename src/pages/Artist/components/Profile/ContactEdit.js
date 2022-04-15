@@ -28,11 +28,13 @@ function ContactEdit() {
   const countryRef = useRef(null)
   const [countriesList, setCountriesList] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState(null);
+  const [selectedCountryCode, setSelectedCountryCode] = useState(null);
   const [countryError, setCountryError] = useState(false);
 
   const stateRef = useRef(null)
   const [statesList, setStatesList] = useState([]);
   const [selectedState, setSelectedState] = useState(null);
+  const [selectedStateCode, setSelectedStateCode] = useState(null);
   const [stateError, setStateError] = useState(false);
 
   const cityRef = useRef(null)
@@ -54,12 +56,6 @@ function ContactEdit() {
 
     prepareCountriesList();
 
-    // if(!artistState.countries) {
-    //   prepareCountriesList();
-    // }
-    // else {
-    //   setCountriesList(artistState.countries)
-    // }
     if(artistState.countries && artistState.artist.contact_information) {
       let states = prepareStatesDropdown();
       let cities = prepareCitiesDropdown();
@@ -142,8 +138,8 @@ function ContactEdit() {
     object["street"] = data.get('street');
     object["postal_code"] = data.get('postal_code');
     object["city"] = selectedCity;
-    object["state"] = selectedState;
-    object["country"] = selectedCountry;
+    object["state"] = selectedStateCode;
+    object["country"] = selectedCountryCode;
     object = {
       contact_information: object
     }
@@ -168,8 +164,15 @@ function ContactEdit() {
   }
 
   const prepareStatesDropdown = () => {
-    const filteredCountry = artistState.countries.filter(option => option.value === artistState.artist.contact_information.country);
-    const states = csc.getStatesOfCountry(filteredCountry[0].countryCode)
+    // const countries = csc.getAllCountries();
+    // countries.forEach((country, key) => {
+    //   if (artistState.artist.contact_information.country === country.isoCode) {
+    //     selectedCountry()
+    //   }
+      
+    // });
+    // const filteredCountry = artistState.countries.filter(option => option.value === artistState.artist.contact_information.country);
+    const states = csc.getStatesOfCountry(artistState.artist.contact_information.country)
     const list = []
     list.push({label: "Select State/County", value: null, countryCode: null});
     states.forEach((state, key) => {
@@ -180,16 +183,16 @@ function ContactEdit() {
   }
 
   const prepareCitiesDropdown = () => {
-    const filteredCountry = artistState.countries.filter(option => option.value === artistState.artist.contact_information.country);
-    const states = csc.getStatesOfCountry(filteredCountry[0].countryCode)
+    // const filteredCountry = artistState.countries.filter(option => option.value === artistState.artist.contact_information.country);
+    const states = csc.getStatesOfCountry(artistState.artist.contact_information.country)
     const tempStateList = []
     tempStateList.push({label: "Select State/County", value: null, countryCode: null});
     states.forEach((state, key) => {
       tempStateList.push({label: state.name, value: state.name, countryCode: state.countryCode, stateCode: state.isoCode})
     });
 
-    const filteredState = tempStateList.filter(option => option.value === artistState.artist.contact_information.state);
-    const cities = csc.getCitiesOfState(filteredState[0].countryCode, filteredState[0].stateCode)
+    // const filteredState = tempStateList.filter(option => option.value === artistState.artist.contact_information.state);
+    const cities = csc.getCitiesOfState(artistState.artist.contact_information.country, artistState.artist.contact_information.state)
     const list = []
     list.push({label: "Select City", value: null});
     cities.forEach((city, key) => {
@@ -200,9 +203,11 @@ function ContactEdit() {
   }
 
   const handleCountrySelection = (target) => {
-    if(target.value)
+    if (target) {
+      if(target?.value)
       setCountryError(false);
     setSelectedCountry(target.value);
+    setSelectedCountryCode(target.countryCode);
     // reset state & city select
     setStatesList([]);
     setSelectedState(null);
@@ -223,6 +228,11 @@ function ContactEdit() {
       }
     });
     setStatesList(list);
+    } else {
+      setCitiesList([]);
+      setSelectedState(null);
+    }
+    
   }
 
   const handelStateSelection = (target) => {
@@ -230,6 +240,7 @@ function ContactEdit() {
       if(target.value)
         setStateError(false);
       setSelectedState(target.value);
+      setSelectedStateCode(target.stateCode);
       // reset city select
       setCitiesList([])
       setSelectedCity(null);
@@ -326,7 +337,7 @@ function ContactEdit() {
                     className="country-select-container-header"
                     classNamePrefix={!countryError ? "country-select-header" : "country-select-header invalid"}
                     options={countriesList}
-                    defaultValue={artist.contact_information && countriesList.filter(option => option.value === artist.contact_information.country)}
+                    defaultValue={artist.contact_information && countriesList.filter(option => option.countryCode === artist.contact_information.country)}
                     onChange={handleCountrySelection}
                     noOptionsMessage={() => {return "No country found"}}
                     theme={theme => ({
@@ -356,7 +367,7 @@ function ContactEdit() {
                     className="state-select-container-header"
                     classNamePrefix={!stateError ? "state-select-header" : "state-select-header invalid"}
                     options={statesList}
-                    defaultValue={artist.contact_information && statesList.filter(option => option.value === artist.contact_information.state)}
+                    defaultValue={artist.contact_information && statesList.filter(option => option.stateCode === artist.contact_information.state)}
                     onChange={handelStateSelection}
                     noOptionsMessage={() => {return "No state found"}}
                     theme={theme => ({
