@@ -97,6 +97,7 @@ function Partners() {
       if(selectedPartner) {
         data.delete("email");
       }
+      selectedPartner && selectedPartner.collaborator_profile && data.set("collaborator_profile_attributes[id]", selectedPartner.collaborator_profile.id)
       let url = selectedPartner ? `${BASE_URL}${ARTISTS_COLLABORATORS}/${selectedPartner.id}` : `${BASE_URL}${INVITE_COLLABORATORS}`;
       const userRole = artistState.userRole || JSON.parse(localStorage.getItem("userRole") ?? "");
       if(userRole === "collaborator") {
