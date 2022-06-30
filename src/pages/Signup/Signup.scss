@@ -74,6 +74,9 @@
         &.faqs {
           background-color: $clr-grey !important;
           border-color: $clr-grey !important;
+          img {
+            height: 19px;
+          }
           &:hover, &:focus {
             background-color: $clr-grey-border !important;
             border-color: $clr-grey-border !important;
