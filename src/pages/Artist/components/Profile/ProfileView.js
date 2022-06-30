@@ -45,6 +45,17 @@ function Profile() {
     }
   }
 
+  const handleContactEditClick = () => {
+    if (artist) {
+      if (!artist.banner_image || !artist.profile_image) {
+        Notiflix.Notify.failure('You must complete artist profile to unlock Partners page', {
+          timeout: 6000000,
+          clickToClose: true,
+        });
+      }
+    }
+  }
+
   const handleCheckContact = () => {
     if(!artist.contact_information) {
       Notiflix.Report.warning('Action required', 'Please complete your contact information first!', 'Update Profile', () => {
@@ -268,7 +279,7 @@ function Profile() {
           <div className="section-head">
             <h2>Contact</h2>
             {(!artistState.selectedArtist || artistState.selectedArtist.access === 'write') &&
-              <NavLink to="/profile/contact/edit" className="btn primary-btn">Edit</NavLink>
+              <NavLink onClick={handleContactEditClick} to={(!artist.banner_image || !artist.profile_image) ? "/profile" : "/profile/contact/edit"} className="btn primary-btn">Edit</NavLink>
             }
           </div>
           {Object.keys(artist).length === 0 && isLoading && <h5>Loading contact... <img className="loading" src={Loader} alt="loading-icon"/></h5>}
