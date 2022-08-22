@@ -35,6 +35,7 @@ export const RESEND_COLLABORATOR_INVITE_COLLABORATORS = "api/v1/collaborator/art
 export const PRO_LIST = [
   {label: "Select PRO", value: null},
   {label: "NS (no society)", value: "NS"},
+  {label: "Soundreef", value: "Soundreef"},
   {label: "USA - ASCAP", value: "USA - ASCAP"},
   {label: "USA - BMI", value: "USA - BMI"},
   {label: "USA - SESAC", value: "USA - SESAC"},
