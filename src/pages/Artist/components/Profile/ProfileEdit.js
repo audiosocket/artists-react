@@ -325,7 +325,7 @@ function ProfileEdit() {
 
   const handleIPICharacterLimit = (value) => {
     setIpiFlag(false);
-    if(value.length === 9) {
+    if (value.length >= 9 && value.length <= 11) {
       setIpiFlag(false);
       return true;
     } else {
@@ -500,10 +500,10 @@ function ProfileEdit() {
                         <Form.Control.Feedback type="invalid">
                           CAE/IPI # is required!
                         </Form.Control.Feedback>
-                        {ipiFlag && <div className="custom-invalid-feedback">CAE/IPI # must be 9 digits</div>}
+                        {ipiFlag && <div className="custom-invalid-feedback">CAE/IPI # must be between 9 - 11 digits</div>}
                         <div>
                           <small className="text-muted">
-                            <strong>Note</strong>: An CAE/IPI # is not the same as a member number, its the 9 digit number
+                            <strong>Note</strong>: An CAE/IPI # is not the same as a member number, its the 9 - 11 digit number
                             that appears on the statements from your PRO
                           </small>
                         </div>
