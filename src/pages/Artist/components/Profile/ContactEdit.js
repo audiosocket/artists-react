@@ -60,7 +60,9 @@ function ContactEdit() {
       let states = prepareStatesDropdown();
       let cities = prepareCitiesDropdown();
       setSelectedCountry(artistState.artist.contact_information.country)
+      setSelectedCountryCode(artistState.artist.contact_information.country)
       setSelectedState(artistState.artist.contact_information.state)
+      setSelectedStateCode(artistState.artist.contact_information.state)
       setSelectedCity(artistState.artist.contact_information.city)
       if(form.current) {
         countryRef.current.select.setValue(artistState.countries.filter((country) => country.value === artistState.artist.contact_information.country)[0])
@@ -169,7 +171,7 @@ function ContactEdit() {
     //   if (artistState.artist.contact_information.country === country.isoCode) {
     //     selectedCountry()
     //   }
-      
+
     // });
     // const filteredCountry = artistState.countries.filter(option => option.value === artistState.artist.contact_information.country);
     const states = csc.getStatesOfCountry(artistState.artist.contact_information.country)
@@ -232,7 +234,7 @@ function ContactEdit() {
       setCitiesList([]);
       setSelectedState(null);
     }
-    
+
   }
 
   const handelStateSelection = (target) => {
@@ -330,7 +332,7 @@ function ContactEdit() {
                   <Form.Label>Country*</Form.Label>
                 </Col>
                 <Col xl={4} md={8}>
-                  
+
                   <Select
                     ref={countryRef}
                     placeholder="Select Country"
@@ -356,7 +358,7 @@ function ContactEdit() {
                 </Col>
               </Row>
               <Row>
-                
+
                 <Col xl={2} md={4}>
                   <Form.Label>State/County*</Form.Label>
                 </Col>
@@ -386,7 +388,7 @@ function ContactEdit() {
                 </Col>
               </Row>
               <Row>
-                
+
                 <Col xl={2} md={4}>
                   <Form.Label>City</Form.Label>
                 </Col>
