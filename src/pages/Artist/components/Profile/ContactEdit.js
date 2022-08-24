@@ -119,7 +119,9 @@ function ContactEdit() {
         });
       const artist = await response.json();
       if(!response.ok) {
-        Notiflix.Notify.failure('Something went wrong, try later!', {
+        let message
+        artist.errors['contact_information.phone'] ? message = 'Phone number is not valid!' : message = 'Something went wrong, try later!'
+        Notiflix.Notify.failure(message, {
           timeout: 6000000,
           clickToClose: true,
         });
