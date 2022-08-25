@@ -77,7 +77,8 @@ function ProfileEdit() {
       setOtherError(false);
       if(!selectedCountry) {
         Notiflix.Notify.failure('Country is required!', {
-          timeout: 6000,
+          timeout: 6000000,
+          clickToClose: true,
         });
         setCountryError(true);
         errors = true;
@@ -85,30 +86,37 @@ function ProfileEdit() {
       if(data.get('email')) {
         if(!handleEmailValidate(data.get('email')))
           Notiflix.Notify.failure('A valid email address is required!', {
-            timeout: 6000,
+            timeout: 6000000,
+            clickToClose: true,
           });
       } else {
         Notiflix.Notify.failure('A valid email address is required!', {
-          timeout: 6000,
+          timeout: 6000000,
+          clickToClose: true,
         });
         setEmailError(true);
         errors = true;
       }
       if(pro) {
         if(pro === 'other') {
-          if(!data.get('pro')) {
+          data.append('pro', pro);
+          data.append('pro_name', data.get('pro_name'));
+          if(!data.get('pro_name')) {
             setOtherError(true);
-            Notiflix.Notify.failure('PRO is required!', {
-              timeout: 6000,
+            Notiflix.Notify.failure('PRO name is required!', {
+              timeout: 6000000,
+              clickToClose: true,
             });
             errors = true;
           }
         } else {
           data.append('pro', pro);
+          data.append('pro_name', "");
         }
         if(pro.toLowerCase() !== 'ns' && !handleIPICharacterLimit(data.get('ipi'))) {
           Notiflix.Notify.failure('A valid CAE/IPI # is required!', {
-            timeout: 6000,
+            timeout: 6000000,
+            clickToClose: true,
           });
           errors = true;
         }
@@ -116,21 +124,24 @@ function ProfileEdit() {
       else {
         setProError(true);
         Notiflix.Notify.failure('PRO is required!', {
-          timeout: 6000,
+          timeout: 6000000,
+          clickToClose: true,
         });
         errors = true;
       }
 
       if(!profileImage && !artist.profile_image ) {
         Notiflix.Notify.failure('Profile image is required!', {
-          timeout: 6000,
+          timeout: 6000000,
+          clickToClose: true,
         });
         setProfileImageError(true);
         errors = true;
       }
       if(!bannerImage && !artist.banner_image) {
         Notiflix.Notify.failure('Banner image is required!', {
-          timeout: 6000,
+          timeout: 6000000,
+          clickToClose: true,
         });
         setBannerImageError(true);
         errors = true;
@@ -178,7 +189,8 @@ function ProfileEdit() {
       const artistData = await response.json();
       if(!response.ok) {
         Notiflix.Notify.failure('Something went wrong, try later!', {
-          timeout: 6000,
+          timeout: 6000000,
+          clickToClose: true,
         });
       } else {
         setArtist(artistData);
@@ -313,7 +325,7 @@ function ProfileEdit() {
 
   const handleIPICharacterLimit = (value) => {
     setIpiFlag(false);
-    if(value.length === 9) {
+    if (value.length >= 9 && value.length <= 11) {
       setIpiFlag(false);
       return true;
     } else {
@@ -448,7 +460,7 @@ function ProfileEdit() {
                       <small><strong>Note:</strong> if you're not registered with a PRO, please select NS from the dropdown (no society)</small>
                     </Col>
                   </Row>
-                  {pro && (pro === 'other' || PRO_LIST.filter(item => item.value === pro).length === 0) &&
+                  {pro && pro === 'other' &&
                     <Row>
                       <Col xl={2} md={4}>
                         <Form.Label></Form.Label>
@@ -456,8 +468,8 @@ function ProfileEdit() {
                       <Col xl={4} md={8}>
                         <Form.Control
                           required
-                          name="pro"
-                          defaultValue={artist.pro || ""}
+                          name="pro_name"
+                          defaultValue={artist.pro_name}
                           type="text"
                           className={otherError ? "invalid" : ""}
                           placeholder="Enter your PRO name"
@@ -488,10 +500,10 @@ function ProfileEdit() {
                         <Form.Control.Feedback type="invalid">
                           CAE/IPI # is required!
                         </Form.Control.Feedback>
-                        {ipiFlag && <div className="custom-invalid-feedback">CAE/IPI # must be 9 digits</div>}
+                        {ipiFlag && <div className="custom-invalid-feedback">CAE/IPI # must be between 9 - 11 digits</div>}
                         <div>
                           <small className="text-muted">
-                            <strong>Note</strong>: An CAE/IPI # is not the same as a member number, its the 9 digit number
+                            <strong>Note</strong>: An CAE/IPI # is not the same as a member number, its the 9 - 11 digit number
                             that appears on the statements from your PRO
                           </small>
                         </div>

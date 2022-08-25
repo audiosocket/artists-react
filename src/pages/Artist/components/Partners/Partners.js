@@ -68,8 +68,14 @@ function Partners() {
     } else {
       const data = new FormData(form.current);
       if(pro) {
-        if(pro !== "other")
+        if(pro !== "other") {
           data.append('collaborator_profile_attributes[pro]', pro);
+          data.append('collaborator_profile_attributes[pro_name]', "");
+        }
+        else {
+          data.append('collaborator_profile_attributes[pro]', pro);
+          data.append('collaborator_profile_attributes[pro_name]', data.get('pro_name'));
+        }
         if(data.get('collaborator_profile_attributes[ipi]'))
           if(!handleIPICharacterLimit(data.get('collaborator_profile_attributes[ipi]')))
             return false
@@ -91,6 +97,7 @@ function Partners() {
       if(selectedPartner) {
         data.delete("email");
       }
+      selectedPartner && selectedPartner.collaborator_profile && data.set("collaborator_profile_attributes[id]", selectedPartner.collaborator_profile.id)
       let url = selectedPartner ? `${BASE_URL}${ARTISTS_COLLABORATORS}/${selectedPartner.id}` : `${BASE_URL}${INVITE_COLLABORATORS}`;
       const userRole = artistState.userRole || JSON.parse(localStorage.getItem("userRole") ?? "");
       if(userRole === "collaborator") {
@@ -112,11 +119,13 @@ function Partners() {
       if(!response.ok) {
         if(collaborators.message) {
           Notiflix.Notify.failure(collaborators.message, {
-            timeout: 6000,
+            timeout: 6000000,
+            clickToClose: true,
           });
         } else {
           Notiflix.Notify.failure('Something went wrong, try later!', {
-            timeout: 6000,
+            timeout: 6000000,
+            clickToClose: true,
           });
         }
       } else {
@@ -153,6 +162,12 @@ function Partners() {
           else
             publisher_users_attributes.push({'pro': pro, 'ipi': data.get('ipi')});
           data.append('publisher_users_attributes', JSON.stringify(publisher_users_attributes));
+        } else {
+          if(selectedPartner)
+            publisher_users_attributes.push({'pro': pro, 'pro_name': data.get('pro_name'), 'ipi': data.get('ipi'), id: selectedPartner.publisher_users[0].id});
+          else
+            publisher_users_attributes.push({'pro': pro, 'pro_name': data.get('pro_name'), 'ipi': data.get('ipi')});
+          data.append('publisher_users_attributes', JSON.stringify(publisher_users_attributes));
         }
       } else {
         return false;
@@ -178,7 +193,8 @@ function Partners() {
       const publishers = await response.json();
       if(!response.ok) {
         Notiflix.Notify.failure('Something went wrong, try later!', {
-          timeout: 6000,
+          timeout: 6000000,
+          clickToClose: true,
         });
       } else {
         Notiflix.Notify.success(`Publisher ${selectedPartner ? 'updated' : 'created'} successfully!`);
@@ -269,7 +285,8 @@ function Partners() {
         const results = await response.json();
         if (!response.ok) {
           Notiflix.Notify.failure(results.message, {
-            timeout: 6000,
+            timeout: 6000000,
+            clickToClose: true,
           });
         } else {
           Notiflix.Notify.success(`Collaborator "${collaborator.first_name} ${collaborator.last_name ?? ''}" deleted successfully!`);
@@ -315,7 +332,8 @@ function Partners() {
         const results = await response.json();
         if (!response.ok) {
           Notiflix.Notify.failure(results.message, {
-            timeout: 6000,
+            timeout: 6000000,
+            clickToClose: true,
           });
         } else {
           Notiflix.Notify.success(`Publisher "${publisher.name}" deleted successfully!`);
@@ -333,7 +351,7 @@ function Partners() {
 
   const handleIPICharacterLimit = (value) => {
     setIpiFlag(false);
-    if(value.length === 9) {
+    if(value.length >= 9 && value.length <= 11) {
       setIpiFlag(false);
       return true;
     } else {
@@ -367,7 +385,8 @@ function Partners() {
           });
         if (!response.ok) {
           Notiflix.Notify.failure("Something went wrong, try later!", {
-            timeout: 6000,
+            timeout: 6000000,
+            clickToClose: true,
           });
         } else {
           Notiflix.Notify.success(`Follow up email sent successfully!`);
@@ -549,9 +568,9 @@ function Partners() {
                       <div className="form-group">
                         <Form.Control
                           required
-                          name="collaborator_profile_attributes[pro]"
+                          name="pro_name"
                           type="text"
-                          defaultValue={selectedPartner && selectedPartner.collaborator_profile && selectedPartner.collaborator_profile.pro}
+                          defaultValue={selectedPartner && selectedPartner.collaborator_profile.pro_name}
                           placeholder="Enter your PRO name"
                         />
                         <Form.Control.Feedback type="invalid">
@@ -575,10 +594,10 @@ function Partners() {
                         <Form.Control.Feedback type="invalid">
                           CAE/IPI # is required!
                         </Form.Control.Feedback>
-                        {ipiFlag && <div className="custom-invalid-feedback">CAE/IPI # must be 9 digits</div>}
+                        {ipiFlag && <div className="custom-invalid-feedback">CAE/IPI # must be between 9 - 11 digits</div>}
                         <div>
                           <small className="text-muted">
-                            <strong>Note</strong>: An CAE/IPI # is not the same as a member number, its the 9 digit number
+                            <strong>Note</strong>: An CAE/IPI # is not the same as a member number, its the 9 - 11 digit number
                             that appears on the statements from your PRO
                           </small>
                         </div>
@@ -731,9 +750,9 @@ function Partners() {
                     <div className="form-group">
                       <Form.Control
                         required
-                        name="pro"
+                        name="pro_name"
                         type="text"
-                        defaultValue={selectedPartner && selectedPartner.publisher_users[0].pro}
+                        defaultValue={selectedPartner && selectedPartner.publisher_users[0].pro_name}
                         placeholder="Enter your PRO name"
                       />
                       <Form.Control.Feedback type="invalid">
@@ -742,7 +761,7 @@ function Partners() {
                     </div>
                   </Col>
                   }
-                  {pro && pro.toLowerCase() !== 'ns' &&
+                  {(pro && pro.toLowerCase() !== 'ns') &&
                     <Col xs={12}>
                       <div className="form-group">
                         <Form.Control
@@ -757,10 +776,10 @@ function Partners() {
                         <Form.Control.Feedback type="invalid">
                           CAE/IPI # is required!
                         </Form.Control.Feedback>
-                        {ipiFlag && <div className="custom-invalid-feedback">CAE/IPI # must be 9 digits</div>}
+                        {ipiFlag && <div className="custom-invalid-feedback">CAE/IPI # must be between 9 - 11 digits</div>}
                         <div>
                           <small className="text-muted">
-                            <strong>Note</strong>: An CAE/IPI # is not the same as a member number, its the 9 digit number
+                            <strong>Note</strong>: An CAE/IPI # is not the same as a member number, its the 9 - 11 digit number
                             that appears on the statements from your PRO
                           </small>
                         </div>

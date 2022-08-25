@@ -34,7 +34,8 @@ function Welcome() {
     if (!response.ok) {
       setMetadata(null);
       Notiflix.Notify.failure("Can't connect to server, try later!", {
-        timeout: 6000,
+        timeout: 6000000,
+        clickToClose: true,
       });
     } else {
       const resultSet = await response.json();

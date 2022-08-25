@@ -70,7 +70,8 @@ function Notes(props) {
         handleClose();
       } else {
         Notiflix.Notify.failure('Something went wrong, try again!', {
-          timeout: 6000,
+          timeout: 6000000,
+          clickToClose: true,
         });
       }
       setIsAdding(false);

@@ -38,7 +38,19 @@ function Profile() {
     if(artist) {
       if(!artist.banner_image || !artist.profile_image || !artist.contact_information) {
         Notiflix.Notify.failure('You must complete artist profile to unlock Partners page', {
-          timeout: 6000,
+          timeout: 6000000,
+          clickToClose: true,
+        });
+      }
+    }
+  }
+
+  const handleContactEditClick = () => {
+    if (artist) {
+      if (!artist.banner_image || !artist.profile_image) {
+        Notiflix.Notify.failure('You must complete artist profile to unlock Partners page', {
+          timeout: 6000000,
+          clickToClose: true,
         });
       }
     }
@@ -75,7 +87,8 @@ function Profile() {
     const resultSet = await response.json();
     if (!response.ok) {
       Notiflix.Notify.failure('System has encountered an error while fetching tax form, try later!', {
-        timeout: 6000,
+        timeout: 6000000,
+        clickToClose: true,
       });
     } else {
       setTaxForm(resultSet.url || null);
@@ -266,7 +279,7 @@ function Profile() {
           <div className="section-head">
             <h2>Contact</h2>
             {(!artistState.selectedArtist || artistState.selectedArtist.access === 'write') &&
-              <NavLink to="/profile/contact/edit" className="btn primary-btn">Edit</NavLink>
+              <NavLink onClick={handleContactEditClick} to={(!artist.banner_image || !artist.profile_image) ? "/profile" : "/profile/contact/edit"} className="btn primary-btn">Edit</NavLink>
             }
           </div>
           {Object.keys(artist).length === 0 && isLoading && <h5>Loading contact... <img className="loading" src={Loader} alt="loading-icon"/></h5>}

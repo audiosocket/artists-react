@@ -229,12 +229,15 @@ function Album({id = null}) {
         }
         if(selectedPublishers?.length > 0) {
           let total_share = 0;
+          let no_pub = true
           for(let i = 0; i < selectedPublishers.length; i++) {
+            if (selectedPublishers[i].label === "No Publisher")
+              no_pub = false
             data.append('track_publishers[][publisher_id]', selectedPublishers[i].value);
             data.append('track_publishers[][percentage]', data.get(`publisher_share_${selectedPublishers[i].value}`));
             total_share += parseFloat(data.get(`publisher_share_${selectedPublishers[i].value}`));
           }
-          if(total_share !== 50) {
+          if(total_share !== 50 && no_pub) {
             Notiflix.Report.warning( 'Invalid Publishers Share', `Your collective share of all publishers is ${total_share}%, it must be 50% to proceed. Please update and try again!`, 'Ok' );
             setIsSubmitting(false);
             return false;
@@ -268,12 +271,14 @@ function Album({id = null}) {
         if (!response.ok) {
           if(results.message) {
             Notiflix.Notify.failure(results.message + ' Please make sure to upload music files (WAV or AIFF) at 16bit or 24bit, at 44K, 44.1K or 48K.', {
-              timeout: 6000,
+              timeout: 6000000,
+              clickToClose: true,
               messageMaxLength: 500
             });
           } else {
             Notiflix.Notify.failure('Something went wrong, try later!', {
-              timeout: 6000,
+              timeout: 6000000,
+              clickToClose: true,
             });
           }
         } else {
@@ -290,7 +295,8 @@ function Album({id = null}) {
         setIsSubmitting(false);
         setIsLoading(false);
         Notiflix.Notify.failure('Something went wrong, try later!', {
-          timeout: 6000,
+          timeout: 6000000,
+          clickToClose: true,
         });
       }
       setIsSubmitting(false);
@@ -326,7 +332,8 @@ function Album({id = null}) {
           });
         if (!response.ok) {
           Notiflix.Notify.failure('Something went wrong, try later!', {
-            timeout: 6000,
+            timeout: 6000000,
+            clickToClose: true,
           });
           setIsDeleting(false);
         } else {
@@ -365,7 +372,8 @@ function Album({id = null}) {
           });
         if (!response.ok) {
           Notiflix.Notify.failure('Something went wrong, try later!', {
-            timeout: 6000,
+            timeout: 6000000,
+            clickToClose: true,
           });
         } else {
           const albums = await fetchAlbums(userRole === "collaborator" && artist_id);
@@ -385,7 +393,8 @@ function Album({id = null}) {
   const handleEditMusicModal = (track) => {
     setSelectedTrack(track);
     setSelectedCollaborators(track.artists_collaborators ? track.artists_collaborators.map(collaborator => {return {label: collaborator.first_name +(collaborator.last_name ? ' '+collaborator.last_name : '') + ' - ' + collaborator.status ?? '', value: collaborator.id, percentage: collaborator.percentage ?? ''}}) : null);
-    setSelectedPublishers(track.publishers ? track.publishers.map(publisher => {return {label: publisher.name, value: publisher.id, percentage: publisher.percentage ?? ''}}) : null);
+    let selectedPublishersArray = track.publishers && track.publishers.map(publisher => {if(publisher.name !== "LEOPONASSUB") return {label: publisher.name, value: publisher.id, percentage: publisher.percentage ?? ''}})
+    setSelectedPublishers(selectedPublishersArray ? selectedPublishersArray.filter(element => {return element !== undefined;}) : null);
     setIsPublicDomain(track.public_domain === true || track.public_domain === "true" ? true : false);
     setIsExplicit(track.explicit === true || track.explicit === "true" ? true : false);
     setShowAddMusicModal(true);
@@ -751,6 +760,7 @@ function Album({id = null}) {
                             <Form.Label>{publisher.label.split(' - ')[0]}</Form.Label>
                             <Form.Control required className="pub-percentage" name={`publisher_share_${publisher.value}`} defaultValue={ publisher.default ? '100' : publisher.percentage} type="number" onKeyDown={(e) => handleKeyDown(e)} onWheel={(e) => e.target.blur()} placeholder={`Percentage`} min={publisher.default ? '50' : '0'} onChange={(event) => {
                               if(event.target.value < 50 && event.target.value.length == 2 && publisher.default) {
+                                
                                 event.target.value = 50;
                               }
                             }}/>

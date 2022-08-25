@@ -85,7 +85,8 @@ function Login() {
         e.target.reset();
       } else {
         Notiflix.Notify.failure('Invalid email/password, try again!', {
-          timeout: 6000,
+          timeout: 6000000,
+          clickToClose: true,
         });
       }
       setIsLoading(false);

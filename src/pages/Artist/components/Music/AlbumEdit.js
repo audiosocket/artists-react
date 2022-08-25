@@ -76,7 +76,8 @@ function AlbumEdit({id = null}) {
         });
       if (!response.ok) {
         Notiflix.Notify.failure('Something went wrong, try later!', {
-          timeout: 6000,
+          timeout: 6000000,
+          clickToClose: true,
         });
       } else {
         const albums = await fetchAlbums(userRole === "collaborator" && artist_id);
@@ -115,7 +116,8 @@ function AlbumEdit({id = null}) {
           });
         if (!response.ok) {
           Notiflix.Notify.failure('Something went wrong, try later!', {
-            timeout: 6000,
+            timeout: 6000000,
+            clickToClose: true,
           });
           setIsDeleting(false);
         } else {

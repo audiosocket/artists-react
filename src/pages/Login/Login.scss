@@ -1,108 +1,113 @@
 @import "../../App.scss";
 
 .login-block {
-	width: 100%;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	margin: 1rem auto;
-	height: 100vh;
-	padding-left: 1rem;
-	padding-right: 1rem;
-	h2 {
-		margin-top: 1.3rem;
-		margin-bottom: 1.8rem;
-		text-align: center;
-	}
-	.form {
-		width: 100%;
-	}
-	.login-logo {
-		text-align: center;
-		&:hover {
-			cursor: pointer;
-		}
-	}
-	.block-inline {
-		display: flex;
-		justify-content: space-between;
-	}
-	.btn-full-width {
-		width: 100%;
-		padding: 0.5rem 1rem;
-		background: $clr-green-bright;
-	}
-	.btn {
-		line-height: 1.2;
-		img {
-			width: 1.25rem;
-			float: left;
-		}
-	}
-	a {
-		color: $clr-black;
-		font-weight: normal;
-		&:hover {
-			text-decoration: underline !important;
-		}
-	}
-	.remember-text {
-		margin-top: 2rem;
-		margin-bottom: 2rem;
-		font-size: 0.8rem;
-		.checkmark {
-			&.checked {
-				background: $clr-green;
-			}
-		}
-		.checkbox {
-			&:hover {
-				cursor: pointer;
-			}
-		}
-		img {
-			&.back {
-				width: 12px;
-				vertical-align: top;
-				margin-top: 7px;
-				margin-right: 5px;
-			}
-		}
-	}
-	.login-error {
-		width: 100%;
-		text-align: center;
-		color: $clr-red;
-	}
-	.success {
-		color: $clr-green-dark;
-	}
-	.custom-control-label {
-		cursor: pointer;
-	}
-	.custom-control-input:checked~.custom-control-label::before {
-		border-color: $clr-green;
-		background-color: $clr-green;
-	}
-	.custom-control-input:focus:not(:checked)~.custom-control-label::before {
-		border-color: $clr-green;
-	}
-	.custom-control-input:focus~.custom-control-label::before {
-		box-shadow: 0 0 0 0.2rem hsl(68deg, 80%, 75%);
-	}
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 1rem auto;
+  height: 100vh;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  h2 {
+    margin-top: 1.3rem;
+    margin-bottom: 1.8rem;
+    text-align: center;
+  }
+  .form {
+    width: 100%;
+  }
+  .login-logo {
+    text-align: center;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+  .block-inline {
+    display: flex;
+    justify-content: space-between;
+  }
+  .btn-full-width {
+    width: 100%;
+    padding: 0.5rem 1rem;
+    background: $clr-green-bright;
+  }
+  .btn {
+    line-height: 1.2;
+    img {
+      width: 1.25rem;
+      float: left;
+    }
+    &.faqs {
+      img {
+        height: 19px;
+      }
+    }
+  }
+  a {
+    color: $clr-black;
+    font-weight: normal;
+    &:hover {
+      text-decoration: underline !important;
+    }
+  }
+  .remember-text {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    font-size: 0.8rem;
+    .checkmark {
+      &.checked {
+        background: $clr-green;
+      }
+    }
+    .checkbox {
+      &:hover {
+        cursor: pointer;
+      }
+    }
+    img {
+      &.back {
+        width: 12px;
+        vertical-align: top;
+        margin-top: 7px;
+        margin-right: 5px;
+      }
+    }
+  }
+  .login-error {
+    width: 100%;
+    text-align: center;
+    color: $clr-red;
+  }
+  .success {
+    color: $clr-green-dark;
+  }
+  .custom-control-label {
+    cursor: pointer;
+  }
+  .custom-control-input:checked~.custom-control-label::before {
+    border-color: $clr-green;
+    background-color: $clr-green;
+  }
+  .custom-control-input:focus:not(:checked)~.custom-control-label::before {
+    border-color: $clr-green;
+  }
+  .custom-control-input:focus~.custom-control-label::before {
+    box-shadow: 0 0 0 0.2rem hsl(68deg, 80%, 75%);
+  }
 }
 
 @media(min-width: 360px) {
-	.login-block {
-		.remember-text {
-			font-size: 1rem;
-		}
-	}
+  .login-block {
+    .remember-text {
+      font-size: 1rem;
+    }
+  }
 }
 
 @media(min-width: 768px) {
-	.login-block {
-		width: 32rem;
-	}
+  .login-block {
+    width: 32rem;
+  }
 }

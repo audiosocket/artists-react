@@ -18,8 +18,10 @@ import {Col, Row} from "react-bootstrap";
 import Download from "../../images/file.svg";
 import Check from "../../images/check.svg";
 import Cancel from "../../images/cancel.svg";
+import FAQs from "../../images/pdf.svg";
 import fetchAgreements from "../../common/utlis/fetchAgreements";
 import Notiflix from "notiflix";
+import AgreementFAQS from "../../agreement-faqs.pdf"
 
 function Signup({userHash = ''}) {
   const pathname = useLocation().pathname;
@@ -179,7 +181,8 @@ function Signup({userHash = ''}) {
           } );
         } else
           Notiflix.Notify.failure('Something went wrong, try again!', {
-            timeout: 6000,
+            timeout: 6000000,
+            clickToClose: true,
           });
       }
       setIsLoading(false);
@@ -213,7 +216,8 @@ function Signup({userHash = ''}) {
       });
     if(!response.ok) {
       Notiflix.Notify.failure('Something went wrong, try later!', {
-        timeout: 6000,
+        timeout: 6000000,
+        clickToClose: true,
       });
     } else {
       Notiflix.Notify.success('Agreements updated successfully!');
@@ -289,11 +293,13 @@ function Signup({userHash = ''}) {
                   </Form.Group>
                   <Row>
                     <Col xs={6}>
-                      <Button onClick={handleSubmitReviewAgreement} data-id={agreement.id} data-action={"rejected"}
-                              variant="btn primary-btn reject btn-full-width">
-                        <img className="" src={Cancel} alt="download-btn"/>
-                        Reject
-                      </Button>
+                      <a href={AgreementFAQS} rel="noopener noreferrer" target="_blank">
+                        <Button data-id={agreement.id} data-action={"rejected"}
+                                variant="btn primary-btn faqs btn-full-width">
+                          <img className="" src={FAQs} alt="download-btn"/>
+                          FAQs
+                        </Button>
+                      </a>
                     </Col>
                     <Col xs={6}>
                       <Button onClick={handleSubmitReviewAgreement} data-id={agreement.id} data-action={"accepted"}
