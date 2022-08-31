@@ -65,7 +65,7 @@ function ResetPassword({userHash = ''}) {
           history.push('/login')
         } );
       } else {
-        Notiflix.Report.failure( 'Error', `Link broken or not valid!`, 'Ok', () => {
+        Notiflix.Report.failure('Error', `This link has expired. Please contact artists@audiosocket.com for a new link.`, 'Ok', () => {
           history.push('/login')
         } );
       }
