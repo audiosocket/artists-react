@@ -81,7 +81,7 @@ function Signup({userHash = ''}) {
             setIsAgreementStep(true);
             setIsPasswordUpdated(res.password);
           } else {
-            Notiflix.Report.failure( 'Error', `Link broken or not valid, contact support or login to proceed!`, 'Ok', () => {
+            Notiflix.Report.failure('Error', `This link has expired. Please contact artists@audiosocket.com for a new link.`, 'Ok', () => {
               history.push('/login')
             } );
           }
@@ -120,7 +120,7 @@ function Signup({userHash = ''}) {
           history.push('/');
         }
       } else {
-        Notiflix.Report.failure( 'Error', `Link broken or not valid, contact support or login to proceed!`, 'Ok', () => {
+        Notiflix.Report.failure('Error', `This link has expired. Please contact artists@audiosocket.com for a new link.`, 'Ok', () => {
           history.push('/login')
         } );
       }
