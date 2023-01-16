@@ -147,7 +147,7 @@ function Payment() {
           {Object.keys(artist).length === 0 && isLoading && <h5>Loading profile... <img className="loading" src={Loader} alt="loading-icon"/></h5>}
           {Object.keys(artist).length !== 0 &&
           <Form noValidate validated={validated} ref={form} onSubmit={handleSubmit}>
-            {artist.contact_information.country && artist.contact_information.country.toLowerCase() === 'united states' &&
+            {artist?.contact_information?.country && artist?.contact_information?.country?.toLowerCase() === 'us' &&
               <>
               <Row>
                 <Col xl={2} md={4}>
@@ -225,6 +225,24 @@ function Payment() {
               </>
             }
             {artist.contact_information.country && artist.contact_information.country.toLowerCase() !== 'united states' &&
+              <>
+              <Row>
+                <Col xl={2} md={4}>
+                  <Form.Label>Payee Name*</Form.Label>
+                </Col>
+                <Col xl={4} md={8}>
+                  <Form.Control
+                    required
+                    name="payee_name"
+                    type="text"
+                    defaultValue={artist.payment_information ? artist.payment_information.payee_name : ""}
+                    placeholder="Payee name"
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    Payee Name is required!
+                  </Form.Control.Feedback>
+                </Col>
+              </Row>
               <Row>
                 <Col xl={2} md={4}>
                   <Form.Label>Paypal Email*</Form.Label>
@@ -242,6 +260,7 @@ function Payment() {
                   </Form.Control.Feedback>
                 </Col>
               </Row>
+              </>
             }
             <Row className="mt-5">
               <Col xl={2} md={0}></Col>
