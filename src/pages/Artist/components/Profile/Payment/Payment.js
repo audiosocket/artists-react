@@ -224,7 +224,7 @@ function Payment() {
               </Row>
               </>
             }
-            {artist.contact_information.country && artist.contact_information.country.toLowerCase() !== 'united states' &&
+            {artist.contact_information.country && artist.contact_information.country.toLowerCase() !== 'us' &&
               <>
               <Row>
                 <Col xl={2} md={4}>
