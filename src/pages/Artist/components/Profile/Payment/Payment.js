@@ -155,7 +155,7 @@ function Payment() {
                 </Col>
                 <Col xl={4} md={8}>
                   <Form.Control
-                    required
+                    required={form?.current?.elements?.paypal_email.value === '' ? true : false}
                     name="payee_name"
                     type="text"
                     defaultValue={artist.payment_information ? artist.payment_information.payee_name : ""}
@@ -172,7 +172,7 @@ function Payment() {
                 </Col>
                 <Col xl={4} md={8}>
                   <Form.Control
-                    required
+                    required={form?.current?.elements?.paypal_email.value === '' ? true : false}
                     name="bank_name"
                     type="text"
                     defaultValue={artist.payment_information ? artist.payment_information.bank_name : ""}
@@ -189,7 +189,7 @@ function Payment() {
                 </Col>
                 <Col xl={4} md={8}>
                   <Form.Control
-                    required
+                    required={form?.current?.elements?.paypal_email.value === '' ? true : false}
                     name="routing"
                     type="number"
                     defaultValue={artist.payment_information ? artist.payment_information.routing : ""}
@@ -209,7 +209,7 @@ function Payment() {
                 </Col>
                 <Col xl={4} md={8}>
                   <Form.Control
-                    required
+                    required={form?.current?.elements?.paypal_email.value === '' ? true : false}
                     name="account_number"
                     min={14}
                     type="text"
@@ -220,6 +220,24 @@ function Payment() {
                     Account number is required!
                   </Form.Control.Feedback>
                   {accountLimitFlag && <div className="custom-invalid-feedback">Account number must be 10 digits</div>}
+                </Col>
+              </Row>
+              <Row></Row>
+              <Row>
+                <Col xl={2} md={4}>
+                  <Form.Label>Paypal Email*</Form.Label>
+                </Col>
+                <Col xl={4} md={8}>
+                  <Form.Control
+                    required={form?.current?.elements?.account_number.value === '' || form?.current?.elements?.bank_name.value === '' || form?.current?.elements?.payee_name.value === '' || form?.current?.elements?.routing.value === '' ? true : false}
+                    name="paypal_email"
+                    type="email"
+                    defaultValue={artist.payment_information ? artist.payment_information.paypal_email : ""}
+                    placeholder="Paypal email"
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    Paypal email is required!
+                  </Form.Control.Feedback>
                 </Col>
               </Row>
               </>

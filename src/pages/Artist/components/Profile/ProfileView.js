@@ -336,7 +336,7 @@ function Profile() {
                 {artist.payment_information && artist.contact_information
                   ?
                   <>
-                    {artist.contact_information.country && artist.payment_information.account_number && artist.contact_information.country.toLowerCase() === 'united states' &&
+                    {artist.contact_information.country && artist.payment_information.account_number && artist.contact_information.country.toLowerCase() === 'us' &&
                       <>
                         <span><small className="medium-text">Payee: </small>{artist.payment_information.payee_name}</span>
                         <span><small className="medium-text">Bank: </small>{artist.payment_information.bank_name}</span>
@@ -344,7 +344,7 @@ function Profile() {
                         <span><small className="medium-text">Account#: </small>xxxxxx{artist.payment_information.account_number.substr(-4)}</span>
                       </>
                     }
-                    {artist.contact_information.country && artist.contact_information.country.toLowerCase() !== 'united states' &&
+                    {artist.contact_information.country && artist.contact_information.country.toLowerCase() !== 'us' &&
                       <span><small className="medium-text">Paypal Email: </small><a href={"mailto:"+artist.payment_information.paypal_email}>{artist.payment_information.paypal_email}</a></span>
                     }
                   </>
