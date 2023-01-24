@@ -111,7 +111,7 @@ function Payment() {
       setRoutingLimitFlag(false);
       return true;
     } else if(form?.current?.elements?.paypal_email.value != '') {
-      setRoutingLimitFlag(false);
+      setRoutingLimitFlag(false); 
       return false;
     } else {
       setRoutingLimitFlag(true);
