@@ -110,6 +110,9 @@ function Payment() {
     if(value.length === 9) {
       setRoutingLimitFlag(false);
       return true;
+    } else if(form?.current?.elements?.paypal_email.value != '') {
+      setRoutingLimitFlag(false);
+      return false;
     } else {
       setRoutingLimitFlag(true);
       return false;
