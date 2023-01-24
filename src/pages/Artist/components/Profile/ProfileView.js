@@ -20,7 +20,7 @@ function Profile() {
   const history = useHistory();
   const [taxForm, setTaxForm] = useState(null);
   const [taxFormLoading, setTaxFormLoading] = useState(false);
-
+  
   useEffect(() => {
     if(artistState.artist) {
       setIsLoading(false);
