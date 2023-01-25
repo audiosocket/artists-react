@@ -344,8 +344,16 @@ function Profile() {
                         <span><small className="medium-text">Account#: </small>xxxxxx{artist.payment_information.account_number.substr(-4)}</span>
                       </>
                     }
+                    {artist.payment_information.paypal_email && artist.contact_information.country.toLowerCase() === 'us' &&
+                      <>
+                        <span><small className="medium-text">Paypal Email: </small><a href={"mailto:"+artist.payment_information.paypal_email}>{artist.payment_information.paypal_email}</a></span>
+                      </>
+                    }
                     {artist.contact_information.country && artist.contact_information.country.toLowerCase() !== 'us' &&
-                      <span><small className="medium-text">Paypal Email: </small><a href={"mailto:"+artist.payment_information.paypal_email}>{artist.payment_information.paypal_email}</a></span>
+                      <>
+                        <span><small className="medium-text">Payee: </small>{artist.payment_information.payee_name}</span>
+                        <span><small className="medium-text">Paypal Email: </small><a href={"mailto:"+artist.payment_information.paypal_email}>{artist.payment_information.paypal_email}</a></span>
+                      </>
                     }
                   </>
                   : '-'
