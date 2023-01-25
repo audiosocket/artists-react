@@ -88,7 +88,7 @@ function Agreements({onChangeIsActiveProfile}) {
         <section>
           <div className="bg-content yellow bgSecondVersion mt-4">
             <p>YouTube requires artists to elect only one administrator of any given track in their Content ID system.</p>
-            <p>We prefer to administer your tracks because we have auto whitelisting tech in place for the tracks we admin in <a rel="noreferrer" target="_blank" href="https://blog.audiosocket.com/demystifying-youtube-content-id-why-it-is-good-for-creators/">YouTube Content ID</a>. It's disruptive to our business when clients license music and receive claims from other companies. Unfortunately we are not currently accepting music with CID managed by 3rd parties. We can offer the same service and a 75/25 split your favor for CID, while keeping our clients happy.</p>
+            <p>We prefer to administer your tracks because we have auto whitelisting tech in place for the tracks we admin in <a rel="noreferrer" target="_blank" href="https://blog.audiosocket.com/music-licensing-copyright/demystifying-youtube-content-id-why-it-is-good-for-creators/ ">YouTube Content ID</a>. It's disruptive to our business when clients license music and receive claims from other companies. Unfortunately we are not currently accepting music with CID managed by 3rd parties. We can offer the same service and a 75/25 split your favor for CID, while keeping our clients happy.</p>
             <p>If you already have a YouTube admin, please contact us and let us know, we can assist with transferring your administration to us.</p>
           </div>
         </section>
